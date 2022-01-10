@@ -1,6 +1,5 @@
 from PyQt5.QtGui import QPainter
 
-
 class Object:
 
     def __init__(self,xPos,yPos,orientation,representation):
