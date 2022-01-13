@@ -1,23 +1,17 @@
-import random
-
-from PyQt5.QtGui import QPainter
-
 from Object import Object
-from Point import Point
-from Rectangle import Rectangle
-
+from Component import Component
 
 class Robot(Object):
+    def __init__(self,xPos,yPos,orientation,representation):
+        super().__init__(xPos,yPos,orientation,representation)
+        self._components=[]
 
-    def __init__(self,x,y,width,height,orientation):
-        COLORS = ["#FFC465","#56D1BC","#675BB5","#F56E21","#0490F9","#FFCCCC","#CC6666","#9933FF","#66CC00","#3366CC"]
-        super().__init__(x,y,width,height,orientation,Rectangle(Point(x,y),width,height,orientation,random.choice(COLORS)))
-        self._wheelSet=[]
+    def addComponent(self,comp):
+        if isinstance(comp,Component):
+            self._components.append(comp)
+            self._representation.addSubRepresentation(comp.getRepresentation())
 
-    def attachSensor(self,x,y,orientation): # repère local
-        pass
-
-
-    def draw(self,window):
-        painter = QPainter(window)
-        self._representation.draw(painter)
+    def move(self,dx,dy):
+        self._xPos+=dx
+        self._yPos+=dy
+        self._representation.setParameters(self._xPos, self._yPos,self._orientation)

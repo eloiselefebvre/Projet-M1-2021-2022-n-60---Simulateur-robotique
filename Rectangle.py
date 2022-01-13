@@ -1,27 +1,24 @@
-from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QPainter, QPen, QBrush, QColor
-from Point import Point
-from Representation import Representation
+from PyQt5.QtCore import QRect, Qt
+from PyQt5.QtGui import QPen, QBrush, QColor
 
-class Rectangle(Representation):
+from Shape import Shape
 
-    def __init__(self, origin, width, height,orientation, color):
-        Representation.__init__(self, origin,orientation, color)
-        self._width = width
-        self._height = height
-        self._center = Point(self._origin.getX() + self._width / 2, self._origin.getY() + self._height / 2)
+class Rectangle(Shape):
+    def __init__(self,width,height,color,borderRadius=0,borderWidth=0,borderColor=None,opacity=255):
+        super().__init__(color,opacity,borderWidth,borderColor)
+        self._width=width
+        self._height=height
+        self._borderRadius=borderRadius
 
-    def print(self):
-        print("Rectangle - origin : ", self._origin, ", width = ", self._width, ", height = ", self._height, sep="")
-
-    def draw(self, painter):
-        painter.translate(self._center.getX(), self._center.getY())
-        painter.rotate(self._orientation)
-        painter.setPen(QPen(QColor(self._color), 0, Qt.SolidLine))
-        painter.setBrush(QBrush(QColor(self._color), Qt.SolidPattern))
-        painter.drawRoundedRect(QRect(0, 0, self._width, self._height), 6, 6)
-
-        painter.setBrush(QBrush(QColor("#1C1E32"), Qt.SolidPattern))
-        painter.setPen(QPen(QColor("#f3f3f3"), 2, Qt.SolidLine))
-        painter.drawRoundedRect(QRect(0, 10, 8, 20), 2, 2)
-        painter.drawRoundedRect(QRect(self._width-8, 10, 8, 20), 2, 2)
+    def paint(self,painter,x,y,orientation):
+        painter.translate(x,y)
+        painter.rotate(orientation) # rotation depuis un angle, à changer depuis son center, cf bounding box
+        qcolor = QColor(self._color)
+        qcolor.setAlpha(self._opacity)
+        painter.setPen(QPen(QColor(self._borderColor),self._borderWidth, Qt.SolidLine))
+        painter.setBrush(QBrush(qcolor, Qt.SolidPattern))
+        painter.drawRoundedRect(QRect(0, 0, self._width, self._height),self._borderRadius,self._borderRadius) # last parameters for border radius
+        yline = 6
+        border = 3
+        painter.setPen(QPen(qcolor.lighter(160),border, Qt.SolidLine))
+        painter.drawLine(border,self._height-yline,self._width-border,self._height-yline) # if self._borderWidth==0 else border
