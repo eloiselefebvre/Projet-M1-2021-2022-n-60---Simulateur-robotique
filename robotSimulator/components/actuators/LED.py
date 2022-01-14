@@ -1,4 +1,4 @@
-from Actuator import Actuator
+from robotSimulator.components.actuators.Actuator import Actuator
 from Representation import Representation
 from Circle import Circle
 

@@ -1,4 +1,4 @@
-from Component import Component
+from robotSimulator.components.Component import Component
 
 class Actuator(Component):
 
