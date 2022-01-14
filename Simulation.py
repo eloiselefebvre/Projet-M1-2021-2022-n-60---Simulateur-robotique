@@ -1,29 +1,24 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from Environment import Environment
+from Interface import Interface
 from Object import Object
 import threading
 
 class Simulation:
 
-    def __init__(self):
-        self._environment=None
-        self._objects=[]
+    def __init__(self,environment=None):
+        self._environment=environment
+        self._shown = False
 
-    def addObject(self,obj):
-        if isinstance(obj, Object):
-            self._objects.append(obj)
+    def show(self):
+        if self._environment is not None and not self._shown:
+            th=threading.Thread(target=self.showInterface,args=(self._environment,))
+            th.start()
+            self._shown = True
 
-    def start(self,program):
-        th1=threading.Thread(target=self.simulate)
-        th2=threading.Thread(target=program)
-        th1.start()
-        th2.start()
-
-    def simulate(self):
+    def showInterface(self,environment):
         app = QApplication([sys.argv])
-        self._environment = Environment(self._objects)
-        self._environment.setWindowTitle("Spicy Simulator")
-        self._environment.showMaximized()
+        myInterface = Interface(environment)
         sys.exit(app.exec())
 

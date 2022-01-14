@@ -1,14 +1,14 @@
-from PyQt5.QtWidgets import QMainWindow
-
 from Object import Object
 
-class Environment(QMainWindow):
 
-    def __init__(self,objects):
-        super().__init__()
-        self._objects=objects
+class Environment:
 
-    def paintEvent(self,event):
-        for obj in self._objects:
-            obj.paint(self)
-        self.update()
+    def __init__(self,):
+        self._objects=[]
+
+    def addObject(self, obj):
+        if isinstance(obj, Object):
+            self._objects.append(obj)
+
+    def getObjects(self):
+        return self._objects
