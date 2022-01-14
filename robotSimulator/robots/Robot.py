@@ -1,5 +1,5 @@
 from robotSimulator.Object import Object
-from robotSimulator.components.Component import Component
+from robotSimulator.Component import Component
 
 class Robot(Object):
     def __init__(self,xPos,yPos,orientation,representation):

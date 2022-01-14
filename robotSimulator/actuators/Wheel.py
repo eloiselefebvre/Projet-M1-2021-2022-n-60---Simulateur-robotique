@@ -1,4 +1,4 @@
-from robotSimulator.components.actuators.Actuator import Actuator
+from robotSimulator.actuators.Actuator import Actuator
 from robotSimulator.Rectangle import Rectangle
 from robotSimulator.Representation import Representation
 
