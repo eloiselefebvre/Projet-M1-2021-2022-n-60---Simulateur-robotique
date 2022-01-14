@@ -1,6 +1,6 @@
 from robotSimulator.components.actuators.Actuator import Actuator
-from Representation import Representation
-from Circle import Circle
+from robotSimulator.Representation import Representation
+from robotSimulator.Circle import Circle
 
 
 class LED(Actuator):

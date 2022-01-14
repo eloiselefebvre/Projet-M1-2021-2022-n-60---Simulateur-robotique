@@ -4,7 +4,7 @@ from robotSimulator.robots.Robot import Robot
 from robotSimulator.Representation import Representation
 from robotSimulator.Rectangle import Rectangle
 from robotSimulator.components.actuators.LED import LED
-from robotSimulator.components.actuators import Wheel
+from robotSimulator.components.actuators.Wheel import Wheel
 from robotSimulator.Simulation import Simulation
 
 rob1Rep = Representation(Rectangle(50, 60, "#0490F9", 6))

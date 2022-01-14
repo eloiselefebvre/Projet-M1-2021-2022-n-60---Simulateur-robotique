@@ -1,4 +1,4 @@
-from Shape import Shape
+from robotSimulator.Shape import Shape
 
 class Representation:
     def __init__(self,shape):

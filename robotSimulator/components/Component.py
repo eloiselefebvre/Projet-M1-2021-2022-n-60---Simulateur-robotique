@@ -1,4 +1,4 @@
-from Object import Object
+from robotSimulator.Object import Object
 
 class Component(Object):
     def __init__(self,xPos,yPos,orientation,representation):
