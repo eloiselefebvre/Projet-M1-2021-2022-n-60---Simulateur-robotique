@@ -36,6 +36,7 @@ rob2.addComponent(wheel4)
 rob2.addComponent(led3)
 
 rob3 = TwoWheelsRobot(500,500,0)
+rob3.addComponent(led2)
 
 env = Environment()
 env.addObject(rob1)
