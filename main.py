@@ -1,6 +1,7 @@
 import time
 from robotSimulator.Environment import Environment
 from robotSimulator.robots.Robot import Robot
+from robotSimulator.robots.TwoWheelsRobot import TwoWheelsRobot
 from robotSimulator.Representation import Representation
 from robotSimulator.Rectangle import Rectangle
 from robotSimulator.actuators.LED import LED
@@ -34,9 +35,12 @@ rob2.addComponent(wheel3)
 rob2.addComponent(wheel4)
 rob2.addComponent(led3)
 
+rob3 = TwoWheelsRobot(500,500,0)
+
 env = Environment()
 env.addObject(rob1)
 env.addObject(rob2)
+env.addObject(rob3)
 
 sim = Simulation(env)
 
@@ -54,5 +58,6 @@ while i<1000:
         start=time.time()
     rob1.move(.2,.2)
     rob2.move(0,.3)
+    rob3.move(0.4, .3)
     time.sleep(.02)
     i+=1
