@@ -1,5 +1,5 @@
-from Component import Component
+from robotSimulator.Component import Component
 
 class Sensor(Component):
-    def __init__(self,xPos,yPos,orientation,representation):
-        super().__init__(xPos,yPos,orientation,representation)
+    def __init__(self,x,y,orientation,representation):
+        super().__init__(x,y,orientation,representation)

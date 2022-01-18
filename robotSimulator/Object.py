@@ -1,13 +1,13 @@
 from PyQt5.QtGui import QPainter
+from robotSimulator.Point import Point
 
 class Object:
 
-    def __init__(self,xPos,yPos,orientation,representation):
-        self._xPos = xPos
-        self._yPos = yPos
+    def __init__(self,x,y,orientation,representation):
+        self._pos = Point(x,y)
         self._orientation = orientation
         self._representation=representation
-        self._representation.setParameters(self._xPos,self._yPos,self._orientation)
+        self._representation.setParameters(self._pos,self._orientation)
 
     def getRepresentation(self):
         return self._representation

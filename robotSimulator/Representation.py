@@ -5,20 +5,14 @@ class Representation:
         self._representation=None
         self.setRepresentation(shape)
         self._subRepresentations=[]
-        self._posX=0
-        self._posY=0
         self._orientation=0
 
-    def setParameters(self,posX,posY,orientation):
-        self._posX=posX
-        self._posY=posY
+    def setParameters(self,center,orientation):
+        self._center = center
         self._orientation=orientation
 
-    def getPosX(self):
-        return self._posX
-
-    def getPosY(self):
-        return self._posY
+    def getCenter(self):
+        return self._center
 
     def getOrientation(self):
         return self._orientation
@@ -35,8 +29,8 @@ class Representation:
             self._representation=shape
 
     def paint(self,painter):
-        self._representation.paint(painter,self._posX,self._posY,self._orientation)
+        self._representation.paint(painter,self._center,self._orientation)
         for rep in self._subRepresentations:
             painter.save() # sauvegarde de l'état du painter
-            rep.getRepresentation().paint(painter,rep.getPosX(),rep.getPosY(),rep.getOrientation())
+            rep.getRepresentation().paint(painter,rep.getCenter(),rep.getOrientation())
             painter.restore() # restoration de l'état du painter

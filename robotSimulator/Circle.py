@@ -9,11 +9,10 @@ class Circle(Shape):
         super().__init__(color,opacity,borderWidth,borderColor)
         self._radius=radius
 
-    def paint(self,painter,x,y,orientation):
-        painter.translate(x, y)
-        painter.rotate(orientation)  # rotation depuis un angle, à changer depuis son center, cf bounding box
+    def paint(self,painter,center,orientation):
+        super().paint(painter, center, orientation)
         qcolor = QColor(self._color)
         qcolor.setAlpha(self._opacity)
         painter.setPen(QPen(qcolor, 0, Qt.SolidLine))
         painter.setBrush(QBrush(qcolor, Qt.SolidPattern))
-        painter.drawEllipse(0,0,self._radius*2,self._radius*2)
+        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2)

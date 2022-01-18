@@ -13,3 +13,6 @@ class Point:
     def getY(self):
         return self._y
 
+    def move(self,x,y):
+        self._x=x
+        self._y=y

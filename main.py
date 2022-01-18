@@ -12,12 +12,12 @@ rob1Rep = Representation(Rectangle(50, 60, "#0490F9", 6))
 
 rob1 = Robot(200, 50, 45, rob1Rep)
 
-led = LED(20, 25, LED.RED)
-led2 = LED(20, 40, LED.YELLOW)
-led3 = LED(25, 40, LED.GREEN)
+led = LED(0, -10, LED.RED)
+led2 = LED(0, 10, LED.YELLOW)
+led3 = LED(0, 0, LED.GREEN)
 
-wheel = Wheel(0, 10, 10, 8)
-wheel2 = Wheel(42, 10, 10, 8)
+wheel = Wheel(-21, 10, 10, 8)
+wheel2 = Wheel(21, 10, 10, 8)
 
 rob1.addComponent(led)
 rob1.addComponent(led2)
@@ -28,8 +28,8 @@ rob2Rep = Representation(Rectangle(60, 80, "#FFC465", 6))
 
 rob2 = Robot(500, 200, 0, rob2Rep)
 
-wheel3 = Wheel(0, 18, 12, 15)
-wheel4 = Wheel(45, 18, 12, 15)
+wheel3 = Wheel(-22, 10, 12, 15)
+wheel4 = Wheel(22, 10, 12, 15)
 
 rob2.addComponent(wheel3)
 rob2.addComponent(wheel4)

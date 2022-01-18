@@ -2,8 +2,8 @@ from robotSimulator.Object import Object
 from robotSimulator.Component import Component
 
 class Robot(Object):
-    def __init__(self,xPos,yPos,orientation,representation):
-        super().__init__(xPos,yPos,orientation,representation)
+    def __init__(self,x,y,orientation,representation):
+        super().__init__(x,y,orientation,representation)
         self._components=[]
 
     def addComponent(self,comp):
@@ -12,6 +12,5 @@ class Robot(Object):
             self._representation.addSubRepresentation(comp.getRepresentation())
 
     def move(self,dx,dy):
-        self._xPos+=dx
-        self._yPos+=dy
-        self._representation.setParameters(self._xPos, self._yPos,self._orientation)
+        self._pos.move(self._pos.getX()+dx,self._pos.getY()+dy)
+        self._representation.setParameters(self._pos,self._orientation)

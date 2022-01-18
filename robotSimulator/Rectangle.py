@@ -10,15 +10,14 @@ class Rectangle(Shape):
         self._height=height
         self._borderRadius=borderRadius
 
-    def paint(self,painter,x,y,orientation):
-        painter.translate(x,y)
-        painter.rotate(orientation) # rotation depuis un angle, à changer depuis son center, cf bounding box
+    def paint(self,painter,center,orientation):
+        super().paint(painter,center,orientation)
         qcolor = QColor(self._color)
         qcolor.setAlpha(self._opacity)
         painter.setPen(QPen(QColor(self._borderColor),self._borderWidth, Qt.SolidLine))
         painter.setBrush(QBrush(qcolor, Qt.SolidPattern))
-        painter.drawRoundedRect(QRect(0, 0, self._width, self._height),self._borderRadius,self._borderRadius) # last parameters for border radius
+        painter.drawRoundedRect(QRect(-int(self._width/2),-int(self._height/2), self._width, self._height),self._borderRadius,self._borderRadius) # last parameters for border radius
         yline = 6
         border = 3
         painter.setPen(QPen(qcolor.lighter(160),border, Qt.SolidLine))
-        painter.drawLine(border,self._height-yline,self._width-border,self._height-yline) # if self._borderWidth==0 else border
+        painter.drawLine(border-int(self._width/2),int(self._height/2)-yline,int(self._width/2)-border,int(self._height/2)-yline) # if self._borderWidth==0 else border
