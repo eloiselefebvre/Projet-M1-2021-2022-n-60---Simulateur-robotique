@@ -14,5 +14,8 @@ class Wheel(Actuator):
     def setSpeed(self,speed):
         self._speed = speed
 
+    def getSpeed(self):
+        return self._speed
+
 
 

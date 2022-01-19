@@ -11,6 +11,7 @@ class Robot(Object):
             self._components.append(comp)
             self._representation.addSubRepresentation(comp.getRepresentation())
 
-    def move(self,dx,dy):
-        self._pos.move(self._pos.getX()+dx,self._pos.getY()+dy)
-        self._representation.setParameters(self._pos,self._orientation)
+    def move(self):
+        pass
+        #self._pos.move(self._pos.getX()+dx,self._pos.getY()+dy)
+        #self._representation.setParameters(self._pos,self._orientation)

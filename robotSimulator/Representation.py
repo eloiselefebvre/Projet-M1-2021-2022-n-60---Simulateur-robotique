@@ -30,12 +30,9 @@ class Representation:
         if isinstance(shape,Shape):
             self._representation=shape
 
-    def paint(self,painter,lvl=0):
-        print("ok"+str(lvl))
-        print(self._subRepresentations)
+    def paint(self,painter):
         self._representation.paint(painter,self._center,self._orientation)
         for rep in self._subRepresentations:
             painter.save() # sauvegarde de l'état du painter
-            rep.paint(painter,lvl+1)
-            #rep.getRepresentation().paint(painter,rep.getCenter(),rep.getOrientation())
+            rep.paint(painter)
             painter.restore() # restoration de l'état du painter

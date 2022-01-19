@@ -44,6 +44,9 @@ rob3 = TwoWheelsRobot(500,500,0)
 rob3.addComponent(buzzer)
 rob3.addComponent(telemeter)
 
+rob3.setLeftWheelSpeed(0.004)
+rob3.setRightWheelSpeed(-0.004)
+
 env = Environment()
 
 env.addObject(rob1)
@@ -65,9 +68,7 @@ while i<1000:
         led2.setState(not ledState)
         led3.setState(ledState)
         start=time.time()
-    rob1.move(.2,.2)
-    rob2.move(0,.3)
 
-    rob3.move(0.4, .3)
+    rob3.move()
     time.sleep(.02)
     i+=1
