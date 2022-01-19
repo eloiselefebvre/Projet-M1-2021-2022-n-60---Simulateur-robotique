@@ -1,5 +1,6 @@
 import time
 from robotSimulator.Environment import Environment
+from robotSimulator.actuators.Buzzer import Buzzer
 from robotSimulator.robots.Robot import Robot
 from robotSimulator.robots.TwoWheelsRobot import TwoWheelsRobot
 from robotSimulator.Representation import Representation
@@ -16,8 +17,8 @@ led = LED(0, -10, LED.RED)
 led2 = LED(0, 10, LED.YELLOW)
 led3 = LED(0, 0, LED.GREEN)
 
-wheel = Wheel(-21, 10, 10, 8)
-wheel2 = Wheel(21, 10, 10, 8)
+wheel = Wheel(-21, 0, 10, 8)
+wheel2 = Wheel(21, 0, 10, 8)
 
 rob1.addComponent(led)
 rob1.addComponent(led2)
@@ -28,15 +29,16 @@ rob2Rep = Representation(Rectangle(60, 80, "#FFC465", 6))
 
 rob2 = Robot(500, 200, 0, rob2Rep)
 
-wheel3 = Wheel(-22, 10, 12, 15)
-wheel4 = Wheel(22, 10, 12, 15)
+wheel3 = Wheel(-22, 0, 12, 15)
+wheel4 = Wheel(22, 0, 12, 15)
 
 rob2.addComponent(wheel3)
 rob2.addComponent(wheel4)
 rob2.addComponent(led3)
 
+buzzer = Buzzer(0,0)
 rob3 = TwoWheelsRobot(500,500,0)
-rob3.addComponent(led2)
+rob3.addComponent(buzzer)
 
 env = Environment()
 env.addObject(rob1)
