@@ -7,7 +7,7 @@ from robotSimulator.actuators.Wheel import Wheel
 
 class TwoWheelsRobot(Robot):
 
-    def __init__(self,x,y,orientation,robotWidth=50,robotHeight=60,wheelsRadius=10,distanceBetweenWheels=50):
+    def __init__(self,x,y,orientation,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
         rep=Rectangle(robotWidth,robotHeight,"#0F0",3)
         super().__init__(x,y,orientation,Representation(rep))
         self._width = 100

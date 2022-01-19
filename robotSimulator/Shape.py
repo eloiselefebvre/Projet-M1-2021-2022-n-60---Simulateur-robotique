@@ -8,7 +8,6 @@ class Shape:
         self._color = QColor(color)
         self._opacity=opacity
         self._border=None
-        #self._borderColor=color if borderColor is None else borderColor
 
     def addBorder(self,border):
         if isinstance(border,Border):
