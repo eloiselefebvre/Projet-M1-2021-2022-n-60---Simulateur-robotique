@@ -39,13 +39,13 @@ rob2.addComponent(led3)
 
 
 buzzer = Buzzer(0,0)
-telemeter = Telemeter(0,15,0)
+telemeter = Telemeter(0,15,20)
 rob3 = TwoWheelsRobot(500,500,0)
 rob3.addComponent(buzzer)
 rob3.addComponent(telemeter)
 
 rob3.setLeftWheelSpeed(0.004)
-rob3.setRightWheelSpeed(-0.004)
+rob3.setRightWheelSpeed(-0.006)
 
 env = Environment()
 
