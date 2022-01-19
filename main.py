@@ -8,6 +8,7 @@ from robotSimulator.Rectangle import Rectangle
 from robotSimulator.actuators.LED import LED
 from robotSimulator.actuators.Wheel import Wheel
 from robotSimulator.Simulation import Simulation
+from robotSimulator.sensors.Telemeter import Telemeter
 
 rob1Rep = Representation(Rectangle(50, 60, "#0490F9", 6))
 
@@ -36,13 +37,18 @@ rob2.addComponent(wheel3)
 rob2.addComponent(wheel4)
 rob2.addComponent(led3)
 
+
 buzzer = Buzzer(0,0)
+telemeter = Telemeter(0,15,0)
 rob3 = TwoWheelsRobot(500,500,0)
 rob3.addComponent(buzzer)
+rob3.addComponent(telemeter)
 
 env = Environment()
+
 env.addObject(rob1)
 env.addObject(rob2)
+
 env.addObject(rob3)
 
 sim = Simulation(env)
@@ -61,6 +67,7 @@ while i<1000:
         start=time.time()
     rob1.move(.2,.2)
     rob2.move(0,.3)
+
     rob3.move(0.4, .3)
     time.sleep(.02)
     i+=1

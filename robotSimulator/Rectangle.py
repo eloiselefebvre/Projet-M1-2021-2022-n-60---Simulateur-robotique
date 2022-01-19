@@ -10,14 +10,20 @@ class Rectangle(Shape):
         self._width=width
         self._height=height
         self._borderRadius=borderRadius
+        self._orientationMark = True
+
+    def removeOrientationMark(self):
+        self._orientationMark=False
 
     def paint(self,painter,center,orientation):
         super().paint(painter,center,orientation)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawRoundedRect(QRect(-int(self._width/2),-int(self._height/2), self._width, self._height),self._borderRadius,self._borderRadius) # last parameters for border radius
-        self.paintOrientationMark(painter)
+        if self._orientationMark:
+            self.paintOrientationMark(painter)
 
     def paintOrientationMark(self,painter):
         painter.setPen(QPen(self._color.lighter(ORIENTATION_MARK_LIGHTER_FACTOR),ORIENTATION_MARK_WIDTH, Qt.SolidLine))
         widthToCompensate = ORIENTATION_MARK_WIDTH if self._border is None else max(ORIENTATION_MARK_WIDTH,self._border.getWidth())
-        painter.drawLine(widthToCompensate - int(self._width / 2), int(self._height / 2) - ORIENTATION_MARK_DISTANCE_FROM_FRONT, int(self._width / 2) - widthToCompensate, int(self._height / 2) - ORIENTATION_MARK_DISTANCE_FROM_FRONT)  # if self._borderWidth==0 else border
+        ypos = int(self._height / 2  * 8/10)
+        painter.drawLine(widthToCompensate - int(self._width / 2), ypos, int(self._width / 2) - widthToCompensate, ypos)  # if self._borderWidth==0 else border

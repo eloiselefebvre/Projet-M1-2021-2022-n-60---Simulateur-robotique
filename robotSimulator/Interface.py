@@ -10,4 +10,5 @@ class Interface(QMainWindow):
     def paintEvent(self,event):
         for obj in self._environment.getObjects():
             obj.paint(self)
+        #
         self.update()

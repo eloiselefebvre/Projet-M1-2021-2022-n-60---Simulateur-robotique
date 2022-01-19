@@ -8,7 +8,6 @@ class Buzzer(Actuator):
 
     def __init__(self,x,y):
         super().__init__(x,y,0,Representation(Circle(5,"#1C1E32")))
-        self._state=0
 
     def on(self,midi_note):
         pass
