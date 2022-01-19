@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QColor, QPen
+from PyQt5.QtGui import QBrush, QPen
 
 from robotSimulator.Shape import Shape
 
@@ -9,7 +9,7 @@ class Circle(Shape):
         super().__init__(color,opacity)
         self._radius=radius
 
-    def paint(self,painter,center,orientation):
-        super().paint(painter, center, orientation)
+    def paint(self,painter,origin,orientation):
+        super().paint(painter, origin, orientation)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2)
+        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center

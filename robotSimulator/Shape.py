@@ -13,8 +13,8 @@ class Shape:
         if isinstance(border,Border):
             self._border=border
 
-    def paint(self,painter,center,orientation):
-        painter.translate(center.getX(), center.getY())
+    def paint(self,painter,origin,orientation):
+        painter.translate(origin.getX(), origin.getY())
         painter.rotate(orientation)
         self._color.setAlpha(self._opacity)
         if self._border is not None:
