@@ -1,8 +1,8 @@
 from math import cos,sin,radians,degrees
 
 from robotSimulator.robots.Robot import Robot
-from robotSimulator.Rectangle import Rectangle
-from robotSimulator.Representation import Representation
+from robotSimulator.representation.shapes.Rectangle import Rectangle
+from robotSimulator.representation.Representation import Representation
 from robotSimulator.actuators.Wheel import Wheel
 
 from robotSimulator.config import *

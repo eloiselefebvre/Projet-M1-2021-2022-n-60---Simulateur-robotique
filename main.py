@@ -1,20 +1,14 @@
 import time
-from robotSimulator.Environment import Environment
+from robotSimulator.simulation.Environment import Environment
 from robotSimulator.actuators.Buzzer import Buzzer
-from robotSimulator.robots.Robot import Robot
 from robotSimulator.robots.TwoWheelsRobot import TwoWheelsRobot
-from robotSimulator.Representation import Representation
-from robotSimulator.Rectangle import Rectangle
+from robotSimulator.representation.Representation import Representation
+from robotSimulator.representation.shapes.Rectangle import Rectangle
 from robotSimulator.actuators.LED import LED
-from robotSimulator.actuators.Wheel import Wheel
-from robotSimulator.Simulation import Simulation
+from robotSimulator.simulation.Simulation import Simulation
 from robotSimulator.sensors.Telemeter import Telemeter
-from robotSimulator.Obstacle import Obstacle
 
 rob1Rep = Representation(Rectangle(50, 60, "#0490F9", 6))
-
-toto = 1
-titi = 42
 
 rob1 = TwoWheelsRobot(200, 50, 0)
 rob1.setLeftWheelSpeed(0.02)

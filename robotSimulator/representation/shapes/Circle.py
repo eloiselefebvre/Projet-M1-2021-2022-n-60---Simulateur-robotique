@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QBrush, QPen
+from PyQt5.QtGui import QBrush
 
-from robotSimulator.Shape import Shape
+from robotSimulator.representation.shapes.Shape import Shape
 
 class Circle(Shape):
 

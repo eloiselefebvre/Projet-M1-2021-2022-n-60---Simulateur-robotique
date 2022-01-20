@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QPen
 
-from robotSimulator.Border import Border
+from robotSimulator.representation.shapes.Border import Border
 
 class Shape:
     def __init__(self,color,opacity):

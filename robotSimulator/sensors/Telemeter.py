@@ -1,8 +1,8 @@
 from robotSimulator.sensors.Sensor import Sensor
-from robotSimulator.Representation import Representation
-from robotSimulator.Rectangle import Rectangle
-from robotSimulator.Line import Line
-from robotSimulator.Point import Point
+from robotSimulator.representation.Representation import Representation
+from robotSimulator.representation.shapes.Rectangle import Rectangle
+from robotSimulator.representation.shapes.Line import Line
+
 
 class Telemeter(Sensor):
 
