@@ -2,7 +2,7 @@ import time
 from robotSimulator.Environment import Environment
 from robotSimulator.actuators.Buzzer import Buzzer
 from robotSimulator.robots.Robot import Robot
-from robotSimulator.robots.TwoWheelsRobot import TwoWheelsRobot
+from robotSimulator.robots import TwoWheelsRobot
 from robotSimulator.Representation import Representation
 from robotSimulator.Rectangle import Rectangle
 from robotSimulator.actuators.LED import LED
