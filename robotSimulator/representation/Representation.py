@@ -1,5 +1,5 @@
-from robotSimulator.representation.shapes.Shape import Shape
-from robotSimulator.representation.shapes.Point import Point
+from .shapes import Shape, Point
+
 
 class Representation:
     def __init__(self,shape):

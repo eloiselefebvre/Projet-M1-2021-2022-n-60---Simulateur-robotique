@@ -1,7 +1,7 @@
 from robotSimulator.actuators.Actuator import Actuator
-from robotSimulator.representation.shapes.Rectangle import Rectangle
-from robotSimulator.representation.Representation import Representation
-from robotSimulator.representation.shapes.Border import Border
+from robotSimulator.representation.shapes import Rectangle, Border
+from robotSimulator.representation import Representation
+
 
 class Wheel(Actuator):
 

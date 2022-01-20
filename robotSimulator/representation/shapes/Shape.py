@@ -1,7 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QPen
-
-from robotSimulator.representation.shapes.Border import Border
+from . import Border
 
 class Shape:
     def __init__(self,color,opacity):
@@ -10,8 +9,9 @@ class Shape:
         self._border=None
 
     def addBorder(self,border):
-        if isinstance(border,Border):
-            self._border=border
+        #if isinstance(border,Border):
+        #    self._border=border
+        self._border = border
 
     def paint(self,painter,origin,orientation):
         painter.translate(origin.getX(), origin.getY())

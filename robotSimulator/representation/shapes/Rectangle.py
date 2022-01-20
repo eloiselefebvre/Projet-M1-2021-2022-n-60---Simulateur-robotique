@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QPen, QBrush
-
-from robotSimulator.representation.shapes.Shape import Shape
+from . import Shape
 
 class Rectangle(Shape):
 

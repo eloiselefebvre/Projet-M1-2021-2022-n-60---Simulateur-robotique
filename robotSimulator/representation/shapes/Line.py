@@ -1,7 +1,6 @@
-from robotSimulator.representation.shapes.Shape import Shape
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPen
+from . import Shape
 
 class Line(Shape):
 

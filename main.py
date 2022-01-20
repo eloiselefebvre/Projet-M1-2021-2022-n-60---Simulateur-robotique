@@ -1,12 +1,8 @@
 import time
-from robotSimulator.simulation.Environment import Environment
-from robotSimulator.actuators.Buzzer import Buzzer
-from robotSimulator.robots.TwoWheelsRobot import TwoWheelsRobot
-from robotSimulator.representation.Representation import Representation
-from robotSimulator.representation.shapes.Rectangle import Rectangle
-from robotSimulator.actuators.LED import LED
-from robotSimulator.simulation.Simulation import Simulation
-from robotSimulator.sensors.Telemeter import Telemeter
+from robotSimulator.simulation import Environment,Simulation
+from robotSimulator.actuators import Buzzer, LED
+from robotSimulator.robots import TwoWheelsRobot
+from robotSimulator.sensors import Telemeter
 
 rob1 = TwoWheelsRobot(200, 50, 0)
 rob1.setLeftWheelSpeed(0.02)
