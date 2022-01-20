@@ -5,16 +5,19 @@ from robotSimulator.representation.shapes.Rectangle import Rectangle
 from robotSimulator.representation.Representation import Representation
 from robotSimulator.actuators.Wheel import Wheel
 
-from robotSimulator.config import *
 import random
 
 class TwoWheelsRobot(Robot):
 
+    DEFAULT_WHEEL_WIDTH = 8
+    DEFAULT_BORDER_RADIUS = 3
+    COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
+
     def __init__(self,x,y,orientation,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
-        rep=Rectangle(robotWidth,robotHeight,random.choice(ROBOT_COLORS),3)
+        rep=Rectangle(robotWidth,robotHeight,random.choice(self.COLORS),self.DEFAULT_BORDER_RADIUS)
         super().__init__(x,y,orientation,Representation(rep))
-        self._leftWheel = Wheel(-distanceBetweenWheels/2+4,0, wheelsRadius, 8)
-        self._rightWheel = Wheel(distanceBetweenWheels/2-4,0, wheelsRadius, 8)
+        self._leftWheel = Wheel(-distanceBetweenWheels/2+4,0, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
+        self._rightWheel = Wheel(distanceBetweenWheels/2-4,0, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self.addComponent(self._leftWheel)
         self.addComponent(self._rightWheel)
         self._distanceBetweenWheels = distanceBetweenWheels
