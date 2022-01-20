@@ -11,7 +11,6 @@ class Telemeter(Sensor):
         super().__init__(x, y, orientation, self._representation)
         laserShape = Line(1000,2,"#f00")
         laser = Representation(laserShape)
-        #laser.setParameters(Point(0,54),0)
         self._representation.addSubRepresentation(laser)
 
     def getValue(self):

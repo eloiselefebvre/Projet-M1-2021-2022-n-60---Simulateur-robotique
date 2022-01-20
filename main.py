@@ -14,6 +14,7 @@ from robotSimulator.Obstacle import Obstacle
 rob1Rep = Representation(Rectangle(50, 60, "#0490F9", 6))
 
 toto = 1
+titi = 42
 
 rob1 = TwoWheelsRobot(200, 50, 0)
 rob1.setLeftWheelSpeed(0.02)
