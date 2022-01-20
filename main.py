@@ -8,8 +8,6 @@ from robotSimulator.actuators.LED import LED
 from robotSimulator.simulation.Simulation import Simulation
 from robotSimulator.sensors.Telemeter import Telemeter
 
-rob1Rep = Representation(Rectangle(50, 60, "#0490F9", 6))
-
 rob1 = TwoWheelsRobot(200, 50, 0)
 rob1.setLeftWheelSpeed(0.02)
 rob1.setRightWheelSpeed(0.02)
@@ -20,7 +18,6 @@ led3 = LED(0, 0, LED.BLUE)
 
 rob1.addComponent(led)
 rob1.addComponent(led2)
-rob2Rep = Representation(Rectangle(60, 80, "#FFC465", 6))
 
 rob2 = TwoWheelsRobot(500, 200, 0)
 rob2.addComponent(led3)
