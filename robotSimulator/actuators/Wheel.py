@@ -17,5 +17,6 @@ class Wheel(Actuator):
     def getSpeed(self):
         return self._speed
 
-
+    def getRadius(self):
+        return self._radius
 

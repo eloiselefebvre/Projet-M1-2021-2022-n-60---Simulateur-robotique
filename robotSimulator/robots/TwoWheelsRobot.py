@@ -13,8 +13,6 @@ class TwoWheelsRobot(Robot):
     def __init__(self,x,y,orientation,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
         rep=Rectangle(robotWidth,robotHeight,random.choice(ROBOT_COLORS),3)
         super().__init__(x,y,orientation,Representation(rep))
-        self._width = 100
-        self._radius = 50
         self._leftWheel = Wheel(-distanceBetweenWheels/2+4,0, wheelsRadius, 8)
         self._rightWheel = Wheel(distanceBetweenWheels/2-4,0, wheelsRadius, 8)
         self.addComponent(self._leftWheel)
@@ -24,8 +22,8 @@ class TwoWheelsRobot(Robot):
 
     def move(self):
         # vitesse élémentaire
-        rightElementarySpeed = self._radius * self._rightWheel.getSpeed()
-        leftElementarySpeed = self._radius * self._leftWheel.getSpeed()
+        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed()
+        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed()
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
