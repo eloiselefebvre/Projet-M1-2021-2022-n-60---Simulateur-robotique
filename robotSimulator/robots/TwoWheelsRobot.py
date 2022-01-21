@@ -25,8 +25,8 @@ class TwoWheelsRobot(Robot):
 
     def move(self):
         # vitesse élémentaire
-        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed()
-        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed()
+        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed() * self._rightWheel.getCW()
+        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed() * self._leftWheel.getCW()
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
@@ -37,7 +37,7 @@ class TwoWheelsRobot(Robot):
         dy = averageSpeedRobot * sin(Phi)
 
         # vitesse angulaire
-        dPhi = degrees((rightElementarySpeed - leftElementarySpeed)/(2*self._distanceBetweenWheels))
+        dPhi = - degrees((rightElementarySpeed - leftElementarySpeed)/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
 
         self._pos.move(self._pos.getX() + dx, self._pos.getY() + dy)
         self._orientation += dPhi
@@ -49,3 +49,15 @@ class TwoWheelsRobot(Robot):
 
     def setRightWheelSpeed(self,speed):
         self._rightWheel.setSpeed(speed)
+
+    def setLeftWheelCW(self):
+        self._leftWheel.cw()
+
+    def setLeftWheelCCW(self):
+        self._leftWheel.ccw()
+
+    def setRightWheelCW(self):
+        self._rightWheel.cw()
+
+    def setRightWheelCCW(self):
+        self._rightWheel.ccw()

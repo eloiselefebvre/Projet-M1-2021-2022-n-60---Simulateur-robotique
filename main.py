@@ -5,8 +5,8 @@ from robotSimulator.robots import TwoWheelsRobot
 from robotSimulator.sensors import Telemeter
 
 rob1 = TwoWheelsRobot(200, 50, 0)
-rob1.setLeftWheelSpeed(0.02)
-rob1.setRightWheelSpeed(0.02)
+rob1.setLeftWheelSpeed(0.06)
+rob1.setRightWheelSpeed(0.06)
 
 led = LED(0, -10, LED.RED)
 led2 = LED(0, 10, LED.YELLOW)
@@ -17,6 +17,7 @@ rob1.addComponent(led2)
 
 rob2 = TwoWheelsRobot(500, 200, 0)
 rob2.addComponent(led3)
+rob2.setRightWheelSpeed(0.08)
 
 buzzer = Buzzer(0,0)
 telemeter1 = Telemeter(-18,30,20)
@@ -28,8 +29,8 @@ rob3.addComponent(telemeter1)
 rob3.addComponent(telemeter2)
 rob3.addComponent(telemeter3)
 
-rob3.setLeftWheelSpeed(0.004)
-rob3.setRightWheelSpeed(0.008)
+rob3.setLeftWheelSpeed(0.06)
+rob3.setRightWheelSpeed(0.03)
 
 env = Environment()
 
@@ -42,7 +43,7 @@ sim = Simulation(env)
 ledState = 0
 start=time.time()
 
-sim.show()
+sim.showInterface()
 i=0
 while i<10000:
     if(time.time()-start>1):
@@ -52,8 +53,10 @@ while i<10000:
         led3.setState(ledState)
         start=time.time()
     if i==800:
-        rob1.setLeftWheelSpeed(-0.02)
+        rob1.setLeftWheelSpeed(0.02)
+        rob1.setLeftWheelCCW()
     rob1.move()
+    rob2.move()
     rob3.move()
     time.sleep(.02)
     i+=1

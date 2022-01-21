@@ -14,8 +14,9 @@ class Wheel(Actuator):
         super().__init__(x,y,orientation,Representation(shape))
         self._speed=0
         self._radius = radius
+        self._cw = 1
 
-    def setSpeed(self,speed):
+    def setSpeed(self,speed): # speed >= 0 à vérifier
         self._speed = speed
 
     def getSpeed(self):
@@ -23,4 +24,13 @@ class Wheel(Actuator):
 
     def getRadius(self):
         return self._radius
+
+    def cw(self): # clock wise
+        self._cw=1
+
+    def ccw(self):
+        self._cw=-1
+
+    def getCW(self):
+        return self._cw
 
