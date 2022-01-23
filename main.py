@@ -1,7 +1,7 @@
 import time
 from robotSimulator.simulation import Environment,Simulation
 from robotSimulator.actuators import Buzzer, LED
-from robotSimulator.robots import TwoWheelsRobot
+from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
 from robotSimulator.sensors import Telemeter
 
 rob1 = TwoWheelsRobot(200, 50, 0)
@@ -11,6 +11,7 @@ rob1.setRightWheelSpeed(0.06)
 led = LED(0, -10, LED.RED)
 led2 = LED(0, 10, LED.YELLOW)
 led3 = LED(0, 0, LED.BLUE)
+led4 = LED(0,0,LED.YELLOW)
 
 rob1.addComponent(led)
 rob1.addComponent(led2)
@@ -32,6 +33,9 @@ rob3.addComponent(telemeter3)
 rob3.setLeftWheelSpeed(0.06)
 rob3.setRightWheelSpeed(0.03)
 
+rob2 = FourWheelsRobot(300, 100, 0)
+rob2.addComponent(led4)
+
 env = Environment()
 
 env.addObject(rob1)
@@ -51,6 +55,7 @@ while i<10000:
         led.setState(ledState)
         led2.setState(not ledState)
         led3.setState(ledState)
+        led4.setState(ledState)
         start=time.time()
     if i==800:
         rob1.setLeftWheelSpeed(0.02)
