@@ -33,14 +33,19 @@ rob3.addComponent(telemeter3)
 rob3.setLeftWheelSpeed(0.06)
 rob3.setRightWheelSpeed(0.03)
 
-rob2 = FourWheelsRobot(300, 100, 0)
-rob2.addComponent(led4)
+rob4 = FourWheelsRobot(300, 100, 0)
+rob4.addComponent(led4)
+rob4.setRightBackWheelSpeed(0.03)
+rob4.setRightFrontWheelSpeed(0.08)
+rob4.setLeftBackWheelSpeed(0.05)
+rob4.setLeftFrontWheelSpeed(0.02)
 
 env = Environment()
 
 env.addObject(rob1)
 env.addObject(rob2)
 env.addObject(rob3)
+env.addObject(rob4)
 
 sim = Simulation(env)
 
@@ -63,5 +68,6 @@ while i<10000:
     rob1.move()
     rob2.move()
     rob3.move()
+    rob4.move()
     time.sleep(.02)
     i+=1

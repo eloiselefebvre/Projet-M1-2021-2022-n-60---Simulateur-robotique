@@ -3,6 +3,7 @@ from robotSimulator.representation.shapes import Rectangle
 from robotSimulator.representation import Representation
 from robotSimulator.actuators import Wheel
 import random
+from math import cos,sin,radians,degrees
 
 class FourWheelsRobot(Robot):
 
@@ -23,16 +24,38 @@ class FourWheelsRobot(Robot):
         self.addComponent(self._rightBackWheel)
         self._distanceBetweenWheels = distanceBetweenWheels
 
+
+    def move(self):
+
+        # vitesse élémentaire (addition des couples donnée par chaque roues motrices)
+        rightElementarySpeed = (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW())
+        leftElementarySpeed = (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW())
+
+        # vitesse moyenne du robot
+        averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
+
+        # vitesse le long des axes x et y
+        Phi = radians(self._orientation + 90)
+        dx = averageSpeedRobot * cos(Phi)
+        dy = averageSpeedRobot * sin(Phi)
+
+        # vitesse angulaire
+        dPhi = - degrees((rightElementarySpeed - leftElementarySpeed)/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
+
+        self._pos.move(self._pos.getX() + dx, self._pos.getY() + dy)
+        self._orientation += dPhi
+
+        self._representation.setParameters(self._pos,self._orientation)
+
     def setLeftFrontWheelSpeed(self,speed):
-        self._leftWheelSpeed = speed
+        self._leftFrontWheel.setSpeed(speed)
 
     def setRightFrontWheelSpeed(self,speed):
-        self._rightWheelSpeed = speed
+        self._rightFrontWheel.setSpeed(speed)
 
     def setLeftBackWheelSpeed(self,speed):
-        self._leftWheelSpeed = speed
+        self._leftBackWheel.setSpeed(speed)
 
     def setRightBackWheelSpeed(self,speed):
-        self._rightWheelSpeed = speed
-
+        self._rightBackWheel.setSpeed(speed)
 
