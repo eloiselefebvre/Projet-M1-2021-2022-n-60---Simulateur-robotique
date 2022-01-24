@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from robotSimulator.Interface import Interface
+from robotSimulator import Interface
 import threading
 
 class Simulation:

@@ -7,7 +7,7 @@ from math import cos,sin,radians,degrees
 
 class FourWheelsRobot(Robot):
 
-    DEFAULT_WHEEL_WIDTH = 6
+    DEFAULT_WHEEL_WIDTH = 8
     DEFAULT_BORDER_RADIUS = 3
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 

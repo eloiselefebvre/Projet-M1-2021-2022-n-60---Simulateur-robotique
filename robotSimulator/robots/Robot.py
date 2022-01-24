@@ -1,7 +1,9 @@
-from robotSimulator.Object import Object
-from robotSimulator.Component import Component
+from abc import ABC, abstractmethod
 
-class Robot(Object):
+from robotSimulator import Object
+from robotSimulator import Component
+
+class Robot(ABC,Object):
     def __init__(self,x,y,orientation,representation):
         super().__init__(x,y,orientation,representation)
         self._components=[]
@@ -11,7 +13,6 @@ class Robot(Object):
             self._components.append(comp)
             self._representation.addSubRepresentation(comp.getRepresentation())
 
+    @abstractmethod
     def move(self):
         pass
-        #self._pos.move(self._pos.getX()+dx,self._pos.getY()+dy)
-        #self._representation.setParameters(self._pos,self._orientation)

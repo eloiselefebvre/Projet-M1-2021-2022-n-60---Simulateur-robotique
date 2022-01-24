@@ -1,17 +1,19 @@
+from abc import ABC
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QPen
 from . import Border
 
-class Shape:
+class Shape(ABC):
     def __init__(self,color,opacity):
         self._color = QColor(color)
         self._opacity=opacity
         self._border=None
 
-    def addBorder(self,border):
-        #if isinstance(border,Border):
-        #    self._border=border
-        self._border = border
+    def addBorder(self,bord):
+        #print("Border",type(Border))
+        #if isinstance(bord,Border):
+        #    self._border=bord
+        self._border = bord
 
     def paint(self,painter,origin,orientation):
         painter.translate(origin.getX(), origin.getY())

@@ -1,4 +1,4 @@
-from robotSimulator.actuators.Actuator import Actuator
+from . import Actuator
 from robotSimulator.representation.shapes import Rectangle, Border
 from robotSimulator.representation import Representation
 
