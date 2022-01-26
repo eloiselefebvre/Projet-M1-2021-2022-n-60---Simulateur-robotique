@@ -16,7 +16,7 @@ class Wheel(Actuator):
         self._radius = radius
         self._cw = 1
 
-    def setSpeed(self,speed): # speed >= 0 à vérifier
+    def setSpeed(self,speed): # speed >= 0 à vérifier // En tour/min
         self._speed = speed
 
     def getSpeed(self):

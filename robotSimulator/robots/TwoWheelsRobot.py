@@ -4,6 +4,7 @@ from . import Robot
 from robotSimulator.representation.shapes import Rectangle
 from robotSimulator.representation import Representation
 from robotSimulator.actuators import Wheel
+from robotSimulator.config import *
 
 import random
 
@@ -25,8 +26,8 @@ class TwoWheelsRobot(Robot):
 
     def move(self):
         # vitesse élémentaire
-        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed() * self._rightWheel.getCW()
-        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed() * self._leftWheel.getCW()
+        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed() * self._rightWheel.getCW() * config["time_step"] / 60
+        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed() * self._leftWheel.getCW() * config["time_step"] / 60
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2

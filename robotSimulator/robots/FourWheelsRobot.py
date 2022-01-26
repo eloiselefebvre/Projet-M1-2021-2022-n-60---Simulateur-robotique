@@ -5,6 +5,8 @@ from robotSimulator.actuators import Wheel
 import random
 from math import cos,sin,radians,degrees
 
+from robotSimulator.config import *
+
 class FourWheelsRobot(Robot):
 
     DEFAULT_WHEEL_WIDTH = 8
@@ -28,8 +30,8 @@ class FourWheelsRobot(Robot):
     def move(self):
 
         # vitesse élémentaire (addition des couples donnée par chaque roues motrices)
-        rightElementarySpeed = (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW())
-        leftElementarySpeed = (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW())
+        rightElementarySpeed = (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW()) * config["time_step"] / 60
+        leftElementarySpeed = (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW()) * config["time_step"] / 60
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
