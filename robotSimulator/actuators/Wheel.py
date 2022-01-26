@@ -25,6 +25,7 @@ class Wheel(Actuator):
     def getRadius(self):
         return self._radius
 
+    # MSO TODO : à la réflexion, un peu lourd à l'usage. Je propose de tout retirer sur le CW/CCW et de laisser la vitesse être positive ou négative
     def cw(self): # clock wise
         self._cw=1
 
