@@ -65,6 +65,8 @@ while i<10000:
     if i==800:
         rob1.setLeftWheelSpeed(0.02)
         rob1.setLeftWheelCCW()
+
+    # MSO TODO (Objectif) : Déplacer ces appels dans la simulation
     rob1.move()
     rob2.move()
     rob3.move()

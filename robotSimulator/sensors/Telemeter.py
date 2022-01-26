@@ -13,5 +13,6 @@ class Telemeter(Sensor):
         laser = Representation(laserShape)
         self._representation.addSubRepresentation(laser)
 
+    # MSO TODO (Objectif) : Implémenter ceci en calculant l'intersection avec les autres formes de l'environnement
     def getValue(self):
         pass
