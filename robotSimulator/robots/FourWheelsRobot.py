@@ -5,6 +5,11 @@ from robotSimulator.actuators import Wheel
 import random
 from math import cos,sin,radians,degrees
 
+# MSO TODO : ne pensez-vous pas que cette classe hérite de TwoWeelsRobot ?
+# - tout ce qui a été copié/collé est probablement hérité
+# - d'un point de vue conceptuel, un robot à 4 roues est un robot à 2 roues auquel on ajoute 2 autres roues
+# - les seules spécificités sont : quelques choses en plus à la construction, quelques accesseurs en plus, et le début du calcul de move() (mais toute la fin est commune!)
+# - envisagez une méthode qui calcule les vitesses que vous appelez "élémentaires", que vous surchargerez pour 4 roues
 class FourWheelsRobot(Robot):
 
     DEFAULT_WHEEL_WIDTH = 8
