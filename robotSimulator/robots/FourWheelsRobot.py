@@ -5,6 +5,9 @@ from robotSimulator.actuators import Wheel
 import random
 from math import cos,sin,radians,degrees
 
+
+from robotSimulator.config import *
+
 # MSO TODO : ne pensez-vous pas que cette classe hérite de TwoWeelsRobot ?
 # - tout ce qui a été copié/collé est probablement hérité
 # - d'un point de vue conceptuel, un robot à 4 roues est un robot à 2 roues auquel on ajoute 2 autres roues

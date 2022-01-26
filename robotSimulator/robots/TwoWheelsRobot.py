@@ -4,6 +4,7 @@ from . import Robot
 from robotSimulator.representation.shapes import Rectangle
 from robotSimulator.representation import Representation
 from robotSimulator.actuators import Wheel
+from robotSimulator.config import *
 
 import random
 
@@ -13,9 +14,10 @@ class TwoWheelsRobot(Robot):
     DEFAULT_BORDER_RADIUS = 3
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
-    # MSO TODO : ça serait pratique de mettre la couleur en paramètre, pour qu'on puisse la choisir à la construction, et effectivement choisir une couleur au hasard si non spécifiée
-    def __init__(self,x,y,orientation,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
-        rep=Rectangle(robotWidth,robotHeight,random.choice(self.COLORS),self.DEFAULT_BORDER_RADIUS)
+
+    def __init__(self,x,y,orientation,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
+        self._color = random.choice(self.COLORS) if color is None else color
+        rep=Rectangle(robotWidth,robotHeight,self._color,self.DEFAULT_BORDER_RADIUS)
         super().__init__(x,y,orientation,Representation(rep))
         self._leftWheel = Wheel(-distanceBetweenWheels/2+4,0, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightWheel = Wheel(distanceBetweenWheels/2-4,0, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
@@ -26,8 +28,8 @@ class TwoWheelsRobot(Robot):
 
     def move(self):
         # vitesse élémentaire
-        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed() * self._rightWheel.getCW()
-        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed() * self._leftWheel.getCW()
+        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed() * self._rightWheel.getCW() * config["time_step"] / 60
+        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed() * self._leftWheel.getCW() * config["time_step"] / 60
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
