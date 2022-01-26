@@ -24,7 +24,7 @@ buzzer = Buzzer(0,0)
 telemeter1 = Telemeter(-18,30,20)   # MSO : Retirer les coordonnées d'installation
 telemeter2 = Telemeter(18,30,-20)
 telemeter3 = Telemeter(0,32,0)
-rob3 = TwoWheelsRobot(500,500,0,60,80,60)
+rob3 = TwoWheelsRobot(500,500,0,80,60,60)
 rob3.addComponent(buzzer)
 rob3.addComponent(telemeter1)
 rob3.addComponent(telemeter2)
