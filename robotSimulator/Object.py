@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QPainter
-from robotSimulator.Point import Point
+from robotSimulator.representation.shapes import Point
 
 class Object:
 

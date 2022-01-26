@@ -1,6 +1,6 @@
-from robotSimulator.actuators.Actuator import Actuator
-from robotSimulator.Representation import Representation
-from robotSimulator.Circle import Circle
+from . import Actuator
+from robotSimulator.representation import Representation
+from robotSimulator.representation.shapes import Circle
 
 #import pygame.midi as pm
 

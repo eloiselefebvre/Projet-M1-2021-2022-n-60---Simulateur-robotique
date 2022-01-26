@@ -1,10 +1,12 @@
 from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QPen, QBrush
-from robotSimulator.config import *
-
-from robotSimulator.Shape import Shape
+from . import Shape
 
 class Rectangle(Shape):
+
+    ORIENTATION_MARK_WIDTH = 2
+    ORIENTATION_MARK_LIGHTER_FACTOR = 160
+
     def __init__(self,width,height,color,borderRadius=0,opacity=255):
         super().__init__(color,opacity)
         self._width=width
@@ -23,7 +25,7 @@ class Rectangle(Shape):
             self.paintOrientationMark(painter)
 
     def paintOrientationMark(self,painter):
-        painter.setPen(QPen(self._color.lighter(ORIENTATION_MARK_LIGHTER_FACTOR),ORIENTATION_MARK_WIDTH, Qt.SolidLine))
-        widthToCompensate = ORIENTATION_MARK_WIDTH if self._border is None else max(ORIENTATION_MARK_WIDTH,self._border.getWidth())
+        painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
+        widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
         ypos = int(self._height / 2  * 8/10)
         painter.drawLine(widthToCompensate - int(self._width / 2), ypos, int(self._width / 2) - widthToCompensate, ypos)

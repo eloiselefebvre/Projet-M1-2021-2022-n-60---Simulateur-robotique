@@ -1,4 +1,4 @@
-from robotSimulator.Object import Object
+from robotSimulator import Object
 
 
 class Environment:

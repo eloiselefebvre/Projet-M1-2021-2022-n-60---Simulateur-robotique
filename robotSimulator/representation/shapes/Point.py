@@ -1,6 +1,9 @@
-class Point:
+from . import Shape
+
+class Point(Shape):
 
     def __init__(self,x,y):
+        super().__init__("#000",255)
         self._x = x
         self._y = y
 
