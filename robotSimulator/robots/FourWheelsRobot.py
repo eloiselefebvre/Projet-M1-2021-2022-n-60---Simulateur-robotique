@@ -5,8 +5,14 @@ from robotSimulator.actuators import Wheel
 import random
 from math import cos,sin,radians,degrees
 
+
 from robotSimulator.config import *
 
+# MSO TODO : ne pensez-vous pas que cette classe hérite de TwoWeelsRobot ?
+# - tout ce qui a été copié/collé est probablement hérité
+# - d'un point de vue conceptuel, un robot à 4 roues est un robot à 2 roues auquel on ajoute 2 autres roues
+# - les seules spécificités sont : quelques choses en plus à la construction, quelques accesseurs en plus, et le début du calcul de move() (mais toute la fin est commune!)
+# - envisagez une méthode qui calcule les vitesses que vous appelez "élémentaires", que vous surchargerez pour 4 roues
 class FourWheelsRobot(Robot):
 
     DEFAULT_WHEEL_WIDTH = 8
@@ -30,8 +36,8 @@ class FourWheelsRobot(Robot):
     def move(self):
 
         # vitesse élémentaire (addition des couples donnée par chaque roues motrices)
-        rightElementarySpeed = (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW()) * config["time_step"] / 60
-        leftElementarySpeed = (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW()) * config["time_step"] / 60
+        rightElementarySpeed = (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW())
+        leftElementarySpeed = (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW())
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
