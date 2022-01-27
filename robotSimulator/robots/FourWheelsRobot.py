@@ -13,14 +13,16 @@ from robotSimulator.config import *
 # - d'un point de vue conceptuel, un robot à 4 roues est un robot à 2 roues auquel on ajoute 2 autres roues
 # - les seules spécificités sont : quelques choses en plus à la construction, quelques accesseurs en plus, et le début du calcul de move() (mais toute la fin est commune!)
 # - envisagez une méthode qui calcule les vitesses que vous appelez "élémentaires", que vous surchargerez pour 4 roues
+
 class FourWheelsRobot(Robot):
 
     DEFAULT_WHEEL_WIDTH = 8
     DEFAULT_BORDER_RADIUS = 3
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
-    def __init__(self, x, y, orientation, robotWidth=50, robotHeight=60, distanceBetweenWheels=50, wheelsRadius=8):
-        rep = Rectangle(robotWidth, robotHeight, random.choice(self.COLORS), self.DEFAULT_BORDER_RADIUS)
+    def __init__(self, x, y, orientation, color=None, robotWidth=50, robotHeight=60, distanceBetweenWheels=50, wheelsRadius=8):
+        self._color = random.choice(self.COLORS) if color is None else color
+        rep = Rectangle(robotWidth, robotHeight, self._color, self.DEFAULT_BORDER_RADIUS)
         super().__init__(x, y, orientation, Representation(rep))
         self._leftFrontWheel = Wheel(-distanceBetweenWheels / 2 + 4, -robotHeight/4, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightFrontWheel = Wheel(distanceBetweenWheels / 2 - 4, -robotHeight/4, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
@@ -36,8 +38,8 @@ class FourWheelsRobot(Robot):
     def move(self):
 
         # vitesse élémentaire (addition des couples donnée par chaque roues motrices)
-        rightElementarySpeed = (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW())
-        leftElementarySpeed = (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW())
+        rightElementarySpeed =  config["time_step"] / 60 * (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW())
+        leftElementarySpeed =  config["time_step"] / 60 * (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW())
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
