@@ -54,8 +54,9 @@ start=time.time()
 
 sim.run()
 sim.showInterface()
+
 i=0
-while i<10000:
+while i<1000:
     current = time.time()
     if current-start>1:
         ledState = not ledState
