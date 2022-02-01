@@ -13,7 +13,7 @@ class FourWheelsRobot(TwoWheelsRobot):
     DEFAULT_BORDER_RADIUS = 3
 
     def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
-        super().__init__(color,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10)
+        super().__init__(color,robotWidth,robotHeight,distanceBetweenWheels,wheelsRadius)
         self._leftBackWheel = Wheel( wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightBackWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self.addComponent(self._leftBackWheel,-distanceBetweenWheels / 2 + 4, -robotHeight/5)
@@ -42,9 +42,9 @@ class FourWheelsRobot(TwoWheelsRobot):
         self._rightBackWheel.setSpeed(speed)
 
     def setFrontWheelY(self,y):
-        self._rightWheel.getRepresentation().getOrigin().setY(y)
-        self._leftWheel.getRepresentation().getOrigin().setY(y)
+        self._rightWheel.getPose().setY(y)
+        self._leftWheel.getPose().setY(y)
 
     def setBackWheelY(self,y):
-        self._rightBackWheel.getRepresentation().getOrigin().setY(y)
-        self._leftBackWheel.getRepresentation().getOrigin().setY(y)
+        self._rightBackWheel.getPose().setY(y)
+        self._leftBackWheel.getPose().setY(y)

@@ -1,13 +1,10 @@
 from abc import ABC, abstractmethod
-import random
 
 from robotSimulator import Object
 from robotSimulator import Component
-from robotSimulator.representation.shapes import Point
+from robotSimulator import Pose
 
 class Robot(ABC,Object):
-
-    COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
     def __init__(self,representation):
         super().__init__(representation)
@@ -15,7 +12,7 @@ class Robot(ABC,Object):
 
     def addComponent(self,comp,x,y,orientation=0):
         if isinstance(comp,Component):
-            comp.setParameters(Point(x,y),orientation)
+            comp.setPose(Pose(x,y,orientation))
             self._components.append(comp)
             self._representation.addSubRepresentation(comp.getRepresentation())
 

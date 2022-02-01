@@ -42,12 +42,11 @@ rob4.setLeftBackWheelSpeed(500)
 rob4.setLeftFrontWheelSpeed(200)
 
 env = Environment()
-env.addObject(telemeter4,500,0)
-
 env.addObject(rob1,200, 50, 0)
 env.addObject(rob2,500, 200, 0)
 env.addObject(rob3,500,500,0)
 env.addObject(rob4,300, 100, 0)
+env.addObject(telemeter4,500,0)
 
 sim = Simulation(env)
 

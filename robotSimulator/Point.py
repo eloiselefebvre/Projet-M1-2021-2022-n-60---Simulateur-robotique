@@ -1,9 +1,6 @@
-from . import Shape
-
-class Point(Shape):
+class Point:
 
     def __init__(self,x,y):
-        super().__init__("#000",255)
         self._x = x
         self._y = y
 
@@ -16,9 +13,9 @@ class Point(Shape):
     def getY(self):
         return self._y
 
+    def setY(self,y):
+        self._y = y
+        
     def move(self,x,y):
         self._x=x
         self._y=y
-
-    def setY(self,y):
-        self._y = y

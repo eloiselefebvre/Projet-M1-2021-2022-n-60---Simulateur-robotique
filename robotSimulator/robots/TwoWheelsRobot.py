@@ -12,6 +12,8 @@ class TwoWheelsRobot(Robot):
 
     DEFAULT_WHEEL_WIDTH = 8
     DEFAULT_BORDER_RADIUS = 3
+    COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
+
 
     def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
         self._color = random.choice(self.COLORS) if color is None else color
@@ -29,17 +31,16 @@ class TwoWheelsRobot(Robot):
         averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
 
         # vitesse le long des axes x et y
-        Phi = radians(self._orientation + 90)
+        Phi = radians(self._pose.getOrientation() + 90)
         dx = averageSpeedRobot * cos(Phi)
         dy = averageSpeedRobot * sin(Phi)
 
         # vitesse angulaire
         dPhi = - degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
 
-        self._origin.move(self._origin.getX() + dx, self._origin.getY() + dy)
-        self._orientation += dPhi
+        self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
+        self._pose.rotate(dPhi)
 
-        self._representation.setParameters(self._origin, self._orientation)
 
     def setLeftWheelSpeed(self,speed):
         self._leftWheel.setSpeed(speed)

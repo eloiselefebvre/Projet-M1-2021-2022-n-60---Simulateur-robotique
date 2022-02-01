@@ -1,4 +1,5 @@
-from .shapes import Shape, Point
+from .shapes import Shape
+from robotSimulator import Point
 
 
 class Representation:
@@ -6,15 +7,10 @@ class Representation:
         self._representation=None
         self.setRepresentation(shape)
         self._subRepresentations=[]
-        self._origin=Point(0,0)
-        self._orientation=0
+        self._pose=None
 
-    def setParameters(self,origin,orientation):
-        self._origin = origin
-        self._orientation=orientation
-
-    def getOrigin(self):
-        return self._origin
+    def setPose(self,pose):
+        self._pose=pose
 
     def getRepresentation(self):
         return self._representation
@@ -28,7 +24,7 @@ class Representation:
             self._representation=shape
 
     def paint(self,painter):
-        self._representation.paint(painter,self._origin,self._orientation)
+        self._representation.paint(painter,self._pose)
         for rep in self._subRepresentations:
             painter.save() # sauvegarde de l'état du painter
             rep.paint(painter)

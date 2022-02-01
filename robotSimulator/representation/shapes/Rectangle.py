@@ -17,8 +17,8 @@ class Rectangle(Shape):
     def removeOrientationMark(self):
         self._orientationMark=False
 
-    def paint(self,painter,origin,orientation):
-        super().paint(painter,origin,orientation)
+    def paint(self,painter,pose):
+        super().paint(painter,pose)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawRoundedRect(QRect(-int(self._width/2),-int(self._height/2), self._width, self._height),self._borderRadius,self._borderRadius) # dessiné à partir du center
         if self._orientationMark:

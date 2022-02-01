@@ -10,8 +10,8 @@ class Line(Shape):
         self._width=width
 
 
-    def paint(self,painter,origin,orientation):
-        super().paint(painter, origin, orientation)
+    def paint(self,painter,pose):
+        super().paint(painter,pose)
         painter.setPen(QPen(self._color, self._width, Qt.SolidLine))
         painter.drawLine(0,0,0,self._length) # ligne verticale
 
