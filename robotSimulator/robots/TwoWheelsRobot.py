@@ -28,8 +28,8 @@ class TwoWheelsRobot(Robot):
 
     def move(self):
         # vitesse élémentaire
-        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed() * self._rightWheel.getCW() * config["time_step"] / 60
-        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed() * self._leftWheel.getCW() * config["time_step"] / 60
+        rightElementarySpeed = self._rightWheel.getRadius() * self._rightWheel.getSpeed()* config["time_step"] / 60
+        leftElementarySpeed = self._leftWheel.getRadius() * self._leftWheel.getSpeed()* config["time_step"] / 60
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
@@ -53,14 +53,3 @@ class TwoWheelsRobot(Robot):
     def setRightWheelSpeed(self,speed):
         self._rightWheel.setSpeed(speed)
 
-    def setLeftWheelCW(self):
-        self._leftWheel.cw()
-
-    def setLeftWheelCCW(self):
-        self._leftWheel.ccw()
-
-    def setRightWheelCW(self):
-        self._rightWheel.cw()
-
-    def setRightWheelCCW(self):
-        self._rightWheel.ccw()

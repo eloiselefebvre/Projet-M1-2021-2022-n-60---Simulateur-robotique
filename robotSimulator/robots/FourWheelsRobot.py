@@ -38,8 +38,8 @@ class FourWheelsRobot(Robot):
     def move(self):
 
         # vitesse élémentaire (addition des couples donnée par chaque roues motrices)
-        rightElementarySpeed =  config["time_step"] / 60 * (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() * self._rightFrontWheel.getCW()+self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed() * self._rightBackWheel.getCW())
-        leftElementarySpeed =  config["time_step"] / 60 * (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed() * self._leftFrontWheel.getCW()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed() * self._leftBackWheel.getCW())
+        rightElementarySpeed =  config["time_step"] / 60 * (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() +self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed())
+        leftElementarySpeed =  config["time_step"] / 60 * (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed())
 
         # vitesse moyenne du robot
         averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
