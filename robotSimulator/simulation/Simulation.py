@@ -8,9 +8,11 @@ import time
 from robotSimulator.config import *
 
 
-# MSO TODO : ajouter un paramètre pour le pas de temps
+
 class Simulation:
 
+    # MSO TODO : ajouter un paramètre pour le pas de temps + un membre dans la classe
+    # (servira aussi plus tard pour l'interface graphique : un slider permettra de modifier ce membre)
     def __init__(self,environment=None):
         self._environment=environment
         self._shown = False
@@ -23,7 +25,7 @@ class Simulation:
         start = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]:     # on peut être cette valeur par défaut dans la classe, non ?
+            if current-start > config["time_step"]:     # MSO TODO : mettre cette valeur par défaut dans la classe, non ?
                 start = current
                 for obj in self._environment.getObjects():
                     if isinstance(obj,Robot):
