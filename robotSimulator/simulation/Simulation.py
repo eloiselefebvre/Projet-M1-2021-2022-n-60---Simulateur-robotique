@@ -31,7 +31,7 @@ class Simulation:
             if current-start > config["time_step"]:
                 start = current
                 for obj in self._environment.getObjects():
-                    if isinstance(obj,Robot):
+                    if hasattr(obj,"move"):
                         obj.move()
             time.sleep(self.MINIMUM_TIME_STEP)
 
