@@ -1,13 +1,11 @@
 from PyQt5.QtGui import QPainter
-from robotSimulator import Point
 
 class Object:
 
-    def __init__(self, representation):
-        #self._origin = Point(0,0)
-        #self._orientation = 0
+    def __init__(self,representation):
         self._pose = None
         self._representation = representation
+        self._env= None
 
     def getRepresentation(self):
         return self._representation
@@ -22,3 +20,6 @@ class Object:
 
     def getPose(self):
         return self._pose
+
+    def setEnv(self,env):
+        self._env=env
