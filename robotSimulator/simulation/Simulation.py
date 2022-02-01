@@ -13,6 +13,9 @@ class Simulation:
 
     # MSO TODO : ajouter un paramètre pour le pas de temps + un membre dans la classe
     # (servira aussi plus tard pour l'interface graphique : un slider permettra de modifier ce membre)
+
+    MINIMUM_TIME_STEP = 0.01
+
     def __init__(self,environment=None):
         self._environment=environment
         self._shown = False
@@ -25,12 +28,12 @@ class Simulation:
         start = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]:     # MSO TODO : mettre cette valeur par défaut dans la classe, non ?
+            if current-start > config["time_step"]:
                 start = current
                 for obj in self._environment.getObjects():
                     if isinstance(obj,Robot):
                         obj.move()
-            # TODO : introduire une pause minimale, sinon il y a trop d'itérations par seconde (ce que l'on peut voir par des saccades)
+            time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):
         if self._environment is not None and not self._shown:

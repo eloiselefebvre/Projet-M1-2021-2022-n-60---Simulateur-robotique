@@ -9,10 +9,8 @@ class Robot(ABC,Object):
 
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
-
-    def __init__(self,representation,color=None):
+    def __init__(self,representation):
         super().__init__(representation)
-        self._color = random.choice(self.COLORS) if color is None else color
         self._components=[]
 
     def addComponent(self,comp,x,y,orientation=0):

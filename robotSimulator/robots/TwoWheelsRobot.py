@@ -14,8 +14,9 @@ class TwoWheelsRobot(Robot):
     DEFAULT_BORDER_RADIUS = 3
 
     def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
-        rep=Rectangle(robotWidth,robotHeight,color,self.DEFAULT_BORDER_RADIUS)
-        super().__init__(Representation(rep),color)
+        self._color = random.choice(self.COLORS) if color is None else color
+        rep=Rectangle(robotWidth,robotHeight,self._color,self.DEFAULT_BORDER_RADIUS)
+        super().__init__(Representation(rep))
         self._leftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self.addComponent(self._leftWheel,-distanceBetweenWheels/2+4,0)
