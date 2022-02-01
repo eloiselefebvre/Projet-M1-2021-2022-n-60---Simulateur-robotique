@@ -6,8 +6,8 @@ from robotSimulator.representation.shapes import Circle
 
 class Buzzer(Actuator):
 
-    def __init__(self,x,y):
-        super().__init__(x,y,0,Representation(Circle(5,"#1C1E32")))
+    def __init__(self):
+        super().__init__(Representation(Circle(5,"#1C1E32")))
 
     def on(self,midi_note):
         pass

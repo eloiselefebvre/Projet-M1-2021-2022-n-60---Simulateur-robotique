@@ -12,12 +12,12 @@ class FourWheelsRobot(TwoWheelsRobot):
     DEFAULT_WHEEL_WIDTH = 8
     DEFAULT_BORDER_RADIUS = 3
 
-    def __init__(self, x, y, orientation,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
-        super().__init__(x,y,orientation,color,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10)
-        self._leftBackWheel = Wheel(-distanceBetweenWheels / 2 + 4, -robotHeight/5, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self._rightBackWheel = Wheel(distanceBetweenWheels / 2 - 4,-robotHeight/5, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftBackWheel)
-        self.addComponent(self._rightBackWheel)
+    def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
+        super().__init__(color,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10)
+        self._leftBackWheel = Wheel( wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
+        self._rightBackWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
+        self.addComponent(self._leftBackWheel,-distanceBetweenWheels / 2 + 4, -robotHeight/5)
+        self.addComponent(self._rightBackWheel,distanceBetweenWheels / 2 - 4,-robotHeight/5)
         self.setFrontWheelY(robotHeight/5)
 
     def move(self):

@@ -12,9 +12,9 @@ class LED(Actuator):
     LOW=0
     HIGH=1
 
-    def __init__(self,x,y,color):
+    def __init__(self,color):
         self._representation = Representation(Circle(5,color,20))
-        super().__init__(x,y,0,self._representation)
+        super().__init__(self._representation)
         self._state=0
         self._color = color
 
