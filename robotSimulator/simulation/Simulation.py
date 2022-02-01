@@ -7,6 +7,8 @@ import time
 
 from robotSimulator.config import *
 
+
+# MSO TODO : ajouter un paramètre pour le pas de temps
 class Simulation:
 
     def __init__(self,environment=None):
@@ -21,11 +23,12 @@ class Simulation:
         start = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]:
+            if current-start > config["time_step"]:     # on peut être cette valeur par défaut dans la classe, non ?
                 start = current
                 for obj in self._environment.getObjects():
                     if isinstance(obj,Robot):
                         obj.move()
+            # TODO : introduire une pause minimale, sinon il y a trop d'itérations par seconde (ce que l'on peut voir par des saccades)
 
     def showInterface(self):
         if self._environment is not None and not self._shown:
