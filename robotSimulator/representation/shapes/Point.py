@@ -19,3 +19,6 @@ class Point(Shape):
     def move(self,x,y):
         self._x=x
         self._y=y
+
+    def setY(self,y):
+        self._y = y

@@ -14,9 +14,8 @@ class Wheel(Actuator):
         super().__init__(x,y,orientation,Representation(shape))
         self._speed=0
         self._radius = radius
-        self._cw = 1
 
-    def setSpeed(self,speed): # speed >= 0 à vérifier // En tour/min
+    def setSpeed(self,speed): # En tour/min
         self._speed = speed
 
     def getSpeed(self):
@@ -24,14 +23,4 @@ class Wheel(Actuator):
 
     def getRadius(self):
         return self._radius
-
-    # MSO TODO : à la réflexion, un peu lourd à l'usage. Je propose de tout retirer sur le CW/CCW et de laisser la vitesse être positive ou négative
-    def cw(self): # clock wise
-        self._cw=1
-
-    def ccw(self):
-        self._cw=-1
-
-    def getCW(self):
-        return self._cw
 

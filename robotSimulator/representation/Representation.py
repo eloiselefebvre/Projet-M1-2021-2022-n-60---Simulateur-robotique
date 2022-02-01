@@ -13,6 +13,9 @@ class Representation:
         self._origin = origin
         self._orientation=orientation
 
+    def getOrigin(self):
+        return self._origin
+
     def getRepresentation(self):
         return self._representation
 

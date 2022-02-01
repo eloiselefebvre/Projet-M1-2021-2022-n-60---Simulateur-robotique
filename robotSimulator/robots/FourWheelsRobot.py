@@ -1,67 +1,39 @@
-from . import Robot
+from . import TwoWheelsRobot
 from robotSimulator.representation.shapes import Rectangle
 from robotSimulator.representation import Representation
 from robotSimulator.actuators import Wheel
 import random
 from math import cos,sin,radians,degrees
 
-
 from robotSimulator.config import *
 
-# MSO TODO : ne pensez-vous pas que cette classe hérite de TwoWeelsRobot ?
-# - tout ce qui a été copié/collé est probablement hérité
-# - d'un point de vue conceptuel, un robot à 4 roues est un robot à 2 roues auquel on ajoute 2 autres roues
-# - les seules spécificités sont : quelques choses en plus à la construction, quelques accesseurs en plus, et le début du calcul de move() (mais toute la fin est commune!)
-# - envisagez une méthode qui calcule les vitesses que vous appelez "élémentaires", que vous surchargerez pour 4 roues
-
-class FourWheelsRobot(Robot):
+class FourWheelsRobot(TwoWheelsRobot):
 
     DEFAULT_WHEEL_WIDTH = 8
     DEFAULT_BORDER_RADIUS = 3
-    COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
-    def __init__(self, x, y, orientation, color=None, robotWidth=50, robotHeight=60, distanceBetweenWheels=50, wheelsRadius=8):
-        self._color = random.choice(self.COLORS) if color is None else color
-        rep = Rectangle(robotWidth, robotHeight, self._color, self.DEFAULT_BORDER_RADIUS)
-        super().__init__(x, y, orientation, Representation(rep))
-        self._leftFrontWheel = Wheel(-distanceBetweenWheels / 2 + 4, -robotHeight/4, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self._rightFrontWheel = Wheel(distanceBetweenWheels / 2 - 4, -robotHeight/4, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self._leftBackWheel = Wheel(-distanceBetweenWheels / 2 + 4, robotHeight/5, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self._rightBackWheel = Wheel(distanceBetweenWheels / 2 - 4,robotHeight/5, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftFrontWheel)
-        self.addComponent(self._rightFrontWheel)
+    def __init__(self, x, y, orientation,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
+        super().__init__(x,y,orientation,color,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10)
+        self._leftBackWheel = Wheel(-distanceBetweenWheels / 2 + 4, -robotHeight/5, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
+        self._rightBackWheel = Wheel(distanceBetweenWheels / 2 - 4,-robotHeight/5, wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self.addComponent(self._leftBackWheel)
         self.addComponent(self._rightBackWheel)
-        self._distanceBetweenWheels = distanceBetweenWheels
-
+        self.setFrontWheelY(robotHeight/5)
 
     def move(self):
+        super().move()
 
-        # vitesse élémentaire (addition des couples donnée par chaque roues motrices)
-        rightElementarySpeed =  config["time_step"] / 60 * (self._rightFrontWheel.getRadius() * self._rightFrontWheel.getSpeed() +self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed())
-        leftElementarySpeed =  config["time_step"] / 60 * (self._leftFrontWheel.getRadius() * self._leftFrontWheel.getSpeed()+self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed())
+    def getRightElementarySpeed(self):
+        return config["time_step"] / 60 * (self._rightWheel.getRadius() * self._rightWheel.getSpeed() +self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed())
 
-        # vitesse moyenne du robot
-        averageSpeedRobot = (rightElementarySpeed + leftElementarySpeed) / 2
-
-        # vitesse le long des axes x et y
-        Phi = radians(self._orientation + 90)
-        dx = averageSpeedRobot * cos(Phi)
-        dy = averageSpeedRobot * sin(Phi)
-
-        # vitesse angulaire
-        dPhi = - degrees((rightElementarySpeed - leftElementarySpeed)/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
-
-        self._pos.move(self._pos.getX() + dx, self._pos.getY() + dy)
-        self._orientation += dPhi
-
-        self._representation.setParameters(self._pos,self._orientation)
+    def getLeftElementarySpeed(self):
+        return config["time_step"] / 60 * (self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._leftBackWheel.getRadius() * self._leftBackWheel.getSpeed())
 
     def setLeftFrontWheelSpeed(self,speed):
-        self._leftFrontWheel.setSpeed(speed)
+        self._leftWheel.setSpeed(speed)
 
     def setRightFrontWheelSpeed(self,speed):
-        self._rightFrontWheel.setSpeed(speed)
+        self._rightWheel.setSpeed(speed)
 
     def setLeftBackWheelSpeed(self,speed):
         self._leftBackWheel.setSpeed(speed)
@@ -69,3 +41,10 @@ class FourWheelsRobot(Robot):
     def setRightBackWheelSpeed(self,speed):
         self._rightBackWheel.setSpeed(speed)
 
+    def setFrontWheelY(self,y):
+        self._rightWheel.getRepresentation().getOrigin().setY(y)
+        self._leftWheel.getRepresentation().getOrigin().setY(y)
+
+    def setBackWheelY(self,y):
+        self._rightBackWheel.getRepresentation().getOrigin().setY(y)
+        self._leftBackWheel.getRepresentation().getOrigin().setY(y)
