@@ -6,10 +6,10 @@ from robotSimulator.representation.shapes.Line import Line
 
 class Telemeter(Sensor):
 
-    def __init__(self): # MSO TODO : Ajouter une couleur en paramètre, qui aurait une valeur par défaut
-        self._representation = Representation(Rectangle(16,8,"#f00"))       # MSO TODO : si #f00 est la couleur par défaut du télémètre, mettre un membre pour ça, que vous pourrez rétutiliser pour le laser
+    def __init__(self,color="#f00"):
+        self._representation = Representation(Rectangle(16,8,color))
         super().__init__(self._representation)
-        laserShape = Line(1000,2,"#f00")        # MSO : TODO : Retirer ce 1000 en dur
+        laserShape = Line(1000,2,color)        # MSO : TODO : Retirer ce 1000 en dur
         laser = Representation(laserShape)
         self._representation.addSubRepresentation(laser)
 
