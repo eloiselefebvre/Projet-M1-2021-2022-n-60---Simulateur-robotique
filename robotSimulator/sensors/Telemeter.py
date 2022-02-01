@@ -9,7 +9,7 @@ class Telemeter(Sensor):
     def __init__(self,color="#f00"):
         self._representation = Representation(Rectangle(16,8,color))
         super().__init__(self._representation)
-        laserShape = Line(1000,2,color)        # MSO : TODO : Retirer ce 1000 en dur
+        laserShape = Line(1000,2,color)
         laser = Representation(laserShape)
         self._representation.addSubRepresentation(laser)
 
