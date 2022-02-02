@@ -4,7 +4,6 @@ from robotSimulator.representation.Representation import Representation
 from robotSimulator.representation.shapes.Rectangle import Rectangle
 from robotSimulator.representation.shapes.Line import Line
 
-
 class Telemeter(Sensor):
 
     def __init__(self,color="#f00"):

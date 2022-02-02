@@ -15,15 +15,16 @@ class TwoWheelsRobot(Robot):
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
 
-    def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
+    def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10,wheelYPos=0):
         self._color = random.choice(self.COLORS) if color is None else color
         rep=Rectangle(robotWidth,robotHeight,self._color,self.DEFAULT_BORDER_RADIUS)
         super().__init__(Representation(rep))
         self._leftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftWheel,-distanceBetweenWheels/2+4,0)
-        self.addComponent(self._rightWheel,distanceBetweenWheels/2-4,0)
+        self.addComponent(self._leftWheel,-distanceBetweenWheels/2+4,wheelYPos)
+        self.addComponent(self._rightWheel,distanceBetweenWheels/2-4,wheelYPos)
         self._distanceBetweenWheels = distanceBetweenWheels
+
 
 
     def move(self):
@@ -36,11 +37,15 @@ class TwoWheelsRobot(Robot):
         dy = averageSpeedRobot * sin(Phi)
 
         # vitesse angulaire
-        dPhi = - degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
+        dPhi = degrees(-(self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
 
+        self.setRotCenter()
         self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
         self._pose.rotate(dPhi)
 
+    def setRotCenter(self):
+        self._pose.setRot((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
+                          (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
 
     def setLeftWheelSpeed(self,speed):
         self._leftWheel.setSpeed(speed)

@@ -16,8 +16,9 @@ class Shape(ABC):
         self._border = bord
 
     def paint(self,painter,pose):
-        painter.translate(pose.getX(), pose.getY())
+        painter.translate(pose.getX()+pose.getRotX(),pose.getY()+pose.getRotY())
         painter.rotate(pose.getOrientation())
+        painter.translate(-pose.getRotX(),-pose.getRotY())
         self._color.setAlpha(self._opacity)
         if self._border is not None:
             painter.setPen(QPen(self._border.getColor(),self._border.getWidth(), Qt.SolidLine))

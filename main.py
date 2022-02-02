@@ -6,7 +6,7 @@ from robotSimulator.sensors import Telemeter
 
 rob1 = TwoWheelsRobot()
 rob1.setLeftWheelSpeed(600)
-rob1.setRightWheelSpeed(600)
+rob1.setRightWheelSpeed(-600)
 
 led = LED(LED.RED)
 led2 = LED(LED.YELLOW)
@@ -18,35 +18,40 @@ rob1.addComponent(led2,0, 10)
 
 rob2 = TwoWheelsRobot()
 rob2.addComponent(led3,0, 0)
-rob2.setRightWheelSpeed(800)
+rob2.setRightWheelSpeed(500)
 
 buzzer = Buzzer()
+buzzer2 = Buzzer()
 telemeter1 = Telemeter()
 telemeter2 = Telemeter()
 telemeter3 = Telemeter("#0f0")
 telemeter4 = Telemeter("#00f")
 rob3 = TwoWheelsRobot("#888",60,80,60)
 rob3.addComponent(buzzer,0,0)
+rob3.addComponent(buzzer2,0,15)
 rob3.addComponent(telemeter1,-18,30,20)
 rob3.addComponent(telemeter2,18,30,-20)
 rob3.addComponent(telemeter3,0,32,0)
 
-rob3.setLeftWheelSpeed(600)
-rob3.setRightWheelSpeed(300)
+rob3.setLeftWheelSpeed(300)
+rob3.setRightWheelSpeed(-300)
 
 rob4 = FourWheelsRobot("#f00")
 rob4.addComponent(led4,0,0)
 rob4.setRightBackWheelSpeed(300)
-rob4.setRightFrontWheelSpeed(800)
-rob4.setLeftBackWheelSpeed(500)
-rob4.setLeftFrontWheelSpeed(200)
+#rob4.setRightFrontWheelSpeed(800)
+#rob4.setLeftBackWheelSpeed(500)
+rob4.setLeftFrontWheelSpeed(-300)
 
 env = Environment()
 env.addObject(rob1,200, 50, 0)
-env.addObject(rob2,500, 200, 0)
+env.addObject(rob2,1000, 200, 0)
 env.addObject(rob3,500,500,0)
-env.addObject(rob4,300, 100, 0)
+env.addObject(rob4,800, 100, 0)
 env.addObject(telemeter4,500,0)
+
+env.addObject(Telemeter("#ff55f8"),800,0)
+env.addObject(Telemeter("#fa55f8"),0,100,-90)
 
 sim = Simulation(env)
 

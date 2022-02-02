@@ -12,16 +12,19 @@ class FourWheelsRobot(TwoWheelsRobot):
     DEFAULT_WHEEL_WIDTH = 8
     DEFAULT_BORDER_RADIUS = 3
 
-    def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10):
-        super().__init__(color,robotWidth,robotHeight,distanceBetweenWheels,wheelsRadius)
+    def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10,frontWheelYPos=15,backWheelYPos=-15):
+        super().__init__(color,robotWidth,robotHeight,distanceBetweenWheels,wheelsRadius,frontWheelYPos)
         self._leftBackWheel = Wheel( wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightBackWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftBackWheel,-distanceBetweenWheels / 2 + 4, -robotHeight/5)
-        self.addComponent(self._rightBackWheel,distanceBetweenWheels / 2 - 4,-robotHeight/5)
-        self.setFrontWheelY(robotHeight/5)
+        self.addComponent(self._leftBackWheel,-distanceBetweenWheels / 2 + 4,backWheelYPos)
+        self.addComponent(self._rightBackWheel,distanceBetweenWheels / 2 - 4,backWheelYPos)
 
     def move(self):
         super().move()
+
+    def setRotCenter(self):
+        self._pose.setRot((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()+self._rightBackWheel.getPose().getX()+self._leftBackWheel.getPose().getX()) / 4,
+                          (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()+self._rightBackWheel.getPose().getY()+self._leftBackWheel.getPose().getY()) / 4)
 
     def getRightElementarySpeed(self):
         return config["time_step"] / 60 * (self._rightWheel.getRadius() * self._rightWheel.getSpeed() +self._rightBackWheel.getRadius() * self._rightBackWheel.getSpeed())
@@ -40,10 +43,6 @@ class FourWheelsRobot(TwoWheelsRobot):
 
     def setRightBackWheelSpeed(self,speed):
         self._rightBackWheel.setSpeed(speed)
-
-    def setFrontWheelY(self,y):
-        self._rightWheel.getPose().setY(y)
-        self._leftWheel.getPose().setY(y)
 
     def setBackWheelY(self,y):
         self._rightBackWheel.getPose().setY(y)
