@@ -22,9 +22,9 @@ class LED(Actuator):
         if state!=self._state:
             self._state=state
             if self._state==LED.HIGH:
-                self._representation.getRepresentation().setOpacity(255)
+                self._representation.getShape().setOpacity(255)
             else:
-                self._representation.getRepresentation().setOpacity(40)
+                self._representation.getShape().setOpacity(40)
 
     def getState(self):
         return self._state

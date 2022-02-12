@@ -14,7 +14,6 @@ class TwoWheelsRobot(Robot):
     DEFAULT_BORDER_RADIUS = 3
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
-
     def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10,wheelYPos=0):
         self._color = random.choice(self.COLORS) if color is None else color
         rep=Rectangle(robotWidth,robotHeight,self._color,self.DEFAULT_BORDER_RADIUS)
@@ -25,9 +24,10 @@ class TwoWheelsRobot(Robot):
         self.addComponent(self._rightWheel,distanceBetweenWheels/2-4,wheelYPos)
         self._distanceBetweenWheels = distanceBetweenWheels
 
-
-
     def move(self):
+        if self._collided:
+            return
+
         # vitesse moyenne du robot
         averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
 
@@ -42,6 +42,10 @@ class TwoWheelsRobot(Robot):
         self.setRotCenter()
         self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
         self._pose.rotate(dPhi)
+
+        self.isCollided()
+        # compute collisions with environment objs
+        # if collision : self._collided = True
 
     def setRotCenter(self):
         self._pose.setRot((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
