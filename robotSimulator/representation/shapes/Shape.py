@@ -36,3 +36,4 @@ class Shape:
 
     def isCollidedWith(self,shape):
         pass
+

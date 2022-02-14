@@ -1,3 +1,4 @@
+from PyQt5.QtWidgets import QSlider
 from robotSimulator import Object
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
@@ -27,3 +28,10 @@ class Environment:
 
     def getObjects(self):
         return self._objects
+
+    def addSlider(self,slider,x,y):
+        if isinstance(slider,QSlider):
+            slider.setEnv(self)
+            slider.setPose(Pose(1000,1000))
+
+

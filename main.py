@@ -29,8 +29,8 @@ telemeter4 = Telemeter("#00f")
 rob3 = TwoWheelsRobot("#888",60,80,60)
 rob3.addComponent(buzzer,0,0)
 rob3.addComponent(buzzer2,0,15)
-rob3.addComponent(telemeter1,-18,30,20)
-rob3.addComponent(telemeter2,18,30,-20)
+#rob3.addComponent(telemeter1,-18,30,20)
+#rob3.addComponent(telemeter2,18,30,-20)
 rob3.addComponent(telemeter3,0,32,0)
 
 rob3.setLeftWheelSpeed(300)
@@ -52,10 +52,11 @@ env.addObject(rob4,800, 100, 0)
 # env.addObject(Telemeter("#ff55f8"),800,0)
 # env.addObject(Telemeter("#fa55f8"),0,100,-90)
 
-sim = Simulation(env)
 
+sim = Simulation(env)
 ledState = 0
 start=time.time()
+sim.setTimeStep(0.0001)
 
 sim.run()
 sim.showInterface()
