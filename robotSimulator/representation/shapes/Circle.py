@@ -16,6 +16,9 @@ class Circle(Shape):
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center
 
+    def getLineDecomposition(self):
+        return []
+
     def isIntersectionWithLine(self,line):
         intersections = []
         if line.x2()!=line.x1(): # pas ligne verticale

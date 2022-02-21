@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC,abstractmethod
 from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QColor, QPen
 
@@ -34,28 +34,37 @@ class Shape(ABC):
     def setOpacity(self,opacity):
         self._opacity=opacity
 
+    @abstractmethod
+    def getLineDecomposition(self):
+        pass
+
     def isCollidedWith(self, shape):
+        total_intersections=[]
+
+        shape1_lines = self.getLineDecomposition()
+        shape2_lines = shape.getLineDecomposition()
         # intersection cercle/cercle
-        if not hasattr(self,'getLineDecomposition') and not hasattr(shape,'getLineDecomposition'):
+        if not shape1_lines and not shape2_lines:
             return ((self._pose.getX()-shape.getPose().getX())**2 + (self._pose.getY()-shape.getPose().getY())**2)**0.5 < self._radius+shape.getRadius()
         # intersection ligne/cercle
-        elif hasattr(self,'getLineDecomposition') and not hasattr(shape,'getLineDecomposition'):
-            lines=self.getLineDecomposition()
-            for line in lines:
-                if shape.isIntersectionWithLine(line):
-                    return True
-            return False
+        elif shape1_lines and not shape2_lines:
+            for line in shape1_lines:
+                intersections=shape.isIntersectionWithLine(line)
+                if intersections:
+                    total_intersections.extend(intersections)
         # intersection cercle/ligne
-        elif not hasattr(self,'getLineDecomposition') and hasattr(shape, 'getLineDecomposition'):
-            return False
+        elif not shape1_lines and shape2_lines:
+            for line in shape2_lines:
+                intersections = self.isIntersectionWithLine(line)
+                if intersections:
+                    total_intersections.extend(intersections)
         else:
-            r1_lines = self.getLineDecomposition()
-            r2_lines=shape.getLineDecomposition()
-            for r1_line in r1_lines:
-                for r2_line in r2_lines:
-                    if r1_line.intersect(r2_line,QPointF())==QLineF.BoundedIntersection:
-                        return True
-            return False
+            intersection=QPointF()
+            for r1_line in shape1_lines:
+                for r2_line in shape2_lines:
+                    if r1_line.intersect(r2_line,intersection)==QLineF.BoundedIntersection:
+                        total_intersections.append(intersection)
+        return total_intersections
 
 
 """
