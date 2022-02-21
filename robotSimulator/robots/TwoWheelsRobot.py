@@ -47,6 +47,8 @@ class TwoWheelsRobot(Robot):
         # compute collisions with environment objs
         # if collision : self._collided = True
 
+        super().move()
+
     def setRotCenter(self):
         self._pose.setRot((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
                           (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)

@@ -17,6 +17,7 @@ class Robot(ABC,Object):
             self._components.append(comp)
             self._representation.addSubRepresentation(comp.getRepresentation())
 
-    @abstractmethod
     def move(self):
-        pass
+        for comp in self._components:
+            comp.refresh()
+

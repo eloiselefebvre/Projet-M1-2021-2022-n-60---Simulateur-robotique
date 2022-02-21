@@ -18,8 +18,9 @@ class Telemeter(Sensor):
         self._laser = Object(laserRep)
         self._laser.setPose(Pose(0,0))
         self._representation.addSubRepresentation(self._laser.getRepresentation())
+        self._distance = self.INFINITE_LENGTH
 
-    def getValue(self):
+    def refresh(self):
         intersections = []
         if self._parent is not None:
             robotX = self._parent.getPose().getX()
@@ -36,11 +37,13 @@ class Telemeter(Sensor):
                 if obj != self._parent:
                     intersections.extend(self._laser.isCollidedWith(obj))
 
-            d=self.INFINITE_LENGTH
+            self._distance=self.INFINITE_LENGTH
             for point in intersections:
                 di=((self._laser.getPose().getX()-point.x())**2+(self._laser.getPose().getY()-point.y())**2)**0.5
-                if di<d :
-                    d=di
-
-            self._laserLine.setLength(int(d))
+                if di<self._distance :
+                    self._distance=di
+            self._laserLine.setLength(int(self._distance))
             self._laser.setPose(Pose(0, 0))
+
+    def getValue(self):
+        return self._distance

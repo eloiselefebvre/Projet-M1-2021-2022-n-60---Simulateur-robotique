@@ -49,11 +49,7 @@ class Simulation():
 
     def setAcceleration(self,acc):
         self._acceleration=acc
-        #timeStepSlider = QSlider(Qt.Horizontal)
-        #timeStepSlider.setTickPosition(QSlider.TickPosition)
-        #timeStepSlider.setTickInterval(50)
-        #timeStepSlider.setSingleStep(1)
-        #return timeStepSlider.value()
+
 
 
 
