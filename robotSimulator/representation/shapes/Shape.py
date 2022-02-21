@@ -1,5 +1,5 @@
 from abc import ABC
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QColor, QPen
 
 class Shape:
@@ -35,14 +35,17 @@ class Shape:
         self._opacity=opacity
 
     def isCollidedWith(self, shape):
+        # intersection cercle/cercle
         if not hasattr(self,'getLineDecomposition') and not hasattr(shape,'getLineDecomposition'):
             return ((self._pose.getX()-shape.getPose().getX())**2 + (self._pose.getY()-shape.getPose().getY())**2)**0.5 < self._radius+shape.getRadius()
+        # intersection ligne/cercle
         elif hasattr(self,'getLineDecomposition') and not hasattr(shape,'getLineDecomposition'):
             lines=self.getLineDecomposition()
             for line in lines:
                 if shape.isIntersectionWithLine(line):
                     return True
             return False
+        # intersection cercle/ligne
         elif not hasattr(self,'getLineDecomposition') and hasattr(shape, 'getLineDecomposition'):
             return False
         else:
@@ -53,6 +56,8 @@ class Shape:
                     if r1_line.intersect(r2_line,QPointF())==QLineF.BoundedIntersection:
                         return True
             return False
+
+
 """
 rect vs rect
 rect vs line
