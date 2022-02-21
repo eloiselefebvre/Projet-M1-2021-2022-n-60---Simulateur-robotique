@@ -15,8 +15,8 @@ class Environment:
         screenWidth = get_monitors()[0].width
         screenHeight = get_monitors()[0].height
         self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
-        self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),screenWidth,0)
-        self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
+        # self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),screenWidth,0)
+        # self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
         # self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,screenHeight-65,-90)
         # trouver comment récupérer la taille de la fenêtre PyQt
 

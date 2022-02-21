@@ -41,8 +41,12 @@ class Shape(ABC):
     def isCollidedWith(self, shape):
         total_intersections=[]
 
+
         shape1_lines = self.getLineDecomposition()
+        print("shape1 ",shape1_lines)
         shape2_lines = shape.getLineDecomposition()
+        print("shape2 ",shape2_lines)
+
         # intersection cercle/cercle
         if not shape1_lines and not shape2_lines:
             return ((self._pose.getX()-shape.getPose().getX())**2 + (self._pose.getY()-shape.getPose().getY())**2)**0.5 < self._radius+shape.getRadius()
@@ -58,25 +62,15 @@ class Shape(ABC):
                 intersections = self.isIntersectionWithLine(line)
                 if intersections:
                     total_intersections.extend(intersections)
+        # intersection ligne/ligne
         else:
-            intersection=QPointF()
             for r1_line in shape1_lines:
                 for r2_line in shape2_lines:
+                    intersection = QPointF()
                     if r1_line.intersect(r2_line,intersection)==QLineF.BoundedIntersection:
+                        print("ok")
                         total_intersections.append(intersection)
+
+        print("\ntotal intersections")
+        print(total_intersections)
         return total_intersections
-
-
-"""
-rect vs rect
-rect vs line
-line vs line
-circle vs circle
-circle vs rect
-circle vs line
-
--> cercle vs cercle
--> ligne vs ligne
--> cercle vs ligne
-
-"""

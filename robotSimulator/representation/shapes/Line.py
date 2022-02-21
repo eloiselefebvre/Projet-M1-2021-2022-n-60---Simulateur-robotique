@@ -1,8 +1,6 @@
 from PyQt5.QtCore import Qt, QLineF
 from PyQt5.QtGui import QPen, QColor
-
 from . import Shape
-
 from math import sin,cos, radians
 
 class Line(Shape):

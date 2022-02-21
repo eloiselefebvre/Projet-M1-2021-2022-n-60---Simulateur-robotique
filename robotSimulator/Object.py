@@ -1,12 +1,14 @@
 from PyQt5.QtGui import QPainter
+#from robotSimulator import Pose
+
 
 class Object:
 
     def __init__(self,representation):
         self._pose = None
+        #self._absolutePose = Pose(0,0)
         self._representation = representation
         self._env= None
-
         self._collided = False
 
     def getRepresentation(self):
@@ -23,8 +25,17 @@ class Object:
     def getPose(self):
         return self._pose
 
+    def setAbsolutePose(self,pose):
+        self._absolutePose = pose
+
+    def getAbsolutePose(self):
+        return self._absolutePose
+
     def setEnv(self,env):
         self._env=env
+
+    def getEnv(self):
+        return self._env
 
     def getCollidedState(self):
         return self._collided
@@ -41,5 +52,5 @@ class Object:
                         obj.setCollidedState(True)
 
     def isCollidedWith(self,obj):
-        # just 2 obj
         return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
+
