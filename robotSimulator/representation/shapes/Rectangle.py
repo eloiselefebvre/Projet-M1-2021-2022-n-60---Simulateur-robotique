@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QRect, Qt, QLine, QLineF, QPointF
 from PyQt5.QtGui import QPen, QBrush, QColor
-from . import Shape, Line
+from . import Shape
+from robotSimulator.representation.shapes.Line import Line
 
 from math import sin,cos, radians
 
@@ -32,33 +33,31 @@ class Rectangle(Shape):
         if self._orientationMark:
             self.paintOrientationMark(painter)
 
-
     def paintOrientationMark(self,painter):
         painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
         widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
         ypos = int(self._height / 2  * 8/10)
         painter.drawLine(widthToCompensate - int(self._width / 2), ypos, int(self._width / 2) - widthToCompensate, ypos)
 
-    def isCollidedWith(self, shape):
-        # https://doc.qt.io/archives/qt-4.8/qlinef.html
+    # def isCollidedWith(self, shape):
+    #     # https://doc.qt.io/archives/qt-4.8/qlinef.html
+    #
+    #     r1_lines = self.getBoundingLines()
+    #     if isinstance(shape,Rectangle):
+    #         # intersection of 2 rectangles
+    #         r2_lines=shape.getBoundingLines()
+    #         for r1_line in r1_lines:
+    #             for r2_line in r2_lines:
+    #                 if r1_line.intersect(r2_line,QPointF())==QLineF.BoundedIntersection:
+    #                     return True
+    #     elif isinstance(shape,Line):
+    #         line=shape.getLine()
+    #         for r1_line in r1_lines:
+    #             if r1_line.intersect(line,QPointF())==QLineF.BoundedIntersection:
+    #                 return True
+    #     return False
 
-        r1_lines = self.getBoundingLines()
-
-        if type(shape)==Rectangle:
-            # intersection of 2 rectangles
-            r2_lines=shape.getBoundingLines()
-            for r1_line in r1_lines:
-                for r2_line in r2_lines:
-                    if r1_line.intersect(r2_line,QPointF())==QLineF.BoundedIntersection:
-                        return True
-        # elif hasattr(shape,"getLine"):
-        #     line=shape.getLine()
-        #     for r1_line in r1_lines:
-        #         if r1_line.intersect(line,QPointF())==QLineF.BoundedIntersection:
-        #             return True
-        return False
-
-    def getBoundingLines(self):
+    def getLineDecomposition(self):
         # xC = (xB - xO) * cos (β) + (yB - yO) * sin (β) + xO
         # yC = - (xB - xO) * sin(β) + (yB - yO) * cos(β) + yO
 

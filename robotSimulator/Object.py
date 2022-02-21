@@ -33,11 +33,12 @@ class Object:
         self._collided=state
 
     def isCollided(self):
-        for obj in self._env.getObjects():
-            if self!=obj:
-                if self.isCollidedWith(obj):
-                    self._collided=True
-                    obj.setCollidedState(True)
+        if not self._collided:
+            for obj in self._env.getObjects():
+                if self!=obj:
+                    if self.isCollidedWith(obj):
+                        self._collided=True
+                        obj.setCollidedState(True)
 
     def isCollidedWith(self,obj):
         # just 2 obj

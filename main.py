@@ -1,4 +1,8 @@
 import time
+
+from robotSimulator import Obstacle
+from robotSimulator.representation import Representation
+from robotSimulator.representation.shapes import Rectangle, Circle
 from robotSimulator.simulation import Environment,Simulation
 from robotSimulator.actuators import Buzzer, LED
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
@@ -43,11 +47,19 @@ rob4.setRightFrontWheelSpeed(800)
 rob4.setLeftBackWheelSpeed(500)
 rob4.setLeftFrontWheelSpeed(-300)
 
+rob5 = TwoWheelsRobot()
+rob5.setRightWheelSpeed(300)
+rob5.setLeftWheelSpeed(300)
+
 env = Environment()
-env.addObject(rob1,1000, 100, 45)
-env.addObject(rob2,1050, 150, 0)
-env.addObject(rob3,500,500,0)
-env.addObject(rob4,800, 100, 0)
+# env.addObject(rob1,1000, 100, 45)
+# env.addObject(rob2,1050, 150, 0)
+# env.addObject(rob3,500,500,0)
+# env.addObject(rob4,800, 100, 0)
+# env.addObject(Obstacle(Representation(Circle(40,"#ff0"))),1000,100)
+# env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),1050,100)
+env.addObject(rob5,300,250,85)
+env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),150,180)
 # env.addObject(telemeter4,500,0)
 # env.addObject(Telemeter("#ff55f8"),800,0)
 # env.addObject(Telemeter("#fa55f8"),0,100,-90)
