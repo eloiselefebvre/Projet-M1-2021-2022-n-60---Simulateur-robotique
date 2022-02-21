@@ -52,7 +52,7 @@ rob5.setLeftWheelSpeed(300)
 env = Environment()
 env.addObject(rob1,1000, 100, 45)
 env.addObject(rob2,1050, 150, 0)
-env.addObject(rob3,500,500,80)
+env.addObject(rob3,500,500,90)
 # env.addObject(rob4,800, 100, 0)
 # env.addObject(Obstacle(Representation(Circle(40,"#ff0"))),1000,100)
 # env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),1050,100)
@@ -62,18 +62,14 @@ env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),150,180)
 # env.addObject(Telemeter("#ff55f8"),800,0)
 # env.addObject(Telemeter("#fa55f8"),0,100,-90)
 
-
 sim = Simulation(env)
 ledState = 0
 start=time.time()
-sim.setAcceleration(1)
-
+sim.setAcceleration(0.5)
 sim.run()
 sim.showInterface()
 
-i=0
-
-while i<1000:
+while True:
     current = time.time()
     if current-start>1:
         ledState = not ledState
@@ -82,6 +78,5 @@ while i<1000:
         led3.setState(ledState)
         led4.setState(ledState)
         start=current
-        telemeter3.getValue()
+    telemeter3.getValue()
     time.sleep(.01)
-    i+=1

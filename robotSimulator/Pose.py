@@ -25,13 +25,5 @@ class Pose(Point):
     def rotate(self, angle):
         self._orientation += angle
 
-    def __add__(self, other):
-        if isinstance(other,Pose):
-            return Pose(self._x+other.getX(),self._y+other.getY(),self._orientation+other.getOrientation(),self._rx+other.getRotX(),self._ry+other.getRotY())
-
     def __str__(self):
         return super().__str__() + ", " + str(self._orientation)
-
-    def __add__(self, other):
-        if isinstance(other,Pose):
-            return Pose(self._x+other.getX(),self._y+other.getY(),self._orientation+other.getOrientation(),int((self._rx+other.getRotX())/2),int((self._ry+other.getRotY())/2))

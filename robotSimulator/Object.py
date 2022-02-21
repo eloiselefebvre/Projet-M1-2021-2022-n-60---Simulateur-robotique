@@ -1,5 +1,4 @@
 from PyQt5.QtGui import QPainter
-#from robotSimulator import Pose
 
 
 class Object:

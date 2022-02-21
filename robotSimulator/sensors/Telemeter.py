@@ -1,3 +1,5 @@
+from math import radians, cos, sin
+
 from robotSimulator import Object, Pose
 from robotSimulator.sensors.Sensor import Sensor
 from robotSimulator.representation.Representation import Representation
@@ -6,21 +8,39 @@ from robotSimulator.representation.shapes.Line import Line
 
 class Telemeter(Sensor):
 
-    INFINITE_LENGTH = 10000
+    INFINITE_LENGTH = 15000
 
     def __init__(self,color="#f00"):
         self._representation = Representation(Rectangle(16,8,color))
         super().__init__(self._representation)
-        laserRep = Representation(Line(self.INFINITE_LENGTH,2,color))
+        self._laserLine = Line(self.INFINITE_LENGTH,2,color)
+        laserRep = Representation(self._laserLine)
         self._laser = Object(laserRep)
         self._laser.setPose(Pose(0,0))
         self._representation.addSubRepresentation(self._laser.getRepresentation())
 
-    # MSO TODO (Objectif) : Implémenter ceci en calculant l'intersection avec les autres formes de l'environnement
     def getValue(self):
+        intersections = []
         if self._parent is not None:
-            self._laser.setPose(self.getPose()+self._parent.getPose())
+            robotX = self._parent.getPose().getX()
+            robotY = self._parent.getPose().getY()
+
+            dx = self._pose.getX()
+            dy = self._pose.getY()
+            a = -radians(self._parent.getPose().getOrientation())
+            telemeterX = int(dx * cos(a) + dy * sin(a) + robotX)
+            telemeterY = int(-dx * sin(a) + dy * cos(a) + robotY)
+            self._laser.setPose(Pose(telemeterX,telemeterY,self._parent.getPose().getOrientation()+self._pose.getOrientation()))
+            self._laserLine.setLength(self.INFINITE_LENGTH)
             for obj in self._parent.getEnv().getObjects():
                 if obj != self._parent:
-                    if self._laser.isCollidedWith(obj): print(self._laser.isCollidedWith(obj))
-            self._laser.setPose(Pose(0,0))
+                    intersections.extend(self._laser.isCollidedWith(obj))
+
+            d=self.INFINITE_LENGTH
+            for point in intersections:
+                di=((self._laser.getPose().getX()-point.x())**2+(self._laser.getPose().getY()-point.y())**2)**0.5
+                if di<d :
+                    d=di
+
+            self._laserLine.setLength(int(d))
+            self._laser.setPose(Pose(0, 0))

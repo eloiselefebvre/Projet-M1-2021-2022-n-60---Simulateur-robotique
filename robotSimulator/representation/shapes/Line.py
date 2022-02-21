@@ -16,6 +16,9 @@ class Line(Shape):
         painter.setPen(QPen(self._color, self._width, Qt.SolidLine))
         painter.drawLine(0,0,0,self._length) # ligne verticale
 
+    def setLength(self,length):
+        self._length=length
+
 
     def getLineDecomposition(self):
         # ligne plutôt rectangle du fait de son épaisseur ?
