@@ -1,8 +1,8 @@
 from abc import ABC
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QColor, QPen
 
-class Shape:
+class Shape(ABC):
     def __init__(self,color,opacity):
         self._color = QColor(color)
         self._opacity=opacity
