@@ -26,6 +26,9 @@ class Object:
     def setEnv(self,env):
         self._env=env
 
+    def getEnv(self):
+        return self._env
+
     def getCollidedState(self):
         return self._collided
 

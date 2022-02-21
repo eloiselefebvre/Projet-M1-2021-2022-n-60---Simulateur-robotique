@@ -36,6 +36,7 @@ class Circle(Shape):
 
                 x1=(-B-delta**0.5)/(2*A)
                 x2=(-B+delta**0.5)/(2*A)
+                # x1 = x2 si droite tangente au cercle
                 y1=a_line*x1+b_line
                 y2 = a_line * x2 + b_line
 

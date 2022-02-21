@@ -19,7 +19,7 @@ class Simulation():
     def __init__(self,environment=None,timeStep=MINIMUM_TIME_STEP):
         self._environment=environment
         self._shown = False
-        self._timeStep = timeStep
+        self._acceleration = 1
 
     def run(self):
         th = threading.Thread(target=self.__run)
@@ -29,12 +29,12 @@ class Simulation():
         start = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]:
+            if current-start > config["time_step"]/self._acceleration:
                 start = current
                 for obj in self._environment.getObjects():
                     if hasattr(obj,"move"):
                         obj.move()
-            time.sleep(self._timeStep)
+            time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):
         if self._environment is not None and not self._shown:
@@ -47,8 +47,8 @@ class Simulation():
         myInterface = Interface(self._environment)
         sys.exit(app.exec())
 
-    def setTimeStep(self,timeStep):
-        self._timeStep=timeStep
+    def setAcceleration(self,acc):
+        self._acceleration=acc
         #timeStepSlider = QSlider(Qt.Horizontal)
         #timeStepSlider.setTickPosition(QSlider.TickPosition)
         #timeStepSlider.setTickInterval(50)

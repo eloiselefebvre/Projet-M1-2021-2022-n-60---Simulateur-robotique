@@ -39,6 +39,12 @@ class Shape(ABC):
         pass
 
     def isCollidedWith(self, shape):
+        """
+        3 cas possibles du fait de la décomposition en lignes :
+        -> cercle vs cercle
+        -> ligne vs ligne
+        -> cercle vs ligne
+        """
         total_intersections=[]
 
         shape1_lines = self.getLineDecomposition()
@@ -59,24 +65,9 @@ class Shape(ABC):
                 if intersections:
                     total_intersections.extend(intersections)
         else:
-            intersection=QPointF()
             for r1_line in shape1_lines:
                 for r2_line in shape2_lines:
+                    intersection = QPointF()
                     if r1_line.intersect(r2_line,intersection)==QLineF.BoundedIntersection:
                         total_intersections.append(intersection)
         return total_intersections
-
-
-"""
-rect vs rect
-rect vs line
-line vs line
-circle vs circle
-circle vs rect
-circle vs line
-
--> cercle vs cercle
--> ligne vs ligne
--> cercle vs ligne
-
-"""
