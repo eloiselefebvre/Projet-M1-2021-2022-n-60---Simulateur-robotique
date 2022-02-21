@@ -8,8 +8,6 @@ class Component(Object):
     def setParent(self,parent):
         self._parent = parent
 
+    # TODO : Mettre cette méthode en abstraite
     def refresh(self):
         pass
-    # TODO: Mettre cette méthode en abstraite
-
-

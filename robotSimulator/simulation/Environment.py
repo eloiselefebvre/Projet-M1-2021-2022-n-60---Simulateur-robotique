@@ -17,7 +17,7 @@ class Environment:
         self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
         self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),screenWidth,0)
         self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
-        self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,800,-90)
+        self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,screenHeight-100,-90)
         # TODO : Trouver comment récupérer la taille de la fenêtre PyQt
 
     def addObject(self,obj,x,y,orientation=0):

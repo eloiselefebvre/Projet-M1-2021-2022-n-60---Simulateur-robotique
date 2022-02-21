@@ -8,7 +8,7 @@ from robotSimulator.representation.shapes.Line import Line
 
 class Telemeter(Sensor):
 
-    INFINITE_LENGTH = 15000
+    INFINITE_LENGTH = 10000
 
     def __init__(self,color="#f00"):
         self._representation = Representation(Rectangle(16,8,color))
@@ -22,6 +22,8 @@ class Telemeter(Sensor):
 
     def refresh(self):
         intersections = []
+        # TODO : Telemeter dans l'environnement donc sans parent
+        # TODO : Rafraichir distance
         if self._parent is not None:
             robotX = self._parent.getPose().getX()
             robotY = self._parent.getPose().getY()
