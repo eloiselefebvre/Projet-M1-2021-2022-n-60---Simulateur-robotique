@@ -23,7 +23,6 @@ class Telemeter(Sensor):
     def refresh(self):
         intersections = []
         # TODO : Telemeter dans l'environnement donc sans parent
-        # TODO : Rafraichir distance
         if self._parent is not None:
             robotX = self._parent.getPose().getX()
             robotY = self._parent.getPose().getY()

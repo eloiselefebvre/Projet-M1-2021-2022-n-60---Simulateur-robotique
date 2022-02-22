@@ -39,24 +39,6 @@ class Rectangle(Shape):
         ypos = int(self._height / 2  * 8/10)
         painter.drawLine(widthToCompensate - int(self._width / 2), ypos, int(self._width / 2) - widthToCompensate, ypos)
 
-    # def isCollidedWith(self, shape):
-    #     # https://doc.qt.io/archives/qt-4.8/qlinef.html
-    #
-    #     r1_lines = self.getBoundingLines()
-    #     if isinstance(shape,Rectangle):
-    #         # intersection of 2 rectangles
-    #         r2_lines=shape.getBoundingLines()
-    #         for r1_line in r1_lines:
-    #             for r2_line in r2_lines:
-    #                 if r1_line.intersect(r2_line,QPointF())==QLineF.BoundedIntersection:
-    #                     return True
-    #     elif isinstance(shape,Line):
-    #         line=shape.getLine()
-    #         for r1_line in r1_lines:
-    #             if r1_line.intersect(line,QPointF())==QLineF.BoundedIntersection:
-    #                 return True
-    #     return False
-
     def getLineDecomposition(self):
         # xC = (xB - xO) * cos (β) + (yB - yO) * sin (β) + xO
         # yC = - (xB - xO) * sin(β) + (yB - yO) * cos(β) + yO

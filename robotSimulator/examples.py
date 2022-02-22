@@ -32,15 +32,15 @@ def simpleAvoidingObstacle():
 
     #env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),0,300)
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
-    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),750,530)
-    env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),1000,300)
+    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),1200,600)
+    env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),1000,20)
 
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    sim.setAcceleration(100)
+    sim.setAcceleration(50)
 
-    FORWARD_SPEED = 600
+    FORWARD_SPEED = 1000
     TURN_SPEED = 200
     COLLISION_TH = 70
 
