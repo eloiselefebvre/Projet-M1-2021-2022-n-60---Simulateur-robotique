@@ -22,11 +22,14 @@ class Pose:
     def getOrientation(self):
         return self._orientation
 
+    def setOrientation(self,o):
+        self._orientation=o
+
     def setRot(self,rx,ry):
         self._rotationCenter=Point(rx,ry)
 
     def rotate(self, angle):
-        self._orientation += angle
+        self._orientation = (self._orientation+angle)%360
 
     def move(self,x,y):
         self._pose.move(x,y)

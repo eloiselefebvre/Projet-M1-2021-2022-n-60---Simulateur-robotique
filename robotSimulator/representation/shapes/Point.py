@@ -6,7 +6,7 @@ from math import radians, cos, sin
 
 class Point(Shape):
 
-    POINT_SIZE = 2
+    POINT_SIZE = 5
 
     def __init__(self,x,y,color="#000",opacity=255):
         super().__init__(color,opacity)
@@ -35,6 +35,7 @@ class Point(Shape):
     def paint(self,painter):
         super().paint(painter)
         painter.setPen(QPen(self._color, self.POINT_SIZE, Qt.SolidLine))
+        painter.drawPoint(self._x,self._y)
 
     @staticmethod
     def computeTransformation(xo,yo,dx,dy,o):

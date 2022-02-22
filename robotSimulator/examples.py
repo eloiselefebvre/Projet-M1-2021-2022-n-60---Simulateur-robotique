@@ -6,7 +6,7 @@ from robotSimulator.representation.shapes import Rectangle, Circle
 from robotSimulator.simulation import Environment,Simulation
 from robotSimulator.actuators import Buzzer, LED
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
-from robotSimulator.sensors import Telemeter
+from robotSimulator.sensors import Telemeter, LIDAR
 
 def simpleAvoidingObstacle():
     rob = TwoWheelsRobot("#888",60,80,60)
@@ -127,3 +127,20 @@ def collisionAndTelemeter():
             led4.setState(ledState)
             start = current
         time.sleep(.01)
+
+def LIDARTest():
+    lidar = LIDAR()
+    rob = TwoWheelsRobot()
+    rob.addComponent(lidar)
+    rob.setRightWheelSpeed(400)
+    rob.setLeftWheelSpeed(400)
+
+    env = Environment()
+    env.addObject(rob, 500, 500)
+    env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
+    env.addObject(Obstacle(Representation(Rectangle(40,200, "#ff8fff"))), 650, 400)
+    env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850,25)
+
+    sim = Simulation(env)
+    sim.run()
+    sim.showInterface()
