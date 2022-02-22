@@ -131,7 +131,7 @@ def collisionAndTelemeter():
 
 def usingFuzzyLogicToAvoidObstacle():
 
-    rob = TwoWheelsRobot("#888",60,80,60)
+    rob = TwoWheelsRobot()
 
     INFINITY = 100000
     distantObstacle=[]
@@ -172,9 +172,8 @@ def usingFuzzyLogicToAvoidObstacle():
     env = Environment()
     env.addObject(rob,1000,500,100)
 
-
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
-    env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 100)
+    env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 50)
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),600,600)
     env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),800,530)
     env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),200,250)
