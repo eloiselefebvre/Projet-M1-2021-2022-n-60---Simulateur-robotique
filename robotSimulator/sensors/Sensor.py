@@ -1,4 +1,4 @@
-from robotSimulator.Component import Component
+from robotSimulator import Component
 
 class Sensor(Component):
     def __init__(self,representation):

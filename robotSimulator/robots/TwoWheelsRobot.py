@@ -25,27 +25,25 @@ class TwoWheelsRobot(Robot):
         self._distanceBetweenWheels = distanceBetweenWheels
 
     def move(self):
-        if self._collided:
-            return
+        if not self._collided:
+            # vitesse moyenne du robot
+            averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
 
-        # vitesse moyenne du robot
-        averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
+            # vitesse le long des axes x et y
+            Phi = radians(self._pose.getOrientation() + 90)
+            dx = averageSpeedRobot * cos(Phi)
+            dy = averageSpeedRobot * sin(Phi)
 
-        # vitesse le long des axes x et y
-        Phi = radians(self._pose.getOrientation() + 90)
-        dx = averageSpeedRobot * cos(Phi)
-        dy = averageSpeedRobot * sin(Phi)
+            # vitesse angulaire
+            dPhi = degrees(-(self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
 
-        # vitesse angulaire
-        dPhi = degrees(-(self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
+            self.setRotCenter()
+            self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
+            self._pose.rotate(dPhi)
 
-        self.setRotCenter()
-        self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
-        self._pose.rotate(dPhi)
-
-        self.isCollided()
-        # compute collisions with environment objs
-        # if collision : self._collided = True
+            self.isCollided()
+            # compute collisions with environment objs
+            # if collision : self._collided = True
 
         super().move()
 

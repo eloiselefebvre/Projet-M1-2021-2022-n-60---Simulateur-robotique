@@ -46,9 +46,9 @@ class Shape(ABC):
         -> cercle vs ligne
         """
         total_intersections=[]
-
         shape1_lines = self.getLineDecomposition()
         shape2_lines = shape.getLineDecomposition()
+        # TODO : Gérer le cas du point (getLineDecomposition() renvoie [] comme pour le cercle)
         # intersection cercle/cercle
         if not shape1_lines and not shape2_lines:
             return ((self._pose.getX()-shape.getPose().getX())**2 + (self._pose.getY()-shape.getPose().getY())**2)**0.5 < self._radius+shape.getRadius()

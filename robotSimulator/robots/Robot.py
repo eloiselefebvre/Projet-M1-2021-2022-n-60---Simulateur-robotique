@@ -10,7 +10,7 @@ class Robot(ABC,Object):
         super().__init__(representation)
         self._components=[]
 
-    def addComponent(self,comp,x,y,orientation=0):
+    def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
             comp.setPose(Pose(x,y,orientation))
             comp.setParent(self)
@@ -20,4 +20,3 @@ class Robot(ABC,Object):
     def move(self):
         for comp in self._components:
             comp.refresh()
-

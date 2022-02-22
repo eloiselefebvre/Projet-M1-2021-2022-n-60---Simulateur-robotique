@@ -8,6 +8,7 @@ class Object:
         self._representation = representation
         self._env= None
         self._collided = False
+        self._solid = True
 
     def getRepresentation(self):
         return self._representation
@@ -35,15 +36,22 @@ class Object:
     def setCollidedState(self,state):
         self._collided=state
 
+    def isSolid(self):
+        return self._solid
+
+    def setSolid(self,solid):
+        self._solid=solid
+
     def isCollided(self):
         if not self._collided:
             for obj in self._env.getObjects():
-                if self!=obj:
-                    if self.isCollidedWith(obj):
-                        self._collided=True
-                        obj.setCollidedState(True)
+                if self!=obj and self.isCollidedWith(obj):
+                    self._collided=True
+                    obj.setCollidedState(True)
 
     def isCollidedWith(self,obj):
+        if not self._solid or not obj.isSolid():
+            return []
         return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
 
 
