@@ -72,3 +72,4 @@ class TwoWheelsRobot(Robot):
     def setWheelY(self,y):
         self._rightWheel.getRepresentation().getOrigin().setY(y)
         self._leftWheel.getRepresentation().getOrigin().setY(y)
+

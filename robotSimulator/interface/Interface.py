@@ -1,5 +1,4 @@
-from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
 from robotSimulator.interface.Scene import Scene
 from robotSimulator.interface.Explorer import Explorer
 
@@ -15,14 +14,14 @@ class Interface(QMainWindow):
         environmentWidget=Scene(self._environment)
         explorerWidget=Explorer(self._environment)
 
-        valuesWidget=QTextEdit()
-        valuesWidget.setText(explorerWidget.printObjects())
+        # valuesWidget=QTextEdit()
+        # valuesWidget.setText(explorerWidget.printObjects())
 
         explorerWidget.setMaximumSize(400,1080)
 
         layout.addWidget(environmentWidget)
         layout.addWidget(explorerWidget)
-        explorerLayout.addWidget(valuesWidget)
+        # explorerLayout.addWidget(valuesWidget)
         layout.setContentsMargins(0,0,0,0)
 
         widget=QWidget()
@@ -35,3 +34,4 @@ class Interface(QMainWindow):
 
 
 
+        

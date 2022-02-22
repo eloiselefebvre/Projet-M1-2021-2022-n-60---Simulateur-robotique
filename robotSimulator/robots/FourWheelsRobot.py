@@ -47,3 +47,4 @@ class FourWheelsRobot(TwoWheelsRobot):
     def setBackWheelY(self,y):
         self._rightBackWheel.getPose().setY(y)
         self._leftBackWheel.getPose().setY(y)
+

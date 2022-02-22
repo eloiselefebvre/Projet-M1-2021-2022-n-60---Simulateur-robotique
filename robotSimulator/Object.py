@@ -55,3 +55,4 @@ class Object:
         return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
 
 
+

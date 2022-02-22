@@ -61,3 +61,4 @@ class Circle(Shape):
                 if y2 >= min_y and y2 <= max_y:  # appartient au segment
                     intersections.append(QPointF(line.x1(),y2))
         return intersections
+
