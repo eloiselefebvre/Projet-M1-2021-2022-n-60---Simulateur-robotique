@@ -20,3 +20,7 @@ class Robot(ABC,Object):
     def move(self):
         for comp in self._components:
             comp.refresh()
+
+    def getComponents(self):
+        return self._components
+

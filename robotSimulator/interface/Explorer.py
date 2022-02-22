@@ -26,16 +26,20 @@ class Explorer(QTreeView):
         treeModel = QStandardItemModel()
         rootNode = treeModel.invisibleRootItem()
 
-        ob=StandardItem('ob',16,setBold=True)
-        obstacle=StandardItem('obstacle',14)
-        ob.appendRow(obstacle)
+        for obj in self._environment.getObjects():
+            element = type(obj).__name__
+            if element != "Object":
+                parent = Item(element, 16, setBold=True)
+                rootNode.appendRow(parent)
+                if hasattr(obj,"getComponents"):
+                    for comp in obj.getComponents():
+                        parent.appendRow(Item(type(comp).__name__))
 
-        rootNode.appendRow(ob)
         self.setModel(treeModel)
         self.expandAll()
 
 
-class StandardItem(QStandardItem):
+class Item(QStandardItem):
     def __init__(self, txt='', fontSize=12, setBold=False, color=QColor(0, 0, 0)):
         super().__init__()
 
