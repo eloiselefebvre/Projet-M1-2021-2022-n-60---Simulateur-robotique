@@ -1,10 +1,8 @@
-from math import radians, cos, sin
-
 from robotSimulator import Object, Pose
+from robotSimulator.representation.shapes import Point
 from robotSimulator.sensors.Sensor import Sensor
 from robotSimulator.representation.Representation import Representation
-from robotSimulator.representation.shapes.Rectangle import Rectangle
-from robotSimulator.representation.shapes.Line import Line
+from robotSimulator.representation.shapes import Rectangle, Line
 
 class Telemeter(Sensor):
 
@@ -26,12 +24,9 @@ class Telemeter(Sensor):
         if self._parent is not None:
             robotX = self._parent.getPose().getX()
             robotY = self._parent.getPose().getY()
-
             dx = self._pose.getX()
             dy = self._pose.getY()
-            a = -radians(self._parent.getPose().getOrientation())
-            telemeterX = int(dx * cos(a) + dy * sin(a) + robotX)
-            telemeterY = int(-dx * sin(a) + dy * cos(a) + robotY)
+            telemeterX, telemeterY = Point.computeTransformation(robotX, robotY, dx, dy, self._parent.getPose().getOrientation())
             self._laser.setPose(Pose(telemeterX,telemeterY,self._parent.getPose().getOrientation()+self._pose.getOrientation()))
             self._laserLine.setLength(self.INFINITE_LENGTH)
             for obj in self._parent.getEnv().getObjects():

@@ -1,9 +1,7 @@
-from PyQt5.QtCore import QRect, Qt, QLine, QLineF, QPointF
-from PyQt5.QtGui import QPen, QBrush, QColor
+from PyQt5.QtCore import QRect, Qt, QLineF
+from PyQt5.QtGui import QPen, QBrush
 from . import Shape
-from robotSimulator.representation.shapes.Line import Line
-
-from math import sin,cos, radians
+from .Point import Point
 
 class Rectangle(Shape):
 
@@ -40,25 +38,19 @@ class Rectangle(Shape):
         painter.drawLine(widthToCompensate - int(self._width / 2), ypos, int(self._width / 2) - widthToCompensate, ypos)
 
     def getLineDecomposition(self):
-        # xC = (xB - xO) * cos (β) + (yB - yO) * sin (β) + xO
-        # yC = - (xB - xO) * sin(β) + (yB - yO) * cos(β) + yO
-
         lines=[]
         w = self._width / 2
         h = self._height / 2
         sign = [(-1, -1), (-1, 1), (1, 1), (1, -1)]
         pts = []
-        x0 = self._pose.getX() + self._pose.getRotX()
-        y0 = self._pose.getY() + self._pose.getRotY()
+        xo = self._pose.getX() + self._pose.getRotX()
+        yo = self._pose.getY() + self._pose.getRotY()
         for i in range(4):
             x = self._pose.getX() + sign[i][0] * w
             y = self._pose.getY() + sign[i][1] * h
-            dx = x - x0
-            dy = y - y0
-            a = -radians(self._pose.getOrientation())
-            nx = int(dx * cos(a) + dy * sin(a) + x0)
-            ny = int(-dx * sin(a) + dy * cos(a) + y0)
-            pts.append((nx, ny))
+            dx = x - xo
+            dy = y - yo
+            pts.append(Point.computeTransformation(xo,yo,dx,dy,self._pose.getOrientation()))
         pts.append(pts[0])
 
         for i in range(4):

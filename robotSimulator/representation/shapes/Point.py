@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPen
 
 from robotSimulator.representation.shapes import Shape
+from math import radians, cos, sin
 
 class Point(Shape):
 
@@ -34,3 +35,10 @@ class Point(Shape):
     def paint(self,painter):
         super().paint(painter)
         painter.setPen(QPen(self._color, self.POINT_SIZE, Qt.SolidLine))
+
+    @staticmethod
+    def computeTransformation(xo,yo,dx,dy,o):
+        # xC = (xB - xO) * cos (β) + (yB - yO) * sin (β) + xO
+        # yC = - (xB - xO) * sin(β) + (yB - yO) * cos(β) + yO
+        a=-radians(o)
+        return int(dx * cos(a) + dy * sin(a) + xo), int(-dx * sin(a) + dy * cos(a) + yo)
