@@ -15,6 +15,9 @@ class Shape(ABC):
         #    self._border=bord
         self._border = bord
 
+    def removeBorder(self):
+        self._border=None
+
     def setPose(self,pose):
         self._pose=pose
 

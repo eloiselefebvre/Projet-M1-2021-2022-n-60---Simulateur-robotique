@@ -6,7 +6,7 @@ from screeninfo import get_monitors
 class Environment:
 
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
-    DEFAULT_BORDER_SCREEN_WIDTH = 5
+    DEFAULT_BORDER_SCREEN_WIDTH = 1
 
     def __init__(self):
         self._objects=[]
