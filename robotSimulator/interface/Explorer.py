@@ -12,6 +12,7 @@ class Explorer(QTreeView):
         super().__init__()
         self._environment = environment
         self._mainItems=[]
+        self._allItems=[]
         self._mainItemsObjectsAssociated= []
         self.treeView()
 
@@ -26,7 +27,7 @@ class Explorer(QTreeView):
 
     def treeView(self):
 
-        self.setStyleSheet("background-color: #151825")
+        self.setStyleSheet("background-color: #21212F")
         self.setHeaderHidden(True)
         treeModel = QStandardItemModel()
         rootNode = treeModel.invisibleRootItem()
@@ -34,7 +35,7 @@ class Explorer(QTreeView):
         for obj in self._environment.getObjects():
             element = type(obj).__name__
             if element != "Object":
-                parent = Item(element, 16, setBold=True)
+                parent = Item(element, 12, setBold=True)
                 if element in ["TwoWheelsRobot","FourWheelsRobot"]:
                     parent.setIcon(QIcon("robotSimulator/ressources/icons/robot.svg"))
                 if element == "Obstacle":
@@ -46,37 +47,43 @@ class Explorer(QTreeView):
                     for comp in obj.getComponents():
                         subElement = type(comp).__name__
                         child = Item(subElement)
+                        self._allItems.append(child)
                         if subElement in ["Wheel","LED","Buzzer","Actuator"]:
                             child.setIcon(QIcon("robotSimulator/ressources/icons/actuator.svg"))
                         if subElement in ["Telemeter","LIDAR","Sensor"]:
                             child.setIcon(QIcon("robotSimulator/ressources/icons/sensor.svg"))
 
                         parent.appendRow(child)
-
+        self._allItems.extend(self._mainItems)
         self.setModel(treeModel)
-        self.expandAll()
+        #self.expandAll()
 
     def selectionChanged(self, selected, deselected):
         if self.selectedIndexes():
             for obj in self._mainItemsObjectsAssociated:
                 obj.getRepresentation().getShape().removeBorder()
+            for item in self._allItems:
+                item.setColor("#63656D")
             index = self.selectedIndexes()[0]
             crawler = index.model().itemFromIndex(index)
+            crawler.setColor("#DFE0E5")
             if crawler in self._mainItems:
                 selected_obj = self._mainItemsObjectsAssociated[self._mainItems.index(crawler)]
                 selected_obj.getRepresentation().getShape().addBorder(Border(4,'#25CCF7'))
 
 
 class Item(QStandardItem):
-    def __init__(self, txt='', fontSize=12, setBold=False, color=QColor("#5a575D")):
+    def __init__(self, txt='', fontSize=12, setBold=False, color="#63656D"):
         super().__init__()
-
-        fnt = QFont('Open Sans', fontSize)
+        fnt = QFont('Verdana', fontSize) # TODO : Changer la font family
         fnt.setBold(setBold)
         self.setEditable(False)
-        self.setForeground(color)
+        self.setColor(color)
         self.setFont(fnt)
         self.setText(txt)
+
+    def setColor(self,color):
+        self.setForeground(QColor(color))
 
 
 

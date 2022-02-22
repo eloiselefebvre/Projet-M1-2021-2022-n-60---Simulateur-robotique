@@ -85,7 +85,7 @@ def collisionAndTelemeter():
 
     buzzer = Buzzer()
     telemeter = Telemeter("#0f0")
-    rob3 = TwoWheelsRobot("#888", 60, 80, 60)
+    rob3 = TwoWheelsRobot("#F97F51", 60, 80, 60)
     rob3.addComponent(buzzer, 0, 0)
     rob3.addComponent(telemeter, 0, 32, 0)
 
@@ -107,6 +107,7 @@ def collisionAndTelemeter():
     env.addObject(rob1, 1000, 100, 45)
     env.addObject(rob2, 1050, 150, 0)
     env.addObject(rob3, 500, 500, 90)
+    env.addObject(rob4, 700, 500, 90)
     env.addObject(rob5, 300, 180, 90)
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
 
@@ -135,10 +136,10 @@ def usingFuzzyLogicToAvoidObstacle():
 
     INFINITY = 100000
     distantObstacle=[]
-    rightTurnRightWheel = [0 for i in range(11)]
-    rightTurnLeftWheel = [0 for i in range(11)]
-    leftTurnRightWheel = [0 for i in range(11)]
-    leftTurnLeftWheel = [0 for i in range(11)]
+    rightTurnRightWheel = [0 for _ in range(11)]
+    rightTurnLeftWheel = [0 for _ in range(11)]
+    leftTurnRightWheel = [0 for _ in range(11)]
+    leftTurnLeftWheel = [0 for _ in range(11)]
 
     for i in range(50):
         distantObstacle.append(0)
