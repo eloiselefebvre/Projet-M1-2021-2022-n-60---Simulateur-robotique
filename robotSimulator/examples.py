@@ -176,7 +176,7 @@ def usingFuzzyLogicToAvoidObstacle():
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
     env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 100)
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),600,600)
-    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),1500,530)
+    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),800,530)
     env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),200,250)
 
     sim = Simulation(env)

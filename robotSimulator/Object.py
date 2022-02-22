@@ -46,3 +46,4 @@ class Object:
     def isCollidedWith(self,obj):
         return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
 
+
