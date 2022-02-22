@@ -14,32 +14,36 @@ class Telemeter(Sensor):
         self._laserLine = Line(self.INFINITE_LENGTH,2,color)
         laserRep = Representation(self._laserLine)
         self._laser = Object(laserRep)
-        self._laser.setPose(Pose(0,0))
+        self._laser.setPose(Pose(0,0)) # TODO : Pose(0,4) pour que le laser parte du bord du Telemeter ?
         self._representation.addSubRepresentation(self._laser.getRepresentation())
         self._distance = self.INFINITE_LENGTH
 
     def refresh(self):
         intersections = []
-        # TODO : Telemeter dans l'environnement donc sans parent
-        if self._parent is not None:
+        self._laserLine.setLength(self.INFINITE_LENGTH)
+        self._distance = self.INFINITE_LENGTH
+        if self._parent is not None: # Telemeter monté sur un robot
             robotX = self._parent.getPose().getX()
             robotY = self._parent.getPose().getY()
             dx = self._pose.getX()
             dy = self._pose.getY()
             telemeterX, telemeterY = Point.computeTransformation(robotX, robotY, dx, dy, self._parent.getPose().getOrientation())
             self._laser.setPose(Pose(telemeterX,telemeterY,self._parent.getPose().getOrientation()+self._pose.getOrientation()))
-            self._laserLine.setLength(self.INFINITE_LENGTH)
             for obj in self._parent.getEnv().getObjects():
                 if obj != self._parent:
                     intersections.extend(self._laser.isCollidedWith(obj))
-
-            self._distance=self.INFINITE_LENGTH
-            for point in intersections:
-                di=((self._laser.getPose().getX()-point.x())**2+(self._laser.getPose().getY()-point.y())**2)**0.5
-                if di<self._distance :
-                    self._distance=di
-            self._laserLine.setLength(int(self._distance))
-            self._laser.setPose(Pose(0, 0))
+        else:
+            self._laser.setPose(self._pose)
+            for obj in self._env.getObjects():
+                if obj != self:
+                    intersections.extend(self._laser.isCollidedWith(obj))
+        for point in intersections:
+            di = ((self._laser.getPose().getX() - point.x()) ** 2 + (
+                        self._laser.getPose().getY() - point.y()) ** 2) ** 0.5
+            if di < self._distance:
+                self._distance = di
+        self._laserLine.setLength(int(self._distance))
+        self._laser.setPose(Pose(0, 0))
 
     def getValue(self):
         return self._distance
