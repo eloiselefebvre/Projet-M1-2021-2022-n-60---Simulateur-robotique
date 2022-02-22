@@ -13,7 +13,8 @@ class Explorer(QTreeView):
         self._environment = environment
         self._mainItems=[]
         self._allItems=[]
-        self._mainItemsObjectsAssociated= []
+        self._mainItemsObjectsAssociated=[]
+        self._mainItemsAssociatedChildren = []
         self.treeView()
 
     def printObjects(self):
@@ -43,11 +44,13 @@ class Explorer(QTreeView):
                 self._mainItems.append(parent)
                 self._mainItemsObjectsAssociated.append(obj)
                 rootNode.appendRow(parent)
+                self._mainItemsAssociatedChildren.append([])
                 if hasattr(obj,"getComponents"):
                     for comp in obj.getComponents():
                         subElement = type(comp).__name__
                         child = Item(subElement)
                         self._allItems.append(child)
+                        self._mainItemsAssociatedChildren[-1].append(child)
                         if subElement in ["Wheel","LED","Buzzer","Actuator"]:
                             child.setIcon(QIcon("robotSimulator/ressources/icons/actuator.svg"))
                         if subElement in ["Telemeter","LIDAR","Sensor"]:
@@ -69,7 +72,9 @@ class Explorer(QTreeView):
             crawler.setColor("#DFE0E5")
             if crawler in self._mainItems:
                 selected_obj = self._mainItemsObjectsAssociated[self._mainItems.index(crawler)]
-                selected_obj.getRepresentation().getShape().addBorder(Border(4,'#25CCF7'))
+            else:
+                selected_obj = self._mainItemsObjectsAssociated[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
+            selected_obj.getRepresentation().getShape().addBorder(Border(4,'#25CCF7'))
 
 
 class Item(QStandardItem):
