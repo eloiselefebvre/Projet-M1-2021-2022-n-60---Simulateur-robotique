@@ -176,13 +176,14 @@ def usingFuzzyLogicToAvoidObstacle():
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
     env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 100)
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),600,600)
-    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),2000,530)
+    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),1500,530)
     env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),200,250)
 
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    sim.setAcceleration(100)
+
+    sim.setAcceleration(10)
 
     rob.setRightWheelSpeed(FORWARD_SPEED)
     rob.setLeftWheelSpeed(FORWARD_SPEED)
