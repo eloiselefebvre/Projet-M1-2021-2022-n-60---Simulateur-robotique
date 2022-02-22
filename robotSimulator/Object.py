@@ -54,3 +54,4 @@ class Object:
             return []
         return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
 
+

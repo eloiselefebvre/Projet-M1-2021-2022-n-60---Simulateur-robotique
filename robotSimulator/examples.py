@@ -8,6 +8,11 @@ from robotSimulator.actuators import Buzzer, LED
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
 from robotSimulator.sensors import Telemeter, LIDAR
 
+FORWARD_SPEED = 1000
+TURN_SPEED = 200
+COLLISION_TH = 70
+
+
 def simpleAvoidingObstacle():
     rob = TwoWheelsRobot("#888",60,80,60)
 
@@ -32,17 +37,13 @@ def simpleAvoidingObstacle():
 
     #env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),0,300)
     env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
-    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),1200,600)
-    env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),1000,20)
+    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),750,530)
+    env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),1000,300)
 
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    sim.setAcceleration(50)
-
-    FORWARD_SPEED = 1000
-    TURN_SPEED = 200
-    COLLISION_TH = 70
+    sim.setAcceleration(100)
 
     while True:
         # for i in range(6):
@@ -108,7 +109,6 @@ def collisionAndTelemeter():
     env.addObject(rob3, 500, 500, 90)
     env.addObject(rob5, 300, 180, 90)
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
-    env.addObject(Telemeter(),500,4)
 
     sim = Simulation(env)
     ledState = 0
@@ -127,6 +127,114 @@ def collisionAndTelemeter():
             led4.setState(ledState)
             start = current
         time.sleep(.01)
+
+
+def usingFuzzyLogicToAvoidObstacle():
+
+    rob = TwoWheelsRobot("#888",60,80,60)
+
+    INFINITY = 100000
+    distantObstacle=[]
+    rightTurnRightWheel = [0 for i in range(11)]
+    rightTurnLeftWheel = [0 for i in range(11)]
+    leftTurnRightWheel = [0 for i in range(11)]
+    leftTurnLeftWheel = [0 for i in range(11)]
+
+    for i in range(50):
+        distantObstacle.append(0)
+    for i in range (50,300):
+        distantObstacle.append(i*(5)-250)
+    for i in range(300,INFINITY):
+        distantObstacle.append(100)
+
+    for i in range (-5,6):
+        if i<0:
+            rightTurnRightWheel[i+5]=(-20*i)
+        else:
+            rightTurnRightWheel[i+5]=0
+        leftTurnLeftWheel[i+5]=rightTurnRightWheel[i+5]
+    for i in range (-5,6):
+        if i<0:
+            rightTurnLeftWheel[i+5]=(20*i)
+        else:
+            rightTurnRightWheel[i+5]=0
+        leftTurnRightWheel[i+5]=rightTurnLeftWheel[i+5]
+
+    leftFrontTelemeter=Telemeter('#dd9999') # left front
+    rightFrontTelemeter=Telemeter('#dd9999') # right front
+    rightTelemeter=Telemeter('#dd9999')
+    leftTelemeter=Telemeter('#dd9999')
+    rob.addComponent(leftFrontTelemeter,20,30,-10)
+    rob.addComponent(rightFrontTelemeter,-20,30,10)
+    rob.addComponent(leftTelemeter, 20, 20, -35)
+    rob.addComponent(rightTelemeter, -20, 20, 35)
+
+    env = Environment()
+    env.addObject(rob,1000,500,100)
+
+
+    env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
+    env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 100)
+    env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),600,600)
+    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),800,530)
+    env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),200,250)
+
+    sim = Simulation(env)
+    sim.run()
+    sim.showInterface()
+
+    sim.setAcceleration(10)
+
+    rob.setRightWheelSpeed(FORWARD_SPEED)
+    rob.setLeftWheelSpeed(FORWARD_SPEED)
+
+    while True:
+
+        distantObstacleLeftFrontTelemeter = distantObstacle[int(leftFrontTelemeter.getValue())]
+        distantObstacleRightFrontTelemeter = distantObstacle[int(rightFrontTelemeter.getValue())]
+        distantObstacleRightSensor = distantObstacle[int(rightTelemeter.getValue())]
+        distantObstacleLeftSensor = distantObstacle[int(leftTelemeter.getValue())]
+
+        numerator = 0
+        denominator = 0
+
+        # roue droite
+        for x in range(11):
+            cutValueLeftFrontTelemeter = min(distantObstacleLeftFrontTelemeter,rightTurnRightWheel[x])
+            cutValueRightFrontTelemeter = min(distantObstacleRightFrontTelemeter,leftTurnRightWheel[x])
+            cutValueRightSensor = min(distantObstacleRightSensor,leftTurnRightWheel[x])
+            cutValueLeftSensor = min(distantObstacleLeftSensor,rightTurnRightWheel[x])
+
+            numerator += (x-5)*(cutValueLeftFrontTelemeter+cutValueRightFrontTelemeter+cutValueRightSensor+cutValueLeftSensor)
+            denominator += (cutValueLeftFrontTelemeter+cutValueRightFrontTelemeter+cutValueRightSensor+cutValueLeftSensor)
+
+        if denominator!=0:
+            gravity=numerator/denominator
+        else:
+            gravity=100
+        rob.setRightWheelSpeed(gravity)
+
+        numerator=0
+        denominator=0
+
+        # roue gauche
+        for x in range (11):
+            cutValueLeftFrontTelemeter = min(distantObstacleLeftFrontTelemeter, rightTurnLeftWheel[x])
+            cutValueRightFrontTelemeter = min(distantObstacleRightFrontTelemeter, leftTurnLeftWheel[x])
+            cutValueRightSensor = min(distantObstacleRightSensor,leftTurnLeftWheel[x])
+            cutValueLeftSensor = min(distantObstacleLeftSensor,rightTurnLeftWheel[x])
+
+            numerator += (x-5)*(cutValueLeftFrontTelemeter+cutValueRightFrontTelemeter+cutValueRightSensor+cutValueLeftSensor)
+            denominator += (cutValueLeftFrontTelemeter+cutValueRightFrontTelemeter+cutValueRightSensor+cutValueLeftSensor)
+
+        if denominator != 0:
+            gravity = numerator / denominator
+        else:
+            gravity = 100
+        rob.setLeftWheelSpeed(gravity)
+
+        time.sleep(.01)
+
 
 def LIDARTest():
     lidar = LIDAR()
