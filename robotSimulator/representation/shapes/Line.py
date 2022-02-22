@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt, QLineF
-from PyQt5.QtGui import QPen, QColor
+from PyQt5.QtGui import QPen
 from . import Shape
-from math import sin,cos, radians
+from .Point import Point
 
 class Line(Shape):
 
@@ -24,11 +24,8 @@ class Line(Shape):
         # ligne plutôt rectangle du fait de son épaisseur ?
         x1 = self._pose.getX()
         y1 = self._pose.getY()
-
         dx = 0
         dy = self._length
-        a = -radians(self._pose.getOrientation())
-        x2 = int(dx * cos(a) + dy * sin(a) + x1)
-        y2 = int(-dx * sin(a) + dy * cos(a) + y1)
+        x2,y2 = Point.computeTransformation(x1,y1,dx,dy,self._pose.getOrientation())
 
         return [QLineF(x1,y1,x2,y2)]

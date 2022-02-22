@@ -66,8 +66,6 @@ def simpleAvoidingObstacle():
             rob.setRightWheelSpeed(FORWARD_SPEED)
         time.sleep(.01)
 
-
-
 def collisionAndTelemeter():
     rob1 = TwoWheelsRobot()
     rob1.setLeftWheelSpeed(600)

@@ -34,6 +34,8 @@ class Simulation():
                 for obj in self._environment.getObjects():
                     if hasattr(obj,"move"):
                         obj.move()
+                    if hasattr(obj,"refresh"):
+                        obj.refresh()
             time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):
