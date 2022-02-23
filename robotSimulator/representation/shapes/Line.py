@@ -20,6 +20,11 @@ class Line(Shape):
     def setLength(self,length):
         self._length=length
 
+    @staticmethod
+    def getLineCoefficient(line):
+        a = (line.y2() - line.y1()) / (line.x2() - line.x1())
+        b = line.y1()-a*line.x1()
+        return a,b
 
     def getLineDecomposition(self):
         # ligne plutôt rectangle du fait de son épaisseur ?
@@ -30,3 +35,6 @@ class Line(Shape):
         x2,y2 = Point.computeTransformation(x1,y1,dx,dy,self._pose.getOrientation())
 
         return [QLineF(x1,y1,x2,y2)]
+
+    def contains(self, point):
+        return False

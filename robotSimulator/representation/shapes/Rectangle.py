@@ -2,6 +2,7 @@ from PyQt5.QtCore import QRect, Qt, QLineF
 from PyQt5.QtGui import QPen, QBrush
 from . import Shape
 from .Point import Point
+from .Line import Line
 
 class Rectangle(Shape):
 
@@ -41,7 +42,7 @@ class Rectangle(Shape):
         lines=[]
         w = self._width / 2
         h = self._height / 2
-        sign = [(-1, -1), (-1, 1), (1, 1), (1, -1)]
+        sign = [(-1, -1), (-1, 1), (1, 1), (1, -1)] # sens trigonométrique
         pts = []
         xo = self._pose.getX() + self._pose.getRotX()
         yo = self._pose.getY() + self._pose.getRotY()
@@ -56,3 +57,10 @@ class Rectangle(Shape):
         for i in range(4):
             lines.append(QLineF(pts[i][0],pts[i][1],pts[i+1][0],pts[i+1][1]))
         return lines
+
+    def contains(self, point):
+        for line in self.getLineDecomposition():
+            d = (line.x2()-line.x1())*(point.y()-line.y1())-(line.y2()-line.y1())*(point.x()-line.x1())
+            if not d<0: # point à droite de la ligne (pas bon car sens trigonométrique)
+                return False
+        return True

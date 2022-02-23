@@ -15,7 +15,6 @@ class Explorer(QTreeView):
 
     ITEM_COLOR = "#63656D"
     CRAWLER_COLOR = "#DFE0E5"
-    BORDER_COLOR = "#25CCF7"
 
 
     def __init__(self,environment):
@@ -72,18 +71,31 @@ class Explorer(QTreeView):
 
     def selectionChanged(self, selected, deselected):
         if self.selectedIndexes():
-            for obj in self._mainItemsObjectsAssociated:
-                obj.getRepresentation().getShape().removeBorder()
+            for obj in self._environment.getObjects():
+                obj.setSelected(False)
             for item in self._allItems:
                 item.setColor(self.ITEM_COLOR)
             index = self.selectedIndexes()[0]
             crawler = index.model().itemFromIndex(index)
             crawler.setColor(self.CRAWLER_COLOR)
+            #self.collapseAll()
             if crawler in self._mainItems:
                 selected_obj = self._mainItemsObjectsAssociated[self._mainItems.index(crawler)]
+                self.expand(index)
             else:
                 selected_obj = self._mainItemsObjectsAssociated[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
-            selected_obj.getRepresentation().getShape().addBorder(Border(4,self.BORDER_COLOR))
+            selected_obj.setSelected(True)
+
+    def setSelectedItem(self,obj):
+        print(obj)
+        self.clearSelection()
+        for item in self._allItems:
+            item.setColor(self.ITEM_COLOR)
+        if obj is not None:
+            crawler=self._mainItems[self._mainItemsObjectsAssociated.index(obj)]
+            self.expand(crawler.index())
+            self.setCurrentIndex(crawler.index())
+            crawler.setColor(self.CRAWLER_COLOR)
 
 
 class Item(QStandardItem):

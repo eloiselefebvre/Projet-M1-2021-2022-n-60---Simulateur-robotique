@@ -74,3 +74,7 @@ class Shape(ABC):
                     if r1_line.intersect(r2_line,intersection)==QLineF.BoundedIntersection:
                         total_intersections.append(intersection)
         return total_intersections
+
+    @abstractmethod
+    def contains(self, point):
+        pass

@@ -11,8 +11,9 @@ class Interface(QMainWindow):
         layout = QHBoxLayout()
         explorerLayout=QVBoxLayout()
 
-        environmentWidget=Scene(self._environment)
-        explorerWidget=Explorer(self._environment)
+        explorerWidget = Explorer(self._environment)
+        environmentWidget=Scene(self._environment,explorerWidget)
+
 
         # valuesWidget=QTextEdit()
         # valuesWidget.setText(explorerWidget.printObjects())
