@@ -1,9 +1,5 @@
 from . import TwoWheelsRobot
-from robotSimulator.representation.shapes import Rectangle
-from robotSimulator.representation import Representation
-from robotSimulator.actuators import Wheel
-import random
-from math import cos,sin,radians,degrees
+from robotSimulator.actuators.Wheel import Wheel
 
 from robotSimulator.config import *
 
@@ -12,12 +8,18 @@ class FourWheelsRobot(TwoWheelsRobot):
     DEFAULT_WHEEL_WIDTH = 8
     DEFAULT_BORDER_RADIUS = 3
 
+    instances_counter=0
+
     def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10,frontWheelYPos=15,backWheelYPos=-15):
         super().__init__(color,robotWidth,robotHeight,distanceBetweenWheels,wheelsRadius,frontWheelYPos)
         self._leftBackWheel = Wheel( wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightBackWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self.addComponent(self._leftBackWheel,-distanceBetweenWheels / 2 + 4,backWheelYPos)
         self.addComponent(self._rightBackWheel,distanceBetweenWheels / 2 - 4,backWheelYPos)
+
+        FourWheelsRobot.instances_counter+=1
+        self.completeID(FourWheelsRobot.instances_counter)
+
 
     def move(self):
         super().move()

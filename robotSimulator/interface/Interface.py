@@ -20,6 +20,9 @@ class Interface(QMainWindow):
         self._explorerWidget=Explorer(self._environment)
         self._toolsLayout =ToolsBar(self._environment)
 
+        explorerWidget = Explorer(self._environment)
+        environmentWidget=Scene(self._environment,explorerWidget)
+
 
         self._generalLayout.addLayout(self._toolsLayout,10)
 

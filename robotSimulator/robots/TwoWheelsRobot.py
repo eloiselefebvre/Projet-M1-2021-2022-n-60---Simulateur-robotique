@@ -1,10 +1,10 @@
 from math import cos,sin,radians,degrees
 
 from . import Robot
-from robotSimulator.representation.shapes import Rectangle, Circle
+from robotSimulator.representation.shapes import Rectangle
 from robotSimulator.representation import Representation
 from robotSimulator.actuators import Wheel
-from robotSimulator.config import *
+from robotSimulator.config import config
 
 import random
 
@@ -14,15 +14,21 @@ class TwoWheelsRobot(Robot):
     DEFAULT_BORDER_RADIUS = 3
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
+    instances_counter=0
+
     def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10,wheelYPos=0):
         self._color = random.choice(self.COLORS) if color is None else color
         rep=Rectangle(robotWidth,robotHeight,self._color,self.DEFAULT_BORDER_RADIUS)
         super().__init__(Representation(rep))
         self._leftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftWheel,-distanceBetweenWheels/2+4,wheelYPos)
-        self.addComponent(self._rightWheel,distanceBetweenWheels/2-4,wheelYPos)
+        self.addComponent(self._leftWheel,(-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
+        self.addComponent(self._rightWheel,(distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
         self._distanceBetweenWheels = distanceBetweenWheels
+
+        if type(self).__name__==TwoWheelsRobot.__name__:
+            TwoWheelsRobot.instances_counter += 1
+            self.completeID(TwoWheelsRobot.instances_counter)
 
     def move(self):
         if not self._collided:

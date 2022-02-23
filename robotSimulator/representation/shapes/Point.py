@@ -43,3 +43,6 @@ class Point(Shape):
         # yC = - (xB - xO) * sin(β) + (yB - yO) * cos(β) + yO
         a=-radians(o)
         return int(dx * cos(a) + dy * sin(a) + xo), int(-dx * sin(a) + dy * cos(a) + yo)
+
+    def contains(self, point):
+        return False

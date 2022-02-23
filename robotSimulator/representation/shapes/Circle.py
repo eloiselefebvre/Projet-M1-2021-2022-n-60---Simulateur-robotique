@@ -1,6 +1,8 @@
 from PyQt5.QtCore import Qt, QPointF
-from PyQt5.QtGui import QBrush, QPen, QColor
+from PyQt5.QtGui import QBrush
 from . import Shape
+from .Line import Line
+
 
 class Circle(Shape):
 
@@ -12,6 +14,7 @@ class Circle(Shape):
         return self._radius
 
     def paint(self,painter):
+        # print(self._pose.getX(),self._pose.getY())
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center
@@ -22,8 +25,7 @@ class Circle(Shape):
     def isIntersectionWithLine(self,line):
         intersections = []
         if line.x2()!=line.x1(): # pas ligne verticale
-            a_line=(line.y2()-line.y1())/(line.x2()-line.x1())
-            b_line=line.y1()-a_line*line.x1()
+            a_line,b_line=Line.getLineCoefficient(line)
 
             A = 1+a_line**2
             B = -2*self._pose.getX()+2*a_line*(b_line-self._pose.getY())
@@ -62,3 +64,5 @@ class Circle(Shape):
                     intersections.append(QPointF(line.x1(),y2))
         return intersections
 
+    def contains(self, point):
+        return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2

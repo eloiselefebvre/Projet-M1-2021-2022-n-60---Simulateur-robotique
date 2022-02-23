@@ -33,3 +33,6 @@ class Representation:
                 painter.save() # sauvegarde de l'état du painter
                 rep.paint(painter)
                 painter.restore() # restoration de l'état du painter
+
+    def contains(self,point):
+        return self._shape.contains(point)

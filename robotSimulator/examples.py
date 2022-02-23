@@ -36,6 +36,7 @@ def collisionAndTelemeter():
 
     buzzer = Buzzer()
     telemeter = Telemeter("#0f0")
+    telemeter.setID("Front Telemeter")
     rob3 = TwoWheelsRobot("#F97F51", 60, 80, 60)
     rob3.addComponent(buzzer, 0, 0)
     rob3.addComponent(telemeter, 0, 32, 0)
