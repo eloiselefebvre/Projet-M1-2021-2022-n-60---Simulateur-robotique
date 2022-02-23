@@ -80,7 +80,7 @@ class Explorer(QTreeView):
 class Item(QStandardItem):
     def __init__(self, txt='', fontSize=12, setBold=False, color="#63656D"):
         super().__init__()
-        fnt = QFont('Verdana', fontSize) # TODO : Changer la font family
+        fnt = QFont('Times',fontSize) # TODO : Changer la font family
         fnt.setBold(setBold)
         self.setEditable(False)
         self.setColor(color)

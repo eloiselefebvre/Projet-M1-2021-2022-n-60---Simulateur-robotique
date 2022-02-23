@@ -20,6 +20,7 @@ class Simulation():
         self._environment=environment
         self._shown = False
         self._acceleration = 1
+        self._timeElapsed = 0
 
     def run(self):
         th = threading.Thread(target=self.__run)
@@ -31,6 +32,7 @@ class Simulation():
             current=time.time()
             if current-start > config["time_step"]/self._acceleration:
                 start = current
+                self._timeElapsed+=config["time_step"]*self._acceleration
                 for obj in self._environment.getObjects():
                     if hasattr(obj,"move"):
                         obj.move()
@@ -51,6 +53,9 @@ class Simulation():
 
     def setAcceleration(self,acc):
         self._acceleration=acc
+
+    def time(self):
+        return self._timeElapsed
 
 
 
