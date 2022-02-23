@@ -1,11 +1,14 @@
-from PyQt5 import QtGui
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QStandardItemModel, QFont, QStandardItem, QIcon
 from PyQt5.QtWidgets import QTreeView
 
 from robotSimulator.config import config
 from robotSimulator.representation.shapes import Border
-from robotSimulator
+from ..Object import Object
+
+from ..robots.Robot import Robot
+from ..Obstacle import Obstacle
+from ..sensors.Sensor import Sensor
+from ..actuators.Actuator import Actuator
 
 
 class Explorer(QTreeView):
@@ -41,13 +44,12 @@ class Explorer(QTreeView):
         rootNode = treeModel.invisibleRootItem()
 
         for obj in self._environment.getObjects():
-            element = type(obj).__name__
-            if element != "Object":
-                parent = Item(element, 12, setBold=True)
+            if type(obj) != Object:
+                parent = Item(obj.getID(), 12, setBold=True)
                 # TODO utiliser instanceof
-                if element in ["TwoWheelsRobot","FourWheelsRobot"]:
+                if isinstance(obj,Robot):
                     parent.setIcon(QIcon(f"{config['ressourcesPath']}/robot.svg"))
-                if element == "Obstacle":
+                if isinstance(obj,Obstacle):
                     parent.setIcon(QIcon(f"{config['ressourcesPath']}/obstacle.svg"))
                 self._mainItems.append(parent)
                 self._mainItemsObjectsAssociated.append(obj)
@@ -55,13 +57,12 @@ class Explorer(QTreeView):
                 self._mainItemsAssociatedChildren.append([])
                 if hasattr(obj,"getComponents"):
                     for comp in obj.getComponents():
-                        subElement = type(comp).__name__
-                        child = Item(subElement)
+                        child = Item(comp.getID())
                         self._allItems.append(child)
                         self._mainItemsAssociatedChildren[-1].append(child)
-                        if subElement in ["Wheel","LED","Buzzer","Actuator"]:
+                        if isinstance(comp,Actuator):
                             child.setIcon(QIcon(f"{config['ressourcesPath']}/actuator.svg"))
-                        if subElement in ["Telemeter","LIDAR","Sensor"]:
+                        if isinstance(comp,Sensor):
                             child.setIcon(QIcon(f"{config['ressourcesPath']}/sensor.svg"))
 
                         parent.appendRow(child)

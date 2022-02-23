@@ -9,7 +9,7 @@ class Object:
         self._env= None
         self._collided = False
         self._solid = True
-        self._id = 'Object'
+        self._id = self.generateDefaultID()
 
     def getRepresentation(self):
         return self._representation
@@ -24,6 +24,19 @@ class Object:
 
     def getPose(self):
         return self._pose
+
+    def getID(self):
+        return self._id
+
+    def generateDefaultID(self):
+        return type(self).__name__+"_"
+
+    def setID(self,id):
+        self._id=id
+
+    def completeID(self,id_part):
+        self._id+=str(id_part)
+
 
     def setEnv(self,env):
         self._env=env

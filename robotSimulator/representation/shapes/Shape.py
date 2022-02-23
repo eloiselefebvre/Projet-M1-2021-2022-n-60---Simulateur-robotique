@@ -2,6 +2,8 @@ from abc import ABC,abstractmethod
 from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QColor, QPen
 
+from .Border import Border
+
 class Shape(ABC):
     def __init__(self,color,opacity):
         self._color = QColor(color)
@@ -10,10 +12,8 @@ class Shape(ABC):
         self._pose=None
 
     def addBorder(self,bord):
-        #print("Border",type(Border))
-        #if isinstance(bord,Border):
-        #    self._border=bord
-        self._border = bord
+        if isinstance(bord,Border):
+            self._border=bord
 
     def removeBorder(self):
         self._border=None

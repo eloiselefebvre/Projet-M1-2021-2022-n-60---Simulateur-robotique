@@ -1,5 +1,6 @@
-from robotSimulator import Object, Pose
-from robotSimulator.representation.shapes import Point
+from robotSimulator.Object import Object
+from robotSimulator.Pose import Pose
+from robotSimulator.representation.shapes.Point import Point
 from robotSimulator.sensors import Sensor
 from robotSimulator.representation.Representation import Representation
 from robotSimulator.representation.shapes import Rectangle, Line

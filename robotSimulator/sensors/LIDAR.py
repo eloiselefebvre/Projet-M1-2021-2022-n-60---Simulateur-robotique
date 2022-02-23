@@ -1,5 +1,6 @@
 from . import Telemeter
-from .. import Object, Pose
+from ..Object import Object
+from ..Pose import Pose
 from ..representation import Representation
 from ..representation.shapes import Circle, Point
 
