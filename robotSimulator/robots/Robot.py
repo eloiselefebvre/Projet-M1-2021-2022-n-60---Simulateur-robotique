@@ -2,16 +2,21 @@ from abc import ABC, abstractmethod
 
 from robotSimulator import Object
 from ..Component import Component
+from ..representation import Representation
+from ..representation.shapes import Point
 from ..sensors.Sensor import Sensor
 from ..Pose import Pose
 
 class Robot(ABC,Object):
+
+    TRAJECTORY_COLOR = "#F9886A"
 
     def __init__(self,representation):
         super().__init__(representation)
         self._components=[]
         self._sensors_counter=0
         self._actuators_counter=0
+        self._drawTrajectory=True
 
     def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
@@ -28,9 +33,16 @@ class Robot(ABC,Object):
             self._representation.addSubRepresentation(comp.getRepresentation())
 
     def move(self):
+        self.drawTrajectory()
         for comp in self._components:
             comp.refresh()
 
     def getComponents(self):
         return self._components
+
+    def drawTrajectory(self):
+        if self._drawTrajectory==True:
+            point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
+            point.setSolid(False)
+            self._env.addObject(point)
 

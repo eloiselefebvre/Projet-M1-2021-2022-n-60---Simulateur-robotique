@@ -188,7 +188,7 @@ def usingFuzzyLogicToAvoidObstacle():
     sim.run()
     sim.showInterface()
 
-    sim.setAcceleration(10)
+    sim.setAcceleration(5)
 
     rob.setRightWheelSpeed(FORWARD_SPEED)
     rob.setLeftWheelSpeed(FORWARD_SPEED)

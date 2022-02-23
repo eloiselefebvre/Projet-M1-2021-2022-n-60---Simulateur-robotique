@@ -25,9 +25,16 @@ class Environment:
             obj.setEnv(self)
             self._objects.append(obj)
 
+    def addObjectAtTheBack(self,obj,x=0,y=0,orientation=0):
+        if isinstance(obj, Object):
+            obj.setPose(Pose(x,y,orientation))
+            obj.setEnv(self)
+            self._objects.insert(0,obj)
+
     def removeObject(self,obj):
         if obj in self._objects:
             self._objects.remove(obj)
 
     def getObjects(self):
         return self._objects
+
