@@ -14,7 +14,7 @@ class Rectangle(Shape):
         self._width=width
         self._height=height
         self._borderRadius=borderRadius
-        self._orientationMark = True
+        self._orientationMark = False
 
     def getWidth(self):
         return self._width
@@ -22,8 +22,8 @@ class Rectangle(Shape):
     def getHeight(self):
         return self._height
 
-    def removeOrientationMark(self):
-        self._orientationMark=False
+    def addOrientationMark(self):
+        self._orientationMark=True
 
     def paint(self,painter):
         super().paint(painter)

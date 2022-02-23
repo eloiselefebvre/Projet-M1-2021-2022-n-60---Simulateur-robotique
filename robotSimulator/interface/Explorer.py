@@ -4,7 +4,6 @@ from PyQt5.QtGui import QColor, QStandardItemModel, QFont, QStandardItem, QIcon
 from PyQt5.QtWidgets import QTreeView
 
 from robotSimulator.config import config
-from robotSimulator.representation.shapes import Border
 from ..Object import Object
 
 from ..robots.Robot import Robot
@@ -90,7 +89,6 @@ class Explorer(QTreeView):
             selected_obj.setSelected(True)
 
     def setSelectedItem(self,obj):
-        print(obj)
         self.clearSelection()
         for item in self._allItems:
             item.setColor(self.ITEM_COLOR)
@@ -99,7 +97,6 @@ class Explorer(QTreeView):
             self.expand(crawler.index())
             self.setCurrentIndex(crawler.index())
             crawler.setColor(self.CRAWLER_COLOR)
-
 
 class Item(QStandardItem):
 
