@@ -14,7 +14,7 @@ class LIDAR(Telemeter):
         rep.setPose(Pose(0,0))
         self._representation.addSubRepresentation(rep)
         self._intersections_buffer = [None for _ in range(int(360/self.ROTATION_STEP))]
-        self._laser.getRepresentation().getShape().setOpacity(0)
+        self._laser.getRepresentation().setVisible(False)
 
 
     def refresh(self):

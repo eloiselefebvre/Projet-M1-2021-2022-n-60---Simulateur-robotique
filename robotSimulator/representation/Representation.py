@@ -6,6 +6,7 @@ class Representation:
         self.setShape(shape)
         self._subRepresentations=[]
         self._pose=None
+        self._visible = True
 
     def getShape(self):
         return self._shape
@@ -22,9 +23,13 @@ class Representation:
         if isinstance(shape,Shape):
             self._shape=shape
 
+    def setVisible(self,visible):
+        self._visible = visible
+
     def paint(self,painter):
-        self._shape.paint(painter)
-        for rep in self._subRepresentations:
-            painter.save() # sauvegarde de l'état du painter
-            rep.paint(painter)
-            painter.restore() # restoration de l'état du painter
+        if self._visible:
+            self._shape.paint(painter)
+            for rep in self._subRepresentations:
+                painter.save() # sauvegarde de l'état du painter
+                rep.paint(painter)
+                painter.restore() # restoration de l'état du painter

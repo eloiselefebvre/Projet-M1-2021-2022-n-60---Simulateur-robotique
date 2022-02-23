@@ -9,6 +9,7 @@ class Object:
         self._env= None
         self._collided = False
         self._solid = True
+        self._id = 'Object'
 
     def getRepresentation(self):
         return self._representation
