@@ -25,7 +25,7 @@ class Pose:
     def setOrientation(self,o):
         self._orientation=o
 
-    def setRot(self,rx,ry):
+    def setRot(self,rx,ry):     # MSO TODO : ne pas utiliser des noms raccourcis, mais bien explicites
         self._rotationCenter=Point(rx,ry)
 
     def rotate(self, angle):
