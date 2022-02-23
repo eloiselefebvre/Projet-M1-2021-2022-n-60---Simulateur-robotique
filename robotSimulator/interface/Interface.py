@@ -16,8 +16,8 @@ class Interface(QMainWindow):
         self._informationLayout.setContentsMargins(0,0,0,0)
 
         #self._toolsWidget=QWidget()
-        self._environmentWidget=Scene(self._environment)
         self._explorerWidget=Explorer(self._environment)
+        self._environmentWidget=Scene(self._environment,self._explorerWidget)
         self._toolsLayout =ToolsBar(self._environment)
 
         explorerWidget = Explorer(self._environment)

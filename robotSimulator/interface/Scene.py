@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget
-from PySide6.QtCore import Qt
+from PyQt5.QtCore import Qt
 
 
 class Scene(QWidget):
