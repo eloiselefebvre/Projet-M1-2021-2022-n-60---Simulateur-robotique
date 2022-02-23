@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPen
 from . import Shape
 from .Point import Point
 
+
 class Line(Shape):
 
     def __init__(self,length,width,color,opacity=255):
