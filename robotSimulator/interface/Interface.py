@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
 from robotSimulator.interface.Scene import Scene
 from robotSimulator.interface.Explorer import Explorer
+from robotSimulator.interface.ToolsBar import ToolsBar
+
 
 class Interface(QMainWindow):
     def __init__(self,environment):
@@ -8,30 +10,29 @@ class Interface(QMainWindow):
         self._environment = environment
         self.setWindowTitle("Spicy Simulator")
 
-        layout = QHBoxLayout()
-        explorerLayout=QVBoxLayout()
+        self._generalLayout = QVBoxLayout()
+        self._generalLayout.setContentsMargins(0,0,0,0)
+        self._informationLayout = QHBoxLayout()
+        self._informationLayout.setContentsMargins(0,0,0,0)
 
-        environmentWidget=Scene(self._environment)
-        explorerWidget=Explorer(self._environment)
+        #self._toolsWidget=QWidget()
+        self._environmentWidget=Scene(self._environment)
+        self._explorerWidget=Explorer(self._environment)
+        self._toolsLayout =ToolsBar(self._environment)
 
-        # valuesWidget=QTextEdit()
-        # valuesWidget.setText(explorerWidget.printObjects())
 
-        explorerWidget.setMaximumSize(400,1080)
+        self._generalLayout.addLayout(self._toolsLayout,10)
 
-        layout.addWidget(environmentWidget)
-        layout.addWidget(explorerWidget)
-        # explorerLayout.addWidget(valuesWidget)
-        layout.setContentsMargins(0,0,0,0)
+        self._generalLayout.addLayout(self._informationLayout,90)
+
+        self._informationLayout.addWidget(self._environmentWidget,80)
+        self._informationLayout.addWidget(self._explorerWidget,20)
+        self._explorerWidget.setFixedWidth(300)
+
+        self._generalLayout.setContentsMargins(0,0,0,0)
 
         widget=QWidget()
-        explorerWidget.setLayout(explorerLayout)
-        widget.setLayout(layout)
+        widget.setLayout(self._generalLayout)
         self.setCentralWidget(widget)
 
         self.showMaximized()
-
-
-
-
-        

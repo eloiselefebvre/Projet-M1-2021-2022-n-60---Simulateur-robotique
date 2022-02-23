@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QSlider, QVBoxLayout
 from PyQt5.QtCore import Qt
 from robotSimulator import Interface
+from robotSimulator.interface.ToolsBar import ToolsBar
 from robotSimulator.simulation import Environment
 import threading
 import time
@@ -33,6 +34,7 @@ class Simulation():
             if current-start > config["time_step"]/self._acceleration:
                 start = current
                 self._timeElapsed+=config["time_step"]*self._acceleration
+
                 for obj in self._environment.getObjects():
                     if hasattr(obj,"move"):
                         obj.move()
@@ -56,8 +58,6 @@ class Simulation():
 
     def time(self):
         return self._timeElapsed
-
-
 
 
 

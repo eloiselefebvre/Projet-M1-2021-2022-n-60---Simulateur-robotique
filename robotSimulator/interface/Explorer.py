@@ -1,11 +1,10 @@
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QStandardItemModel, QFont, QStandardItem, QIcon
-from PyQt5.QtWidgets import QTreeView
+from PyQt5.QtWidgets import QTreeView, QCheckBox
 
 from robotSimulator.config import config
 from robotSimulator.representation.shapes import Border
-from robotSimulator
 
 
 class Explorer(QTreeView):
