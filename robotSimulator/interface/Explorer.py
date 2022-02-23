@@ -37,6 +37,7 @@ class Explorer(QTreeView):
             element = type(obj).__name__
             if element != "Object":
                 parent = Item(element, 12, setBold=True)
+                # TODO utiliser instanceof
                 if element in ["TwoWheelsRobot","FourWheelsRobot"]:
                     parent.setIcon(QIcon("robotSimulator/ressources/icons/robot.svg"))
                 if element == "Obstacle":
@@ -52,6 +53,7 @@ class Explorer(QTreeView):
                         self._allItems.append(child)
                         self._mainItemsAssociatedChildren[-1].append(child)
                         if subElement in ["Wheel","LED","Buzzer","Actuator"]:
+                            # TODO MSO : mettre dans la config
                             child.setIcon(QIcon("robotSimulator/ressources/icons/actuator.svg"))
                         if subElement in ["Telemeter","LIDAR","Sensor"]:
                             child.setIcon(QIcon("robotSimulator/ressources/icons/sensor.svg"))
