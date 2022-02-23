@@ -49,6 +49,7 @@ class Object:
                     self._collided=True
                     obj.setCollidedState(True)
 
+    # MSO TODO : attention, par convention, les méthodes isXXX() renvoient des booléens. J'ai l'impression qu'ici, on renvoie des intersections. Nom à revoir
     def isCollidedWith(self,obj):
         if not self._solid or not obj.isSolid():
             return []

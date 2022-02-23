@@ -1,3 +1,8 @@
+# MSO TODO : faire un package "examples" avec les exemples que l'on va vraiment laisser aux étudiants pour illustration
+# mettre un exemple de navigation simple avec le télémètre (du genre : si obstacle détecté à gauche tourner à droite) --> ce que pourraient coder des débutants avec des ifs sur des seuils
+
+# MSO TODO : faire un autre package "tests" avec vos tests, comme celui-ci. Il est intéressant de les garder, au moins pendant la durée du projet - mais l'objectif est différent
+
 import time
 
 from robotSimulator import Obstacle
