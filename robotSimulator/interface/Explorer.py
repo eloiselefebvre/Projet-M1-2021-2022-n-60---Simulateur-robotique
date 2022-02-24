@@ -1,7 +1,7 @@
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QStandardItemModel, QFont, QStandardItem, QIcon
-from PyQt5.QtWidgets import QTreeView
+from PyQt5.QtGui import QColor, QStandardItemModel, QFont, QStandardItem, QIcon, QBrush
+from PyQt5.QtWidgets import QTreeView, QWidget, QTreeWidget, QTreeWidgetItem, QPushButton
 
 from robotSimulator.config import config
 from ..Object import Object
@@ -12,7 +12,7 @@ from ..sensors.Sensor import Sensor
 from ..actuators.Actuator import Actuator
 
 
-class Explorer(QTreeView):
+class Explorer(QTreeWidget):
 
     ITEM_COLOR = "#63656D"
     CRAWLER_COLOR = "#DFE0E5"
@@ -24,8 +24,11 @@ class Explorer(QTreeView):
         self._environment = environment
         self._mainItems=[]
         self._allItems=[]
-        self._mainItemsObjectsAssociated=[]
-        self._mainItemsAssociatedChildren = []
+        self._allObjects = []
+        self._mainObjects=[]
+        self._childrenButtons=[]
+        self._mainItemsAssociatedChildren=[]
+        self._buttons=[]
         self.treeView()
 
     def printObjects(self):
@@ -38,82 +41,123 @@ class Explorer(QTreeView):
 
 
     def treeView(self):
-
-        self.setStyleSheet("background-color: #21212F")
         self.setHeaderHidden(True)
-        treeModel = QStandardItemModel()
-        rootNode = treeModel.invisibleRootItem()
+        self.setColumnCount(2)
+        self.setColumnWidth(0,240)
+        self.setColumnWidth(1,50)
+        self.setAutoScroll(True)
+        self.setStyleSheet("background-color: #21212F")
 
         for obj in self._environment.getObjects():
-            if type(obj) != Object:
-                parent = Item(obj.getID(), 12, setBold=True)
-                # TODO utiliser instanceof
+             if type(obj) != Object:
+                parent = Item(self,obj.getID(), 12, setBold=True)
+                self._buttons.append(VisibilityButton())
+                self.setItemWidget(parent, 1,self._buttons[-1])
                 if isinstance(obj,Robot):
-                    parent.setIcon(QIcon(f"{config['ressourcesPath']}/robot.svg"))
+                    parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/robot.svg"))
                 if isinstance(obj,Obstacle):
-                    parent.setIcon(QIcon(f"{config['ressourcesPath']}/obstacle.svg"))
+                    parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/obstacle.svg"))
                 self._mainItems.append(parent)
-                self._mainItemsObjectsAssociated.append(obj)
-                rootNode.appendRow(parent)
+                self._mainObjects.append(obj)
+                self._allObjects.append(obj)
                 self._mainItemsAssociatedChildren.append([])
+                self._childrenButtons.append([])
                 if hasattr(obj,"getComponents"):
                     for comp in obj.getComponents():
-                        child = Item(comp.getID())
+                        child = Item(parent,comp.getID())
+                        self._buttons.append(VisibilityButton())
+                        self.setItemWidget(child, 1,self._buttons[-1])
                         self._allItems.append(child)
                         self._mainItemsAssociatedChildren[-1].append(child)
-                        if isinstance(comp,Actuator):
-                            child.setIcon(QIcon(f"{config['ressourcesPath']}/actuator.svg"))
-                        if isinstance(comp,Sensor):
-                            child.setIcon(QIcon(f"{config['ressourcesPath']}/sensor.svg"))
+                        self._childrenButtons[-1].append(self._buttons[-1])
+                        self._allObjects.append(comp)
+                        parent.addChild(child)
 
-                        parent.appendRow(child)
+                        if isinstance(comp,Actuator):
+                            child.setIcon(0,QIcon(f"{config['ressourcesPath']}/actuator.svg"))
+                        if isinstance(comp,Sensor):
+                            child.setIcon(0,QIcon(f"{config['ressourcesPath']}/sensor.svg"))
         self._allItems.extend(self._mainItems)
-        self.setModel(treeModel)
+
+        for button in self._buttons:
+            button.clicked.connect(self.toggleObjectVisibily)
         #self.expandAll()
 
-    def selectionChanged(self, selected, deselected):
-        if self.selectedIndexes():
-            for obj in self._environment.getObjects():
-                obj.setSelected(False)
-            for item in self._allItems:
-                item.setColor(self.ITEM_COLOR)
-            index = self.selectedIndexes()[0]
-            crawler = index.model().itemFromIndex(index)
-            crawler.setColor(self.CRAWLER_COLOR)
-            #self.collapseAll()
-            if crawler in self._mainItems:
-                selected_obj = self._mainItemsObjectsAssociated[self._mainItems.index(crawler)]
-                self.expand(index)
+    def toggleObjectVisibily(self):
+        button = self.sender()
+        obj = self._allObjects[self._buttons.index(button)]
+        objRep=obj.getRepresentation()
+        objRep.toggleVisible()
+        if obj in self._mainObjects:
+            children_buttons=self._childrenButtons[self._mainObjects.index(obj)]
+            if objRep.isVisible():
+                for children_button in children_buttons:
+                    children_button.unlock()
             else:
-                selected_obj = self._mainItemsObjectsAssociated[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
-            selected_obj.setSelected(True)
+                for children_button in children_buttons:
+                    children_button.lock()
+
+        button.setVisibleObject(objRep.isVisible())
+
+    def selectionChanged(self, selected, deselected):
+        for obj in self._environment.getObjects():
+            obj.setSelected(False)
+        for item in self._allItems:
+            item.setColor(self.ITEM_COLOR)
+        crawler = self.currentItem()
+        crawler.setColor(self.CRAWLER_COLOR)
+        if crawler in self._mainItems:
+            selected_obj = self._mainObjects[self._mainItems.index(crawler)]
+        else:
+            selected_obj = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
+        selected_obj.setSelected(True)
 
     def setSelectedItem(self,obj):
         self.clearSelection()
         for item in self._allItems:
             item.setColor(self.ITEM_COLOR)
         if obj is not None:
-            crawler=self._mainItems[self._mainItemsObjectsAssociated.index(obj)]
-            self.expand(crawler.index())
-            self.setCurrentIndex(crawler.index())
+            crawler=self._mainItems[self._mainObjects.index(obj)]
             crawler.setColor(self.CRAWLER_COLOR)
+            crawler.setExpanded(True)
+            self.setCurrentItem(crawler)
 
-class Item(QStandardItem):
+class Item(QTreeWidgetItem):
 
-    def __init__(self, txt='', fontSize=12, setBold=False, color="#63656D"):
-        super().__init__()
+    def __init__(self,parent, txt='', fontSize=12, setBold=False, color="#63656D"):
+        super().__init__(parent)
         fnt = QFont('Verdana', fontSize) # TODO : Changer la font family
         fnt.setBold(setBold)
-        self.setEditable(False)
         self.setColor(color)
-        self.setFont(fnt)
-        self.setText(txt)
+        self.setFont(0,fnt)
+        self.setText(0,txt)
 
     def setColor(self,color):
-        self.setForeground(QColor(color))
+        self.setForeground(0,QColor(color))
+
+class VisibilityButton(QPushButton):
+
+    def __init__(self,visibleObj=True):
+        super().__init__()
+        self.setFlat(True)
+        self._visibleObj=visibleObj
+        self.setVisibleIcon()
+
+    def setVisibleIcon(self):
+        if self._visibleObj:
+            self.setIcon(QIcon(f"{config['ressourcesPath']}/visible.svg"))
+        else:
+            self.setIcon(QIcon(f"{config['ressourcesPath']}/invisible.svg"))
+
+    def setVisibleObject(self, visibleObj):
+        self._visibleObj=visibleObj
+        self.setVisibleIcon()
+
+    def lock(self):
+        self.setDisabled(True)
+        self.setIcon(QIcon(f"{config['ressourcesPath']}/point.svg"))
 
 
-
-
-
-
+    def unlock(self):
+        self.setDisabled(False)
+        self.setVisibleIcon()

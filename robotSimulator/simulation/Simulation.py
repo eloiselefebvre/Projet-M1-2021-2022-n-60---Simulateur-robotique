@@ -17,7 +17,7 @@ class Simulation():
 
     MINIMUM_TIME_STEP = 0.01
 
-    def __init__(self,environment=None,timeStep=MINIMUM_TIME_STEP):
+    def __init__(self,environment=None):
         self._environment=environment
         self._app = None
         self._interface=None
@@ -64,5 +64,7 @@ class Simulation():
         self._appShown=shown
 
     def closeInterface(self):
-        self._appShown = False
-        self._interface.close()
+        if self._appShown:
+            self._appShown = False
+            self._interface.close()
+        # TODO : fermer également l'application ?

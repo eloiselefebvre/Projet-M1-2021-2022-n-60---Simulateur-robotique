@@ -26,6 +26,12 @@ class Representation:
     def setVisible(self,visible):
         self._visible = visible
 
+    def toggleVisible(self):
+        self._visible=not self._visible
+
+    def isVisible(self):
+        return self._visible
+
     def paint(self,painter):
         if self._visible:
             self._shape.paint(painter)

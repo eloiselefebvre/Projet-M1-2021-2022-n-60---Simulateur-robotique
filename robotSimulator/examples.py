@@ -82,6 +82,7 @@ def collisionAndTelemeter():
         time.sleep(.01)
 
 
+
 def simpleAvoidingObstacle():
     rob = TwoWheelsRobot("#888",60,80,60)
 

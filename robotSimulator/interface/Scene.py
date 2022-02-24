@@ -37,7 +37,7 @@ class Scene(QWidget):
         self._selectedObj=None
         for obj in self._environment.getObjects():
             obj.setSelected(False)
-            if obj.getRepresentation().contains(mousePose):
+            if obj.getRepresentation().contains(mousePose) and obj.getRepresentation().isVisible():
                 obj.setSelected(True)
                 self._selectedObj=obj
                 pose=obj.getPose()
