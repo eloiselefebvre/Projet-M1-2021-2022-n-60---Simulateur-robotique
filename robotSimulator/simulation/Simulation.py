@@ -19,6 +19,8 @@ class Simulation():
 
     def __init__(self,environment=None,timeStep=MINIMUM_TIME_STEP):
         self._environment=environment
+        self._app = None
+        self._interface=None
         self._appShown = False
         self._acceleration = 1
         self._timeElapsed = 0
@@ -34,7 +36,6 @@ class Simulation():
             if current-start > config["time_step"]/self._acceleration:
                 start = current
                 self._timeElapsed+=config["time_step"]*self._acceleration
-
                 for obj in self._environment.getObjects():
                     if hasattr(obj,"move"):
                         obj.move()
@@ -49,9 +50,9 @@ class Simulation():
             self._appShown = True
 
     def __startApplication(self):
-        app = QApplication([sys.argv])
-        myInterface = Interface(self,self._environment)
-        sys.exit(app.exec())
+        self._app = QApplication([sys.argv])
+        self._interface=Interface(self,self._environment)
+        sys.exit(self._app.exec())
 
     def setAcceleration(self,acc):
         self._acceleration=acc
@@ -62,7 +63,6 @@ class Simulation():
     def setAppShown(self,shown):
         self._appShown=shown
 
-
-
-
-
+    def closeInterface(self):
+        self._appShown = False
+        self._interface.close()
