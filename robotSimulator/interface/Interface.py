@@ -5,9 +5,9 @@ from robotSimulator.interface.ToolsBar import ToolsBar
 
 
 class Interface(QMainWindow):
-
-    def __init__(self,environment):
+    def __init__(self,simulation,environment):
         super().__init__()
+        self._simulation = simulation
         self._environment = environment
         self.setWindowTitle("Spicy Simulator")
 
@@ -50,3 +50,6 @@ class Interface(QMainWindow):
 
 
 
+
+    def closeEvent(self, event):
+        self._simulation.setAppShown(False)

@@ -16,7 +16,7 @@ class Robot(ABC,Object):
         self._components=[]
         self._sensors_counter=0
         self._actuators_counter=0
-        self._drawTrajectory=True
+        self._drawTrajectory=False
 
     def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
