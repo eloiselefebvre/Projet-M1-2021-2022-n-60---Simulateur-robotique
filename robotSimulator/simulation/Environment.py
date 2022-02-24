@@ -10,14 +10,6 @@ class Environment:
 
     def __init__(self):
         self._objects=[]
-        screenWidth = get_monitors()[0].width
-        screenHeight = get_monitors()[0].height
-        self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
-        self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),screenWidth-300,0)
-        self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
-        self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,screenHeight-70,-90)
-        # TODO : Trouver comment récupérer la taille de la fenêtre PyQt
-
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
@@ -35,6 +27,14 @@ class Environment:
         if obj in self._objects:
             self._objects.remove(obj)
 
+
     def getObjects(self):
         return self._objects
 
+
+    def drawWalls(self,width,height):
+        self.addObject(Object(Representation(Line(height, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))), 0,0)
+        self.addObject(Object(Representation(Line(height, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),width, 0)
+        self.addObject(Object(Representation(Line(width, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))), 0,0, -90)
+        self.addObject(Object(Representation(Line(width, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))), 0,height, -90)
+        # TODO : Trouver comment récupérer la taille de la fenêtre PyQt

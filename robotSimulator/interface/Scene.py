@@ -32,7 +32,6 @@ class Scene(QWidget):
                 pose = self._selectedObj.getPose()
                 pose.move(event.x()-self._selectionOffset[0],event.y()-self._selectionOffset[1])
 
-
     def _isClickedObject(self,mousePose):
         self._selectedObj=None
         for obj in self._environment.getObjects():

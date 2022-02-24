@@ -18,7 +18,6 @@ class Explorer(QTreeView):
     CRAWLER_COLOR = "#DFE0E5"
     BORDER_COLOR = "#25CCF7"
 
-
     def __init__(self,environment):
         super().__init__()
         self._environment = environment
@@ -36,7 +35,6 @@ class Explorer(QTreeView):
                 text+=element+"\n"
         return text
 
-
     def treeView(self):
 
         self.setStyleSheet("background-color: #21212F")
@@ -47,7 +45,6 @@ class Explorer(QTreeView):
         for obj in self._environment.getObjects():
             if type(obj) != Object:
                 parent = Item(obj.getID(), 12, setBold=True)
-                # TODO utiliser instanceof
                 if isinstance(obj,Robot):
                     parent.setIcon(QIcon(f"{config['ressourcesPath']}/robot.svg"))
                 if isinstance(obj,Obstacle):
@@ -65,7 +62,6 @@ class Explorer(QTreeView):
                             child.setIcon(QIcon(f"{config['ressourcesPath']}/actuator.svg"))
                         if isinstance(comp,Sensor):
                             child.setIcon(QIcon(f"{config['ressourcesPath']}/sensor.svg"))
-
                         parent.appendRow(child)
         self._allItems.extend(self._mainItems)
         self.setModel(treeModel)
@@ -97,6 +93,7 @@ class Explorer(QTreeView):
             self.expand(crawler.index())
             self.setCurrentIndex(crawler.index())
             crawler.setColor(self.CRAWLER_COLOR)
+
 
 class Item(QStandardItem):
 

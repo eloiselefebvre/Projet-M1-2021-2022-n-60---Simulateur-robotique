@@ -59,7 +59,11 @@ class Simulation():
     def time(self):
         return self._timeElapsed
 
+    def getAcceleration(self):
+        return self._acceleration
 
+    def getTimeElapsed(self):
+        return self._timeElapsed
 
 
 
