@@ -25,7 +25,7 @@ class Scene(QWidget):
 
     def mouseMoveEvent(self, event):
         if self._drag:
-            if self._selectedObj is not None:
+            if self._selectedObj is not None and not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
                     if self._selectedObj.isCollidedWith(obj):
                         obj.setCollidedState(False)

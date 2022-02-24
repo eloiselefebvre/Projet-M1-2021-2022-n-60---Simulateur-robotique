@@ -14,6 +14,7 @@ class Object:
         self._collided = False
         self._solid = True
         self._id = self.generateDefaultID()
+        self._lock=False
 
     def getRepresentation(self):
         return self._representation
@@ -31,6 +32,24 @@ class Object:
 
     def getID(self):
         return self._id
+
+    def isLock(self):
+        return self._lock
+
+    def setLock(self,lock):
+        self._lock=lock
+
+    def toggleLock(self):
+        self._lock=not self._lock
+
+    def isVisible(self):
+        return self._representation.isVisible()
+
+    def setVisible(self, visible):
+        self._representation.setVisible(visible)
+
+    def toggleVisible(self):
+        self._representation.toggleVisible()
 
     def generateDefaultID(self):
         return type(self).__name__+"_"
