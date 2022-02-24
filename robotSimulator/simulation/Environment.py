@@ -1,22 +1,15 @@
 from robotSimulator import Object, Pose
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
-from screeninfo import get_monitors
 
 class Environment:
 
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
-    DEFAULT_BORDER_SCREEN_WIDTH = 1
+    DEFAULT_BORDER_SCREEN_WIDTH = 2
 
     def __init__(self):
         self._objects=[]
-        screenWidth = get_monitors()[0].width
-        screenHeight = get_monitors()[0].height
-        self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
-        self.addObject(Object(Representation(Line(screenHeight,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),screenWidth-300,0)
-        self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
-        self.addObject(Object(Representation(Line(screenWidth,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,screenHeight-70,-90)
-        # TODO : Trouver comment récupérer la taille de la fenêtre PyQt
+        self._hasWalls=False
 
 
     def addObject(self,obj,x=0,y=0,orientation=0):
@@ -37,4 +30,14 @@ class Environment:
 
     def getObjects(self):
         return self._objects
+
+    def hasWalls(self):
+        return self._hasWalls
+
+    def drawWalls(self,w,h):
+        if not self._hasWalls:
+            self.addObject(Object(Representation(Line(h,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
+            self.addObject(Object(Representation(Line(h,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),w,0)
+            self.addObject(Object(Representation(Line(w,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
+            self.addObject(Object(Representation(Line(w,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,h,-90)
 

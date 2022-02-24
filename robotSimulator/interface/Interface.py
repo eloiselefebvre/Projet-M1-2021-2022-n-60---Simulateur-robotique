@@ -18,7 +18,7 @@ class Interface(QMainWindow):
 
         #self._toolsWidget=QWidget()
         self._explorerWidget=Explorer(self._environment)
-        self._environmentWidget=Scene(self._environment,self._explorerWidget)
+        self._sceneWidget=Scene(self._environment,self._explorerWidget)
         self._toolsLayout =ToolsBar(self._environment)
 
 
@@ -26,9 +26,8 @@ class Interface(QMainWindow):
 
         self._generalLayout.addLayout(self._informationLayout,90)
 
-        self._informationLayout.addWidget(self._environmentWidget,80)
-        self._informationLayout.addWidget(self._explorerWidget,20)
-        self._explorerWidget.setFixedWidth(320)
+        self._informationLayout.addWidget(self._sceneWidget)
+        self._informationLayout.addWidget(self._explorerWidget)
 
         self._generalLayout.setContentsMargins(0,0,0,0)
 
@@ -37,6 +36,7 @@ class Interface(QMainWindow):
         self.setCentralWidget(widget)
 
         self.showMaximized()
+        self._sceneWidget.maximized()
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)
