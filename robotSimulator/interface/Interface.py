@@ -5,8 +5,9 @@ from robotSimulator.interface.ToolsBar import ToolsBar
 
 
 class Interface(QMainWindow):
-    def __init__(self,environment):
+    def __init__(self,simulation,environment):
         super().__init__()
+        self._simulation = simulation
         self._environment = environment
         self.setWindowTitle("Spicy Simulator")
 
@@ -19,9 +20,6 @@ class Interface(QMainWindow):
         self._explorerWidget=Explorer(self._environment)
         self._environmentWidget=Scene(self._environment,self._explorerWidget)
         self._toolsLayout =ToolsBar(self._environment)
-
-        explorerWidget = Explorer(self._environment)
-        environmentWidget=Scene(self._environment,explorerWidget)
 
 
         self._generalLayout.addLayout(self._toolsLayout,10)
@@ -39,3 +37,6 @@ class Interface(QMainWindow):
         self.setCentralWidget(widget)
 
         self.showMaximized()
+
+    def closeEvent(self, event):
+        self._simulation.setAppShown(False)

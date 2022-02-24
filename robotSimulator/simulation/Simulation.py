@@ -19,7 +19,7 @@ class Simulation():
 
     def __init__(self,environment=None,timeStep=MINIMUM_TIME_STEP):
         self._environment=environment
-        self._shown = False
+        self._appShown = False
         self._acceleration = 1
         self._timeElapsed = 0
 
@@ -43,14 +43,14 @@ class Simulation():
             time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):
-        if self._environment is not None and not self._shown:
+        if self._environment is not None and not self._appShown:
             th=threading.Thread(target=self.__startApplication)
             th.start()
-            self._shown = True
+            self._appShown = True
 
     def __startApplication(self):
         app = QApplication([sys.argv])
-        myInterface = Interface(self._environment)
+        myInterface = Interface(self,self._environment)
         sys.exit(app.exec())
 
     def setAcceleration(self,acc):
@@ -58,6 +58,9 @@ class Simulation():
 
     def time(self):
         return self._timeElapsed
+
+    def setAppShown(self,shown):
+        self._appShown=shown
 
 
 
