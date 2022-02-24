@@ -85,17 +85,18 @@ class Explorer(QTreeWidget):
         #self.expandAll()
 
     def selectionChanged(self, selected, deselected):
-        for obj in self._environment.getObjects():
-            obj.setSelected(False)
-        for item in self._allItems:
-            item.setColor(self.ITEM_COLOR)
-        crawler = self.currentItem()
-        crawler.setColor(self.CRAWLER_COLOR)
-        if crawler in self._mainItems:
-            selected_obj = self._mainObjects[self._mainItems.index(crawler)]
-        else:
-            selected_obj = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
-        selected_obj.setSelected(True)
+        if self.selectedIndexes():
+            for obj in self._environment.getObjects():
+                obj.setSelected(False)
+            for item in self._allItems:
+                item.setColor(self.ITEM_COLOR)
+            crawler = self.currentItem()
+            crawler.setColor(self.CRAWLER_COLOR)
+            if crawler in self._mainItems:
+                selected_obj = self._mainObjects[self._mainItems.index(crawler)]
+            else:
+                selected_obj = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
+            selected_obj.setSelected(True)
 
     def setSelectedItem(self,obj):
         self.clearSelection()

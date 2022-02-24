@@ -16,6 +16,8 @@ class Scene(QWidget):
     def paintEvent(self,event):
         for obj in self._environment.getObjects():
             obj.paint(self)
+        for obj in self._environment.getVirtualObjects():
+            obj.paint(self)
         self.update()
 
     def mousePressEvent(self, event):

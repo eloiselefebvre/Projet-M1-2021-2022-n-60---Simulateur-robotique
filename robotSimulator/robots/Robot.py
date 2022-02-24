@@ -43,6 +43,5 @@ class Robot(ABC,Object):
     def drawTrajectory(self):
         if self._drawTrajectory==True:
             point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
-            point.setSolid(False)
-            self._env.addObject(point)
+            self._env.addVirtualObject(point)
 
