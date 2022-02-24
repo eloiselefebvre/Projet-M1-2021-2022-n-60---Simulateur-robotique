@@ -27,7 +27,7 @@ class Interface(QMainWindow):
 
         self._informationLayout.addWidget(self._sceneWidget,80)
         self._informationLayout.addWidget(self._explorerWidget,20)
-        self._explorerWidget.setFixedWidth(300)
+        self._explorerWidget.setFixedWidth(320)
 
         self._generalLayout.setContentsMargins(0,0,0,0)
 
