@@ -7,11 +7,11 @@ class Environment:
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
-    def __init__(self):
+    def __init__(self,size=None):
         self._objects=[]
         self._virtualObjects=[]
         self._hasWalls=False
-
+        #self._size = size
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
@@ -57,3 +57,11 @@ class Environment:
             self.addObject(Object(Representation(Line(w,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,h,-90)
             self._hasWalls=True
 
+    # def setSize(self,size):
+    #     self._size=size
+    #
+    # def getSize(self):
+    #     return self._size
+    #
+    # def printSize(self):
+    #     print(self._size)

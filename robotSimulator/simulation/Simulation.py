@@ -24,6 +24,7 @@ class Simulation():
         self._appShown = False
         self._acceleration = 1
         self._timeElapsed = 0
+        self._play=True
 
     def run(self):
         th = threading.Thread(target=self.__run)
@@ -33,7 +34,7 @@ class Simulation():
         start = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]/self._acceleration:
+            if current-start > config["time_step"]/self._acceleration and self._play==True:
                 start = current
                 self._timeElapsed+=config["time_step"]*self._acceleration
                 for obj in self._environment.getObjects():
@@ -68,3 +69,19 @@ class Simulation():
             self._appShown = False
             self._interface.close()
         # TODO : fermer également l'application ?
+
+    def increaseAcceleration(self):
+        pas=0.1
+        self._acceleration+=pas
+        print("acc:",self._acceleration)
+
+    def decreaseAcceleration(self):
+        pas=0.1
+        if self._acceleration-pas>0:
+            self._acceleration-=pas
+
+    def playPause(self):
+        self._play=not self._play
+
+    def getPlay(self):
+        return self._play

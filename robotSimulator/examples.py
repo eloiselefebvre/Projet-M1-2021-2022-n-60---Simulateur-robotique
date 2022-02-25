@@ -8,6 +8,8 @@ import time
 from robotSimulator import Obstacle
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Rectangle, Circle
+from robotSimulator.ressources.maps.Labyrinth import Labyrinth
+from robotSimulator.ressources.maps.Map import Map
 from robotSimulator.simulation import Environment,Simulation
 from robotSimulator.actuators import Buzzer, LED
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
@@ -178,14 +180,17 @@ def usingFuzzyLogicToAvoidObstacle():
 
     env = Environment()
     env.addObject(rob,1000,500,100)
+    # map = Map(env)
+    # map.generateObstacles()
 
-    env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
-    env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 50)
-    env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),600,600)
-    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),800,530)
-    env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),200,250)
+    # env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
+    # env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 50)
+    # env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),600,600)
+    # env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),800,530)
+    # env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),200,250)
 
     sim = Simulation(env)
+    Labyrinth(env)
     sim.run()
     sim.showInterface()
 
@@ -262,6 +267,17 @@ def LIDARTest():
     env.addObject(Obstacle(Representation(Rectangle(40,200, "#ff8fff"))), 650, 400)
     env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850,25)
 
+    sim = Simulation(env)
+    sim.setAcceleration(1)
+    sim.run()
+    sim.showInterface()
+
+def generateObstaclesTest():
+
+    env = Environment()
+    map = Map(env)
+    map.generateObstacles()
+    #usingFuzzyLogicToAvoidObstacle()
     sim = Simulation(env)
     sim.setAcceleration(1)
     sim.run()

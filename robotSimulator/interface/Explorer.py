@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QColor, QFont, QIcon
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton, QVBoxLayout, QWidget
 
 from robotSimulator.config import config
 from ..Object import Object
@@ -20,6 +20,9 @@ class Explorer(QTreeWidget):
     def __init__(self,environment):
         super().__init__()
         self._environment = environment
+        self._layout = QVBoxLayout()
+        self.setLayout(self._layout)
+        self._layout.setSpacing(0)
         self._mainItems=[]
         self._allItems=[]
         self._allObjects = []
@@ -81,6 +84,12 @@ class Explorer(QTreeWidget):
         self.resizeColumnToContents(1)
         self.resizeColumnToContents(2)
         #self.expandAll()
+
+    def openWindow(self):
+        widget=QWidget()
+        self._layout.addWidget(widget,10)
+        widget.setStyleSheet("background-color: #f0f0f0")
+
 
     def selectionChanged(self, selected, deselected):
         if self.selectedIndexes():
