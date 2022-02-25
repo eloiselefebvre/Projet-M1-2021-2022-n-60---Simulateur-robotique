@@ -1,15 +1,17 @@
 from robotSimulator import Object, Pose
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
-from screeninfo import get_monitors
 
 class Environment:
 
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
-    DEFAULT_BORDER_SCREEN_WIDTH = 1
+    DEFAULT_BORDER_SCREEN_WIDTH = 2
 
     def __init__(self):
         self._objects=[]
+        self._virtualObjects=[]
+        self._hasWalls=False
+
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
@@ -17,24 +19,41 @@ class Environment:
             obj.setEnv(self)
             self._objects.append(obj)
 
-    def addObjectAtTheBack(self,obj,x=0,y=0,orientation=0):
+
+    def addVirtualObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
             obj.setPose(Pose(x,y,orientation))
             obj.setEnv(self)
-            self._objects.insert(0,obj)
+            self._virtualObjects.append(obj)
 
     def removeObject(self,obj):
         if obj in self._objects:
             self._objects.remove(obj)
 
 
+    def removeVirtualObject(self,obj):
+        if obj in self._virtualObjects:
+            self._virtualObjects.remove(obj)
+
+    def putObjectInForeground(self,obj):
+        if obj in self._objects:
+            self._objects.remove(obj)
+            self._objects.append(obj)
+
     def getObjects(self):
         return self._objects
 
+    def getVirtualObjects(self):
+        return self._virtualObjects
 
-    def drawWalls(self,width,height):
-        self.addObject(Object(Representation(Line(height, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))), 0,0)
-        self.addObject(Object(Representation(Line(height, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),width, 0)
-        self.addObject(Object(Representation(Line(width, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))), 0,0, -90)
-        self.addObject(Object(Representation(Line(width, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))), 0,height, -90)
-        # TODO : Trouver comment récupérer la taille de la fenêtre PyQt
+    def hasWalls(self):
+        return self._hasWalls
+
+    def drawWalls(self,w,h):
+        if not self._hasWalls:
+            self.addObject(Object(Representation(Line(h,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
+            self.addObject(Object(Representation(Line(h,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),w,0)
+            self.addObject(Object(Representation(Line(w,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
+            self.addObject(Object(Representation(Line(w,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,h,-90)
+            self._hasWalls=True
+

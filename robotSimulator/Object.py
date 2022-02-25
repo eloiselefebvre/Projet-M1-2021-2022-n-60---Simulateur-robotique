@@ -12,7 +12,6 @@ class Object:
         self._representation = representation
         self._env= None
         self._collided = False
-        self._solid = True
         self._id = self.generateDefaultID()
         self._lock=False
 
@@ -78,12 +77,6 @@ class Object:
     def setCollidedState(self,state):
         self._collided=state
 
-    def isSolid(self):
-        return self._solid
-
-    def setSolid(self,solid):
-        self._solid=solid
-
     def isCollided(self):
         if not self._collided:
             for obj in self._env.getObjects():
@@ -93,8 +86,6 @@ class Object:
 
     # MSO TODO : attention, par convention, les méthodes isXXX() renvoient des booléens. J'ai l'impression qu'ici, on renvoie des intersections. Nom à revoir
     def isCollidedWith(self,obj):
-        if not self._solid or not obj.isSolid():
-            return []
         return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
 
 

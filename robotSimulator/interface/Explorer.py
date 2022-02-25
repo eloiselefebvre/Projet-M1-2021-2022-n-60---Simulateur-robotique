@@ -32,21 +32,11 @@ class Explorer(QTreeWidget):
         self._lockButtons = []
         self.treeView()
 
-    def printObjects(self):
-        text=""
-        for obj in self._environment.getObjects():
-            element = type(obj).__name__
-            if element != "Object":
-                text+=element+"\n"
-        return text
-
-
     def treeView(self):
+        self.setFixedWidth(320)
         self.setHeaderHidden(True)
         self.setColumnCount(3)
-        self.setColumnWidth(0,230)
-        self.setColumnWidth(1,0)
-        self.setColumnWidth(2,0)
+        self.setColumnWidth(0,240)
         self.setAutoScroll(True)
         self.setStyleSheet("background-color: #21212F")
 
@@ -90,20 +80,23 @@ class Explorer(QTreeWidget):
         for button in self._lockButtons:
             if not button is None:
                 button.clicked.connect(self.toggleObjectLock)
+        self.resizeColumnToContents(1)
+        self.resizeColumnToContents(2)
         #self.expandAll()
 
     def selectionChanged(self, selected, deselected):
-        for obj in self._environment.getObjects():
-            obj.setSelected(False)
-        for item in self._allItems:
-            item.setColor(self.ITEM_COLOR)
-        crawler = self.currentItem()
-        crawler.setColor(self.CRAWLER_COLOR)
-        if crawler in self._mainItems:
-            selected_obj = self._mainObjects[self._mainItems.index(crawler)]
-        else:
-            selected_obj = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
-        selected_obj.setSelected(True)
+        if self.selectedIndexes():
+            for obj in self._environment.getObjects():
+                obj.setSelected(False)
+            for item in self._allItems:
+                item.setColor(self.ITEM_COLOR)
+            crawler = self.currentItem()
+            crawler.setColor(self.CRAWLER_COLOR)
+            if crawler in self._mainItems:
+                selected_obj = self._mainObjects[self._mainItems.index(crawler)]
+            else:
+                selected_obj = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
+            selected_obj.setSelected(True)
 
     def setSelectedItem(self,obj):
         self.clearSelection()
@@ -155,6 +148,7 @@ class VisibilityButton(QPushButton):
         self.setFlat(True)
         self._visibleObj=visibleObj
         self.setVisibleIcon()
+        self.setFixedWidth(28)
 
     def setVisibleIcon(self):
         if self._visibleObj:
@@ -181,6 +175,7 @@ class LockButton(QPushButton):
         self.setFlat(True)
         self._lockObj = lockObj
         self.setLockIcon()
+        self.setFixedWidth(28)
 
     def setLockIcon(self):
         if self._lockObj:

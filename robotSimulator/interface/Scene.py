@@ -11,9 +11,12 @@ class Scene(QWidget):
         self._drag=False
         self._selectedObj = None
         self._selectionOffset=(0,0)
+        self._maximized = False
 
     def paintEvent(self,event):
         for obj in self._environment.getObjects():
+            obj.paint(self)
+        for obj in self._environment.getVirtualObjects():
             obj.paint(self)
         self.update()
 
@@ -44,4 +47,11 @@ class Scene(QWidget):
                 dy = mousePose.y() - pose.getY()
                 self._selectionOffset=(dx,dy)
         self._explorer.setSelectedItem(self._selectedObj)
+
+    def maximized(self):
+        self._maximized=True
+
+    def resizeEvent(self,event):
+        if self._maximized and not self._environment.hasWalls():
+            self._environment.drawWalls(self.width(),self.height())
 
