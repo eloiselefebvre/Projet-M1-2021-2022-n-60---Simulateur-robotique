@@ -5,8 +5,7 @@ class MenuBar(QMenuBar):
 
     def __init__(self):
         super().__init__()
-        self._menuBar = QMenuBar()
-        self._menuBar.setStyleSheet("#F0F0F0")
+        self.setStyleSheet("background-color : #21212F")
 
 
 

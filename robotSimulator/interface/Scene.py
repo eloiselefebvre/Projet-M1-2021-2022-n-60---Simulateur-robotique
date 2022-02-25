@@ -54,10 +54,7 @@ class Scene(QWidget):
 
     def resizeEvent(self,event):
         if self._maximized:
-            #if self._environment.getSize() is not None:
-            #self._environment.setSize(self.width(),self.height())
             self._environment.drawWalls(self.width(),self.height())
-            #print(self.width(),self.height())
 
 
 
