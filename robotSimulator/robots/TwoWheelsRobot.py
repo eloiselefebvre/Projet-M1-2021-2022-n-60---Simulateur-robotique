@@ -49,8 +49,6 @@ class TwoWheelsRobot(Robot):
             self._pose.rotate(dPhi)
 
             self.isCollided()
-            # compute collisions with environment objs
-            # if collision : self._collided = True
 
         super().move()
 

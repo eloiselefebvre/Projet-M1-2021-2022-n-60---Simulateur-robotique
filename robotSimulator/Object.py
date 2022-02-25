@@ -7,6 +7,8 @@ class Object:
 
     SELECTED_COLOR = "#25CCF7"
 
+    # TODO : Gestion des ID des sensors dans l'environnement
+
     def __init__(self,representation):
         self._pose = None
         self._representation = representation
