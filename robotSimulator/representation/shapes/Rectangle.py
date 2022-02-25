@@ -2,7 +2,6 @@ from PyQt5.QtCore import QRect, Qt, QLineF
 from PyQt5.QtGui import QPen, QBrush
 from . import Shape
 from .Point import Point
-from .Line import Line
 
 class Rectangle(Shape):
 

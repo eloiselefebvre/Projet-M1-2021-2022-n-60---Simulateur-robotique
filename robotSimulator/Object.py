@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QPainter
 
 from robotSimulator.representation.shapes import Border
-
+from robotSimulator.Rescaling import Rescaling
 
 class Object:
 
@@ -22,6 +22,8 @@ class Object:
 
     def paint(self, window):
         painter = QPainter(window)
+        painter.translate(Rescaling.offsetX, Rescaling.offsetY)
+        painter.scale(Rescaling.zoom,Rescaling.zoom)
         self._representation.paint(painter)
 
     def setPose(self,pose):

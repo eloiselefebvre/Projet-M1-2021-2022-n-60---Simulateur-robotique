@@ -9,7 +9,6 @@ from ..Obstacle import Obstacle
 from ..sensors.Sensor import Sensor
 from ..actuators.Actuator import Actuator
 
-
 class Explorer(QTreeWidget):
 
     ITEM_COLOR = "#63656D"
