@@ -38,5 +38,6 @@ class Interface(QMainWindow):
         self.showMaximized()
         self._sceneWidget.maximized()
 
+
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

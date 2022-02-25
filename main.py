@@ -1,5 +1,5 @@
 from robotSimulator import examples
 
-examples.LIDARTest()
+examples.usingFuzzyLogicToAvoidObstacle()
 
 

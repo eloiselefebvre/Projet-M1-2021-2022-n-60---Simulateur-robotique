@@ -12,6 +12,7 @@ class Scene(QWidget):
         self._selectedObj = None
         self._selectionOffset=(0,0)
         self._maximized = False
+        self._initialSize = None
 
     def paintEvent(self,event):
         for obj in self._environment.getObjects():
@@ -52,6 +53,11 @@ class Scene(QWidget):
         self._maximized=True
 
     def resizeEvent(self,event):
-        if self._maximized and not self._environment.hasWalls():
+        if self._maximized:
+            #if self._environment.getSize() is not None:
+            #self._environment.setSize(self.width(),self.height())
             self._environment.drawWalls(self.width(),self.height())
+            #print(self.width(),self.height())
+
+
 
