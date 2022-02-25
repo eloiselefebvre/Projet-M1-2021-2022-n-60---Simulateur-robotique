@@ -9,7 +9,7 @@ class Labyrinth():
 
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
     DEFAULT_BORDER_SCREEN_WIDTH = 2
-    INTERVAL_SIZE = 180
+    INTERVAL_SIZE = 150
 
 
     def __init__(self,environment):
@@ -24,21 +24,15 @@ class Labyrinth():
     def drawGrid(self):
         for i in range(self._nbLine+1):
             for j in range(self._nbColumn+1):
-                print("i:",i)
-                print("j:", j)
 
-                probability=random.randint(1, 2)
-                if probability==1:
-                    if j!=0 and j!= self._nbColumn:
-                        if j!=0:
-                            self._environment.addObject(Object(Representation(Line(self.INTERVAL_SIZE, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE)
-                    if j==self._nbColumn:
-                        self._environment.addObject(Object(Representation(Line(self.INTERVAL_SIZE+self._width-j*self.INTERVAL_SIZE, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE)
-                if probability==2:
-                    if i!=0 and i!= self._nbLine:
-                        self._environment.addObject(Object(Representation(Line(self.INTERVAL_SIZE, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE,-90)
-                    if i==self._nbLine:
-                        self._environment.addObject(Object(Representation(Line(self.INTERVAL_SIZE+self._height-i*self.INTERVAL_SIZE, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE,-90)
+                if random.randint(0,1):
+                    if j!=0:
+                        dh=self._height-i*self.INTERVAL_SIZE if i==self._nbLine else 0
+                        self._environment.addObject(Object(Representation(Line(self.INTERVAL_SIZE+dh, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE)
+                else:
+                    if i!=0:
+                        dw=self._width-j*self.INTERVAL_SIZE if j==self._nbColumn else 0
+                        self._environment.addObject(Object(Representation(Line(self.INTERVAL_SIZE+dw, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE,-90)
 
 
 
