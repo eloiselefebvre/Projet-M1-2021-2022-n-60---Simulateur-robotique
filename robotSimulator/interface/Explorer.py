@@ -1,7 +1,5 @@
-from PyQt5 import QtGui
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QStandardItemModel, QFont, QStandardItem, QIcon, QBrush
-from PyQt5.QtWidgets import QTreeView, QWidget, QTreeWidget, QTreeWidgetItem, QPushButton
+from PyQt5.QtGui import QColor, QFont, QIcon
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton
 
 from robotSimulator.config import config
 from ..Object import Object
@@ -18,6 +16,7 @@ class Explorer(QTreeWidget):
     CRAWLER_COLOR = "#DFE0E5"
     BORDER_COLOR = "#25CCF7"
 
+    # TODO : Revoir la structure du code
 
     def __init__(self,environment):
         super().__init__()
@@ -45,13 +44,14 @@ class Explorer(QTreeWidget):
                 parent = Item(self,obj.getID(), 12, setBold=True)
                 self._visibilityButtons.append(VisibilityButton())
                 self.setItemWidget(parent, 1, self._visibilityButtons[-1])
+                self._lockButtons.append(LockButton(obj.isLock()))
+                self.setItemWidget(parent, 2, self._lockButtons[-1])
                 if isinstance(obj,Robot):
-                    self._lockButtons.append(None)
                     parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/robot.svg"))
                 if isinstance(obj,Obstacle):
                     parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/obstacle.svg"))
-                    self._lockButtons.append(LockButton(obj.isLock()))
-                    self.setItemWidget(parent, 2,self._lockButtons[-1])
+                if isinstance(obj, Sensor):
+                    parent.setIcon(0, QIcon(f"{config['ressourcesPath']}/sensor.svg"))
                 self._mainItems.append(parent)
                 self._mainObjects.append(obj)
                 self._allObjects.append(obj)
@@ -78,8 +78,7 @@ class Explorer(QTreeWidget):
             button.clicked.connect(self.toggleObjectVisibily)
 
         for button in self._lockButtons:
-            if not button is None:
-                button.clicked.connect(self.toggleObjectLock)
+            button.clicked.connect(self.toggleObjectLock)
         self.resizeColumnToContents(1)
         self.resizeColumnToContents(2)
         #self.expandAll()

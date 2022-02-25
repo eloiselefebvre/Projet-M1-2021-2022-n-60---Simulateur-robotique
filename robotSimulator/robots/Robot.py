@@ -35,7 +35,8 @@ class Robot(ABC,Object):
     def move(self):
         self.drawTrajectory()
         for comp in self._components:
-            comp.refresh()
+            if hasattr(comp,"refresh"):
+                comp.refresh()
 
     def getComponents(self):
         return self._components

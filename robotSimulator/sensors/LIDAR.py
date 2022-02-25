@@ -10,6 +10,8 @@ class LIDAR(Telemeter):
     ANGULAR_RESOLUTION = 6
     SCAN_RATE = 300 # rpm
 
+    # TODO : Revoir le fonctionnement du LIDAR dans l'environnement
+
     def __init__(self, color="#f00"):
         super().__init__(color)
         self._representation.setShape(Circle(6,"#1C1E32"))
@@ -30,7 +32,6 @@ class LIDAR(Telemeter):
             self._laserLine.setLength(3)
             if self._parent is not None and intersection is not None:
                 point = Object(Representation(Point(int(intersection.x()), int(intersection.y()), self._color)))
-                # point.setSolid(False)
                 point.setVisible(self.isVisible() and (self._parent.isVisible() if self._parent is not None else True))
                 self._intersectionsBuffer[i]=point
                 self._parent.getEnv().addVirtualObject(point)
