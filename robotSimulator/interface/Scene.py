@@ -61,24 +61,17 @@ class Scene(QWidget):
         # TODO : Faire le zoom sur le curseur
         dir=event.angleDelta().y()
         dir/=abs(dir)
-        # pz=Rescaling.zoom
-        if dir>0:
-            Rescaling.zoomIn()
-        else:
-            Rescaling.zoomOut()
-        # if Rescaling.zoom!=Rescaling.min_zoom and Rescaling.zoom!=Rescaling.max_zoom:
-        #     s=((self._size-self._size*Rescaling.zoom)/2)
-        #     offset = QPoint(s.width(),s.height())
-        #     print("\nreal",event.pos()-QPoint(int(500*Rescaling.zoom),int(500*Rescaling.zoom)))
-        #     print(500*Rescaling.zoom,event.pos(),event.pos()-((event.pos()-Rescaling.getOffset())+dir*event.pos()*Rescaling.dzoom),((event.pos()-Rescaling.getOffset())+dir*event.pos()*Rescaling.dzoom))
-        #     #Rescaling.setOffset(event.pos()-QPoint(int(500*Rescaling.zoom),int(500*Rescaling.zoom)))
-        #     Rescaling.setOffset(event.pos()-((event.pos()-Rescaling.getOffset())+dir*event.pos()*Rescaling.dzoom))
-        #     #Rescaling.setAfterOffset()
-        # if Rescaling.zoom==1:
-        #     Rescaling.setAfterOffset(QPoint(0,0))
+
+        pos1 = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
+
+        Rescaling.zoomIn() if dir>0 else Rescaling.zoomOut()
+
         s = ((self._size - self._size * Rescaling.zoom) / 2)
-        offset = QPoint(s.width(), s.height())
-        Rescaling.setOffset(offset)
+        offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
+        pos2 = (event.pos() - offset) / Rescaling.zoom
+        # pos1 doit devenir pos1 transformée dans le nouveau zoom
+        getEqualCoordinatesOffset = (pos1-pos2)*Rescaling.zoom
+        Rescaling.setOffset(offset-getEqualCoordinatesOffset)
 
     def maximized(self):
         self._maximized=True
