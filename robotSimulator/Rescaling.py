@@ -8,6 +8,8 @@ class Rescaling:
     max_zoom=1.0
     offsetX = 0
     offsetY = 0
+    afterOffsetX = 0
+    afterOffsetY = 0
     innerOffset=QPoint(0,0)
 
     dzoom = 0.1
@@ -37,6 +39,14 @@ class Rescaling:
         # Rescaling.offsetY=scaleOffset.y()-offset.y()
         Rescaling.offsetX=offset.x()
         Rescaling.offsetY=offset.y()
+
+    @staticmethod
+    def setAfterOffset(offset):
+        # scaleOffset = offset/Rescaling.zoom
+        # Rescaling.offsetX=scaleOffset.x()-offset.x()
+        # Rescaling.offsetY=scaleOffset.y()-offset.y()
+        Rescaling.afterOffsetX=offset.x()
+        Rescaling.afterOffsetY=offset.y()
 
     @staticmethod
     def setInnerOffset(offset):
