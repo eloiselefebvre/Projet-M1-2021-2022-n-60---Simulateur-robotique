@@ -45,6 +45,8 @@ class ExplorerInfo(QWidget):
         if isinstance(self._selectedObject,Sensor):
             icon = QPixmap(f"{config['ressourcesPath']}/sensor.svg")
 
+        # TODO: Mettre à jour les valeurs en temps réel
+
         labelIcon.setPixmap(icon)
         labelIcon.setFixedWidth(50)
 
