@@ -27,6 +27,14 @@ class Rescaling:
         Rescaling.zoom = max(Rescaling.zoom, Rescaling.min_zoom)
 
     @staticmethod
+    def zoomToFit(): # TODO : Prendre en compte la taille de l'environnement
+        Rescaling.zoom=1
+        Rescaling.offsetX=0
+        Rescaling.offsetY=0
+        print("ok")
+
+
+    @staticmethod
     def setOffset(offset):
         Rescaling.offsetX=offset.x()
         Rescaling.offsetY=offset.y()

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout
 
 from robotSimulator.interface.ExplorerInfo import ExplorerInfo
+from robotSimulator.interface.Footer import Footer
 from robotSimulator.interface.Header import Header
 from robotSimulator.interface.Scene import Scene
 from robotSimulator.interface.Explorer import Explorer
@@ -23,20 +24,23 @@ class Interface(QMainWindow):
         self._headerWidget=Header()
         self._toolsBarWidget = ToolsBar(self._environment,self._simulation)
         self._explorerWidget=Explorer(self._environment)
-        self._sceneWidget=Scene(self._environment,self._explorerWidget)
+        self._footer=Footer()
+        self._sceneWidget=Scene(self._environment,self._explorerWidget,self._footer)
 
         self._informationLayout.addWidget(self._sceneWidget,90)
         self._informationLayout.addWidget(self._explorerWidget,10)
 
         #ajout des deux layout du QVBoxLayout
-        self._generalLayout.addWidget(self._headerWidget)
         self._generalLayout.addWidget(self._toolsBarWidget)
         self._toolsBarWidget.setFixedHeight(70)
         self._generalLayout.addLayout(self._informationLayout)
 
         # TODO : Trouver comment retirer les marges dans les layouts
 
+        self.setMenuBar(self._headerWidget)
         self.setCentralWidget(widget)
+        self.setStatusBar(self._footer)
+
 
         self.showMaximized()
         self._sceneWidget.maximized()
