@@ -1,9 +1,10 @@
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
+from robotSimulator.Obstacle import Obstacle
 from robotSimulator.config import config
-from robotSimulator.representation.shapes import Rectangle
-from robotSimulator.robots import Robot
+from robotSimulator.robots.Robot import Robot
+from robotSimulator.sensors.Sensor import Sensor
 
 
 class ExplorerInfo(QWidget):
@@ -28,10 +29,33 @@ class ExplorerInfo(QWidget):
         # self._layoutInfo.addWidget(self.widthAndHeightInformations())
 
     def labelInformation(self):
-        labelInformations=QLabel("Informations")
+        labelInformations=QWidget()
+        labelInformationsLayout=QHBoxLayout()
+        labelInformations.setLayout(labelInformationsLayout)
+
+        labelIcon = QLabel()
+        icon=None
+
+        if isinstance(self._selectedObject,Robot):
+            icon = QPixmap(f"{config['ressourcesPath']}/robot.svg")
+
+        if isinstance(self._selectedObject,Obstacle):
+            icon = QPixmap(f"{config['ressourcesPath']}/obstacle.svg")
+
+        if isinstance(self._selectedObject,Sensor):
+            icon = QPixmap(f"{config['ressourcesPath']}/sensor.svg")
+
+        labelIcon.setPixmap(icon)
+        labelIcon.setFixedWidth(50)
+
+        labelInformationsID=QLabel(self._selectedObject.getID())
         labelInformations.setFixedHeight(50)
-        labelInformations.setFont(QFont("Sanserif",18))
+        labelInformations.setFont(QFont("Sanserif",30))
         labelInformations.setStyleSheet("color:#f9f9f9")
+
+        labelInformationsLayout.addWidget(labelIcon)
+        labelInformationsLayout.addWidget(labelInformationsID)
+
         return labelInformations
 
     def positionInformations(self):
