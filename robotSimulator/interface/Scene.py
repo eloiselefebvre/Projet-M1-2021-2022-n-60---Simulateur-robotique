@@ -4,15 +4,17 @@ from robotSimulator.Rescaling import Rescaling
 
 class Scene(QWidget):
 
-    def __init__(self,environment,explorer):
+    def __init__(self,environment,explorer,footer):
         super().__init__()
         self._environment = environment
         self._explorer=explorer
+        self._footer=footer
         self._drag=False
         self._selectedObj = None
         self._selectionOffset=(0,0)
         self._maximized = False
         self._size=None
+        self.setMouseTracking(True)
 
     def paintEvent(self,event):
         for obj in self._environment.getObjects():
@@ -33,8 +35,9 @@ class Scene(QWidget):
             self._selectedObj = None
 
     def mouseMoveEvent(self, event):
+        convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
+        self._footer.setMousePose(convertedMousePose)
         if self._drag:
-            convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
             if self._selectedObj is not None and not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
                     if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
@@ -65,6 +68,7 @@ class Scene(QWidget):
         pos1 = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
 
         Rescaling.zoomIn() if dir>0 else Rescaling.zoomOut()
+        self._footer.setZoom(Rescaling.zoom)
 
         s = ((self._size - self._size * Rescaling.zoom) / 2)
         offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
