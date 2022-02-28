@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QIcon, QFont, QColor, QPixmap
-from PyQt5.QtWidgets import QHBoxLayout, QWidget, QStatusBar, QMenuBar, QMenu, QAction, QPushButton, QLabel
+from PyQt5.QtWidgets import QHBoxLayout, QWidget, QStatusBar, QMenuBar, QMenu, QAction, QPushButton, QLabel, QTextEdit, \
+    QWidgetAction, QLineEdit
 
 from robotSimulator.Rescaling import Rescaling
 from robotSimulator.config import config
@@ -42,9 +43,18 @@ class Footer(QStatusBar):
         zoom_to_fit = QAction("Zoom to fit", self)
         zoom_to_fit.triggered.connect(self.zoomToFit)
 
+        zoom_input = QWidgetAction(self)
+        self._zoom_edit = QLineEdit()
+        self._zoom_edit.setText("100%")
+        self._zoom_edit.setStyleSheet("border: none")
+
+        zoom_input.setDefaultWidget(self._zoom_edit)
+        zoom_menu_list.addAction(zoom_input)
+        zoom_menu_list.addSeparator()
         zoom_menu_list.addAction(zoom_in)
         zoom_menu_list.addAction(zoom_out)
         zoom_menu_list.addAction(zoom_to_fit)
+
         zoom_menu_list.setLayoutDirection(Qt.LayoutDirection(0))
 
         zoom_menu.setStyleSheet("color : #444")
@@ -76,7 +86,9 @@ class Footer(QStatusBar):
         self.addPermanentWidget(zoom)
 
     def setZoom(self,zoom):
-        self._zoom_text.setText(f"{round(zoom*100)}%")
+        zoom=round(zoom*100)
+        self._zoom_edit.setText(f"{zoom}%")
+        self._zoom_text.setText(f"{zoom}%")
 
     def zoomIn(self):
         Rescaling.zoomIn()
