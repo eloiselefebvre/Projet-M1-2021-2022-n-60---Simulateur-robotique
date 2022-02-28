@@ -5,7 +5,7 @@ class Rescaling:
 
     zoom = 1.0
     min_zoom=0.1
-    max_zoom=4.0
+    max_zoom=3.0
 
     offsetX = 0
     offsetY = 0

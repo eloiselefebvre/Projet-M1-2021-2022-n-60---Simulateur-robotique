@@ -39,7 +39,7 @@ class Explorer(QTreeWidget):
         self.setColumnCount(3)
         self.setColumnWidth(0,240)
         self.setAutoScroll(True)
-        self.setStyleSheet("background-color: #21212F")
+        self.setStyleSheet("background-color: #151825")
 
         for obj in self._environment.getObjects():
              if type(obj) != Object:
