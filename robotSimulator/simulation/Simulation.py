@@ -73,11 +73,16 @@ class Simulation():
     def increaseAcceleration(self):
         pas=0.1
         self._acceleration+=pas
+        print("acc:",self._acceleration)
 
     def decreaseAcceleration(self):
         pas=0.1
+        print("acc:",self._acceleration)
         if self._acceleration-pas>0:
             self._acceleration-=pas
+
+    def getAcceleration(self):
+        return self._acceleration
 
     def playPause(self):
         self._play=not self._play

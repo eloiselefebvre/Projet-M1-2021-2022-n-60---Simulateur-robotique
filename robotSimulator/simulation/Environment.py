@@ -19,7 +19,6 @@ class Environment:
             obj.setEnv(self)
             self._objects.append(obj)
 
-
     def addVirtualObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
             obj.setPose(Pose(x,y,orientation))
@@ -29,7 +28,6 @@ class Environment:
     def removeObject(self,obj):
         if obj in self._objects:
             self._objects.remove(obj)
-
 
     def removeVirtualObject(self,obj):
         if obj in self._virtualObjects:

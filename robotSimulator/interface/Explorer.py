@@ -2,6 +2,7 @@ from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton, QVBoxLayout, QWidget
 
 from robotSimulator.config import config
+from .ExplorerInfo import ExplorerInfo
 from ..Object import Object
 
 from ..robots.Robot import Robot
@@ -23,6 +24,7 @@ class Explorer(QTreeWidget):
         self._layout = QVBoxLayout()
         self.setLayout(self._layout)
         self._layout.setSpacing(0)
+        self._showExplorerInfo = False
         self._mainItems=[]
         self._allItems=[]
         self._allObjects = []
@@ -69,7 +71,6 @@ class Explorer(QTreeWidget):
                         self._childrenButtons[-1].append(self._visibilityButtons[-1])
                         self._allObjects.append(comp)
                         parent.addChild(child)
-
                         if isinstance(comp,Actuator):
                             child.setIcon(0,QIcon(f"{config['ressourcesPath']}/actuator.svg"))
                         if isinstance(comp,Sensor):
@@ -90,8 +91,21 @@ class Explorer(QTreeWidget):
         self._layout.addWidget(widget,10)
         widget.setStyleSheet("background-color: #f0f0f0")
 
+    def showExplorerInfo(self,obj):
+        if not self._showExplorerInfo:
+            self._showExplorerInfo=True
+            self._explorerInfo = ExplorerInfo(self._environment,obj)
+            self._explorerInfo.setStyleSheet("background-color: #21212F")
+            self._explorerInfo.setFixedHeight(400)
+            self._layout.addWidget(self._explorerInfo)
+
+    def hideExplorerInfo(self):
+        if self._showExplorerInfo:
+            self._showExplorerInfo=False
+            self._layout.removeWidget(self._explorerInfo)
 
     def selectionChanged(self, selected, deselected):
+        self.hideExplorerInfo()
         if self.selectedIndexes():
             for obj in self._environment.getObjects():
                 obj.setSelected(False)
@@ -104,6 +118,7 @@ class Explorer(QTreeWidget):
             else:
                 selected_obj = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
             selected_obj.setSelected(True)
+            self.showExplorerInfo(selected_obj)
 
     def setSelectedItem(self,obj):
         self.clearSelection()
@@ -134,6 +149,7 @@ class Explorer(QTreeWidget):
         obj=self._mainObjects[self._lockButtons.index(button)]
         obj.toggleLock()
         button.setLockObject(obj.isLock())
+
 
 class Item(QTreeWidgetItem):
 
