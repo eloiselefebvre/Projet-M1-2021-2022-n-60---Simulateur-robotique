@@ -43,10 +43,11 @@ class Scene(QWidget):
                 pose.move(convertedMousePose.x()-self._selectionOffset[0],convertedMousePose.y()-self._selectionOffset[1])
 
     def _isClickedObject(self, mousePose):
+        # TODO : Ne pas arrêter le robot s'il est verrouillé
         convertedMousePose = (mousePose - Rescaling.getOffset()) / Rescaling.zoom
         for obj in self._environment.getObjects():
             obj.setSelected(False)
-            if obj.getRepresentation().contains(convertedMousePose) and obj.isVisible():  # contains mousePose
+            if obj.getRepresentation().contains(convertedMousePose) and obj.isVisible():
                 obj.setSelected(True)
                 self._selectedObj = obj
                 pose = obj.getPose()
@@ -58,7 +59,6 @@ class Scene(QWidget):
         self._explorer.setSelectedItem(self._selectedObj)
 
     def wheelEvent(self, event):
-        # TODO : Faire le zoom sur le curseur
         dir=event.angleDelta().y()
         dir/=abs(dir)
 
