@@ -99,5 +99,9 @@ class Scene(QWidget):
     def resizeEvent(self,event):
         if self._maximized and self._size is None:
             self._size=self.size()
-            self._environment.drawWalls(self.width(),self.height())
+            if not self._environment.hasSize():
+                self._environment.setSize(self._size)
+            Rescaling.sceneSize=self._size
+            Rescaling.envSize = self._environment.getSize()
+            self._environment.drawWalls()
 

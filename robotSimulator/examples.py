@@ -177,7 +177,7 @@ def usingFuzzyLogicToAvoidObstacle():
     rob.addComponent(leftTelemeter, 20, 20, -35)
     rob.addComponent(rightTelemeter, -20, 20, 35)
 
-    env = Environment()
+    env = Environment(4000,2000)
     env.addObject(rob,1000,500,100)
     # map = Map(env)
     # map.generateObstacles()

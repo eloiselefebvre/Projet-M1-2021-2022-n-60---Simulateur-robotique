@@ -12,9 +12,6 @@ from robotSimulator.config import *
 
 class Simulation():
 
-    # MSO TODO : ajouter un paramètre pour le pas de temps + un membre dans la classe
-    # (servira aussi plus tard pour l'interface graphique : un slider permettra de modifier ce membre)
-
     MINIMUM_TIME_STEP = 0.01
 
     def __init__(self,environment=None):

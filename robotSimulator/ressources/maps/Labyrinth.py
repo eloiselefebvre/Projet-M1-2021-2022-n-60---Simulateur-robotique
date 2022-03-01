@@ -20,7 +20,6 @@ class Labyrinth():
         self._nbLine = self._height//self.INTERVAL_SIZE
         self.drawGrid()
 
-
     def drawGrid(self):
         for i in range(self._nbLine+1):
             for j in range(self._nbColumn+1):

@@ -1,3 +1,5 @@
+from PyQt5.QtCore import QSize
+
 from robotSimulator import Object, Pose
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
@@ -7,11 +9,11 @@ class Environment:
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
-    def __init__(self,size=None):
+    def __init__(self,width=0,height=0):
         self._objects=[]
         self._virtualObjects=[]
         self._hasWalls=False
-        #self._size = size
+        self._size = QSize(width,height)
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
@@ -47,19 +49,19 @@ class Environment:
     def hasWalls(self):
         return self._hasWalls
 
-    def drawWalls(self,w,h):
+    def drawWalls(self):
         if not self._hasWalls:
-            self.addObject(Object(Representation(Line(h,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
-            self.addObject(Object(Representation(Line(h,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),w,0)
-            self.addObject(Object(Representation(Line(w,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
-            self.addObject(Object(Representation(Line(w,self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,h,-90)
+            self.addObject(Object(Representation(Line(self._size.height(),self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0)
+            self.addObject(Object(Representation(Line(self._size.height(),self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),self._size.width(),0)
+            self.addObject(Object(Representation(Line(self._size.width(),self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,0,-90)
+            self.addObject(Object(Representation(Line(self._size.width(),self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,self._size.height(),-90)
             self._hasWalls=True
 
-    # def setSize(self,size):
-    #     self._size=size
-    #
-    # def getSize(self):
-    #     return self._size
-    #
-    # def printSize(self):
-    #     print(self._size)
+    def hasSize(self):
+        return not self._size.isEmpty()
+
+    def setSize(self,size): # QSize
+        self._size=size
+
+    def getSize(self):
+        return self._size
