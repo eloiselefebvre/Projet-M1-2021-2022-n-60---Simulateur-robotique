@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton
 
 from robotSimulator.Obstacle import Obstacle
 from robotSimulator.config import config
@@ -9,9 +9,8 @@ from robotSimulator.sensors.Sensor import Sensor
 
 class ExplorerInfo(QWidget):
 
-    def __init__(self,environment,selectedObject):
+    def __init__(self,selectedObject):
         super().__init__()
-        self._environment = environment
         self._selectedObject = selectedObject
         self.setStyleSheet("background-color: #21212F")
 
@@ -26,7 +25,7 @@ class ExplorerInfo(QWidget):
 
         self._layoutInfo.addWidget(self.labelInformation())
         self._layoutInfo.addWidget(self.positionInformations())
-        # self._layoutInfo.addWidget(self.widthAndHeightInformations())
+        self._layoutInfo.addWidget(self.showTrajectory())
 
     def labelInformation(self):
         labelInformations=QWidget()
@@ -87,37 +86,47 @@ class ExplorerInfo(QWidget):
 
         return positionInformationsWidget
 
-    # def widthAndHeightInformations(self):
-    #     widthAndHeightInformationsWidget=QWidget()
-    #     widthAndHeightInformationsLayout=QHBoxLayout()
-    #     widthAndHeightInformationsWidget.setLayout(widthAndHeightInformationsLayout)
-    #
-    #     widthWidget = QLabel(str(round(self._selectedObject.getWidth(), 0)))
-    #     widthWidget.setFont(QFont("Sanserif", 12))
-    #     widthWidget.setStyleSheet("color:#f9f9f9")
-    #
-    #     widthIcon = QLabel()
-    #     icon = QPixmap(f"{config['ressourcesPath']}/width.svg")
-    #     widthIcon.setPixmap(icon)
-    #
-    #     if isinstance(self._selectedObject,Rectangle):
-    #         heightWidget = QLabel(str(round(self._selectedObject.getHeight(), 0)))
-    #         heightWidget.setFont(QFont("Sanserif", 12))
-    #         heightWidget.setStyleSheet("color:#f9f9f9")
-    #
-    #     heightIcon = QLabel()
-    #     icon2 = QPixmap(f"{config['ressourcesPath']}/height.svg")
-    #     heightIcon.setPixmap(icon2)
-    #
-    #     widthAndHeightInformationsLayout.addWidget(widthIcon)
-    #     widthAndHeightInformationsLayout.addWidget(widthWidget)
-    #     widthAndHeightInformationsLayout.addWidget(heightIcon)
-    #     widthAndHeightInformationsLayout.addWidget(heightWidget)
-    #
-    #     return widthAndHeightInformationsWidget
+    def showTrajectory(self):
+        widgetTrajectory = QWidget()
+        layoutTrajectory = QHBoxLayout()
+        widgetTrajectory.setLayout(layoutTrajectory)
 
+        trajectoryLabel = QLabel("Trajectory")
+        trajectoryLabel.setFont(QFont("Sanserif",15))
+        trajectoryLabel.setStyleSheet("color:#f9f9f9")
+        layoutTrajectory.addWidget(trajectoryLabel,90)
 
+        self._trajectoryButton=VisibilityTrajectory()
+        self._trajectoryButton.clicked.connect(self.clickedTrajectoryButton)
+        layoutTrajectory.addWidget(self._trajectoryButton,10)
 
+        return widgetTrajectory
+
+    def clickedTrajectoryButton(self):
+        if isinstance(self._selectedObject,Robot):
+            self._selectedObject.setDrawTrajectory()
+            print(self._selectedObject)
+            if self._selectedObject.getDrawTrajectory():
+                self._trajectoryButton.setVisibleIcon(True)
+                self._selectedObject.showTrajectory()
+            else:
+                self._trajectoryButton.setVisibleIcon(False)
+                self._selectedObject.hideTrajectory()
+
+class VisibilityTrajectory(QPushButton):
+
+    def __init__(self):
+        super().__init__()
+        self.setFlat(True)
+        self._visibleTrajectory=None
+        self.setVisibleIcon(False)
+        self.setFixedWidth(28)
+
+    def setVisibleIcon(self,bool):
+        if bool:
+            self.setIcon(QIcon(f"{config['ressourcesPath']}/visible.svg"))
+        else:
+            self.setIcon(QIcon(f"{config['ressourcesPath']}/invisible.svg"))
 
 
 

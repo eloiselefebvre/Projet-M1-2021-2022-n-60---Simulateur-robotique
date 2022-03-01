@@ -23,7 +23,6 @@ class ToolsBar(QToolBar):
         self._tb.addAction(self.increaseAcceleration())
         self._playPauseAction=self.playPause()
         self._tb.addAction(self._playPauseAction)
-
         self._tb.setMovable(False)
 
     def increaseAcceleration(self):
@@ -67,6 +66,7 @@ class ToolsBar(QToolBar):
         else:
             icon =QIcon(f"{config['ressourcesPath']}/play.svg")
         self._playPauseAction.setIcon(icon)
+
 
 
 

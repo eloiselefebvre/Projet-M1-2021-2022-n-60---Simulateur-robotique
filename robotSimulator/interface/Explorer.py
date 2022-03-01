@@ -48,7 +48,6 @@ class Explorer(QTreeWidget):
         layout.addWidget(generalView)
         generalViewWidget.setFixedWidth(300)
         generalViewWidget.setFixedHeight(200)
-        Rescaling.zoomToFit()
         generalViewWidget.setStyleSheet("background-color:#f0f0f0")
         return generalViewWidget
 
@@ -111,7 +110,7 @@ class Explorer(QTreeWidget):
     def showExplorerInfo(self,obj):
         if not self._showExplorerInfo:
             self._showExplorerInfo=True
-            self._explorerInfo = ExplorerInfo(self._environment,obj)
+            self._explorerInfo = ExplorerInfo(obj)
             self._explorerInfo.setStyleSheet("background-color: #21212F")
             self._explorerInfo.setFixedHeight(400)
             self._layout.addWidget(self._explorerInfo)
