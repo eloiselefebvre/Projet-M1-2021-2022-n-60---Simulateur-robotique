@@ -15,7 +15,7 @@ class ToolsBar(QToolBar):
         self._interface=interface
 
         self._tb = self._interface.addToolBar("ToolBar")
-        self._tb.setStyleSheet("background: #151825")
+        self._tb.setStyleSheet("background: #21212f")
 
         self._tb.setFixedHeight(70)
         self._tb.addAction(self.decreaseAcceleration())
