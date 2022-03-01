@@ -9,12 +9,15 @@ class Scene(QWidget):
         self._environment = environment
         self._explorer=explorer
         self._footer=footer
-        self._drag=False
+        self._dragObject=False
+        self._dragScene = False
+        self._dragSceneOrigin=QPoint(0,0)
         self._selectedObj = None
         self._selectionOffset=(0,0)
         self._maximized = False
         self._size=None
         self.setMouseTracking(True)
+        self.setCursor(Qt.OpenHandCursor)
 
     def paintEvent(self,event):
         for obj in self._environment.getObjects():
@@ -24,12 +27,19 @@ class Scene(QWidget):
         self.update()
 
     def mousePressEvent(self, event):
+        self.setCursor(Qt.ClosedHandCursor)
         if event.button()==Qt.LeftButton:
             self._isClickedObject(event.pos())
-            self._drag=True
+            self._dragObject=True
+
+        if event.button() == Qt.MiddleButton:
+            self._dragScene = True
+            self._dragSceneOrigin = event.pos()
 
     def mouseReleaseEvent(self,event):
-        self._drag=False
+        self.setCursor(Qt.OpenHandCursor)
+        self._dragObject=False
+        self._dragScene=False
         if self._selectedObj is not None:
             self._selectedObj.setCollidedState(False)
             self._selectedObj = None
@@ -37,13 +47,18 @@ class Scene(QWidget):
     def mouseMoveEvent(self, event):
         convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
         self._footer.setMousePose(convertedMousePose)
-        if self._drag:
+        if self._dragObject:
             if self._selectedObj is not None and not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
                     if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
                         obj.setCollidedState(False)
                 pose = self._selectedObj.getPose()
                 pose.move(convertedMousePose.x()-self._selectionOffset[0],convertedMousePose.y()-self._selectionOffset[1])
+
+        if self._dragScene:
+            current=event.pos()
+            Rescaling.setOffset(Rescaling.getOffset()+(current-self._dragSceneOrigin))
+            self._dragSceneOrigin=current
 
     def _isClickedObject(self, mousePose):
         # TODO : Ne pas arrêter le robot s'il est verrouillé
