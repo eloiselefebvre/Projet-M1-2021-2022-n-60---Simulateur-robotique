@@ -30,8 +30,5 @@ class SceneOverview(QWidget):
         w=int(Rescaling.sceneSize.width()/Rescaling.zoom)
         h=int(Rescaling.sceneSize.height()/Rescaling.zoom)
 
-        painter.drawLine(ox,oy,ox+w,oy)
-        painter.drawLine(ox,oy,ox,oy+h)
-        painter.drawLine(ox,oy+h,ox+w,oy+h)
-        painter.drawLine(ox+w,oy,ox+w,oy+h)
+        painter.drawRect(ox,oy,ox+w,oy+h)
         self.update()
