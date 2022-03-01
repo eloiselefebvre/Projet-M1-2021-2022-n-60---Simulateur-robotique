@@ -270,14 +270,3 @@ def LIDARTest():
     sim.setAcceleration(1)
     sim.run()
     sim.showInterface()
-
-def generateObstaclesTest():
-
-    env = Environment()
-    map = Map(env)
-    map.generateObstacles()
-    #usingFuzzyLogicToAvoidObstacle()
-    sim = Simulation(env)
-    sim.setAcceleration(1)
-    sim.run()
-    sim.showInterface()
