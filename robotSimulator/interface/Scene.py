@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
 from robotSimulator.Rescaling import Rescaling
+from robotSimulator.robots.Robot import Robot
+
 
 class Scene(QWidget):
 
@@ -54,6 +56,8 @@ class Scene(QWidget):
                         obj.setCollidedState(False)
                 pose = self._selectedObj.getPose()
                 pose.move(convertedMousePose.x()-self._selectionOffset[0],convertedMousePose.y()-self._selectionOffset[1])
+                if isinstance(self._selectedObj,Robot):
+                    self._selectedObj.deleteTrajectory()
 
         if self._dragScene:
             current=event.pos()
