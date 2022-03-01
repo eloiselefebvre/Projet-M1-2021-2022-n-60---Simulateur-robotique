@@ -13,10 +13,6 @@ class Rescaling:
     dzoom = 0.1
 
     @staticmethod
-    def setZoom(zoom):
-        Rescaling.zoom=zoom
-
-    @staticmethod
     def zoomIn():
         Rescaling.zoom+=Rescaling.dzoom
         Rescaling.zoom = min(Rescaling.zoom, Rescaling.max_zoom)
@@ -31,8 +27,16 @@ class Rescaling:
         Rescaling.zoom=1
         Rescaling.offsetX=0
         Rescaling.offsetY=0
-        print("ok")
 
+    @staticmethod
+    def setZoom(zoom):
+        if zoom>=Rescaling.min_zoom and zoom<=Rescaling.max_zoom:
+            Rescaling.zoom=zoom
+            return True
+        if zoom>Rescaling.max_zoom:
+            Rescaling.zoom=Rescaling.max_zoom
+            return True
+        return False
 
     @staticmethod
     def setOffset(offset):
