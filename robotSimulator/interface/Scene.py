@@ -27,18 +27,21 @@ class Scene(QWidget):
     def defineExplorer(self,explorer):
         self._explorer=explorer
 
-    def paintEvent(self,event):
-        objects = self._environment.getObjects()
-        objects.extend(self._environment.getVirtualObjects())
+    def paintEvent(self,event): # TODO : Réduire le rafraichissement avec paint event
         painter = QPainter(self)
         painter.translate(Rescaling.offsetX, Rescaling.offsetY)
         painter.scale(Rescaling.zoom, Rescaling.zoom)
-        # print([obj.getRepresentation().getShape() for obj in self._environment.getObjects()])
-        # print("\n",[obj.getRepresentation().getShape() for obj in self._environment.getVirtualObjects()])
-        for obj in objects:
+
+        for obj in self._environment.getObjects():
             painter.save()
             obj.paint(painter)
             painter.restore()
+
+        for obj in self._environment.getVirtualObjects():
+            painter.save()
+            obj.paint(painter)
+            painter.restore()
+
         self.update()
 
     def mousePressEvent(self, event):

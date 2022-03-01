@@ -36,7 +36,6 @@ class Rescaling:
 
     @staticmethod
     def zoomToMiniFit():
-        print(Rescaling.miniSceneSize,Rescaling.envSize)
         Rescaling.miniZoom=min(Rescaling.miniSceneSize.width()/Rescaling.envSize.width(),Rescaling.miniSceneSize.height()/Rescaling.envSize.height())
 
     @staticmethod

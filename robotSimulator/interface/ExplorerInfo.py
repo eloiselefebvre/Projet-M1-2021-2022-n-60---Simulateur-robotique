@@ -105,13 +105,13 @@ class ExplorerInfo(QWidget):
     def clickedTrajectoryButton(self):
         if isinstance(self._selectedObject,Robot):
             self._selectedObject.setDrawTrajectory()
-            print(self._selectedObject)
             if self._selectedObject.getDrawTrajectory():
                 self._trajectoryButton.setVisibleIcon(True)
                 self._selectedObject.showTrajectory()
             else:
                 self._trajectoryButton.setVisibleIcon(False)
                 self._selectedObject.hideTrajectory()
+
 
 class VisibilityTrajectory(QPushButton):
 

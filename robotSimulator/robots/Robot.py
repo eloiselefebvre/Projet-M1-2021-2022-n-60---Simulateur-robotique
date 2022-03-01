@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from robotSimulator import Object
 from ..Component import Component
+
 from ..representation import Representation
 from ..representation.shapes import Point
 from ..sensors.Sensor import Sensor

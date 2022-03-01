@@ -11,14 +11,18 @@ class SceneOverview(QWidget):
         self.setStyleSheet("background-color: #f0f0f0")
 
     def paintEvent(self, event):
-        objects = self._environment.getObjects()
-        objects.extend(self._environment.getVirtualObjects())
         painter = QPainter(self)
         painter.scale(Rescaling.miniZoom, Rescaling.miniZoom)
-        for obj in objects:
+        for obj in self._environment.getObjects():
             painter.save()
             obj.paint(painter)
             painter.restore()
+
+        for obj in self._environment.getVirtualObjects():
+            painter.save()
+            obj.paint(painter)
+            painter.restore()
+
         painter.setPen(QPen(QColor("#675BB5"),8, Qt.SolidLine))
 
         ox=-int(Rescaling.offsetX/Rescaling.zoom)

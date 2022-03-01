@@ -57,9 +57,6 @@ class Object:
     def setID(self,id):
         self._id=id
 
-    def getID(self):
-        return self._id
-
     def completeID(self,id_part):
         self._id+=str(id_part)
 

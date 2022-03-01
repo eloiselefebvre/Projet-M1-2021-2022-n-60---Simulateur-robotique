@@ -27,7 +27,7 @@ class LIDAR(Telemeter):
     def refresh(self):
         for i in range(self._angularSteps):
             if self._parent is not None and self._intersectionsBuffer[i] is not None:
-                self._parent.getEnv().removeVirtualObject(self._intersectionsBuffer[i])
+                self._parent.getEnv().removeObject(self._intersectionsBuffer[i])
             intersection = self.getClosestCollisitionPointAndComputeDistance()
             if self._parent is not None and intersection is not None:
                 point = Object(Representation(Point(int(intersection.x()), int(intersection.y()), self._color)))

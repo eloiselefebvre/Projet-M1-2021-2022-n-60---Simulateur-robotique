@@ -51,6 +51,8 @@ class Shape(ABC):
         # if isinstance(self,Point) or isinstance(shape,Point):
         #     return False
 
+        # print(self,shape)
+
         total_intersections=[]
         shape1_lines = self.getLineDecomposition()
         shape2_lines = shape.getLineDecomposition()
