@@ -33,7 +33,6 @@ class ExplorerTree(QTreeWidget):
         self._parent=parent
 
     def treeView(self):
-        self.setFixedWidth(320)
         self.setHeaderHidden(True)
         self.setColumnCount(3)
         self.setColumnWidth(0,240)

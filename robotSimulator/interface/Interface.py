@@ -28,7 +28,7 @@ class Interface(QMainWindow):
         self._footer=Footer()
         self._sceneWidget=Scene(self._environment,self._footer)
         self._explorerWidget = Explorer(self._environment, self._footer)
-        self._sceneWidget.defineExplorer(self._explorerWidget)
+        self._sceneWidget.defineExplorer(self._explorerWidget.getExplorerTree())
 
 
         # TODO : Trouver comment retirer les marges dans les layouts

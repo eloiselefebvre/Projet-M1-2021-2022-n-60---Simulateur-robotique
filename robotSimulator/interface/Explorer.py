@@ -1,18 +1,7 @@
-from PyQt5.QtGui import QColor, QFont, QIcon
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton, QVBoxLayout, QWidget, QLayout
-
-from robotSimulator.config import config
-from .Scene import Scene
-from .ExplorerInfo import ExplorerInfo
-from .SceneOverview import SceneOverview
-from ..Object import Object
-from ..Rescaling import Rescaling
 from PyQt5.QtWidgets import QVBoxLayout, QGridLayout, QWidget
 
 from robotSimulator.interface.ExplorerInfo import ExplorerInfo
 from robotSimulator.interface.ExplorerTree import ExplorerTree
-
-class Explorer(QTreeWidget):
 
 class Explorer(QWidget):
 
@@ -21,6 +10,7 @@ class Explorer(QWidget):
         self._environment=environment
         self._footer=footer
         self._layout=QGridLayout(self)
+        self.setFixedWidth(350)
 
         self._explorerInfo=None
         self._showExplorerInfo = False
