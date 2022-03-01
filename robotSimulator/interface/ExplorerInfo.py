@@ -14,8 +14,8 @@ class ExplorerInfo(QWidget):
         self._selectedObject = selectedObject
         self.setStyleSheet("background-color: #21212F")
 
-        self._layout=QVBoxLayout()
-        self.setLayout(self._layout)
+        self._layout=QVBoxLayout(self)
+        self._layout.setContentsMargins(0,0,0,0)
 
         widget=QWidget()
         self._layout.addWidget(widget)

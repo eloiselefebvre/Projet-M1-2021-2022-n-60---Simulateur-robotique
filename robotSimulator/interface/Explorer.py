@@ -17,6 +17,8 @@ class Explorer(QWidget):
 
         self._explorerTree=ExplorerTree(self._environment,self._footer,self)
         self._layout.addWidget(self._explorerTree,0,0)
+        self._layout.setContentsMargins(0,0,0,0)
+        self._layout.setSpacing(0)
 
     def showExplorerInfo(self,obj):
         if not self._showExplorerInfo:

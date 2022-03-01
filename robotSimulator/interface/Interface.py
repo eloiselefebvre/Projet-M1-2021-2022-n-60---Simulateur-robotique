@@ -50,6 +50,10 @@ class Interface(QMainWindow):
         gridLayout.addWidget(self._explorerWidget,0,1)
         gridLayout.addWidget(miniSceneWindow,0,0,Qt.AlignRight | Qt.AlignBottom)
 
+        gridLayout.setContentsMargins(0, 0, 0, 0)
+        gridLayout.setSpacing(0)
+
+
         self.setCentralWidget(centralWidget)
         self.setStatusBar(self._footer)
 
