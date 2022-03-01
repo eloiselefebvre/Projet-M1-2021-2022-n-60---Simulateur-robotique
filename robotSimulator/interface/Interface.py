@@ -27,8 +27,8 @@ class Interface(QMainWindow):
 
         self._headerWidget=Header()
 
-        self._explorerWidget=Explorer(self._environment)
         self._footer=Footer()
+        self._explorerWidget=Explorer(self._environment,self._footer)
         self._sceneWidget=Scene(self._environment,self._explorerWidget,self._footer)
 
         self._generalLayout.addWidget(self._toolbar)
