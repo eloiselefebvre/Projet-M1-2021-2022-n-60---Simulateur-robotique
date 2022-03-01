@@ -17,6 +17,7 @@ class Robot(ABC,Object):
         self._sensors_counter=0
         self._actuators_counter=0
         self._drawTrajectory=False
+        self._trajectory = []
 
     def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
@@ -33,7 +34,7 @@ class Robot(ABC,Object):
             self._representation.addSubRepresentation(comp.getRepresentation())
 
     def move(self):
-        self.drawTrajectory()
+        self.updateTrajectory()
         for comp in self._components:
             if hasattr(comp,"refresh"):
                 comp.refresh()
@@ -41,8 +42,26 @@ class Robot(ABC,Object):
     def getComponents(self):
         return self._components
 
-    def drawTrajectory(self):
-        if self._drawTrajectory==True:
-            point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
+    def updateTrajectory(self):
+        point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
+        self._trajectory.append(point)
+        if self._drawTrajectory:
+            self._env.addVirtualObject(self._trajectory[-1])
+
+    def getDrawTrajectory(self):
+        return self._drawTrajectory
+
+    def setDrawTrajectory(self):
+        self._drawTrajectory = not self._drawTrajectory
+
+    def showTrajectory(self):
+        for point in self._trajectory:
             self._env.addVirtualObject(point)
 
+    def hideTrajectory(self):
+        for point in self._trajectory:
+            self._env.removeVirtualObject(point)
+
+    def deleteTrajectory(self):
+        self.hideTrajectory()
+        self._trajectory.clear()

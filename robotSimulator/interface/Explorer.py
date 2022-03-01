@@ -97,19 +97,20 @@ class Explorer(QTreeWidget):
 
     def showExplorerInfo(self,obj):
         if not self._showExplorerInfo:
-            self._showExplorerInfo=True
-            self._explorerInfo = ExplorerInfo(self._environment,obj)
+            self._explorerInfo = ExplorerInfo(obj)
             self._explorerInfo.setStyleSheet("background-color: #21212F")
             self._explorerInfo.setFixedHeight(400)
             self._layout.addWidget(self._explorerInfo)
+            self._showExplorerInfo=True
 
     def hideExplorerInfo(self):
         if self._showExplorerInfo:
-            self._showExplorerInfo=False
             self._layout.removeWidget(self._explorerInfo)
+            self._explorerInfo=None
+            self._layout.update()
+            self._showExplorerInfo=False
 
     def selectionChanged(self, selected, deselected):
-        self.hideExplorerInfo()
         if self.selectedIndexes():
             for obj in self._environment.getObjects():
                 obj.setSelected(False)
@@ -122,13 +123,14 @@ class Explorer(QTreeWidget):
             else:
                 selected_obj = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
             selected_obj.setSelected(True)
-            self.showExplorerInfo(selected_obj)
 
     def setSelectedItem(self,obj):
         self.clearSelection()
+        self.hideExplorerInfo()
         for item in self._allItems:
             item.setColor(self.ITEM_COLOR)
         if obj is not None:
+            self.showExplorerInfo(obj)
             crawler=self._mainItems[self._mainObjects.index(obj)]
             crawler.setColor(self.CRAWLER_COLOR)
             crawler.setExpanded(True)
@@ -153,7 +155,6 @@ class Explorer(QTreeWidget):
         obj=self._mainObjects[self._lockButtons.index(button)]
         obj.toggleLock()
         button.setLockObject(obj.isLock())
-
 
 class Item(QTreeWidgetItem):
 
