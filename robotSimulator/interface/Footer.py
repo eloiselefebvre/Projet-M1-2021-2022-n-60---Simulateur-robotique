@@ -17,10 +17,10 @@ class Footer(QStatusBar):
         fnt=QFont("Verdana", 12)
         fnt.setBold(True)
 
-        zoom = QWidget()
+        zoomWidget = QWidget()
         zoom_layout = QHBoxLayout()
-        zoom.setLayout(zoom_layout)
-        zoom.setLayoutDirection(0)
+        zoomWidget.setLayout(zoom_layout)
+        zoomWidget.setLayoutDirection(0)
 
         self._zoom_text = QLabel("100%")
         self._zoom_text.setFont(fnt)
@@ -67,7 +67,7 @@ class Footer(QStatusBar):
         zoom_layout.addWidget(zoom_menu)
 
 
-        zoom.setFixedWidth(112)
+        zoomWidget.setFixedWidth(112)
 
         pose=QWidget()
         pose_layout = QHBoxLayout()
@@ -84,7 +84,7 @@ class Footer(QStatusBar):
         pose_layout.addWidget(self._pose_text)
 
         self.addPermanentWidget(pose)
-        self.addPermanentWidget(zoom)
+        self.addPermanentWidget(zoomWidget)
 
     def setZoom(self):
         zoom=round(Rescaling.zoom*100)

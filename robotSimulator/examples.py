@@ -9,7 +9,6 @@ from robotSimulator import Obstacle
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Rectangle, Circle
 from robotSimulator.ressources.maps.Labyrinth import Labyrinth
-from robotSimulator.ressources.maps.Map import Map
 from robotSimulator.simulation import Environment,Simulation
 from robotSimulator.actuators import Buzzer, LED
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
@@ -267,17 +266,6 @@ def LIDARTest():
     env.addObject(Obstacle(Representation(Rectangle(40,200, "#ff8fff"))), 650, 400)
     env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850,25)
 
-    sim = Simulation(env)
-    sim.setAcceleration(1)
-    sim.run()
-    sim.showInterface()
-
-def generateObstaclesTest():
-
-    env = Environment()
-    map = Map(env)
-    map.generateObstacles()
-    #usingFuzzyLogicToAvoidObstacle()
     sim = Simulation(env)
     sim.setAcceleration(1)
     sim.run()

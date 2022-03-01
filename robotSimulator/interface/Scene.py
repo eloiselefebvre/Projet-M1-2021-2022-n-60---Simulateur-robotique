@@ -62,20 +62,21 @@ class Scene(QWidget):
         self._explorer.setSelectedItem(self._selectedObj)
 
     def wheelEvent(self, event):
-        dir=event.angleDelta().y()
-        dir/=abs(dir)
+        if event.modifiers() and Qt.ControlModifier:
+            dir=event.angleDelta().y()
+            dir/=abs(dir)
 
-        pos1 = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
+            pos1 = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
 
-        Rescaling.zoomIn() if dir>0 else Rescaling.zoomOut()
-        self._footer.setZoom(Rescaling.zoom)
+            Rescaling.zoomIn() if dir>0 else Rescaling.zoomOut()
+            self._footer.setZoom()
 
-        s = ((self._size - self._size * Rescaling.zoom) / 2)
-        offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
-        pos2 = (event.pos() - offset) / Rescaling.zoom
-        # pos1 doit devenir pos1 transformée dans le nouveau zoom
-        getEqualCoordinatesOffset = (pos1-pos2)*Rescaling.zoom
-        Rescaling.setOffset(offset-getEqualCoordinatesOffset)
+            s = ((self._size - self._size * Rescaling.zoom) / 2)
+            offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
+            pos2 = (event.pos() - offset) / Rescaling.zoom
+            # pos1 doit devenir pos1 transformée dans le nouveau zoom
+            getEqualCoordinatesOffset = (pos1-pos2)*Rescaling.zoom
+            Rescaling.setOffset(offset-getEqualCoordinatesOffset)
 
     def maximized(self):
         self._maximized=True
