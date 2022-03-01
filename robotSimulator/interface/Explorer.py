@@ -1,9 +1,10 @@
 from PyQt5.QtGui import QColor, QFont, QIcon
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton, QVBoxLayout, QWidget, QLayout
 
 from robotSimulator.config import config
 from .Scene import Scene
 from .ExplorerInfo import ExplorerInfo
+from .SceneOverview import SceneOverview
 from ..Object import Object
 from ..Rescaling import Rescaling
 
@@ -37,20 +38,6 @@ class Explorer(QTreeWidget):
         self._lockButtons = []
         self._footer=footer
         self.treeView()
-        self._layout.addWidget(self)
-        self._layout.addWidget(self.generalView())
-
-    def generalView(self):
-        generalViewWidget=QWidget()
-        layout=QVBoxLayout()
-        generalViewWidget.setLayout(layout)
-        generalView = Scene(self._environment, self, self._footer)
-        layout.addWidget(generalView)
-        generalViewWidget.setFixedWidth(300)
-        generalViewWidget.setFixedHeight(200)
-        Rescaling.zoomToFit()
-        generalViewWidget.setStyleSheet("background-color:#f0f0f0")
-        return generalViewWidget
 
     def treeView(self):
         self.setFixedWidth(320)

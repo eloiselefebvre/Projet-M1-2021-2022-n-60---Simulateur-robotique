@@ -7,12 +7,15 @@ class Rescaling:
     min_zoom=0.1
     max_zoom=3.0
 
+    miniZoom=1.0
+
     offsetX = 0
     offsetY = 0
 
     dzoom = 0.1
 
     sceneSize=None
+    miniSceneSize=None
     envSize=None
 
     @staticmethod
@@ -27,10 +30,14 @@ class Rescaling:
 
     @staticmethod
     def zoomToFit():
-        print(Rescaling.sceneSize,Rescaling.envSize)
         Rescaling.zoom=min(Rescaling.sceneSize.width()/Rescaling.envSize.width(),Rescaling.sceneSize.height()/Rescaling.envSize.height())
         Rescaling.offsetX=0
         Rescaling.offsetY=0
+
+    @staticmethod
+    def zoomToMiniFit():
+        print(Rescaling.miniSceneSize,Rescaling.envSize)
+        Rescaling.miniZoom=min(Rescaling.miniSceneSize.width()/Rescaling.envSize.width(),Rescaling.miniSceneSize.height()/Rescaling.envSize.height())
 
     @staticmethod
     def setZoom(zoom):

@@ -1,13 +1,14 @@
+from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
 from robotSimulator.Rescaling import Rescaling
 
 class Scene(QWidget):
 
-    def __init__(self,environment,explorer,footer):
+    def __init__(self,environment,footer):
         super().__init__()
         self._environment = environment
-        self._explorer=explorer
+        self._explorer=None
         self._footer=footer
         self._dragObject=False
         self._dragScene = False
@@ -19,11 +20,23 @@ class Scene(QWidget):
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
 
+        self.setStyleSheet("background-color: #f0f0f0")
+
+    def defineExplorer(self,explorer):
+        self._explorer=explorer
+
     def paintEvent(self,event):
-        for obj in self._environment.getObjects():
-            obj.paint(self)
-        for obj in self._environment.getVirtualObjects():
-            obj.paint(self)
+        objects = self._environment.getObjects()
+        objects.extend(self._environment.getVirtualObjects())
+        painter = QPainter(self)
+        painter.translate(Rescaling.offsetX, Rescaling.offsetY)
+        painter.scale(Rescaling.zoom, Rescaling.zoom)
+        # print([obj.getRepresentation().getShape() for obj in self._environment.getObjects()])
+        # print("\n",[obj.getRepresentation().getShape() for obj in self._environment.getVirtualObjects()])
+        for obj in objects:
+            painter.save()
+            obj.paint(painter)
+            painter.restore()
         self.update()
 
     def mousePressEvent(self, event):
@@ -99,9 +112,10 @@ class Scene(QWidget):
     def resizeEvent(self,event):
         if self._maximized and self._size is None:
             self._size=self.size()
+            Rescaling.sceneSize = self._size
             if not self._environment.hasSize():
                 self._environment.setSize(self._size)
-            Rescaling.sceneSize=self._size
-            Rescaling.envSize = self._environment.getSize()
+                Rescaling.envSize = self._size
+            Rescaling.zoomToMiniFit()
             self._environment.drawWalls()
 
