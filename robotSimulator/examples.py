@@ -9,7 +9,6 @@ from robotSimulator import Obstacle
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Rectangle, Circle
 from robotSimulator.ressources.maps.Labyrinth import Labyrinth
-from robotSimulator.ressources.maps.Map import Map
 from robotSimulator.simulation import Environment,Simulation
 from robotSimulator.actuators import Buzzer, LED
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot

@@ -1,83 +1,56 @@
-import PyQt5.Qt
-from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QTextEdit, QSlider, QPushButton, QLabel
-from PyQt5.uic.properties import QtCore
+from PyQt5.QtWidgets import QLabel, QAction, QWidgetAction, QToolBar
 
 from robotSimulator.config import config
 
-class ToolsBar(QWidget):
+class ToolsBar(QToolBar):
 
     TOOLS_BAR_FIXED_HEIGHT = 50
     BUTTON_FIXED_WIDTH = 150
 
-    def __init__(self,environment,simulation):
+    def __init__(self,environment,simulation,interface):
         super().__init__()
         self._environment=environment
         self._simulation = simulation
+        self._interface=interface
 
-        self._toolsBarLayout=QHBoxLayout()
-        self.setLayout(self._toolsBarLayout)
-        self._buttonPlay=self.widgetPlayPause()
-        self.setStyleSheet("background-color: #21212F")
+        self._tb = self._interface.addToolBar("ToolBar")
+        self._tb.setStyleSheet("background: #151825")
 
-        self._accelerationLabelWidget = QLabel("x"+str(self._simulation.getAcceleration()))
-        # self._accelerationLabelWidget.setAlignment(QtCore.Qt.AlignCenter)
+        self._tb.setFixedHeight(70)
+        self._tb.addAction(self.decreaseAcceleration())
+        self._tb.addAction(self.valueAcceleration())
+        self._tb.addAction(self.increaseAcceleration())
+        self._playPauseAction=self.playPause()
+        self._tb.addAction(self._playPauseAction)
 
-        self._toolsBarLayout.addWidget(self.widgetTimeElapsed(),60)
-        self._toolsBarLayout.addWidget(self._buttonPlay)
-        self._toolsBarLayout.addWidget(self.decreaseAccelerationButton())
-        self._toolsBarLayout.addWidget(self.acceleration())
-        self._toolsBarLayout.addWidget(self.increaseAccelerationButton())
+        self._tb.setMovable(False)
 
-    def widgetTimeElapsed(self):
-        timeElapsedWidget=QWidget()
-        timeElapsedWidget.setFixedHeight(self.TOOLS_BAR_FIXED_HEIGHT)
-        return timeElapsedWidget
+    def increaseAcceleration(self):
+        increaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"),"IncreaseAcceleration",self._interface)
+        increaseAcceleration.triggered.connect(self.clickedIncreaseAcceleration)
+        return increaseAcceleration
 
-    def widgetPlayPause(self):
-        playPauseWidget=QPushButton()
-        playPauseWidget.setFixedSize(self.BUTTON_FIXED_WIDTH,self.TOOLS_BAR_FIXED_HEIGHT)
-        playPauseWidget.setFlat(True)
-        playPauseWidget.setIconSize(QSize(30,30))
-        playPauseWidget.clicked.connect(self.clicked)
-        if self._simulation.getPlay()==True:
-            playPauseWidget.setIcon(QIcon(f"{config['ressourcesPath']}/pause.svg"))
-        else:
-            playPauseWidget.setIcon(QIcon(f"{config['ressourcesPath']}/play.svg"))
-        return playPauseWidget
+    def decreaseAcceleration(self):
+        decreaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"),"DecreaseAcceleration",self._interface)
+        decreaseAcceleration.triggered.connect(self.clickedDecreaseAcceleration)
+        return decreaseAcceleration
 
-    def getHeight(self):
-        return self.TOOLS_BAR_FIXED_HEIGHT
+    def valueAcceleration(self):
+        valueAccelerationWidget=QWidgetAction(self)
+        self._valueAcceleration = QLabel("x"+str(self._simulation.getAcceleration()))
+        valueAccelerationWidget.setDefaultWidget(self._valueAcceleration)
+        self._valueAcceleration.setFont(QFont("Sanserif",15))
+        self._valueAcceleration.setStyleSheet("color: #f0f0f0")
+        return valueAccelerationWidget
 
-    def decreaseAccelerationButton(self):
-        buttonLow = QPushButton()
-        buttonLow.setFlat(True)
-        buttonLow.setStyleSheet('QPushButton {background-color: #21212F; color: #21212F;}')
-        buttonLow.clicked.connect(self.clickedDecreaseAcceleration)
-        buttonLow.setIcon(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"))
-        buttonLow.setIconSize(QSize(30,30))
-        buttonLow.setFixedSize(self.BUTTON_FIXED_WIDTH//2,self.TOOLS_BAR_FIXED_HEIGHT)
-        return buttonLow
-
-    def increaseAccelerationButton(self):
-        buttonHigh = QPushButton()
-        buttonHigh.setFlat(True)
-        buttonHigh.setStyleSheet('QPushButton {background-color: #21212F; color: #21212F;}')
-        buttonHigh.setIcon(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"))
-        buttonHigh.setIconSize(QSize(30,30))
-        buttonHigh.clicked.connect(self.clickedIncreaseAcceleration)
-        buttonHigh.setFixedSize(self.BUTTON_FIXED_WIDTH//2,self.TOOLS_BAR_FIXED_HEIGHT)
-        return buttonHigh
-
-    def acceleration(self):
-        self._accelerationLabelWidget.setFixedSize(self.BUTTON_FIXED_WIDTH//3,self.TOOLS_BAR_FIXED_HEIGHT)
-        self._accelerationLabelWidget.setFont(QFont("Sanserif",18))
-        self._accelerationLabelWidget.setStyleSheet("color:#f9f9f9")
-        return self._accelerationLabelWidget
+    def playPause(self):
+        self._playPause = QAction(QIcon(f"{config['ressourcesPath']}/pause.svg"),"IncreaseAcceleration",self._interface)
+        self._playPause.triggered.connect(self.clicked)
+        return self._playPause
 
     def setAccelerationLabel(self):
-        self._accelerationLabelWidget.setText("x"+str(round(self._simulation.getAcceleration(),1)))
+        self._valueAcceleration.setText("x"+str(round(self._simulation.getAcceleration(),1)))
 
     def clickedIncreaseAcceleration(self):
         self._simulation.increaseAcceleration()
@@ -89,7 +62,11 @@ class ToolsBar(QWidget):
 
     def clicked(self):
         self._simulation.playPause()
-        if self._simulation.getPlay()==True:
-            self._buttonPlay.setIcon(QIcon(f"{config['ressourcesPath']}/pause.svg"))
+        if self._simulation.getPlay():
+            icon =QIcon(f"{config['ressourcesPath']}/pause.svg")
         else:
-            self._buttonPlay.setIcon(QIcon(f"{config['ressourcesPath']}/play.svg"))
+            icon =QIcon(f"{config['ressourcesPath']}/play.svg")
+        self._playPauseAction.setIcon(icon)
+
+
+

@@ -86,6 +86,7 @@ class Simulation():
 
     def playPause(self):
         self._play=not self._play
+        print(self._play)
 
     def getPlay(self):
         return self._play
