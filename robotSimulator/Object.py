@@ -20,10 +20,7 @@ class Object:
     def getRepresentation(self):
         return self._representation
 
-    def paint(self, window):
-        painter = QPainter(window)
-        painter.translate(Rescaling.offsetX, Rescaling.offsetY)
-        painter.scale(Rescaling.zoom,Rescaling.zoom)
+    def paint(self, painter):
         self._representation.paint(painter)
 
     def setPose(self,pose):
