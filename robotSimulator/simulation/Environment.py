@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QSize
 
 from robotSimulator import Object, Pose
-from robotSimulator.Rescaling import Rescaling
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
 
@@ -15,7 +14,7 @@ class Environment:
         self._virtualObjects=[]
         self._hasWalls=False
         self._size = QSize(width,height)
-        Rescaling.envSize = self._size
+        self.drawWalls()
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):

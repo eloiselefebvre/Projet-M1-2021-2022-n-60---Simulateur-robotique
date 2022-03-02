@@ -1,12 +1,7 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QActionGroup, QAction, QGridLayout
-from PyQt5.uic.properties import QtWidgets
 
-from robotSimulator.Observable import Observable
-from robotSimulator.Rescaling import Rescaling
-from robotSimulator.config import config
-from robotSimulator.interface.ExplorerInfo import ExplorerInfo
+from robotSimulator.ZoomController import ZoomController
 from robotSimulator.interface.Footer import Footer
 from robotSimulator.interface.Header import Header
 from robotSimulator.interface.Scene import Scene
@@ -21,27 +16,29 @@ class Interface(QMainWindow):
         self._simulation = simulation
         self._environment = environment
         self.setWindowTitle("Spicy Simulator")
+
+        self._headerWidget = Header()
         self._toolbar=ToolsBar(self._environment,self._simulation,self)
 
-        self._headerWidget=Header()
+        zoomController = ZoomController(self._environment)
 
-        self._footer=Footer()
-        self._sceneWidget=Scene(self._environment)
+        self._sceneWidget=Scene(self._environment,zoomController)
         self._explorerWidget = Explorer(self._environment)
-        self._sceneWidget.defineExplorer(self._explorerWidget.getExplorerTree())
-
+        self._sceneWidget.defineExplorer(self._explorerWidget.getExplorerTree()) # TODO : A enlever avec ajout d'overvateurs
+        self._footer = Footer(zoomController)
 
         self.setMenuBar(self._headerWidget)
 
         miniSceneWindow = QWidget()
         layout = QVBoxLayout()
         miniSceneWindow.setLayout(layout)
-        miniscene = SceneOverview(self._environment)
+        miniscene = SceneOverview(self._environment,zoomController)
 
         layout.addWidget(miniscene)
         miniSceneWindow.setStyleSheet("background-color: #f9f9f9; border: 2px solid #F9886A; border-radius: 8px")
         miniSceneWindow.setFixedSize(250,150) # TODO : Ajuster à la taille de la scène (ex 20 fois plus petit pour garder le ratio)
-        Rescaling.miniSceneSize = miniSceneWindow.size()
+        zoomController.setMiniSceneSize(miniSceneWindow.size())
+        zoomController.zoomToMiniFit()
 
         centralWidget = QWidget()
         gridLayout = QGridLayout(centralWidget)
@@ -63,6 +60,7 @@ class Interface(QMainWindow):
             object.addObserverCallback(self._sceneWidget.refreshView)
 
         self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene)
+        zoomController.addObserverCallback(self._footer.updateZoom)
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

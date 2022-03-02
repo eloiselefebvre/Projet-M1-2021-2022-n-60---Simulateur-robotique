@@ -3,15 +3,16 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
 
 from robotSimulator.Observable import Observable
-from robotSimulator.Rescaling import Rescaling
 from robotSimulator.robots.Robot import Robot
 
 
 class Scene(QWidget,Observable):
 
-    def __init__(self,environment):
+    def __init__(self,environment,zoomController):
         super().__init__()
         self._environment = environment
+
+        self._zoomController = zoomController
         self._explorer=None
         self._dragObject=False
         self._dragScene = False
@@ -36,8 +37,9 @@ class Scene(QWidget,Observable):
 
     def paintEvent(self,event):
         painter = QPainter(self)
-        painter.translate(Rescaling.offsetX, Rescaling.offsetY)
-        painter.scale(Rescaling.zoom, Rescaling.zoom)
+        offset=self._zoomController.getOffset()
+        painter.translate(offset.x(), offset.y())
+        painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
 
         for obj in self._environment.getObjects():
             painter.save()
@@ -71,7 +73,7 @@ class Scene(QWidget,Observable):
         return self._convertedMousePose
 
     def mouseMoveEvent(self, event):
-        self._convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
+        self._convertedMousePose = (event.pos() -  self._zoomController.getOffset()) /  self._zoomController.getZoom()
         self.notifyObservers()
         if self._dragObject and self._selectedObj is not None and  not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
@@ -85,11 +87,11 @@ class Scene(QWidget,Observable):
 
         if self._dragScene:
             current=event.pos()
-            Rescaling.setOffset(Rescaling.getOffset()+(current-self._dragSceneOrigin))
+            self._zoomController.setOffset(self._zoomController.getOffset()+(current-self._dragSceneOrigin))
             self._dragSceneOrigin=current
 
     def _isClickedObject(self, mousePose):
-        convertedMousePose = (mousePose - Rescaling.getOffset()) / Rescaling.zoom
+        convertedMousePose = (mousePose - self._zoomController.getOffset()) / self._zoomController.getZoom()
         for obj in self._environment.getObjects():
             obj.setSelected(False)
             if obj.getRepresentation().contains(convertedMousePose) and obj.isVisible():
@@ -108,17 +110,17 @@ class Scene(QWidget,Observable):
             dir=event.angleDelta().y()
             dir/=abs(dir)
 
-            pos1 = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
+            pos1 = (event.pos() - self._zoomController.getOffset()) / self._zoomController.getZoom()
 
-            Rescaling.zoomIn() if dir>0 else Rescaling.zoomOut()
+            self._zoomController.zoomIn() if dir>0 else self._zoomController.zoomOut()
             # self._footer.setZoom()
 
-            s = ((self._size - self._size * Rescaling.zoom) / 2)
+            s = ((self._size - self._size * self._zoomController.getZoom()) / 2)
             offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
-            pos2 = (event.pos() - offset) / Rescaling.zoom
+            pos2 = (event.pos() - offset) / self._zoomController.getZoom()
             # pos1 doit devenir pos1 transformée dans le nouveau zoom
-            getEqualCoordinatesOffset = (pos1-pos2)*Rescaling.zoom
-            Rescaling.setOffset(offset-getEqualCoordinatesOffset)
+            getEqualCoordinatesOffset = (pos1-pos2)*self._zoomController.getZoom()
+            self._zoomController.setOffset(offset-getEqualCoordinatesOffset)
 
     def maximized(self):
         self._maximized=True
@@ -126,9 +128,6 @@ class Scene(QWidget,Observable):
     def resizeEvent(self,event):
         if self._maximized and self._size is None:
             self._size=self.size()
-            Rescaling.sceneSize = self._size
-            if not self._environment.hasSize():
-                self._environment.setSize(self._size)
-            Rescaling.zoomToMiniFit()
-            self._environment.drawWalls()
+            self._zoomController.setSceneSize(self._size)
+            print(self.size())
 

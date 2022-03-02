@@ -20,7 +20,6 @@ class Explorer(QWidget):
         self._layout.setSpacing(0)
 
     def showExplorerInfo(self,obj):
-        print("show")
         if not self._showExplorerInfo:
             self._explorerInfo = ExplorerInfo(obj)
             obj.addObserverCallback(self._explorerInfo.refreshData)
@@ -30,7 +29,6 @@ class Explorer(QWidget):
             self._showExplorerInfo=True
 
     def hideExplorerInfo(self,obj):
-        print("hide")
         if self._showExplorerInfo:
             self._layout.removeWidget(self._explorerInfo)
             obj.deleteObserverCallback(self._explorerInfo.refreshData)

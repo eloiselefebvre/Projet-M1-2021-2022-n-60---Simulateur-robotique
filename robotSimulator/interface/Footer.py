@@ -3,14 +3,15 @@ from PyQt5.QtGui import QIcon, QFont, QColor, QPixmap
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QStatusBar, QMenuBar, QMenu, QAction, QPushButton, QLabel, QTextEdit, \
     QWidgetAction, QLineEdit
 
-from robotSimulator.Rescaling import Rescaling
 from robotSimulator.config import config
 
 
 class Footer(QStatusBar):
 
-    def __init__(self):
+    def __init__(self,zoomController):
         super().__init__()
+        self._zoomController=zoomController
+
         self.setStyleSheet("background-color: #f9f9f9; color: #444")
         self.setLayoutDirection(Qt.LayoutDirection(1))
 
@@ -34,15 +35,15 @@ class Footer(QStatusBar):
         # actions
         zoom_in=QAction("Zoom in", self)
         zoom_in.setShortcut("ctrl++")
-        zoom_in.triggered.connect(self.zoomIn) # TODO : Zoom depuis le centre
+        zoom_in.triggered.connect(self._zoomController.zoomIn) # TODO : Zoom depuis le centre
 
         zoom_out = QAction("Zoom out", self)
         zoom_out.setShortcut("ctrl+-")
-        zoom_out.triggered.connect(self.zoomOut) # TODO : Zoom depuis le centre
+        zoom_out.triggered.connect(self._zoomController.zoomOut) # TODO : Zoom depuis le centre
 
 
         zoom_to_fit = QAction("Zoom to fit", self)
-        zoom_to_fit.triggered.connect(self.zoomToFit)
+        zoom_to_fit.triggered.connect(self._zoomController.zoomToFit)
 
         zoom_input = QWidgetAction(self)
         self._zoom_edit = QLineEdit()
@@ -86,27 +87,13 @@ class Footer(QStatusBar):
         self.addPermanentWidget(pose)
         self.addPermanentWidget(zoomWidget)
 
-    def setZoom(self):
-        zoom=round(Rescaling.zoom*100)
+    def updateZoom(self,sender):
+        zoom=round(sender.getZoom()*100)
         self._zoom_edit.setText(f"{zoom}%")
         self._zoom_text.setText(f"{zoom}%")
 
-    def zoomIn(self):
-        Rescaling.zoomIn()
-        self.setZoom()
-
-    def zoomOut(self):
-        Rescaling.zoomOut()
-        self.setZoom()
-
-    def zoomToFit(self):
-        Rescaling.zoomToFit()
-        self.setZoom()
-
     def updateMousePoseFromScene(self,scene):
-        self.setMousePose(scene.mousePose())
-
-    def setMousePose(self, mouse):
+        mouse=scene.mousePose()
         self._pose_text.setText(f"({mouse.x()}, {mouse.y()})")
 
     def zoomInputChanged(self):
@@ -115,12 +102,10 @@ class Footer(QStatusBar):
             text=text.rstrip(text[-1])
         if text.isnumeric():
             zoom=int(text)/100
-            if Rescaling.setZoom(zoom):
-                self.setZoom()
+            if self._zoomController.setZoom(zoom):
                 self._zoom_menu_list.close()
 
     def menuOpened(self):
-        self.setZoom()
         self._zoom_edit.selectAll()
         self._zoom_edit.setFocus()
 

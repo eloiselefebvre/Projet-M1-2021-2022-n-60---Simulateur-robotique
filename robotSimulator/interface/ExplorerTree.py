@@ -81,7 +81,6 @@ class ExplorerTree(QTreeWidget):
         widget.setStyleSheet("background-color: #f0f0f0")
 
     def selectionChanged(self, selected, deselected):
-        print(self._selected_obj)
         if self._selected_obj is not None:
             self._parent.hideExplorerInfo(self._selected_obj)
         if self.selectedIndexes():
