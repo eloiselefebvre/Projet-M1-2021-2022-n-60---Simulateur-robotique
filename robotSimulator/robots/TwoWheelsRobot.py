@@ -26,10 +26,9 @@ class TwoWheelsRobot(Robot):
         self.addComponent(self._leftWheel,(-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
         self.addComponent(self._rightWheel,(distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
         self._distanceBetweenWheels = distanceBetweenWheels
+        self._leftWheel.setID("LeftWheel")
+        self._rightWheel.setID("RightWheel")
 
-        if type(self).__name__==TwoWheelsRobot.__name__:
-            TwoWheelsRobot.instances_counter += 1
-            self.completeID(TwoWheelsRobot.instances_counter)
 
     def move(self):
         if not self._collided:

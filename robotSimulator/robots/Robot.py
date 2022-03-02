@@ -24,13 +24,6 @@ class Robot(ABC,Object):
         if isinstance(comp,Component):
             comp.setPose(Pose(x,y,orientation))
             comp.setParent(self)
-            if comp.getID() == comp.generateDefaultID():
-                if isinstance(comp,Sensor):
-                    self._sensors_counter += 1
-                    comp.completeID(self._sensors_counter)
-                else:
-                    self._actuators_counter += 1
-                    comp.completeID(self._actuators_counter)
             self._components.append(comp)
             self._representation.addSubRepresentation(comp.getRepresentation())
 

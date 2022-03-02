@@ -22,6 +22,7 @@ def collisionAndTelemeter():
     rob1 = TwoWheelsRobot()
     rob1.setLeftWheelSpeed(600)
     rob1.setRightWheelSpeed(-600)
+    # rob1.setID("2W")
 
     led = LED(LED.RED)
     led2 = LED(LED.YELLOW)
@@ -34,10 +35,11 @@ def collisionAndTelemeter():
     rob2 = TwoWheelsRobot()
     rob2.addComponent(led3, 0, 0)
     rob2.setRightWheelSpeed(500)
+    # rob2.setID("2W")
 
     buzzer = Buzzer()
     telemeter = Telemeter("#0f0")
-    telemeter.setID("Front Telemeter")
+    # telemeter.setID("Front Telemeter")
     rob3 = TwoWheelsRobot("#F97F51", 60, 80, 60)
     rob3.addComponent(buzzer, 0, 0)
     rob3.addComponent(telemeter, 0, 32, 0)

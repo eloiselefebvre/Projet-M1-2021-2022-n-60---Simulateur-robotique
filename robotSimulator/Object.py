@@ -6,6 +6,7 @@ from robotSimulator.Rescaling import Rescaling
 class Object:
 
     SELECTED_COLOR = "#25CCF7"
+    NUMBER_OF_INSTANCES = {}
 
     # TODO : Gestion des ID des sensors dans l'environnement
 
@@ -14,8 +15,16 @@ class Object:
         self._representation = representation
         self._env= None
         self._collided = False
-        self._id = self.generateDefaultID()
         self._lock=False
+        self.setNumberOfInstances(type(self).__name__)
+        self._id = type(self).__name__
+        self.completeID()
+
+    def setNumberOfInstances(self,name):
+        if name in self.NUMBER_OF_INSTANCES:
+            Object.NUMBER_OF_INSTANCES[name]+=1
+        else:
+            Object.NUMBER_OF_INSTANCES[name]=1
 
     def getRepresentation(self):
         return self._representation
@@ -51,14 +60,14 @@ class Object:
     def toggleVisible(self):
         self._representation.toggleVisible()
 
-    def generateDefaultID(self):
-        return type(self).__name__+"_"
-
     def setID(self,id):
         self._id=id
+        Object.NUMBER_OF_INSTANCES[type(self).__name__] -= 1
+        self.setNumberOfInstances(self._id)
+        self.completeID()
 
-    def completeID(self,id_part):
-        self._id+=str(id_part)
+    def completeID(self):
+        self._id+="_"+str(Object.NUMBER_OF_INSTANCES[self._id])
 
     def setSelected(self,selected):
         if selected:
