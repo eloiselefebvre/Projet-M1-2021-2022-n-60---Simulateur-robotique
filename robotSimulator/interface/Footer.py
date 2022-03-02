@@ -35,11 +35,11 @@ class Footer(QStatusBar):
         # actions
         zoom_in=QAction("Zoom in", self)
         zoom_in.setShortcut("ctrl++")
-        zoom_in.triggered.connect(self._zoomController.zoomIn) # TODO : Zoom depuis le centre
+        zoom_in.triggered.connect(self._zoomController.zoomIn)
 
         zoom_out = QAction("Zoom out", self)
         zoom_out.setShortcut("ctrl+-")
-        zoom_out.triggered.connect(self._zoomController.zoomOut) # TODO : Zoom depuis le centre
+        zoom_out.triggered.connect(self._zoomController.zoomOut)
 
 
         zoom_to_fit = QAction("Zoom to fit", self)

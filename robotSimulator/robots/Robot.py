@@ -55,7 +55,7 @@ class Robot(ABC,Object):
         for point in self._trajectory:
             self._env.addVirtualObject(point)
 
-    def hideTrajectory(self):
+    def hideTrajectory(self): # TODO : Hide trajectory when robot is not visible
         for point in self._trajectory:
             self._env.removeVirtualObject(point)
 

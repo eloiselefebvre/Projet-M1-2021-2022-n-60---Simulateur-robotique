@@ -4,7 +4,7 @@ class Pose:
 
     def __init__(self, x, y,orientation=0,rx=0,ry=0):
         self._pose = Point(x,y)
-        self.setRot(rx,ry)
+        self.setRotationCenter(rx, ry)
         self._orientation = orientation
 
     def getX(self):
@@ -25,7 +25,7 @@ class Pose:
     def setOrientation(self,o):
         self._orientation=o
 
-    def setRot(self,rx,ry):     # MSO TODO : ne pas utiliser des noms raccourcis, mais bien explicites
+    def setRotationCenter(self, rx, ry):
         self._rotationCenter=Point(rx,ry)
 
     def rotate(self, angle):

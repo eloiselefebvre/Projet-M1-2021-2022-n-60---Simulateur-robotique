@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QSlider, QVBoxLayout
 from PyQt5.QtCore import Qt
 from robotSimulator import Interface
+from robotSimulator.Observable import Observable
 from robotSimulator.interface.ToolsBar import ToolsBar
 from robotSimulator.simulation import Environment
 import threading
@@ -10,11 +11,12 @@ import time
 from robotSimulator.config import *
 
 
-class Simulation():
+class Simulation(Observable):
 
     MINIMUM_TIME_STEP = 0.01
 
     def __init__(self,environment=None):
+        super().__init__()
         self._environment=environment
         self._app = None
         self._interface=None
@@ -39,6 +41,7 @@ class Simulation():
                         obj.move()
                     if hasattr(obj,"refresh"):
                         obj.refresh()
+                self.notifyObservers()
             time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):

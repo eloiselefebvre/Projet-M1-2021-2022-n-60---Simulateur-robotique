@@ -52,8 +52,8 @@ class TwoWheelsRobot(Robot):
         super().move()
 
     def setRotCenter(self):
-        self._pose.setRot((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
-                          (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
+        self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
+                                     (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
 
     def setLeftWheelSpeed(self,speed):
         self._leftWheel.setSpeed(speed)
