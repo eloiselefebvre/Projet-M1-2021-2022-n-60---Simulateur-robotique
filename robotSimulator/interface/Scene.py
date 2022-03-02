@@ -66,14 +66,14 @@ class Scene(QWidget):
         convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
         self._footer.setMousePose(convertedMousePose)
         if self._dragObject:
-            if self._selectedObj is not None and not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
-                    if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
-                        obj.setCollidedState(False)
-                pose = self._selectedObj.getPose()
-                pose.move(convertedMousePose.x()-self._selectionOffset[0],convertedMousePose.y()-self._selectionOffset[1])
-                if isinstance(self._selectedObj,Robot):
-                    self._selectedObj.deleteTrajectory()
+                    if not obj.getLock():
+                        if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
+                            obj.setCollidedState(False)
+                        pose = self._selectedObj.getPose()
+                        pose.move(convertedMousePose.x()-self._selectionOffset[0],convertedMousePose.y()-self._selectionOffset[1])
+                    if isinstance(self._selectedObj,Robot):
+                        self._selectedObj.deleteTrajectory()
 
         if self._dragScene:
             current=event.pos()
@@ -100,12 +100,9 @@ class Scene(QWidget):
         if event.modifiers() and Qt.ControlModifier:
             dir=event.angleDelta().y()
             dir/=abs(dir)
-
             pos1 = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
-
             Rescaling.zoomIn() if dir>0 else Rescaling.zoomOut()
             self._footer.setZoom()
-
             s = ((self._size - self._size * Rescaling.zoom) / 2)
             offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
             pos2 = (event.pos() - offset) / Rescaling.zoom
