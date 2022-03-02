@@ -26,11 +26,11 @@ class Maze:
 
                 if random.randint(0,1):
                     if j!=0:
-                        dh=self._height-i*self.INTERVAL_SIZE if i==self._nbLine else self.INTERVAL_SIZE
+                        dh=self._height%self.INTERVAL_SIZE if i==self._nbLine else self.INTERVAL_SIZE
                         self._environment.addObject(Object(Representation(Line(dh, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE)
                 else:
                     if i!=0:
-                        dw=self._width-j*self.INTERVAL_SIZE if j==self._nbColumn else self.INTERVAL_SIZE
+                        dw=self._width%self.INTERVAL_SIZE if j==self._nbColumn else self.INTERVAL_SIZE
                         self._environment.addObject(Object(Representation(Line(dw, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))),j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE,-90)
 
 

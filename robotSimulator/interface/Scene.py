@@ -111,7 +111,7 @@ class Scene(QWidget,Observable):
             pos1 = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
 
             Rescaling.zoomIn() if dir>0 else Rescaling.zoomOut()
-            self._footer.setZoom()
+            # self._footer.setZoom()
 
             s = ((self._size - self._size * Rescaling.zoom) / 2)
             offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
