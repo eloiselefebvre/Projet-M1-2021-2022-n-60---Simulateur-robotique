@@ -54,7 +54,7 @@ class Scene(QWidget,Observable):
     def mousePressEvent(self, event):
         self.setCursor(Qt.ClosedHandCursor)
         if event.button()==Qt.LeftButton:
-            self._isClickedObject(event.pos())
+            self._ObjectGrabbed(event.pos())
             self._dragObject=True
 
         if event.button() == Qt.MiddleButton:
@@ -90,7 +90,7 @@ class Scene(QWidget,Observable):
             self._zoomController.setOffset(self._zoomController.getOffset()+(current-self._dragSceneOrigin))
             self._dragSceneOrigin=current
 
-    def _isClickedObject(self, mousePose):
+    def _ObjectGrabbed(self, mousePose):
         convertedMousePose = (mousePose - self._zoomController.getOffset()) / self._zoomController.getZoom()
         for obj in self._environment.getObjects():
             obj.setSelected(False)
@@ -113,7 +113,6 @@ class Scene(QWidget,Observable):
             pos1 = (event.pos() - self._zoomController.getOffset()) / self._zoomController.getZoom()
 
             self._zoomController.zoomIn() if dir>0 else self._zoomController.zoomOut()
-            # self._footer.setZoom()
 
             s = ((self._size - self._size * self._zoomController.getZoom()) / 2)
             offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
@@ -129,5 +128,4 @@ class Scene(QWidget,Observable):
         if self._maximized and self._size is None:
             self._size=self.size()
             self._zoomController.setSceneSize(self._size)
-            print(self.size())
 

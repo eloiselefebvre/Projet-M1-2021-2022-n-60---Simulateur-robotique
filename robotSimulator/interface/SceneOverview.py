@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QPainter, QPen, QColor
 from PyQt5.QtWidgets import QWidget
 
@@ -9,10 +9,13 @@ class SceneOverview(QWidget):
         self._environment = environment
         self._zoomController=zoomController
 
-        self.setStyleSheet("background-color: #f0f0f0")
+        self._dragView=False
+        self.setMouseTracking(True)
+        self.setCursor(Qt.OpenHandCursor)
+
+        self._dragViewOrigin = QPoint(0, 0)
 
     def paintEvent(self, event):
-
         painter = QPainter(self)
         painter.scale(self._zoomController.getMiniZoom(),self._zoomController.getMiniZoom())
         for obj in self._environment.getObjects():
@@ -36,3 +39,33 @@ class SceneOverview(QWidget):
         h=int(sceneSize.height()/self._zoomController.getZoom())
 
         painter.drawRect(ox,oy,w,h)
+
+    def mousePressEvent(self,event):
+        self.setCursor(Qt.ClosedHandCursor)
+        if event.button() == Qt.LeftButton:
+            self._viewGrabbed(event.pos())
+
+    def mouseReleaseEvent(self, event):
+        self.setCursor(Qt.OpenHandCursor)
+        self._dragView=False
+
+    def _viewGrabbed(self,mouse):
+        mouseRescale = mouse/self._zoomController.getMiniZoom()
+        offset = self._zoomController.getOffset()
+        sceneSize=self._zoomController.getSceneSize()
+        bx=-offset.x() # begin x
+        by=-offset.y()
+        ex = bx+sceneSize.width()
+        ey = by+sceneSize.height()
+
+        if mouseRescale.x()>bx and mouseRescale.y()>by and mouseRescale.x()<ex and mouseRescale.y()<ey:
+            self._dragView=True
+            self._dragViewOrigin=mouseRescale
+
+    def mouseMoveEvent(self,event):
+        # print(event.pos()/self._zoomController.getMiniZoom()+self._zoomController.getOffset())
+        if self._dragView:
+            current=event.pos()/self._zoomController.getMiniZoom()
+            self._zoomController.setOffset(self._zoomController.getOffset() - (current - self._dragViewOrigin))
+            self._dragViewOrigin = current
+
