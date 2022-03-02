@@ -81,7 +81,9 @@ class ExplorerTree(QTreeWidget):
         widget.setStyleSheet("background-color: #f0f0f0")
 
     def selectionChanged(self, selected, deselected):
-        self._parent.hideExplorerInfo()
+        print(self._selected_obj)
+        if self._selected_obj is not None:
+            self._parent.hideExplorerInfo(self._selected_obj)
         if self.selectedIndexes():
             for obj in self._environment.getObjects():
                 obj.setSelected(False)
@@ -101,11 +103,11 @@ class ExplorerTree(QTreeWidget):
 
     def setSelectedItem(self,obj):
         self.clearSelection()
-        self._parent.hideExplorerInfo()
+        if self._selected_obj is not None:
+            self._parent.hideExplorerInfo(self._selected_obj)
         for item in self._allItems:
             item.setColor(self.ITEM_COLOR)
         if obj is not None:
-            self._parent.showExplorerInfo(obj)
             crawler=self._mainItems[self._mainObjects.index(obj)]
             crawler.setColor(self.CRAWLER_COLOR)
             crawler.setExpanded(True)
@@ -124,7 +126,6 @@ class ExplorerTree(QTreeWidget):
                 for children_button in children_buttons:
                     children_button.lock()
         button.setVisibleObject(obj.isVisible())
-
 
 class Item(QTreeWidgetItem):
 

@@ -4,6 +4,7 @@ class Observable:
         self._observersCallbacks=[]
 
     def addObserverCallback(self,observerCallback):
+        # print(observerCallback)
         self._observersCallbacks.append(observerCallback)
 
     def deleteObserverCallback(self,observerCallback):
@@ -13,3 +14,4 @@ class Observable:
     def notifyObservers(self):
         for observerCallback in self._observersCallbacks:
             observerCallback(self)
+

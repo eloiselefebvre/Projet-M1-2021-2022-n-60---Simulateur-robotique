@@ -59,30 +59,34 @@ class ExplorerInfo(QWidget):
 
         return labelInformations
 
+    def refreshData(self,sender):
+        self._positionWidget.setText("("+str(round(sender.getPose().getX(),0))+","+str(round(sender.getPose().getY(),0))+") ")
+        self._oWidget.setText(str(round(sender.getPose().getOrientation(),0))+"°")
+
     def positionInformations(self):
         positionInformationsWidget=QWidget()
         positionInformationsLayout=QHBoxLayout()
         positionInformationsWidget.setLayout(positionInformationsLayout)
-        positionWidget=QLabel("("+str(round(self._selectedObject.getPose().getX(),0))+","+str(round(self._selectedObject.getPose().getY(),0))+") ")
-        positionWidget.setFont(QFont("Sanserif",12))
-        positionWidget.setStyleSheet("color:#f9f9f9")
+        self._positionWidget=QLabel("("+str(round(self._selectedObject.getPose().getX(),0))+","+str(round(self._selectedObject.getPose().getY(),0))+") ")
+        self._positionWidget.setFont(QFont("Sanserif",12))
+        self._positionWidget.setStyleSheet("color:#f9f9f9")
 
         positionIcon=QLabel()
         icon=QPixmap(f"{config['ressourcesPath']}/position.svg")
         positionIcon.setPixmap(icon)
 
-        oWidget=QLabel(str(round(self._selectedObject.getPose().getOrientation(),0))+"°")
-        oWidget.setFont(QFont("Sanserif",12))
-        oWidget.setStyleSheet("color:#f9f9f9")
+        self._oWidget=QLabel(str(round(self._selectedObject.getPose().getOrientation(),0))+"°")
+        self._oWidget.setFont(QFont("Sanserif",12))
+        self._oWidget.setStyleSheet("color:#f9f9f9")
 
         orientationIcon = QLabel()
         icon2 = QPixmap(f"{config['ressourcesPath']}/orientation.svg")
         orientationIcon.setPixmap(icon2)
 
         positionInformationsLayout.addWidget(positionIcon)
-        positionInformationsLayout.addWidget(positionWidget)
+        positionInformationsLayout.addWidget(self._positionWidget)
         positionInformationsLayout.addWidget(orientationIcon)
-        positionInformationsLayout.addWidget(oWidget)
+        positionInformationsLayout.addWidget(self._oWidget)
 
         return positionInformationsWidget
 
