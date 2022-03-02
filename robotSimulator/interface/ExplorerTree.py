@@ -16,7 +16,7 @@ class ExplorerTree(QTreeWidget):
 
     # TODO : Revoir la structure du code
 
-    def __init__(self,environment,footer,parent):
+    def __init__(self,environment,parent):
         super().__init__()
         self._environment = environment
         self._mainItems=[]
@@ -27,7 +27,6 @@ class ExplorerTree(QTreeWidget):
         self._mainItemsAssociatedChildren=[]
         self._visibilityButtons=[]
         self._lockButtons = []
-        self._footer=footer
         self.treeView()
         self._selected_obj=None
         self._parent=parent

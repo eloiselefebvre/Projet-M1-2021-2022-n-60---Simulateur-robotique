@@ -1,17 +1,18 @@
-from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPainter, QPaintEvent
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
+
+from robotSimulator.Observable import Observable
 from robotSimulator.Rescaling import Rescaling
 from robotSimulator.robots.Robot import Robot
 
 
-class Scene(QWidget):
+class Scene(QWidget,Observable):
 
-    def __init__(self,environment,footer):
+    def __init__(self,environment):
         super().__init__()
         self._environment = environment
         self._explorer=None
-        self._footer=footer
         self._dragObject=False
         self._dragScene = False
         self._dragSceneOrigin=QPoint(0,0)
@@ -24,10 +25,16 @@ class Scene(QWidget):
 
         self.setStyleSheet("background-color: #f0f0f0")
 
+        self._convertedMousePose=QPoint(0, 0)
+
+
     def defineExplorer(self,explorer):
         self._explorer=explorer
 
-    def paintEvent(self,event): # TODO : Réduire le rafraichissement avec paint event
+    def refreshView(self,sender):
+        self.update()
+
+    def paintEvent(self,event):
         painter = QPainter(self)
         painter.translate(Rescaling.offsetX, Rescaling.offsetY)
         painter.scale(Rescaling.zoom, Rescaling.zoom)
@@ -42,7 +49,6 @@ class Scene(QWidget):
             obj.paint(painter)
             painter.restore()
 
-        self.update()
 
     def mousePressEvent(self, event):
         self.setCursor(Qt.ClosedHandCursor)
@@ -62,19 +68,22 @@ class Scene(QWidget):
             self._selectedObj.setCollidedState(False)
             self._selectedObj = None
 
+    def mousePose(self):
+        return self._convertedMousePose
+
     def mouseMoveEvent(self, event):
-        convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
-        self._footer.setMousePose(convertedMousePose)
+        self._convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
+        # self._footer.setMousePose(self._convertedMousePose)
+        self.notifyObservers()
         if self._dragObject:
             if self._selectedObj is not None and not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
                     if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
                         obj.setCollidedState(False)
                 pose = self._selectedObj.getPose()
-                pose.move(convertedMousePose.x()-self._selectionOffset[0],convertedMousePose.y()-self._selectionOffset[1])
+                pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])
                 if isinstance(self._selectedObj,Robot):
                     self._selectedObj.deleteTrajectory()
-
         if self._dragScene:
             current=event.pos()
             Rescaling.setOffset(Rescaling.getOffset()+(current-self._dragSceneOrigin))

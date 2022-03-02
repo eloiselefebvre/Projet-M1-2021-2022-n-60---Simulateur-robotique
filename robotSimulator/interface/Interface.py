@@ -3,6 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QActionGroup, QAction, QGridLayout
 from PyQt5.uic.properties import QtWidgets
 
+from robotSimulator.Observable import Observable
 from robotSimulator.Rescaling import Rescaling
 from robotSimulator.config import config
 from robotSimulator.interface.ExplorerInfo import ExplorerInfo
@@ -22,16 +23,14 @@ class Interface(QMainWindow):
         self.setWindowTitle("Spicy Simulator")
         self._toolbar=ToolsBar(self._environment,self._simulation,self)
 
-
         self._headerWidget=Header()
 
         self._footer=Footer()
-        self._sceneWidget=Scene(self._environment,self._footer)
-        self._explorerWidget = Explorer(self._environment, self._footer)
+        self._sceneWidget=Scene(self._environment)
+        self._explorerWidget = Explorer(self._environment)
         self._sceneWidget.defineExplorer(self._explorerWidget.getExplorerTree())
 
 
-        # TODO : Trouver comment retirer les marges dans les layouts
         self.setMenuBar(self._headerWidget)
 
         miniSceneWindow = QWidget()
@@ -59,6 +58,11 @@ class Interface(QMainWindow):
 
         self.showMaximized()
         self._sceneWidget.maximized()
+
+        for object in self._environment.getObjects():
+            object.addObserverCallback(self._sceneWidget.refreshView)
+
+        self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene)
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

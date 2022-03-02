@@ -103,6 +103,9 @@ class Footer(QStatusBar):
         Rescaling.zoomToFit()
         self.setZoom()
 
+    def updateMousePoseFromScene(self,scene):
+        self.setMousePose(scene.mousePose())
+
     def setMousePose(self, mouse):
         self._pose_text.setText(f"({mouse.x()}, {mouse.y()})")
 

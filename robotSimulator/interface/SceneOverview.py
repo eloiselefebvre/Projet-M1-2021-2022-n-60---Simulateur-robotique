@@ -11,6 +11,7 @@ class SceneOverview(QWidget):
         self.setStyleSheet("background-color: #f0f0f0")
 
     def paintEvent(self, event):
+
         painter = QPainter(self)
         painter.scale(Rescaling.miniZoom, Rescaling.miniZoom)
         for obj in self._environment.getObjects():
@@ -31,4 +32,3 @@ class SceneOverview(QWidget):
         h=int(Rescaling.sceneSize.height()/Rescaling.zoom)
 
         painter.drawRect(ox,oy,ox+w,oy+h)
-        self.update()

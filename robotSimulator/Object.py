@@ -1,9 +1,10 @@
 from PyQt5.QtGui import QPainter
 
+from robotSimulator.Observable import Observable
 from robotSimulator.representation.shapes import Border
 from robotSimulator.Rescaling import Rescaling
 
-class Object:
+class Object(Observable):
 
     SELECTED_COLOR = "#25CCF7"
     NUMBER_OF_INSTANCES = {}
@@ -11,6 +12,7 @@ class Object:
     # TODO : Gestion des ID des sensors dans l'environnement
 
     def __init__(self,representation):
+        super().__init__()
         self._pose = None
         self._representation = representation
         self._env= None

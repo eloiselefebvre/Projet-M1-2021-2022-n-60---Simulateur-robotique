@@ -5,17 +5,16 @@ from robotSimulator.interface.ExplorerTree import ExplorerTree
 
 class Explorer(QWidget):
 
-    def __init__(self,environment,footer):
+    def __init__(self,environment):
         super().__init__()
         self._environment=environment
-        self._footer=footer
         self._layout=QGridLayout(self)
         self.setFixedWidth(350)
 
         self._explorerInfo=None
         self._showExplorerInfo = False
 
-        self._explorerTree=ExplorerTree(self._environment,self._footer,self)
+        self._explorerTree=ExplorerTree(self._environment,self)
         self._layout.addWidget(self._explorerTree,0,0)
         self._layout.setContentsMargins(0,0,0,0)
         self._layout.setSpacing(0)

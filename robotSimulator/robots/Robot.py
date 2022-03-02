@@ -32,6 +32,7 @@ class Robot(ABC,Object):
         for comp in self._components:
             if hasattr(comp,"refresh"):
                 comp.refresh()
+        self.notifyObservers()
 
     def getComponents(self):
         return self._components
