@@ -8,7 +8,7 @@ import time
 from robotSimulator import Obstacle
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Rectangle, Circle
-from robotSimulator.ressources.maps.Labyrinth import Labyrinth
+from robotSimulator.ressources.maps.Maze import Maze
 from robotSimulator.simulation import Environment,Simulation
 from robotSimulator.actuators import Buzzer, LED
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
@@ -143,7 +143,7 @@ def usingFuzzyLogicToAvoidObstacle():
 
     rob = TwoWheelsRobot()
 
-    INFINITY = 100000
+    INFINITY = 100000  # MSO TODO : utiliser float("inf")
     distantObstacle=[]
     rightTurnRightWheel = [0 for _ in range(11)]
     rightTurnLeftWheel = [0 for _ in range(11)]
@@ -191,7 +191,7 @@ def usingFuzzyLogicToAvoidObstacle():
     # env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),200,250)
 
     sim = Simulation(env)
-    Labyrinth(env)
+    Maze(env)
     sim.run()
     sim.showInterface()
 
