@@ -8,6 +8,8 @@ from ..representation.shapes import Point
 from ..sensors.Sensor import Sensor
 from ..Pose import Pose
 
+# TODO : Pb point restant lorsque l'on cache la trajectoire
+
 class Robot(ABC,Object):
 
     TRAJECTORY_COLOR = "#F9886A"

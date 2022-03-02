@@ -16,7 +16,7 @@ class Telemeter(Sensor):
         self._laserLine = Line(self.INFINITE_LENGTH,2,self._color)
         laserRep = Representation(self._laserLine)
         self._laser = Object(laserRep)
-        self._laser.setPose(Pose(0,0)) # TODO : Pose(0,4) pour que le laser parte du bord du Telemeter ?
+        self._laser.setPose(Pose(0,0))
         self._representation.addSubRepresentation(self._laser.getRepresentation())
         self._distance = self.INFINITE_LENGTH
 
@@ -49,7 +49,9 @@ class Telemeter(Sensor):
         return closest_point
 
     def refresh(self):
+        self._laser.setVisible(False)
         self.getClosestCollisitionPointAndComputeDistance()
+        self._laser.setVisible(True)
         self._laserLine.setLength(int(self._distance))
 
     def getValue(self):
