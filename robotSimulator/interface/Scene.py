@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QPainter, QPaintEvent
+from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
 
@@ -49,7 +49,6 @@ class Scene(QWidget,Observable):
             obj.paint(painter)
             painter.restore()
 
-
     def mousePressEvent(self, event):
         self.setCursor(Qt.ClosedHandCursor)
         if event.button()==Qt.LeftButton:
@@ -75,15 +74,16 @@ class Scene(QWidget,Observable):
         self._convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
         # self._footer.setMousePose(self._convertedMousePose)
         self.notifyObservers()
-        if self._dragObject:
-            if self._selectedObj is not None and not self._selectedObj.isLock():
+        if self._dragObject and self._selectedObj is not None and  not self._selectedObj.getLock():
                 for obj in self._environment.getObjects():
                     if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
                         obj.setCollidedState(False)
                 pose = self._selectedObj.getPose()
                 pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])
+
                 if isinstance(self._selectedObj,Robot):
                     self._selectedObj.deleteTrajectory()
+
         if self._dragScene:
             current=event.pos()
             Rescaling.setOffset(Rescaling.getOffset()+(current-self._dragSceneOrigin))

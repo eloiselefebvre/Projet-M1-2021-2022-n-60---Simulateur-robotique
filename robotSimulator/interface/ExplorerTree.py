@@ -33,8 +33,8 @@ class ExplorerTree(QTreeWidget):
 
     def treeView(self):
         self.setHeaderHidden(True)
-        self.setColumnCount(3)
-        self.setColumnWidth(0,240)
+        self.setColumnCount(2)
+        self.setColumnWidth(0,300)
         self.setAutoScroll(True)
         self.setStyleSheet("background-color: #151825")
 
@@ -43,8 +43,6 @@ class ExplorerTree(QTreeWidget):
                 parent = Item(self,obj.getID(), 12, setBold=True)
                 self._visibilityButtons.append(VisibilityButton())
                 self.setItemWidget(parent, 1, self._visibilityButtons[-1])
-                self._lockButtons.append(LockButton(obj.isLock()))
-                self.setItemWidget(parent, 2, self._lockButtons[-1])
                 if isinstance(obj,Robot):
                     parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/robot.svg"))
                 if isinstance(obj,Obstacle):
@@ -75,11 +73,7 @@ class ExplorerTree(QTreeWidget):
         for button in self._visibilityButtons:
             button.clicked.connect(self.toggleObjectVisibily)
 
-        for button in self._lockButtons:
-            button.clicked.connect(self.toggleObjectLock)
         self.resizeColumnToContents(1)
-        self.resizeColumnToContents(2)
-        #self.expandAll()
 
     def openWindow(self):
         widget=QWidget()
@@ -131,11 +125,6 @@ class ExplorerTree(QTreeWidget):
                     children_button.lock()
         button.setVisibleObject(obj.isVisible())
 
-    def toggleObjectLock(self):
-        button = self.sender()
-        obj=self._mainObjects[self._lockButtons.index(button)]
-        obj.toggleLock()
-        button.setLockObject(obj.isLock())
 
 class Item(QTreeWidgetItem):
 
@@ -177,21 +166,3 @@ class VisibilityButton(QPushButton):
         self.setDisabled(False)
         self.setVisibleIcon()
 
-class LockButton(QPushButton):
-
-    def __init__(self,lockObj=True):
-        super().__init__()
-        self.setFlat(True)
-        self._lockObj = lockObj
-        self.setLockIcon()
-        self.setFixedWidth(28)
-
-    def setLockIcon(self):
-        if self._lockObj:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/lock.svg"))
-        else:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/unlock.svg"))
-
-    def setLockObject(self, lockObj):
-        self._lockObj = lockObj
-        self.setLockIcon()

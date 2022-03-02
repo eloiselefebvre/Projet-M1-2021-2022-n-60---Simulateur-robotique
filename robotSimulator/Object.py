@@ -9,8 +9,6 @@ class Object(Observable):
     SELECTED_COLOR = "#25CCF7"
     NUMBER_OF_INSTANCES = {}
 
-    # TODO : Gestion des ID des sensors dans l'environnement
-
     def __init__(self,representation):
         super().__init__()
         self._pose = None
@@ -44,14 +42,11 @@ class Object(Observable):
     def getID(self):
         return self._id
 
-    def isLock(self):
-        return self._lock
-
     def setLock(self,lock):
         self._lock=lock
 
-    def toggleLock(self):
-        self._lock=not self._lock
+    def getLock(self):
+        return self._lock
 
     def isVisible(self):
         return self._representation.isVisible()
