@@ -58,7 +58,7 @@ def collisionAndTelemeter():
     rob5.setRightWheelSpeed(300)
     rob5.setLeftWheelSpeed(300)
 
-    env = Environment()
+    env = Environment(1500,900)
     env.addObject(rob1, 1000, 100, 45)
     env.addObject(rob2, 1050, 150, 0)
     env.addObject(rob3, 500, 500, 90)
@@ -105,7 +105,7 @@ def simpleAvoidingObstacle():
         elif  i>2:
             y-=5
 
-    env = Environment()
+    env = Environment(1500,900)
     env.addObject(rob,500,500,90)
 
     #env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),0,300)
@@ -261,7 +261,7 @@ def LIDARTest():
     rob2.setRightWheelSpeed(200)
     rob2.setLeftWheelSpeed(400)
 
-    env = Environment()
+    env = Environment(1500,900)
     env.addObject(rob, 500, 500)
     env.addObject(rob2, 900, 500)
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)

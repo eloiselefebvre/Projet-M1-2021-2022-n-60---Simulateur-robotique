@@ -31,7 +31,7 @@ class Simulation():
         start = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]/self._acceleration and self._play==True:
+            if current-start > config["time_step"]/self._acceleration and self._play:
                 start = current
                 self._timeElapsed+=config["time_step"]*self._acceleration
                 for obj in self._environment.getObjects():

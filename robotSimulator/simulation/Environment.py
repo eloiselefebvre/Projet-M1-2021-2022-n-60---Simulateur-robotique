@@ -10,7 +10,7 @@ class Environment:
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
-    def __init__(self,width=0,height=0):
+    def __init__(self,width,height):
         self._objects=[]
         self._virtualObjects=[]
         self._hasWalls=False

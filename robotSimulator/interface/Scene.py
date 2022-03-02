@@ -129,7 +129,6 @@ class Scene(QWidget,Observable):
             Rescaling.sceneSize = self._size
             if not self._environment.hasSize():
                 self._environment.setSize(self._size)
-                Rescaling.envSize = self._size
             Rescaling.zoomToMiniFit()
             self._environment.drawWalls()
 
