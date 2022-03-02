@@ -75,7 +75,7 @@ class ToolsBar(QToolBar):
 
     def clickedLockUnlock(self):
         for obj in self._environment.getObjects():
-            if obj.getLock():
+            if obj.isLock():
                 icon = QIcon(f"{config['ressourcesPath']}/unlock.svg")
                 obj.setLock(False)
             else:
