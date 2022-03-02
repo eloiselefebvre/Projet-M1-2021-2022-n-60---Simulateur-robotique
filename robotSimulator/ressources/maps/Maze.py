@@ -5,7 +5,7 @@ from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
 
 
-class Labyrinth():
+class Maze:
 
     DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
     DEFAULT_BORDER_SCREEN_WIDTH = 2
