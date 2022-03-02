@@ -45,7 +45,7 @@ class Object(Observable):
     def setLock(self,lock):
         self._lock=lock
 
-    def getLock(self):
+    def isLock(self):
         return self._lock
 
     def isVisible(self):

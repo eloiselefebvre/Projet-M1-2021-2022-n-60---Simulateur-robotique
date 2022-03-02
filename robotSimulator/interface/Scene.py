@@ -72,9 +72,8 @@ class Scene(QWidget,Observable):
 
     def mouseMoveEvent(self, event):
         self._convertedMousePose = (event.pos() - Rescaling.getOffset()) / Rescaling.zoom
-        # self._footer.setMousePose(self._convertedMousePose)
         self.notifyObservers()
-        if self._dragObject and self._selectedObj is not None and  not self._selectedObj.getLock():
+        if self._dragObject and self._selectedObj is not None and  not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
                     if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
                         obj.setCollidedState(False)
@@ -90,7 +89,6 @@ class Scene(QWidget,Observable):
             self._dragSceneOrigin=current
 
     def _isClickedObject(self, mousePose):
-        # TODO : Ne pas arrêter le robot s'il est verrouillé
         convertedMousePose = (mousePose - Rescaling.getOffset()) / Rescaling.zoom
         for obj in self._environment.getObjects():
             obj.setSelected(False)
@@ -101,7 +99,7 @@ class Scene(QWidget,Observable):
                 dx = convertedMousePose.x() - pose.getX()
                 dy = convertedMousePose.y() - pose.getY()
                 self._selectionOffset = (dx, dy)
-        if self._selectedObj is not None:
+        if self._selectedObj is not None and not self._selectedObj.isLock():
             self._selectedObj.setCollidedState(True)
         self._explorer.setSelectedItem(self._selectedObj)
 
