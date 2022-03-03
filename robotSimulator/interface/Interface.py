@@ -65,6 +65,8 @@ class Interface(QMainWindow):
         zoomController.addObserverCallback(self._footer.updateZoom,"zoomChanged")
 
         self._toolbar.addObserverCallback(self._simulation.updateAcceleration,"accelerationChanged")
+        self._toolbar.addObserverCallback(self._simulation.updatePlayState, "playChanged")
+
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._sceneWidget.updateLockedScene,"lockChanged")
 
     def closeEvent(self, event):

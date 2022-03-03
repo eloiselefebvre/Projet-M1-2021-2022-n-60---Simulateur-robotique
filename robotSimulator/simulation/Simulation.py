@@ -18,7 +18,7 @@ class Simulation(Observable):
         self._appShown = False
         self._acceleration = 1
         self._timeElapsed = 0
-        self._play=True
+        self._playState=True
 
     def run(self):
         th = threading.Thread(target=self.__run)
@@ -28,7 +28,7 @@ class Simulation(Observable):
         start = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]/self._acceleration and self._play:
+            if current-start > config["time_step"]/self._acceleration and self._playState:
                 start = current
                 self._timeElapsed+=config["time_step"]*self._acceleration
                 for obj in self._environment.getObjects():
@@ -50,7 +50,7 @@ class Simulation(Observable):
         self._interface=Interface(self,self._environment)
         sys.exit(self._app.exec())
 
-    def setAcceleration(self,acc):
+    def setAcceleration(self,acc): # TODO : Notify toolsbar
         self._acceleration=acc
 
     def time(self):
@@ -71,10 +71,6 @@ class Simulation(Observable):
     def updateAcceleration(self,sender):
         self._acceleration=sender.getAcceleration()
 
-    def playPause(self):
-        self._play=not self._play
-
-    def getPlay(self):
-        return self._play
-
+    def updatePlayState(self,sender):
+        self._playState=sender.getPlayState()
 

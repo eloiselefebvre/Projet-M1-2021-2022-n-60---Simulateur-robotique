@@ -28,6 +28,8 @@ class ToolsBar(QToolBar,Observable):
 
         self._tb.setMovable(False)
 
+        self._playState=True
+
     def increaseAcceleration(self):
         increaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"),"IncreaseAcceleration",self._interface)
         increaseAcceleration.triggered.connect(self.clickedIncreaseAcceleration)
@@ -96,17 +98,17 @@ class ToolsBar(QToolBar,Observable):
     def getAcceleration(self):
         return self._acceleration
 
-    def clickedPlayPause(self): # TODO : Revoir avec Observer
-        pass
-        # self._simulation.playPause()
-        # if self._simulation.getPlay():
-        #     icon =QIcon(f"{config['ressourcesPath']}/pause.svg")
-        # else:
-        #     icon =QIcon(f"{config['ressourcesPath']}/play.svg")
-        # self._playPauseAction.setIcon(icon)
+    def clickedPlayPause(self): # TODO : Revoir avec composant Button
+        self.togglePlayState()
+        if self._playState:
+            icon =QIcon(f"{config['ressourcesPath']}/pause.svg")
+        else:
+            icon =QIcon(f"{config['ressourcesPath']}/play.svg")
+        self._playPauseAction.setIcon(icon)
 
+    def togglePlayState(self):
+        self._playState=not self._playState
+        self.notifyObservers("playChanged")
 
-
-
-
-
+    def getPlayState(self):
+        return self._playState
