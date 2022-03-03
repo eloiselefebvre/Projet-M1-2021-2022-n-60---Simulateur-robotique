@@ -1,5 +1,3 @@
-from PyQt5.QtGui import QPainter
-
 from robotSimulator.Observable import Observable
 from robotSimulator.representation.shapes import Border
 

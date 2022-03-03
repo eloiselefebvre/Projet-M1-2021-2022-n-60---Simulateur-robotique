@@ -18,7 +18,7 @@ class Interface(QMainWindow):
         self.setWindowTitle("Spicy Simulator")
 
         self._headerWidget = Header()
-        self._toolbar=ToolsBar(self._environment,self._simulation,self)
+        self._toolbar=ToolsBar(self._environment,self)
 
         zoomController = ZoomController(self._environment)
 
@@ -63,6 +63,8 @@ class Interface(QMainWindow):
 
         self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene)
         zoomController.addObserverCallback(self._footer.updateZoom)
+
+        self._toolbar.addObserverCallback(self._simulation.updateAcceleration)
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

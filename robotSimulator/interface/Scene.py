@@ -28,7 +28,6 @@ class Scene(QWidget,Observable):
 
         self._convertedMousePose=QPoint(0, 0)
 
-
     def defineExplorer(self,explorer):
         self._explorer=explorer
 
