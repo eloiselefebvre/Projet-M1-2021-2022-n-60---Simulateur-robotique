@@ -78,14 +78,16 @@ class Scene(QWidget,Observable):
         self._convertedMousePose = (event.pos() -  self._zoomController.getOffset()) /  self._zoomController.getZoom()
         self.notifyObservers("poseChanged")
         if self._dragObject and self._selectedObj is not None and  not self._selectedObj.isLock():
-                for obj in self._environment.getObjects():
-                    if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
-                        obj.setCollidedState(False)
-                pose = self._selectedObj.getPose()
-                pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])
+            for obj in self._environment.getObjects():
+                if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
+                    obj.setCollidedState(False)
+            pose = self._selectedObj.getPose()
+            pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])
 
-                if isinstance(self._selectedObj,Robot):
-                    self._selectedObj.deleteTrajectory()
+            if isinstance(self._selectedObj,Robot):
+                self._selectedObj.deleteTrajectory()
+
+            self._selectedObj.notifyObservers("poseChanged") # TODO : notify directement dans une méthode move de l'objet
 
         if self._dragScene:
             current=event.pos()

@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QGridLayout, QWidget
+from PyQt5.QtCore import Qt
 
 from robotSimulator.interface.ExplorerFilter import ExplorerFilter
 from robotSimulator.interface.ExplorerInfo import ExplorerInfo
@@ -13,7 +14,9 @@ class Explorer(QWidget):
         self.setFixedWidth(350)
 
         self._explorerFilter = ExplorerFilter(self._environment)
-        self._explorerFilter.setStyleSheet("background-color: #212122d")
+        self.setAttribute(Qt.WA_StyledBackground)
+
+        self.setStyleSheet("background-color: #151825")
         self._layout.addWidget(self._explorerFilter,0,0)
 
         self._explorerInfo=None
@@ -28,8 +31,6 @@ class Explorer(QWidget):
         if not self._showExplorerInfo:
             self._explorerInfo = ExplorerInfo(obj)
             obj.addObserverCallback(self._explorerInfo.refreshData,"poseChanged")
-            self._explorerInfo.setStyleSheet("background-color: #21212F")
-            self._explorerInfo.setFixedHeight(400)
             self._layout.addWidget(self._explorerInfo,2,0)
             self._showExplorerInfo=True
 

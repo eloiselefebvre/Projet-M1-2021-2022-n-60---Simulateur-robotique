@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton, QVBoxLayout, QWidget
 
@@ -39,7 +40,6 @@ class ExplorerTree(QTreeWidget):
         self.setColumnCount(2)
         self.setColumnWidth(0,300)
         self.setAutoScroll(True)
-        self.setStyleSheet("background-color: #151825")
 
         for obj in self._environment.getObjects():
              if type(obj) != Object:
@@ -78,6 +78,8 @@ class ExplorerTree(QTreeWidget):
         self.resizeColumnToContents(1)
 
         self.itemClicked.connect(self.clickedItem)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
 
     def getSelectedObject(self):
         return self._mainObjects[self._mainItems.index(self._selectedItem)] if self._selectedItem is not None else None
@@ -92,22 +94,6 @@ class ExplorerTree(QTreeWidget):
             selectedObject = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
             crawler.setColor(self.CRAWLER_COLOR)
         selectedObject.setSelected(True)
-
-    def selectionChanged(self, selected, deselected):
-        pass
-        # if self.selectedIndexes():
-        #     crawler=self.currentItem()
-        #     if self._selectedItem is not None:
-        #         self._mainObjects[self._mainItems.index(self._selectedItem)].setSelected(False,False)
-        #         self.removeSelectedItem()
-        #     if crawler in self._mainItems:
-        #         selectedObject = self._mainObjects[self._mainItems.index(crawler)]
-        #         self.setSelectedItem(crawler)
-        #         selectedObject.setSelected(True,False)
-        #     else:
-        #         selectedObject = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
-        #         crawler.setColor(self.CRAWLER_COLOR)
-        #         selectedObject.setSelected(True)
 
     def setSelectedItem(self,item):
         item.setColor(self.CRAWLER_COLOR)

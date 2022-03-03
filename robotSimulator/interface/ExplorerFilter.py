@@ -1,4 +1,5 @@
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout, QPushButton
 
 from robotSimulator.Obstacle import Obstacle
@@ -19,18 +20,18 @@ class ExplorerFilter(QWidget):
         self._actuators = []
         self.objectsFilter()
 
-        self._layout = QHBoxLayout()
-        self.setLayout(self._layout)
+        self._layout = QHBoxLayout(self)
 
         self._layout.addWidget(self.menu())
         self._layout.addWidget(self.lock())
         self._layout.addWidget(self.visible())
 
     def menu(self):
+        fnt=QFont("Verdana", 12)
+        fnt.setBold(True)
         self._menu = QComboBox()
-        self._menu.setFixedWidth(100)
-        self._menu.setFixedHeight(30)
-        self._menu.setFixedWidth(215)
+        self._menu.setFont(fnt)
+        self._menu.setFixedSize(215,30)
         self._menu.setStyleSheet("background-color: #f0f0f0")
         self._menu.addItem(QIcon(f"{config['ressourcesPath']}/allObjects.svg"),"All objects")
         self._menu.addItem(QIcon(f"{config['ressourcesPath']}/robot.svg"),"Robots")
@@ -56,7 +57,7 @@ class ExplorerFilter(QWidget):
     def visible(self):
         self._visibleButton=VisibilityButton()
         self._visibleButton.clicked.connect(self.clickedVisibilityButton)
-        self._menu.currentText()
+        # self._menu.currentText()
         return self._visibleButton
 
     def lock(self):
@@ -97,7 +98,7 @@ class ExplorerFilter(QWidget):
             self._visibleButton.setIcon(icon)
 
 
-class VisibilityButton(QPushButton):
+class VisibilityButton(QPushButton): # TODO : Faire une classe Button pour regrouper tous les codes
 
     def __init__(self,visibleObj=True):
         super().__init__()
