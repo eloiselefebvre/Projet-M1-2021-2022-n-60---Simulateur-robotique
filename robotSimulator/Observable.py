@@ -1,21 +1,23 @@
 class Observable:
 
-    TOPICS = ['defaultTopic','selectionChanged','zoomChanged','accelerationChanged','poseChanged','lockChanged']
-
     def __init__(self):
         self._observersCallbacks={}
-        for topic in self.TOPICS:
-            self._observersCallbacks[topic]=[]
 
     def addObserverCallback(self,observerCallback,topic='defaultTopic'):
-        if topic in self.TOPICS:
+        if topic in self._observersCallbacks:
             self._observersCallbacks[topic].append(observerCallback)
+        else:
+            self._observersCallbacks[topic]=[observerCallback]
 
     def deleteObserverCallback(self,observerCallback,topic='defaultTopic'):
-        if topic in self.TOPICS and observerCallback in self._observersCallbacks[topic]:
+        if topic in self._observersCallbacks and observerCallback in self._observersCallbacks[topic]:
             self._observersCallbacks[topic].remove(observerCallback)
 
     def notifyObservers(self,topic='defaultTopic'):
-        for observerCallback in self._observersCallbacks[topic]:
-            observerCallback(self)
+        if topic in self._observersCallbacks:
+            for observerCallback in self._observersCallbacks[topic]:
+                observerCallback(self)
+
+    def getTopics(self):
+        return self._observersCallbacks.keys()
 

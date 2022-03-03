@@ -26,7 +26,8 @@ class Scene(QWidget,Observable):
         self.setCursor(Qt.OpenHandCursor)
 
         self._selectedObj = None
-        self._objectMoved=False
+        self._objectMoved=True
+        self._selectedObjCollidedState=False
 
         self.setStyleSheet("background-color: #f0f0f0")
 
@@ -73,8 +74,9 @@ class Scene(QWidget,Observable):
         self._dragObject=False
         self._dragScene=False
         if self._selectedObj is not None:
-            if self._objectMoved:
-                self._objectMoved=False
+            if not self._objectMoved:
+                self._selectedObj.setCollidedState(self._selectedObjCollidedState)
+            else:
                 self._selectedObj.setCollidedState(False)
             self._selectedObj=None
 
@@ -115,6 +117,8 @@ class Scene(QWidget,Observable):
                 self._selectionOffset = (dx, dy)
                 if not self._isSceneLocked:
                     self._selectedObj = obj
+                    self._selectedObjCollidedState=self._selectedObj.getCollidedState()
+                    self._objectMoved=False
                     self._selectedObj.setCollidedState(True)
 
 
