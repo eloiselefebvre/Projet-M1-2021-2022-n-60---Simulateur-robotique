@@ -2,6 +2,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout, QPushButton
 
 from robotSimulator.Obstacle import Obstacle
+from robotSimulator.actuators import Actuator
 from robotSimulator.config import config
 from robotSimulator.robots.Robot import Robot
 from robotSimulator.sensors.Sensor import Sensor
@@ -15,9 +16,8 @@ class ExplorerFilter(QWidget):
         self._robots = []
         self._sensors = []
         self._obstacles = []
-        print(self.robotsFilter())
-        print(self.obstaclesFilter())
-        print(self.sensorsFilter())
+        self._actuators = []
+        self.objectsFilter()
 
         self._layout = QHBoxLayout()
         self.setLayout(self._layout)
@@ -32,36 +32,31 @@ class ExplorerFilter(QWidget):
         self._menu.setFixedHeight(30)
         self._menu.setFixedWidth(215)
         self._menu.setStyleSheet("background-color: #f0f0f0")
-
         self._menu.addItem(QIcon(f"{config['ressourcesPath']}/allObjects.svg"),"All objects")
-        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/robot.svg"),"Robot")
-        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/actuator.svg"),"Actuator")
-        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/sensor.svg"),"Sensor")
-        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/obstacle.svg"),"Obstacle")
+        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/robot.svg"),"Robots")
+        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/actuator.svg"),"Actuators")
+        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/sensor.svg"),"Sensors")
+        self._menu.addItem(QIcon(f"{config['ressourcesPath']}/obstacle.svg"),"Obstacles")
 
         return self._menu
 
-    def robotsFilter(self):
+
+    def objectsFilter(self):
         for obj in self._environment.getObjects():
             if isinstance(obj,Robot):
                 self._robots.append(obj)
-        return self._robots
-
-    def sensorsFilter(self):
-        for obj in self._environment.getObjects():
-            if isinstance(obj,Sensor):
-                self._sensors.append(obj)
-        return self._sensors
-
-    def obstaclesFilter(self):
-        for obj in self._environment.getObjects():
+                for comp in obj.getComponents():
+                    if isinstance(comp, Actuator):
+                        self._actuators.append(comp)
+                    if isinstance(comp, Sensor):
+                        self._sensors.append(comp)
             if isinstance(obj, Obstacle):
                 self._obstacles.append(obj)
-        return self._obstacles
 
     def visible(self):
         self._visibleButton=VisibilityButton()
         self._visibleButton.clicked.connect(self.clickedVisibilityButton)
+        self._menu.currentText()
         return self._visibleButton
 
     def lock(self):
@@ -78,9 +73,21 @@ class ExplorerFilter(QWidget):
                 icon = QIcon(f"{config['ressourcesPath']}/lock.svg")
                 obj.setLock(True)
             self._lockButton.setIcon(icon)
+    # TODO: Revoir le code
 
     def clickedVisibilityButton(self):
-        for obj in self._environment.getObjects():
+        listObjects=[]
+        if self._menu.currentText()=="All objects":
+            listObjects=self._environment.getObjects()
+        elif self._menu.currentText()=="Robots":
+            listObjects=self._robots
+        elif self._menu.currentText()=="Sensors":
+            listObjects=self._sensors
+        elif self._menu.currentText() == "Actuators":
+            listObjects = self._actuators
+        elif self._menu.currentText()=="Obstacles":
+            listObjects=self._obstacles
+        for obj in listObjects:
             if obj.isVisible():
                 icon = QIcon(f"{config['ressourcesPath']}/invisible.svg")
                 obj.setVisible(False)
@@ -88,7 +95,6 @@ class ExplorerFilter(QWidget):
                 icon = QIcon(f"{config['ressourcesPath']}/visible.svg")
                 obj.setVisible(True)
             self._visibleButton.setIcon(icon)
-
 
 
 class VisibilityButton(QPushButton):
