@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout, QPushButton
 
+from robotSimulator.Observable import Observable
 from robotSimulator.Obstacle import Obstacle
 from robotSimulator.actuators import Actuator
 from robotSimulator.config import config
@@ -9,7 +10,7 @@ from robotSimulator.robots.Robot import Robot
 from robotSimulator.sensors.Sensor import Sensor
 
 
-class ExplorerFilter(QWidget):
+class ExplorerToolsbar(QWidget, Observable):
 
     def __init__(self,environment):
         super().__init__()
@@ -19,6 +20,8 @@ class ExplorerFilter(QWidget):
         self._obstacles = []
         self._actuators = []
         self.objectsFilter()
+
+        self._isSceneLocked=False
 
         self._layout = QHBoxLayout(self)
 
@@ -56,7 +59,6 @@ class ExplorerFilter(QWidget):
     def visible(self):
         self._visibleButton=VisibilityButton()
         self._visibleButton.clicked.connect(self.clickedVisibilityButton)
-        # self._menu.currentText()
         return self._visibleButton
 
     def lock(self):
@@ -65,15 +67,15 @@ class ExplorerFilter(QWidget):
         return self._lockButton
 
     def clickedLockUnlock(self):
-        for obj in self._environment.getObjects():
-            if obj.isLock():
-                icon = QIcon(f"{config['ressourcesPath']}/unlock.svg")
-                obj.setLock(False)
-            else:
-                icon = QIcon(f"{config['ressourcesPath']}/lock.svg")
-                obj.setLock(True)
-            self._lockButton.setIcon(icon)
-    # TODO: Revoir le code
+        self.toggleSceneLock()
+        self._lockButton.setLock(self._isSceneLocked)
+
+    def toggleSceneLock(self):
+        self._isSceneLocked=not self._isSceneLocked
+        self.notifyObservers("lockChanged")
+
+    def getLockState(self):
+        return self._isSceneLocked
 
     def clickedVisibilityButton(self):
         listObjects=[]
@@ -118,7 +120,7 @@ class VisibilityButton(QPushButton): # TODO : Faire une classe Button pour regro
 
 class LockButton(QPushButton):
 
-    def __init__(self,lockObj=True):
+    def __init__(self,lockObj=False):
         super().__init__()
         self.setFlat(True)
         self._lockObj = lockObj
@@ -130,3 +132,7 @@ class LockButton(QPushButton):
             self.setIcon(QIcon(f"{config['ressourcesPath']}/lock.svg"))
         else:
             self.setIcon(QIcon(f"{config['ressourcesPath']}/unlock.svg"))
+
+    def setLock(self,lock):
+        self._lockObj=lock
+        self.setLockIcon()

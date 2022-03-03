@@ -12,7 +12,6 @@ class Object(Observable):
         self._representation = representation
         self._env= None
         self._isCollided = False
-        self._isLock=False # TODO : Mettre dans Scene
         self._isSelected = False
 
         self.setNumberOfInstances(type(self).__name__)
@@ -40,12 +39,6 @@ class Object(Observable):
 
     def getID(self):
         return self._id
-
-    def setLock(self,lock):
-        self._isLock=lock
-
-    def isLock(self):
-        return self._isLock
 
     def isVisible(self):
         return self._representation.isVisible()

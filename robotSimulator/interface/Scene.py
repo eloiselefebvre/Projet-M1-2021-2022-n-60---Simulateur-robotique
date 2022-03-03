@@ -15,6 +15,7 @@ class Scene(QWidget,Observable):
         self._zoomController = zoomController
         self._explorer=None
         self._dragObject=False
+        self._isSceneLocked=False
         self._dragScene = False
         self._dragSceneOrigin=QPoint(0,0)
 
@@ -25,6 +26,7 @@ class Scene(QWidget,Observable):
         self.setCursor(Qt.OpenHandCursor)
 
         self._selectedObj = None
+        self._objectMoved=False
 
         self.setStyleSheet("background-color: #f0f0f0")
 
@@ -35,6 +37,9 @@ class Scene(QWidget,Observable):
 
     def refreshView(self,sender):
         self.update()
+
+    def updateLockedScene(self,sender):
+        self._isSceneLocked=sender.getLockState()
 
     def paintEvent(self,event):
         painter = QPainter(self)
@@ -68,7 +73,9 @@ class Scene(QWidget,Observable):
         self._dragObject=False
         self._dragScene=False
         if self._selectedObj is not None:
-            self._selectedObj.setCollidedState(False)
+            if self._objectMoved:
+                self._objectMoved=False
+                self._selectedObj.setCollidedState(False)
             self._selectedObj=None
 
     def mousePose(self):
@@ -77,13 +84,13 @@ class Scene(QWidget,Observable):
     def mouseMoveEvent(self, event):
         self._convertedMousePose = (event.pos() -  self._zoomController.getOffset()) /  self._zoomController.getZoom()
         self.notifyObservers("poseChanged")
-        if self._dragObject and self._selectedObj is not None and  not self._selectedObj.isLock():
+        if self._dragObject and self._selectedObj is not None:
             for obj in self._environment.getObjects():
                 if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
                     obj.setCollidedState(False)
             pose = self._selectedObj.getPose()
             pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])
-
+            self._objectMoved=True
             if isinstance(self._selectedObj,Robot):
                 self._selectedObj.deleteTrajectory()
 
@@ -101,14 +108,15 @@ class Scene(QWidget,Observable):
 
         for obj in self._environment.getObjects():
             if obj.getRepresentation().contains(convertedMousePose) and obj.isVisible():
-                self._selectedObj = obj
-                self._selectedObj.setSelected(True)
+                obj.setSelected(True)
                 pose = obj.getPose()
                 dx = convertedMousePose.x() - pose.getX()
                 dy = convertedMousePose.y() - pose.getY()
                 self._selectionOffset = (dx, dy)
-                if not self._selectedObj.isLock():
+                if not self._isSceneLocked:
+                    self._selectedObj = obj
                     self._selectedObj.setCollidedState(True)
+
 
     def wheelEvent(self, event):
         if event.modifiers() and Qt.ControlModifier:
