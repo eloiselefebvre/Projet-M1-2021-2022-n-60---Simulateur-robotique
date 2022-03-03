@@ -24,7 +24,6 @@ class Interface(QMainWindow):
 
         self._sceneWidget=Scene(self._environment,zoomController)
         self._explorerWidget = Explorer(self._environment)
-        self._sceneWidget.defineExplorer(self._explorerWidget.getExplorerTree()) # TODO : A enlever avec ajout d'overvateurs
         self._footer = Footer(zoomController)
 
         self.setMenuBar(self._headerWidget)

@@ -13,7 +13,6 @@ class Scene(QWidget,Observable):
         self._environment = environment
 
         self._zoomController = zoomController
-        self._explorer=None
         self._dragObject=False
         self._isSceneLocked=False
         self._dragScene = False
@@ -32,9 +31,6 @@ class Scene(QWidget,Observable):
         self.setStyleSheet("background-color: #f0f0f0")
 
         self._convertedMousePose=QPoint(0, 0)
-
-    def defineExplorer(self,explorer):
-        self._explorer=explorer
 
     def refreshView(self,sender):
         self.update()

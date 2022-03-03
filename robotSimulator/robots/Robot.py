@@ -39,7 +39,7 @@ class Robot(ABC,Object):
     def getComponents(self):
         return self._components
 
-    def updateTrajectory(self):
+    def updateTrajectory(self): # TODO : Ne pas rajouter un point à chaque fois sinon surchage du dessin
         point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
         self._trajectory.append(point)
         if self._drawTrajectory:

@@ -99,11 +99,13 @@ class Footer(QStatusBar):
     def zoomInputChanged(self):
         text=self._zoom_edit.text()
         if text[-1]=='%':
-            text=text.rstrip(text[-1])
+            text=text.rstrip('%')
         if text.isnumeric():
             zoom=int(text)/100
             if self._zoomController.setZoom(zoom):
                 self._zoom_menu_list.close()
+        else:
+            self._zoom_edit.setText(f"{round(self._zoomController.getZoom()*100)}%")
 
     def menuOpened(self):
         self._zoom_edit.selectAll()
