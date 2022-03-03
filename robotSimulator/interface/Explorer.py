@@ -16,7 +16,7 @@ class Explorer(QWidget):
         self._explorerFilter = ExplorerFilter(self._environment)
         self.setAttribute(Qt.WA_StyledBackground)
 
-        self.setStyleSheet("background-color: #151825")
+        self.setStyleSheet("background-color: #151825; border:none")
         self._layout.addWidget(self._explorerFilter,0,0)
 
         self._explorerInfo=None

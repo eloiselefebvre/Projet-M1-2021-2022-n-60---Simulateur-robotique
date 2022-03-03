@@ -96,13 +96,14 @@ class ToolsBar(QToolBar,Observable):
     def getAcceleration(self):
         return self._acceleration
 
-    def clickedPlayPause(self):
-        self._simulation.playPause()
-        if self._simulation.getPlay():
-            icon =QIcon(f"{config['ressourcesPath']}/pause.svg")
-        else:
-            icon =QIcon(f"{config['ressourcesPath']}/play.svg")
-        self._playPauseAction.setIcon(icon)
+    def clickedPlayPause(self): # TODO : Revoir avec Observer
+        pass
+        # self._simulation.playPause()
+        # if self._simulation.getPlay():
+        #     icon =QIcon(f"{config['ressourcesPath']}/pause.svg")
+        # else:
+        #     icon =QIcon(f"{config['ressourcesPath']}/play.svg")
+        # self._playPauseAction.setIcon(icon)
 
 
 

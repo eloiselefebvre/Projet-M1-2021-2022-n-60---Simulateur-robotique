@@ -35,7 +35,7 @@ class Interface(QMainWindow):
         miniscene = SceneOverview(self._environment,zoomController)
 
         layout.addWidget(miniscene)
-        miniSceneWindow.setStyleSheet("background-color: #f9f9f9; border: 2px solid #F9886A; border-radius: 8px")
+        miniSceneWindow.setStyleSheet("background-color: #f9f9f9; border: 2px solid #F9886A; border-radius: 8px;")
         miniSceneWindow.setFixedSize(250,150) # TODO : Ajuster à la taille de la scène (ex 20 fois plus petit pour garder le ratio)
         zoomController.setMiniSceneSize(miniSceneWindow.size())
         zoomController.zoomToMiniFit()

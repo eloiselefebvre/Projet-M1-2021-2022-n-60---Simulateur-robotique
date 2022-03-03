@@ -28,11 +28,10 @@ class ExplorerFilter(QWidget):
 
     def menu(self):
         fnt=QFont("Verdana", 12)
-        fnt.setBold(True)
         self._menu = QComboBox()
         self._menu.setFont(fnt)
         self._menu.setFixedSize(215,30)
-        self._menu.setStyleSheet("background-color: #f0f0f0")
+        self._menu.setStyleSheet("background-color: #f0f0f0; border:none")
         self._menu.addItem(QIcon(f"{config['ressourcesPath']}/allObjects.svg"),"All objects")
         self._menu.addItem(QIcon(f"{config['ressourcesPath']}/robot.svg"),"Robots")
         self._menu.addItem(QIcon(f"{config['ressourcesPath']}/actuator.svg"),"Actuators")

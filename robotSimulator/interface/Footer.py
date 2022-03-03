@@ -33,6 +33,7 @@ class Footer(QStatusBar):
         self._zoom_menu_list.aboutToShow.connect(self.menuOpened)
 
         # actions
+        # TODO : add background hover
         zoom_in=QAction("Zoom in", self)
         zoom_in.setShortcut("ctrl++")
         zoom_in.triggered.connect(self._zoomController.zoomIn)
@@ -40,7 +41,6 @@ class Footer(QStatusBar):
         zoom_out = QAction("Zoom out", self)
         zoom_out.setShortcut("ctrl+-")
         zoom_out.triggered.connect(self._zoomController.zoomOut)
-
 
         zoom_to_fit = QAction("Zoom to fit", self)
         zoom_to_fit.triggered.connect(self._zoomController.zoomToFit)
