@@ -57,14 +57,14 @@ class Interface(QMainWindow):
         self._sceneWidget.maximized()
 
         for object in self._environment.getObjects():
-            object.addObserverCallback(self._explorerWidget.getExplorerTree().refreshView)
+            object.addObserverCallback(self._explorerWidget.getExplorerTree().refreshView,"selectionChanged")
 
-        self._simulation.addObserverCallback(self._sceneWidget.refreshView)
+        self._simulation.addObserverCallback(self._sceneWidget.refreshView,"poseChanged")
 
-        self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene)
-        zoomController.addObserverCallback(self._footer.updateZoom)
+        self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene,"poseChanged")
+        zoomController.addObserverCallback(self._footer.updateZoom,"zoomChanged")
 
-        self._toolbar.addObserverCallback(self._simulation.updateAcceleration)
+        self._toolbar.addObserverCallback(self._simulation.updateAcceleration,"accelerationChanged")
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

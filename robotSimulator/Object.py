@@ -65,15 +65,14 @@ class Object(Observable):
     def completeID(self):
         self._id+="_"+str(Object.NUMBER_OF_INSTANCES[self._id])
 
-    def setSelected(self,selected,notify=True):
+    def setSelected(self,selected):
         if selected!=self._isSelected:
             self._isSelected=selected
             if self._isSelected:
                 self._representation.getShape().addBorder(Border(4, self.SELECTED_COLOR))
             else:
                 self._representation.getShape().removeBorder()
-            if notify:
-                self.notifyObservers()
+            self.notifyObservers("selectionChanged")
 
     def isSelected(self):
         return self._isSelected

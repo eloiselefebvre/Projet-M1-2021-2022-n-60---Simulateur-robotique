@@ -36,7 +36,7 @@ class Simulation(Observable):
                         obj.move()
                     if hasattr(obj,"refresh"):
                         obj.refresh()
-                self.notifyObservers()
+                self.notifyObservers("poseChanged")
             time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):

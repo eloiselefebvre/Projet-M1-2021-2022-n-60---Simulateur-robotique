@@ -91,7 +91,7 @@ class ToolsBar(QToolBar,Observable):
 
     def accelerationChanged(self):
         self._valueAcceleration.setText("x"+str(round(self._acceleration,1)))
-        self.notifyObservers()
+        self.notifyObservers("accelerationChanged")
 
     def getAcceleration(self):
         return self._acceleration

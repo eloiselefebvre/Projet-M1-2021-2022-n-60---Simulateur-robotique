@@ -70,4 +70,4 @@ class ZoomController(Observable):
         self._miniSceneSize=size
 
     def zoomChanged(self):
-        self.notifyObservers()
+        self.notifyObservers("zoomChanged")

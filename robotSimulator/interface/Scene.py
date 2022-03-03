@@ -76,7 +76,7 @@ class Scene(QWidget,Observable):
 
     def mouseMoveEvent(self, event):
         self._convertedMousePose = (event.pos() -  self._zoomController.getOffset()) /  self._zoomController.getZoom()
-        self.notifyObservers()
+        self.notifyObservers("poseChanged")
         if self._dragObject and self._selectedObj is not None and  not self._selectedObj.isLock():
                 for obj in self._environment.getObjects():
                     if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
