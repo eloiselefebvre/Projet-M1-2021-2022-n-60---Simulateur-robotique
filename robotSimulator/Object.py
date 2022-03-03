@@ -13,8 +13,10 @@ class Object(Observable):
         self._pose = None
         self._representation = representation
         self._env= None
-        self._collided = False
-        self._lock=False
+        self._isCollided = False
+        self._isLock=False # TODO : Mettre dans Scene
+        self._isSelected = False
+
         self.setNumberOfInstances(type(self).__name__)
         self._id = type(self).__name__
         self.completeID()
@@ -42,10 +44,10 @@ class Object(Observable):
         return self._id
 
     def setLock(self,lock):
-        self._lock=lock
+        self._isLock=lock
 
     def isLock(self):
-        return self._lock
+        return self._isLock
 
     def isVisible(self):
         return self._representation.isVisible()
@@ -65,11 +67,18 @@ class Object(Observable):
     def completeID(self):
         self._id+="_"+str(Object.NUMBER_OF_INSTANCES[self._id])
 
-    def setSelected(self,selected):
-        if selected:
-            self._representation.getShape().addBorder(Border(4, self.SELECTED_COLOR))
-        else:
-            self._representation.getShape().removeBorder()
+    def setSelected(self,selected,notify=True):
+        if selected!=self._isSelected:
+            self._isSelected=selected
+            if self._isSelected:
+                self._representation.getShape().addBorder(Border(4, self.SELECTED_COLOR))
+            else:
+                self._representation.getShape().removeBorder()
+            if notify:
+                self.notifyObservers()
+
+    def isSelected(self):
+        return self._isSelected
 
     def setEnv(self,env):
         self._env=env
@@ -78,16 +87,16 @@ class Object(Observable):
         return self._env
 
     def getCollidedState(self):
-        return self._collided
+        return self._isCollided
 
     def setCollidedState(self,state):
-        self._collided=state
+        self._isCollided=state
 
     def isCollided(self):
-        if not self._collided:
+        if not self._isCollided:
             for obj in self._env.getObjects():
                 if self!=obj and self.isCollidedWith(obj):
-                    self._collided=True
+                    self._isCollided=True
                     obj.setCollidedState(True)
 
     # MSO TODO : attention, par convention, les méthodes isXXX() renvoient des booléens. J'ai l'impression qu'ici, on renvoie des intersections. Nom à revoir

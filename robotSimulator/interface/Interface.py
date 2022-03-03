@@ -56,8 +56,8 @@ class Interface(QMainWindow):
         self.showMaximized()
         self._sceneWidget.maximized()
 
-        # for object in self._environment.getObjects():
-        #     object.addObserverCallback(self._sceneWidget.refreshView)
+        for object in self._environment.getObjects():
+            object.addObserverCallback(self._explorerWidget.getExplorerTree().refreshView)
 
         self._simulation.addObserverCallback(self._sceneWidget.refreshView)
 

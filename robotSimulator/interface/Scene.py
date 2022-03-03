@@ -17,12 +17,14 @@ class Scene(QWidget,Observable):
         self._dragObject=False
         self._dragScene = False
         self._dragSceneOrigin=QPoint(0,0)
-        self._selectedObj = None
+
         self._selectionOffset=(0,0)
         self._maximized = False
         self._size=None
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
+
+        self._selectedObj = None
 
         self.setStyleSheet("background-color: #f0f0f0")
 
@@ -41,20 +43,21 @@ class Scene(QWidget,Observable):
         painter.translate(offset.x(), offset.y())
         painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
 
-        for obj in self._environment.getObjects():
-            painter.save()
-            obj.paint(painter)
-            painter.restore()
-
         for obj in self._environment.getVirtualObjects():
             painter.save()
             obj.paint(painter)
             painter.restore()
 
+        for obj in self._environment.getObjects():
+            painter.save()
+            obj.paint(painter)
+            painter.restore()
+
+
     def mousePressEvent(self, event):
         self.setCursor(Qt.ClosedHandCursor)
         if event.button()==Qt.LeftButton:
-            self._ObjectGrabbed(event.pos())
+            self._objectGrabbed(event.pos())
             self._dragObject=True
 
         if event.button() == Qt.MiddleButton:
@@ -67,7 +70,7 @@ class Scene(QWidget,Observable):
         self._dragScene=False
         if self._selectedObj is not None:
             self._selectedObj.setCollidedState(False)
-            self._selectedObj = None
+            self._selectedObj=None
 
     def mousePose(self):
         return self._convertedMousePose
@@ -90,20 +93,21 @@ class Scene(QWidget,Observable):
             self._zoomController.setOffset(self._zoomController.getOffset()+(current-self._dragSceneOrigin))
             self._dragSceneOrigin=current
 
-    def _ObjectGrabbed(self, mousePose):
+    def _objectGrabbed(self, mousePose):
         convertedMousePose = (mousePose - self._zoomController.getOffset()) / self._zoomController.getZoom()
         for obj in self._environment.getObjects():
             obj.setSelected(False)
+
+        for obj in self._environment.getObjects():
             if obj.getRepresentation().contains(convertedMousePose) and obj.isVisible():
-                obj.setSelected(True)
                 self._selectedObj = obj
+                self._selectedObj.setSelected(True)
                 pose = obj.getPose()
                 dx = convertedMousePose.x() - pose.getX()
                 dy = convertedMousePose.y() - pose.getY()
                 self._selectionOffset = (dx, dy)
-        if self._selectedObj is not None and not self._selectedObj.isLock():
-            self._selectedObj.setCollidedState(True)
-        self._explorer.setSelectedItem(self._selectedObj)
+                if not self._selectedObj.isLock():
+                    self._selectedObj.setCollidedState(True)
 
     def wheelEvent(self, event):
         if event.modifiers() and Qt.ControlModifier:
@@ -125,7 +129,7 @@ class Scene(QWidget,Observable):
         self._maximized=True
 
     def resizeEvent(self,event):
-        if self._maximized and self._size is None:
+        if self._maximized:
             self._size=self.size()
             self._zoomController.setSceneSize(self._size)
 

@@ -31,7 +31,7 @@ class TwoWheelsRobot(Robot):
 
 
     def move(self):
-        if not self._collided:
+        if not self._isCollided:
             # vitesse moyenne du robot
             averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
 
