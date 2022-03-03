@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QVBoxLayout, QGridLayout, QWidget
 
+from robotSimulator.interface.ExplorerFilter import ExplorerFilter
 from robotSimulator.interface.ExplorerInfo import ExplorerInfo
 from robotSimulator.interface.ExplorerTree import ExplorerTree
 
@@ -11,11 +12,15 @@ class Explorer(QWidget):
         self._layout=QGridLayout(self)
         self.setFixedWidth(350)
 
+        self._explorerFilter = ExplorerFilter(self._environment)
+        self._explorerFilter.setStyleSheet("background-color: #212122d")
+        self._layout.addWidget(self._explorerFilter,0,0)
+
         self._explorerInfo=None
         self._showExplorerInfo = False
 
         self._explorerTree=ExplorerTree(self._environment,self)
-        self._layout.addWidget(self._explorerTree,0,0)
+        self._layout.addWidget(self._explorerTree,1,0)
         self._layout.setContentsMargins(0,0,0,0)
         self._layout.setSpacing(0)
 

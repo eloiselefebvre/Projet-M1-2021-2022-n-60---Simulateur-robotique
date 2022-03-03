@@ -1,5 +1,6 @@
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QLabel, QAction, QWidgetAction, QToolBar, QPushButton, QLineEdit, QTextEdit
+from PyQt5.QtWidgets import QLabel, QAction, QWidgetAction, QToolBar, QPushButton, QLineEdit, QTextEdit, QMenu, \
+    QComboBox
 
 from robotSimulator.Observable import Observable
 from robotSimulator.config import config
