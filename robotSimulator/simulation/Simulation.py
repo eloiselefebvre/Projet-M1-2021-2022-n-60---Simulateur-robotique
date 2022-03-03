@@ -1,15 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QSlider, QVBoxLayout
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication
 from robotSimulator import Interface
 from robotSimulator.Observable import Observable
-from robotSimulator.interface.ToolsBar import ToolsBar
-from robotSimulator.simulation import Environment
 import threading
 import time
-
 from robotSimulator.config import *
-
 
 class Simulation(Observable):
 
@@ -70,21 +65,16 @@ class Simulation(Observable):
             self._interface.close()
         # TODO : fermer également l'application ?
 
-    def increaseAcceleration(self):
-        pas=0.1
-        self._acceleration+=pas
-
-    def decreaseAcceleration(self):
-        pas=0.1
-        if self._acceleration-pas>0:
-            self._acceleration-=pas
-
     def getAcceleration(self):
         return self._acceleration
+
+    def updateAcceleration(self,sender):
+        self._acceleration=sender.getAcceleration()
 
     def playPause(self):
         self._play=not self._play
 
     def getPlay(self):
         return self._play
+
 

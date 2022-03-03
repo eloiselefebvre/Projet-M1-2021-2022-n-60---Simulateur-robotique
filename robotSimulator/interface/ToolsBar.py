@@ -1,18 +1,21 @@
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QLabel, QAction, QWidgetAction, QToolBar, QPushButton
+from PyQt5.QtWidgets import QLabel, QAction, QWidgetAction, QToolBar, QPushButton, QLineEdit, QTextEdit, QMenu, \
+    QComboBox
 
+from robotSimulator.Observable import Observable
 from robotSimulator.config import config
 
-class ToolsBar(QToolBar):
+class ToolsBar(QToolBar,Observable):
 
     TOOLS_BAR_FIXED_HEIGHT = 50
     BUTTON_FIXED_WIDTH = 150
 
-    def __init__(self,environment,simulation,interface):
+    def __init__(self,environment,interface):
         super().__init__()
         self._environment=environment
-        self._simulation = simulation
         self._interface=interface
+        self._acceleration = 1
+
         self._tb = self._interface.addToolBar("ToolBar")
         self._tb.setStyleSheet("background: #21212f")
 
@@ -22,8 +25,7 @@ class ToolsBar(QToolBar):
         self._tb.addAction(self.increaseAcceleration())
         self._playPauseAction=self.playPause()
         self._tb.addAction(self._playPauseAction)
-        self._lockUnlockAction=self.lockUnlock()
-        self._tb.addAction(self._lockUnlockAction)
+
         self._tb.setMovable(False)
 
     def increaseAcceleration(self):
@@ -38,11 +40,24 @@ class ToolsBar(QToolBar):
 
     def valueAcceleration(self):
         valueAccelerationWidget=QWidgetAction(self)
-        self._valueAcceleration = QLabel("x"+str(self._simulation.getAcceleration()))
+        self._valueAcceleration = QLineEdit("x"+str(self._acceleration))
+
         valueAccelerationWidget.setDefaultWidget(self._valueAcceleration)
+        self._valueAcceleration.returnPressed.connect(self.inputValueAcceleration)
+
+        self._valueAcceleration.setStyleSheet("border: none")
         self._valueAcceleration.setFont(QFont("Sanserif",15))
         self._valueAcceleration.setStyleSheet("color: #f0f0f0")
+        self._valueAcceleration.setFixedWidth(70)
         return valueAccelerationWidget
+
+    def inputValueAcceleration(self):
+        text = self._valueAcceleration.text()
+        if text[0]=='x':
+            text=text.rstrip(text[0])
+        if text.isnumeric():
+            self._acceleration=(int(text))
+            self.accelerationChanged()
 
     def playPause(self):
         self._playPause = QAction(QIcon(f"{config['ressourcesPath']}/pause.svg"),"Play/Pause",self._interface)
@@ -54,16 +69,32 @@ class ToolsBar(QToolBar):
         self._lockUnlock.triggered.connect(self.clickedLockUnlock)
         return self._lockUnlock
 
-    def setAccelerationLabel(self):
-        self._valueAcceleration.setText("x"+str(round(self._simulation.getAcceleration(),1)))
-
     def clickedIncreaseAcceleration(self):
-        self._simulation.increaseAcceleration()
-        self.setAccelerationLabel()
+        if self._acceleration<1:
+            pas = 0.1
+            self._acceleration += pas
+        else:
+            pas=1
+            self._acceleration += pas
+        self.accelerationChanged()
 
     def clickedDecreaseAcceleration(self):
-        self._simulation.decreaseAcceleration()
-        self.setAccelerationLabel()
+
+        if self._acceleration<=1:
+            pas = 0.1
+            if self._acceleration-pas > 0:
+                self._acceleration -= pas
+        else:
+            pas=1
+            self._acceleration -= pas
+        self.accelerationChanged()
+
+    def accelerationChanged(self):
+        self._valueAcceleration.setText("x"+str(round(self._acceleration,1)))
+        self.notifyObservers()
+
+    def getAcceleration(self):
+        return self._acceleration
 
     def clickedPlayPause(self):
         self._simulation.playPause()
@@ -73,34 +104,8 @@ class ToolsBar(QToolBar):
             icon =QIcon(f"{config['ressourcesPath']}/play.svg")
         self._playPauseAction.setIcon(icon)
 
-    def clickedLockUnlock(self):
-        for obj in self._environment.getObjects():
-            if obj.isLock():
-                icon = QIcon(f"{config['ressourcesPath']}/unlock.svg")
-                obj.setLock(False)
-            else:
-                icon = QIcon(f"{config['ressourcesPath']}/lock.svg")
-                obj.setLock(True)
-            self._lockUnlockAction.setIcon(icon)
 
 
-class LockButton(QPushButton):
 
-    def __init__(self,lockObj=True):
-        super().__init__()
-        self.setFlat(True)
-        self._lockObj = lockObj
-        self.setLockIcon()
-        self.setFixedWidth(28)
-
-    def setLockIcon(self):
-        if self._lockObj:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/lock.svg"))
-        else:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/unlock.svg"))
-
-    def setLockObject(self, lockObj):
-        self._lockObj = lockObj
-        self.setLockIcon()
 
 

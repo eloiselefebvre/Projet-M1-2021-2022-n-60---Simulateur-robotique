@@ -116,7 +116,6 @@ class ExplorerInfo(QWidget):
                 self._trajectoryButton.setVisibleIcon(False)
                 self._selectedObject.hideTrajectory()
 
-
 class VisibilityTrajectory(QPushButton):
 
     def __init__(self):
