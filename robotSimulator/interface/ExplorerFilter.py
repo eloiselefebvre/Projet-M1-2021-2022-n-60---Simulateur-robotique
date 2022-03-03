@@ -60,12 +60,35 @@ class ExplorerFilter(QWidget):
         return self._obstacles
 
     def visible(self):
-        visibleButton=VisibilityButton()
-        return visibleButton
+        self._visibleButton=VisibilityButton()
+        self._visibleButton.clicked.connect(self.clickedVisibilityButton)
+        return self._visibleButton
 
     def lock(self):
-        lockButton=LockButton()
-        return lockButton
+        self._lockButton=LockButton()
+        self._lockButton.clicked.connect(self.clickedLockUnlock)
+        return self._lockButton
+
+    def clickedLockUnlock(self):
+        for obj in self._environment.getObjects():
+            if obj.isLock():
+                icon = QIcon(f"{config['ressourcesPath']}/unlock.svg")
+                obj.setLock(False)
+            else:
+                icon = QIcon(f"{config['ressourcesPath']}/lock.svg")
+                obj.setLock(True)
+            self._lockButton.setIcon(icon)
+
+    def clickedVisibilityButton(self):
+        for obj in self._environment.getObjects():
+            if obj.isVisible():
+                icon = QIcon(f"{config['ressourcesPath']}/invisible.svg")
+                obj.setVisible(False)
+            else:
+                icon = QIcon(f"{config['ressourcesPath']}/visible.svg")
+                obj.setVisible(True)
+            self._visibleButton.setIcon(icon)
+
 
 
 class VisibilityButton(QPushButton):
@@ -86,7 +109,6 @@ class VisibilityButton(QPushButton):
     def setVisibleObject(self,visibleObj):
         self._visibleObj=visibleObj
         self.setVisibleIcon()
-
 
 class LockButton(QPushButton):
 

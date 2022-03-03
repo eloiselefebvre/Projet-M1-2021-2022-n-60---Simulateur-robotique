@@ -25,8 +25,7 @@ class ToolsBar(QToolBar,Observable):
         self._tb.addAction(self.increaseAcceleration())
         self._playPauseAction=self.playPause()
         self._tb.addAction(self._playPauseAction)
-        self._lockUnlockAction=self.lockUnlock()
-        self._tb.addAction(self._lockUnlockAction)
+
         self._tb.setMovable(False)
 
     def increaseAcceleration(self):
@@ -105,33 +104,8 @@ class ToolsBar(QToolBar,Observable):
             icon =QIcon(f"{config['ressourcesPath']}/play.svg")
         self._playPauseAction.setIcon(icon)
 
-    def clickedLockUnlock(self):
-        for obj in self._environment.getObjects():
-            if obj.isLock():
-                icon = QIcon(f"{config['ressourcesPath']}/unlock.svg")
-                obj.setLock(False)
-            else:
-                icon = QIcon(f"{config['ressourcesPath']}/lock.svg")
-                obj.setLock(True)
-            self._lockUnlockAction.setIcon(icon)
 
-class LockButton(QPushButton):
 
-    def __init__(self,lockObj=True):
-        super().__init__()
-        self.setFlat(True)
-        self._lockObj = lockObj
-        self.setLockIcon()
-        self.setFixedWidth(28)
 
-    def setLockIcon(self):
-        if self._lockObj:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/lock.svg"))
-        else:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/unlock.svg"))
-
-    def setLockObject(self, lockObj):
-        self._lockObj = lockObj
-        self.setLockIcon()
 
 
