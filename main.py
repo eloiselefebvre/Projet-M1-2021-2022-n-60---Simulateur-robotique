@@ -1,5 +1,5 @@
-from robotSimulator import examples
+from robotSimulator.tests import collisionAndTelemeter
 
-examples.collisionAndTelemeter()
+collisionAndTelemeter()
 
 

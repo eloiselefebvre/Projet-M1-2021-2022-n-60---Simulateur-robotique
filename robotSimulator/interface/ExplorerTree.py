@@ -144,7 +144,7 @@ class Item(QTreeWidgetItem):
 
     def __init__(self,parent, txt='', fontSize=12, setBold=False, color="#63656D"):
         super().__init__(parent)
-        fnt = QFont('Verdana', fontSize) # TODO : Changer la font family
+        fnt = QFont("lucida", fontSize) # TODO : Changer la font family
         fnt.setBold(setBold)
         self.setColor(color)
         self.setFont(0,fnt)
