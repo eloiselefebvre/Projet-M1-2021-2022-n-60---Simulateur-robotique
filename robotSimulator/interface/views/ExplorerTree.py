@@ -51,6 +51,7 @@ class ExplorerTree(QTreeWidget):
         self.buildTree()
         self.expandAll()
 
+
     def clearTree(self):
         root = self.invisibleRootItem()
         parents = []
