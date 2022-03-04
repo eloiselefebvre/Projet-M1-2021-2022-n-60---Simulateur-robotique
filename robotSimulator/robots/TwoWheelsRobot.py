@@ -49,6 +49,10 @@ class TwoWheelsRobot(Robot):
 
         super().move()
 
+    def getAverageSpeed(self):
+        averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
+        return averageSpeedRobot
+
     def setRotCenter(self):
         self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
                                      (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
@@ -65,8 +69,14 @@ class TwoWheelsRobot(Robot):
     def getLeftWheel(self):
         return self._leftWheel
 
+    def getRightLinearSpeed(self):
+        return self._rightWheel.getRadius() * self._rightWheel.getSpeed()
+
     def getRightElementarySpeed(self):
-        return self._rightWheel.getRadius() * self._rightWheel.getSpeed() * config["time_step"] / 60
+        return self._rightWheel.getRadius() * self._rightWheel.getSpeed()*config["time_step"] / 60
+
+    def getLeftLinearSpeed(self):
+        return self._leftWheel.getRadius() * self._leftWheel.getSpeed()
 
     def getLeftElementarySpeed(self):
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed() * config["time_step"] / 60
@@ -74,4 +84,7 @@ class TwoWheelsRobot(Robot):
     def setWheelY(self,y):
         self._rightWheel.getRepresentation().getOrigin().setY(y)
         self._leftWheel.getRepresentation().getOrigin().setY(y)
+
+    def getDistanceBetweenWheels(self):
+        return self._distanceBetweenWheels
 

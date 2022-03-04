@@ -41,7 +41,7 @@ def collisionAndTelemeter():
     rob4 = FourWheelsRobot("#f00")
     rob4.addComponent(led4, 0, 0)
     rob4.setRightBackWheelSpeed(300)
-    rob4.setRightFrontWheelSpeed(800)
+    rob4.setRightFrontWheelSpeed(300)
     rob4.setLeftBackWheelSpeed(500)
     rob4.setLeftFrontWheelSpeed(-300)
 
@@ -54,7 +54,7 @@ def collisionAndTelemeter():
     env.addObject(rob2, 1050, 150, 0)
     env.addObject(rob3, 500, 500, 90)
     env.addObject(rob4, 700, 500, 90)
-    env.addObject(rob5, 300, 180, 90)
+    env.addObject(rob5, 700, 180, 90)
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
 
     sim = Simulation(env)

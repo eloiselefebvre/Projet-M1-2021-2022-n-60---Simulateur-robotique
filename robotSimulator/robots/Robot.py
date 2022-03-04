@@ -1,9 +1,10 @@
 from abc import ABC
 from robotSimulator.Object import Object
 from ..Component import Component
+from ..Odometry import Odometry
 from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
-from robotSimulator.Odometry import Odometry
+
 from ..Pose import Pose
 
 
@@ -18,8 +19,9 @@ class Robot(ABC,Object):
         self._actuators_counter=0
         self._drawTrajectory=False
         self._trajectory = []
-        self._odometry = Odometry(self)
         self._counter=0
+        self._drawOdometry=False
+        self._odometry = None
 
     def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
@@ -30,6 +32,7 @@ class Robot(ABC,Object):
 
     def move(self):
         self.updateTrajectory()
+        self._odometry.odometry()
         for comp in self._components:
             if hasattr(comp,"refresh"):
                 comp.refresh()
@@ -37,6 +40,15 @@ class Robot(ABC,Object):
 
     def getComponents(self):
         return self._components
+
+    def addOdometry(self):
+        self._odometry = Odometry(self,self._env)
+
+    def getOdometry(self):
+        return self._odometry
+
+    def getDrawOdometry(self):
+        return self._drawOdometry
 
     def updateTrajectory(self):
         if self._counter==0:
@@ -52,6 +64,9 @@ class Robot(ABC,Object):
     def setDrawTrajectory(self):
         self._drawTrajectory = not self._drawTrajectory
 
+    def setDrawOdometry(self):
+        self._drawOdometry = not self._drawOdometry
+
     def showTrajectory(self):
         for point in self._trajectory:
             self._env.addVirtualObject(point)
@@ -64,3 +79,4 @@ class Robot(ABC,Object):
     def deleteTrajectory(self):
         self.hideTrajectory()
         self._trajectory.clear()
+
