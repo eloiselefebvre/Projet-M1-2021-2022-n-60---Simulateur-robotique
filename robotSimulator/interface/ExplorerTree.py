@@ -3,6 +3,7 @@ from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton, QVBoxLayout, QWidget
 
 from robotSimulator.config import config
+from .Button import VisibilityButton
 from ..Object import Object
 from ..robots.Robot import Robot
 from ..Obstacle import Obstacle
@@ -151,30 +152,4 @@ class Item(QTreeWidgetItem):
     def setColor(self,color):
         self.setForeground(0,QColor(color))
 
-class VisibilityButton(QPushButton):
-
-    def __init__(self,visibleObj=True):
-        super().__init__()
-        self.setFlat(True)
-        self._visibleObj=visibleObj
-        self.setVisibleIcon()
-        self.setFixedWidth(28)
-
-    def setVisibleIcon(self):
-        if self._visibleObj:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/visible.svg"))
-        else:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/invisible.svg"))
-
-    def setVisibleObject(self,visibleObj):
-        self._visibleObj=visibleObj
-        self.setVisibleIcon()
-
-    def lock(self):
-        self.setDisabled(True)
-        self.setIcon(QIcon(f"{config['ressourcesPath']}/point.svg"))
-
-    def unlock(self):
-        self.setDisabled(False)
-        self.setVisibleIcon()
 

@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QLabel, QAction, QWidgetAction, QToolBar, QPushButton, QLineEdit
+from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit
 
 from robotSimulator.Observable import Observable
 from robotSimulator.config import config
@@ -99,7 +99,6 @@ class ToolsBar(QToolBar,Observable):
         self._lockUnlock = QAction(QIcon(f"{config['ressourcesPath']}/unlock.svg"),"Lock/Unlock",self._interface)
         self._lockUnlock.triggered.connect(self.clickedLockUnlock)
         return self._lockUnlock
-
 
     def clickedPlayPause(self): # TODO : Revoir avec composant Button
         self.togglePlayState()

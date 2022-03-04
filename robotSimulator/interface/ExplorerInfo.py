@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButt
 
 from robotSimulator.Obstacle import Obstacle
 from robotSimulator.config import config
+from robotSimulator.interface.Button import VisibilityButton
 from robotSimulator.robots.Robot import Robot
 from robotSimulator.sensors.Sensor import Sensor
 
@@ -100,7 +101,7 @@ class ExplorerInfo(QWidget):
         trajectoryLabel.setStyleSheet("color:#f9f9f9")
         layoutTrajectory.addWidget(trajectoryLabel,90)
 
-        self._trajectoryButton=VisibilityTrajectory()
+        self._trajectoryButton=VisibilityButton()
         self._trajectoryButton.clicked.connect(self.clickedTrajectoryButton)
         layoutTrajectory.addWidget(self._trajectoryButton,10)
 
@@ -115,21 +116,4 @@ class ExplorerInfo(QWidget):
             else:
                 self._trajectoryButton.setVisibleIcon(False)
                 self._selectedObject.hideTrajectory()
-
-class VisibilityTrajectory(QPushButton):
-
-    def __init__(self):
-        super().__init__()
-        self.setFlat(True)
-        self._visibleTrajectory=None
-        self.setVisibleIcon(False)
-        self.setFixedWidth(28)
-
-    def setVisibleIcon(self,bool):
-        if bool:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/visible.svg"))
-        else:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/invisible.svg"))
-
-
 
