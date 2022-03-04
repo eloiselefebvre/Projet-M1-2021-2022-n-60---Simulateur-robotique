@@ -13,7 +13,7 @@ def usingFuzzyLogicToAvoidObstacle():
 
     rob = TwoWheelsRobot()
 
-    INFINITY = float("inf")
+    INFINITY = 10000
     distantObstacle=[]
     rightTurnRightWheel = [0 for _ in range(11)]
     rightTurnLeftWheel = [0 for _ in range(11)]
