@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from robotSimulator import Interface
+from robotSimulator.interface import Interface
 from robotSimulator.Observable import Observable
 import threading
 import time

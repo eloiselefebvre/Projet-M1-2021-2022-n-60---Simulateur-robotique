@@ -1,14 +1,11 @@
-from abc import ABC, abstractmethod
-
-from robotSimulator import Object
+from abc import ABC
+from robotSimulator.Object import Object
 from ..Component import Component
-
-from ..representation import Representation
-from ..representation.shapes import Point
-from ..sensors.Sensor import Sensor
+from ..representation.Representation import Representation
+from ..representation.shapes.Point import Point
+from robotSimulator.Odometry import Odometry
 from ..Pose import Pose
 
-# TODO : Pb point restant lorsque l'on cache la trajectoire
 
 class Robot(ABC,Object):
 
@@ -21,6 +18,8 @@ class Robot(ABC,Object):
         self._actuators_counter=0
         self._drawTrajectory=False
         self._trajectory = []
+        self._odometry = Odometry(self)
+        self._counter=0
 
     def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
@@ -39,11 +38,13 @@ class Robot(ABC,Object):
     def getComponents(self):
         return self._components
 
-    def updateTrajectory(self): # TODO : Ne pas rajouter un point à chaque fois sinon surchage du dessin
-        point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
-        self._trajectory.append(point)
-        if self._drawTrajectory:
-            self._env.addVirtualObject(self._trajectory[-1])
+    def updateTrajectory(self):
+        if self._counter==0:
+            point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
+            self._trajectory.append(point)
+            if self._drawTrajectory:
+                self._env.addVirtualObject(self._trajectory[-1])
+        self._counter=(self._counter+1)%10
 
     def getDrawTrajectory(self):
         return self._drawTrajectory
@@ -55,9 +56,10 @@ class Robot(ABC,Object):
         for point in self._trajectory:
             self._env.addVirtualObject(point)
 
-    def hideTrajectory(self): # TODO : Hide trajectory when robot is not visible
+    def hideTrajectory(self):
         for point in self._trajectory:
             self._env.removeVirtualObject(point)
+        self._drawTrajectory=False
 
     def deleteTrajectory(self):
         self.hideTrajectory()

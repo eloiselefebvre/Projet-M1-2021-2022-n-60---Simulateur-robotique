@@ -26,7 +26,9 @@ class ExplorerInfo(QWidget):
 
         self._layoutInfo.addWidget(self.labelInformation())
         self._layoutInfo.addWidget(self.positionInformations())
-        self._layoutInfo.addWidget(self.showTrajectory())
+
+        if isinstance(self._selectedObject,Robot):
+            self._layoutInfo.addWidget(self.showTrajectory())
 
     def labelInformation(self):
         labelInformations=QWidget()
@@ -44,8 +46,6 @@ class ExplorerInfo(QWidget):
 
         if isinstance(self._selectedObject,Sensor):
             icon = QPixmap(f"{config['ressourcesPath']}/sensor.svg")
-
-        # TODO: Mettre à jour les valeurs en temps réel
 
         labelIcon.setPixmap(icon)
         labelIcon.setFixedWidth(50)

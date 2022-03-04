@@ -7,3 +7,8 @@ class Component(Object):
 
     def setParent(self,parent):
         self._parent = parent
+
+    def getActuators(self):
+        if isinstance(self,Actuator):
+            return self
+
