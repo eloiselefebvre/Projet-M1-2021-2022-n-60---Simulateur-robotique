@@ -111,9 +111,9 @@ class ExplorerInfo(QWidget):
         if isinstance(self._selectedObject,Robot):
             self._selectedObject.setDrawTrajectory()
             if self._selectedObject.getDrawTrajectory():
-                self._trajectoryButton.setVisibleIcon(True)
+                self._trajectoryButton.setVisibleIcon()
                 self._selectedObject.showTrajectory()
             else:
-                self._trajectoryButton.setVisibleIcon(False)
+                self._trajectoryButton.setVisibleIcon()
                 self._selectedObject.hideTrajectory()
 

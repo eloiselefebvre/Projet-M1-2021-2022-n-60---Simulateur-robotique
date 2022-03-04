@@ -6,6 +6,7 @@ from robotSimulator.Observable import Observable
 from robotSimulator.Obstacle import Obstacle
 from robotSimulator.actuators import Actuator
 from robotSimulator.config import config
+from robotSimulator.interface.Button import VisibilityButton
 from robotSimulator.robots.Robot import Robot
 from robotSimulator.sensors.Sensor import Sensor
 
@@ -97,26 +98,6 @@ class ExplorerToolsbar(QWidget, Observable):
                 icon = QIcon(f"{config['ressourcesPath']}/visible.svg")
                 obj.setVisible(True)
             self._visibleButton.setIcon(icon)
-
-
-class VisibilityButton(QPushButton): # TODO : Faire une classe Button pour regrouper tous les codes
-
-    def __init__(self,visibleObj=True):
-        super().__init__()
-        self.setFlat(True)
-        self._visibleObj=visibleObj
-        self.setVisibleIcon()
-        self.setFixedWidth(28)
-
-    def setVisibleIcon(self):
-        if self._visibleObj:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/visible.svg"))
-        else:
-            self.setIcon(QIcon(f"{config['ressourcesPath']}/invisible.svg"))
-
-    def setVisibleObject(self,visibleObj):
-        self._visibleObj=visibleObj
-        self.setVisibleIcon()
 
 class LockButton(QPushButton):
 
