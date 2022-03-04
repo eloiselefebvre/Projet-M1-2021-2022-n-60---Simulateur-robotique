@@ -21,8 +21,10 @@ class VisibilityButton(Button):
     def setVisibleIcon(self):
         if self._visibleObj:
             self.setIcon(QIcon(f"{config['ressourcesPath']}/visible.svg"))
+            self._visibleObj=False
         else:
             self.setIcon(QIcon(f"{config['ressourcesPath']}/invisible.svg"))
+            self._visibleObj=True
 
     def setVisibleObject(self,visibleObj):
         self._visibleObj=visibleObj

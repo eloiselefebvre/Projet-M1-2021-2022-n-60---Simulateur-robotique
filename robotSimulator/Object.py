@@ -1,5 +1,5 @@
 from robotSimulator.Observable import Observable
-from robotSimulator.representation.shapes import Border
+from robotSimulator.representation.shapes.Border import Border
 
 class Object(Observable):
 
