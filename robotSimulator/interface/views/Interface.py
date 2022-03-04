@@ -56,7 +56,11 @@ class Interface(QMainWindow):
         self._sceneWidget.maximized()
 
         for object in self._environment.getObjects():
-            object.addObserverCallback(self._explorerWidget.getExplorerTree().refreshView,"selectionChanged")
+            object.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeSelection,"selectionChanged")
+            object.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
+            if hasattr(object,"getComponents"):
+                for comp in object.getComponents():
+                    comp.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
 
         self._simulation.addObserverCallback(self._sceneWidget.refreshView,"poseChanged")
 

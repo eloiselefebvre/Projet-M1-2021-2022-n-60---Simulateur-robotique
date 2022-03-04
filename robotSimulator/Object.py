@@ -14,9 +14,13 @@ class Object(Observable):
         self._isCollided = False
         self._isSelected = False
 
+        self._visibilityLocked = False
+
         self.setNumberOfInstances(type(self).__name__)
         self._id = type(self).__name__
         self.completeID()
+
+        # TODO : Handle all visible variables here and not in representation
 
     def setNumberOfInstances(self,name):
         if name in self.NUMBER_OF_INSTANCES:
@@ -44,10 +48,26 @@ class Object(Observable):
         return self._representation.isVisible()
 
     def setVisible(self, visible):
-        self._representation.setVisible(visible)
+        if not self._visibilityLocked:
+            self._representation.setVisible(visible)
+            self.visibylityChanged()
 
     def toggleVisible(self):
-        self._representation.toggleVisible()
+        if not self._visibilityLocked:
+            self._representation.toggleVisible()
+            self.visibylityChanged()
+
+    def visibylityChanged(self):
+        if hasattr(self,'getComponents'):
+            for comp in self.getComponents():
+                comp.setVisibilityLocked(not self.isVisible())
+        self.notifyObservers("visibilityChanged")
+
+    def setVisibilityLocked(self,state):
+        self._visibilityLocked=state
+
+    def getVisibilityLocked(self):
+        return self._visibilityLocked
 
     def setID(self,id):
         self._id=id

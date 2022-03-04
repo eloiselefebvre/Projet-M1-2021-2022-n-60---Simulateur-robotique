@@ -51,8 +51,9 @@ class ExplorerTree(QTreeWidget):
         self.buildTree()
         self.expandAll()
 
-
     def clearTree(self):
+        self.removeSelectedItem()
+
         root = self.invisibleRootItem()
         parents = []
         for i in range(root.childCount()):
@@ -73,7 +74,7 @@ class ExplorerTree(QTreeWidget):
         self._mainItemsAssociatedChildren = []
         self._visibilityButtons = []
 
-    def buildTree(self):
+    def buildTree(self): # TODO : Voir si on peut faire plus simple et propre
         for obj in self._environment.getObjects():
              if type(obj) != Object:
                 if issubclass(type(obj),tuple(self._itemsShown)) or (isinstance(obj,Robot) and (Actuator in self._itemsShown or Sensor in self._itemsShown)):
@@ -89,7 +90,7 @@ class ExplorerTree(QTreeWidget):
                         parent = Item(self, obj.getID(), 12, setBold=True)
                         classname = [item for item in self._itemsShown if isinstance(obj,item)][0].__name__
                         parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/{classname.lower()}.svg"))
-                        self._visibilityButtons.append(VisibilityButton())
+                        self._visibilityButtons.append(VisibilityButton(obj.isVisible()))
                         self.setItemWidget(parent, 1, self._visibilityButtons[-1])
 
                     if parent is not None:
@@ -102,7 +103,9 @@ class ExplorerTree(QTreeWidget):
                             for comp in obj.getComponents():
                                 if issubclass(type(comp),tuple(self._itemsShown)):
                                     child = Item(parent,comp.getID())
-                                    self._visibilityButtons.append(VisibilityButton())
+                                    self._visibilityButtons.append(VisibilityButton(comp.isVisible()))
+                                    if comp.getVisibilityLocked():
+                                        self._visibilityButtons[-1].lock()
                                     self.setItemWidget(child, 1, self._visibilityButtons[-1])
                                     self._subItems.append(child)
                                     self._mainItemsAssociatedChildren[-1].append(child)
@@ -150,29 +153,32 @@ class ExplorerTree(QTreeWidget):
             self._parent.hideExplorerInfo(self.getSelectedObject())
             self._selectedItem=None
 
-    def refreshView(self,sender):
-        crawler = self._mainItems[self._mainObjects.index(sender)]
-        if sender.isSelected():
-            self.setSelectedItem(crawler)
-            # print("add",sender)
-        else:
-            self.removeSelectedItem()
-            # print("remove", sender)
+    def changeTreeSelection(self,sender):
+        if sender in self._mainObjects:
+            crawler = self._mainItems[self._mainObjects.index(sender)]
+            if sender.isSelected():
+                self.setSelectedItem(crawler)
+            else:
+                self.removeSelectedItem()
+
+    def changeTreeVisibility(self,sender):
+        if sender in self._allObjects:
+            button=self._visibilityButtons[self._allObjects.index(sender)]
+            button.setVisibleObject(sender.isVisible())
+            if sender in self._mainObjects:
+                children_buttons = self._childrenButtons[self._mainObjects.index(sender)]
+                if sender.isVisible():
+                    for children_button in children_buttons:
+                        children_button.unlock()
+                else:
+                    for children_button in children_buttons:
+                        children_button.lock()
 
 
     def toggleObjectVisibily(self):
         button = self.sender()
         obj = self._allObjects[self._visibilityButtons.index(button)]
         obj.toggleVisible()
-        if obj in self._mainObjects:
-            children_buttons=self._childrenButtons[self._mainObjects.index(obj)]
-            if obj.isVisible():
-                for children_button in children_buttons:
-                    children_button.unlock()
-            else:
-                for children_button in children_buttons:
-                    children_button.lock()
-        button.setVisibleObject(obj.isVisible())
 
 class Item(QTreeWidgetItem):
 
