@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QGridLayout, QWidget
 from PyQt5.QtCore import Qt
 
-from robotSimulator.interface.ExplorerToolsbar import ExplorerToolsbar
-from robotSimulator.interface.ExplorerInfo import ExplorerInfo
-from robotSimulator.interface.ExplorerTree import ExplorerTree
+from robotSimulator.interface.views.ExplorerToolsbar import ExplorerToolsbar
+from robotSimulator.interface.views.ExplorerInfo import ExplorerInfo
+from robotSimulator.interface.views.ExplorerTree import ExplorerTree
 
 class Explorer(QWidget):
 
@@ -20,7 +20,7 @@ class Explorer(QWidget):
         self._layout.addWidget(self._explorerToolsbar, 0, 0)
 
         self._explorerInfo=None
-        self._showExplorerInfo = False
+        self._showExplorerInfo = False # TODO : use self._explorerInfo pour les conditions (is None)
 
         self._explorerTree=ExplorerTree(self._environment,self)
         self._layout.addWidget(self._explorerTree,1,0)

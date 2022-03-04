@@ -36,6 +36,25 @@ class VisibilityButton(Button):
         self.setDisabled(False)
         self.setVisibleIcon()
 
+class LockButton(Button):
+
+    def __init__(self,lockObj=False):
+        super().__init__()
+        self.setFlat(True)
+        self._lockObj = lockObj
+        self.setLockIcon()
+        self.setFixedWidth(28)
+
+    def setLockIcon(self):
+        if self._lockObj:
+            self.setIcon(QIcon(f"{config['ressourcesPath']}/lock.svg"))
+        else:
+            self.setIcon(QIcon(f"{config['ressourcesPath']}/unlock.svg"))
+
+    def setLock(self,lock):
+        self._lockObj=lock
+        self.setLockIcon()
+
 
 
 

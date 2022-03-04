@@ -1,9 +1,9 @@
-from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton
+from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from robotSimulator.Obstacle import Obstacle
 from robotSimulator.config import config
-from robotSimulator.interface.Button import VisibilityButton
+from robotSimulator.interface.componants.Button import VisibilityButton
 from robotSimulator.robots.Robot import Robot
 from robotSimulator.sensors.Sensor import Sensor
 

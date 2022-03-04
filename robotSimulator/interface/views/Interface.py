@@ -1,13 +1,13 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QActionGroup, QAction, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QGridLayout
 
 from robotSimulator.ZoomController import ZoomController
-from robotSimulator.interface.Footer import Footer
-from robotSimulator.interface.Header import Header
-from robotSimulator.interface.Scene import Scene
-from robotSimulator.interface.Explorer import Explorer
-from robotSimulator.interface.SceneOverview import SceneOverview
-from robotSimulator.interface.ToolsBar import ToolsBar
+from robotSimulator.interface.views.Footer import Footer
+from robotSimulator.interface.views.Header import Header
+from robotSimulator.interface.views.Scene import Scene
+from robotSimulator.interface.views.Explorer import Explorer
+from robotSimulator.interface.views.SceneOverview import SceneOverview
+from robotSimulator.interface.views.ToolsBar import ToolsBar
 
 
 class Interface(QMainWindow):
@@ -67,6 +67,7 @@ class Interface(QMainWindow):
         self._toolbar.addObserverCallback(self._simulation.updatePlayState, "playChanged")
 
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._sceneWidget.updateLockedScene,"lockChanged")
+        self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._explorerWidget.getExplorerTree().rebuildTree,'filterChanged')
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

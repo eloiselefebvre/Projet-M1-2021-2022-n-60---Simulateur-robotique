@@ -46,7 +46,6 @@ class ToolsBar(QToolBar,Observable):
     def valueAcceleration(self):
         valueAccelerationWidget=QWidgetAction(self)
         self._valueAcceleration = QLineEdit()
-        self.accelerationChanged()
 
         valueAccelerationWidget.setDefaultWidget(self._valueAcceleration)
         self._valueAcceleration.returnPressed.connect(self.inputValueAcceleration)
@@ -55,6 +54,7 @@ class ToolsBar(QToolBar,Observable):
         self._valueAcceleration.setFont(QFont("Sanserif",15))
         self._valueAcceleration.setFixedWidth(56)
         self._valueAcceleration.setAlignment(Qt.AlignCenter)
+        self.accelerationChanged()
         return valueAccelerationWidget
 
     def inputValueAcceleration(self):
@@ -85,6 +85,7 @@ class ToolsBar(QToolBar,Observable):
     def accelerationChanged(self):
         self._acceleration=round(self._acceleration,1)
         self._valueAcceleration.setText(f'x{self._acceleration}')
+        self._valueAcceleration.clearFocus()
         self.notifyObservers("accelerationChanged")
 
     def getAcceleration(self):
