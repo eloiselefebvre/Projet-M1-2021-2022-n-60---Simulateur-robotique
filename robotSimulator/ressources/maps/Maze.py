@@ -42,16 +42,3 @@ class Maze:
             self._environment.removeObject(item)
         self._mazeElements=[]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
