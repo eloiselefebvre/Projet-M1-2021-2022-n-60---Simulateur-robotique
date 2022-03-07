@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPen
 from robotSimulator.representation.shapes import Shape
 from math import radians, cos, sin
 
-class Point(Shape):
+class Point(Shape): # TODO : Hérite de QPoint ? X,Y définisent la pose et translate de X,Y puis drawPoint(0,0)
 
     POINT_SIZE = 5
 
