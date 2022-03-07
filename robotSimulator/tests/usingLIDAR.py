@@ -21,7 +21,7 @@ def LIDARTest():
 
     env = Environment(1500, 900)
     env.addObject(rob, 500, 500)
-    env.addObject(rob2, 900, 500)
+    # env.addObject(rob2, 900, 500)
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
     env.addObject(Obstacle(Representation(Rectangle(40, 200, "#ff8fff"))), 650, 400)
     env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850, 25)

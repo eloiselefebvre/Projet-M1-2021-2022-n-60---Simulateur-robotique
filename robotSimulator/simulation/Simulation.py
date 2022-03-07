@@ -8,7 +8,7 @@ from robotSimulator.config import *
 
 class Simulation(Observable):
 
-    MINIMUM_TIME_STEP = 0.01
+    MINIMUM_TIME_STEP = 0.005
 
     def __init__(self,environment=None):
         super().__init__()
@@ -25,19 +25,23 @@ class Simulation(Observable):
         th.start()
 
     def __run(self):
-        start = time.time()
+        start_robot = time.time()
+        start_sensor = time.time()
         while True:
             current=time.time()
-            if current-start > config["time_step"]/self._acceleration and self._playState:
-                start = current
-                self._timeElapsed+=config["time_step"]*self._acceleration
-                for obj in self._environment.getObjects():
-                    if hasattr(obj,"move"):
-                        obj.move()
-                for sensor in self._environment.getSensors():
-                    if hasattr(sensor, "refresh"):
-                        sensor.refresh()
-                self.notifyObservers("poseChanged")
+            if self._playState:
+                if current-start_robot > config["time_step"]/self._acceleration:
+                    start_robot = current
+                    self._timeElapsed+=config["time_step"]*self._acceleration
+                    for obj in self._environment.getObjects():
+                        if hasattr(obj,"move"):
+                            obj.move()
+                    self.notifyObservers("poseChanged")
+                if current-start_sensor > config["sensor_time_step"]:
+                    start_sensor = current
+                    for sensor in self._environment.getSensors():
+                        if hasattr(sensor, "refresh"):
+                            sensor.refresh()
             time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):
