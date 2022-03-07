@@ -1,9 +1,9 @@
 import time
 
-from robotSimulator import Obstacle
+from robotSimulator import Obstacle, Object
 from robotSimulator.actuators import LED, Buzzer
 from robotSimulator.representation import Representation
-from robotSimulator.representation.shapes import Circle
+from robotSimulator.representation.shapes import Circle, Line
 from robotSimulator.robots import TwoWheelsRobot, FourWheelsRobot
 from robotSimulator.sensors import Telemeter
 from robotSimulator.sensors.ColorSensor import ColorSensor
@@ -27,8 +27,8 @@ def collisionAndTelemeter():
 
     rob2 = TwoWheelsRobot()
     rob2.addComponent(led3, 0, 0)
-    rob2.setRightWheelSpeed(500)
-    rob2.setLeftWheelSpeed(300)
+    rob2.setRightWheelSpeed(200)
+    # rob2.setLeftWheelSpeed(300)
     # rob2.setID("2W")
 
     colorSensor = ColorSensor("#999999")
@@ -41,8 +41,8 @@ def collisionAndTelemeter():
     rob3.addComponent(buzzer, 0, 0)
     rob3.addComponent(telemeter, 0, 32, 0)
 
-    rob3.setLeftWheelSpeed(400)
-    rob3.setRightWheelSpeed(200)
+    rob3.setLeftWheelSpeed(200)
+    rob3.setRightWheelSpeed(100)
 
     rob4 = FourWheelsRobot("#f00")
     rob4.addComponent(led4, 0, 0)
@@ -56,12 +56,12 @@ def collisionAndTelemeter():
     rob5.setLeftWheelSpeed(300)
 
     env = Environment(1500,900)
-    # env.addObject(rob1, 1000, 100, 45)
+    env.addObject(rob1, 1000, 100, 45)
     env.addObject(rob2, 1050, 300, 0)
-    # env.addObject(rob3, 500, 500, 90)
-    # env.addObject(rob4, 700, 500, 90)
-    # env.addObject(rob5, 700, 180, 90)
-    # env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
+    env.addObject(rob3, 500, 500, 45)
+    env.addObject(rob4, 700, 500, 90)
+    env.addObject(rob5, 700, 180, 90)
+    env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
     # env.addVirtualObject(Obstacle(Representation(Circle(200,'#ff8f8f'))),1000,500)
 
     sim = Simulation(env)

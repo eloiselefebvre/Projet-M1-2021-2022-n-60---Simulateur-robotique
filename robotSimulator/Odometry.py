@@ -3,9 +3,10 @@ from math import cos, pi, sin, radians, degrees
 from robotSimulator import Object
 from robotSimulator.config import config
 from robotSimulator.representation import Representation
-from robotSimulator.representation.shapes import Point
+from robotSimulator.representation.shapes import Point, Rectangle
 
-class Odometry:
+
+class Odometry: # TODO : Tout remettre dans TwoWheelsRobot et surcharger dans FourWheelsRobot
 
     ODOMETRY_COLOR = "#8B86AC"
 
@@ -17,60 +18,40 @@ class Odometry:
 
         self._x = self._robot.getPose().getX()
         self._y = self._robot.getPose().getY()
-        self._teta = self._robot.getPose().getOrientation()
+        self._teta = -self._robot.getPose().getOrientation()
+
+        robotShape = self._robot.getRepresentation().getShape()
+        self._midWidthRobot = robotShape.getWidth()/2 if isinstance(robotShape,Rectangle) else robotShape.radius() + self._robot.getPose().getRotX() # TODO : Voir pour robot non rectange et non cercle
 
     def odometry(self):
-
         vd = self._robot.getRightLinearSpeed()
         vg = self._robot.getLeftLinearSpeed()
-
-        # v = (vd + vg) / 2
-        #
-        L = self._robot.getDistanceBetweenWheels()
-        #
-        # d = v * config["time_step"]/60
-        #
-        # if vd != vg:
-        #
-        #     R = (e/2) * (vd + vg)/ (vd - vg)
-        #
-        #     if R!=0:
-        #
-        #         # calcul des paramètres du cercle trajectoire
-        #         self._x = self._x - R * sin(-radians(self._teta)-pi/2)
-        #         self._y0 = self._y - R * cos(-radians(self._teta)-pi/2)
-        #
-        #         # calcul position du robot
-        #         d_teta = d/R
-        #         self._teta = self._teta + degrees(d_teta)
-        #         print(self._teta)
-        #
-        #         self._x = self._x0  + R * cos(-radians(self._teta)-pi/2)
-        #         self._y = self._y0 + R * sin(-radians(self._teta)-pi/2)
-
-        dd = vd*config["time_step"]/60
-        dg = vg*config["time_step"]/60
-        dcenter = (dd+dg)/2
-
-        phi = (dd-dg)/(L*2)
-
-
-        self._x = self._x+dcenter*cos(-radians(self._teta)+pi/2)
-        self._y = self._y+dcenter*sin(-radians(self._teta)+pi/2)
-        self._teta+=degrees(phi)
-
-        # else:
-        #     self._x+=d*sin(-radians(self._teta))
-        #     self._y+=d*cos(-radians(self._teta))
+        v = (vd + vg) / 2
+        e = self._robot.getDistanceBetweenWheels()
+        d = v * config["time_step"]/60
+        if vd != vg:
+            R = e * (vd + vg)/ (vd - vg)
+            if R!=0:
+                # calcul des paramètres du cercle trajectoire
+                x0 = self._x + R * cos(-radians(self._teta))
+                y0 = self._y + R * sin(-radians(self._teta))
+                # calcul position du robot
+                d_teta = d/R
+                self._teta += degrees(d_teta)
+                self._x = x0 - R * cos(-radians(self._teta))
+                self._y = y0 - R * sin(-radians(self._teta))
+        else:
+            self._x-=d*sin(-radians(self._teta))
+            self._y-=d*cos(-radians(self._teta))
 
         if self._robot.getDrawOdometry():
             self.drawOdometry()
 
     def drawOdometry(self):
         new_Point = Point(int(self._x), int(self._y), self.ODOMETRY_COLOR)
+
         if self._counter == 0:
             self._odom.append(Object(Representation(new_Point)))
-            self._odom[-1].setZIndex(0)
             self._env.addVirtualObject(self._odom[-1])
         self._counter = (self._counter + 1) % 15
 

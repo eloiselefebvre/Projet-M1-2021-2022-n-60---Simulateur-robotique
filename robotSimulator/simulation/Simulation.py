@@ -37,7 +37,7 @@ class Simulation(Observable):
                         if hasattr(obj,"move"):
                             obj.move()
                     self.notifyObservers("poseChanged")
-                if current-start_sensor > config["sensor_time_step"]:
+                if current-start_sensor > config["sensor_time_step"]/self._acceleration:
                     start_sensor = current
                     for sensor in self._environment.getSensors():
                         if hasattr(sensor, "refresh"):

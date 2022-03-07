@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget
 
 class SceneOverview(QWidget):
 
-    def __init__(self,environment,zoomController):
+    def __init__(self,environment,zoomController): # TODO : Rafraichir l'affichage du drag même en pause
         super().__init__()
         self._environment = environment
         self._zoomController=zoomController
