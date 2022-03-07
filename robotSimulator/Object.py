@@ -4,7 +4,7 @@ from robotSimulator.representation.shapes.Border import Border
 class Object(Observable):
 
     SELECTED_COLOR = "#25CCF7"
-    NUMBER_OF_INSTANCES = {}
+    number_of_instances = {}
 
     def __init__(self,representation):
         super().__init__()
@@ -16,17 +16,25 @@ class Object(Observable):
 
         self._visibilityLocked = False
 
+        self._z_index = 1
+
         self.setNumberOfInstances(type(self).__name__)
         self._id = type(self).__name__
         self.completeID()
 
         # TODO : Handle all visible variables here and not in representation
 
+    def setZIndex(self,index):
+        self._z_index=index
+
+    def getZIndex(self):
+        return self._z_index
+
     def setNumberOfInstances(self,name):
-        if name in self.NUMBER_OF_INSTANCES:
-            Object.NUMBER_OF_INSTANCES[name]+=1
+        if name in self.number_of_instances:
+            Object.number_of_instances[name]+=1
         else:
-            Object.NUMBER_OF_INSTANCES[name]=1
+            Object.number_of_instances[name]=1
 
     def getRepresentation(self):
         return self._representation
@@ -71,12 +79,12 @@ class Object(Observable):
 
     def setID(self,id):
         self._id=id
-        Object.NUMBER_OF_INSTANCES[type(self).__name__] -= 1
+        Object.number_of_instances[type(self).__name__] -= 1
         self.setNumberOfInstances(self._id)
         self.completeID()
 
     def completeID(self):
-        self._id+="_"+str(Object.NUMBER_OF_INSTANCES[self._id])
+        self._id+="_"+str(Object.number_of_instances[self._id])
 
     def setSelected(self,selected):
         if selected!=self._isSelected:

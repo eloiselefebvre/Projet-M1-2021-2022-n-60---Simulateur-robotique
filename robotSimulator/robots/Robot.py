@@ -6,6 +6,7 @@ from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
 
 from ..Pose import Pose
+from ..sensors import Sensor
 
 
 class Robot(ABC,Object):
@@ -33,9 +34,6 @@ class Robot(ABC,Object):
     def move(self):
         self.updateTrajectory()
         self._odometry.odometry()
-        for comp in self._components:
-            if hasattr(comp,"refresh"):
-                comp.refresh()
         self.notifyObservers("poseChanged")
 
     def getComponents(self):
@@ -55,6 +53,7 @@ class Robot(ABC,Object):
             point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
             self._trajectory.append(point)
             if self._drawTrajectory:
+                self._trajectory[-1].setZIndex(0)
                 self._env.addVirtualObject(self._trajectory[-1])
         self._counter=(self._counter+1)%10
 

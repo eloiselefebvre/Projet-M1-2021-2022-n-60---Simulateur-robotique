@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, QPoint
 
 from robotSimulator.Observable import Observable
 from robotSimulator.robots.Robot import Robot
-
+import operator
 
 class Scene(QWidget,Observable):
 
@@ -44,12 +44,11 @@ class Scene(QWidget,Observable):
         painter.translate(offset.x(), offset.y())
         painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
 
-        for obj in self._environment.getVirtualObjects():
-            painter.save()
-            obj.paint(painter)
-            painter.restore()
+        objects = self._environment.getObjects().copy()
+        objects.extend(self._environment.getVirtualObjects())
+        objects.sort(key=lambda obj: obj.getZIndex())
 
-        for obj in self._environment.getObjects():
+        for obj in objects:
             painter.save()
             obj.paint(painter)
             painter.restore()

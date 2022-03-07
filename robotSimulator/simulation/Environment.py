@@ -5,6 +5,7 @@ from robotSimulator.Odometry import Odometry
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
 from robotSimulator.robots import Robot
+from robotSimulator.sensors import Sensor
 
 
 class Environment:
@@ -17,6 +18,8 @@ class Environment:
         self._virtualObjects=[]
         self._hasWalls=False
         self._size = QSize(width,height)
+
+        self._sensors=[]
         self.drawWalls()
 
     def addObject(self,obj,x=0,y=0,orientation=0):
@@ -25,8 +28,18 @@ class Environment:
             obj.setEnv(self)
             self._objects.append(obj)
         if isinstance(obj,Robot):
+            for comp in obj.getComponents():
+                if isinstance(comp, Sensor):
+                    self.addSensor(comp)
             obj.addOdometry()
+        if isinstance(obj,Sensor):
+            self.addSensor(obj)
 
+    def addSensor(self,sensor):
+        self._sensors.append(sensor)
+
+    def getSensors(self):
+        return self._sensors
 
     def addVirtualObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):

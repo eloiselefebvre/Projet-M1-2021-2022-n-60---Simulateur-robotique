@@ -24,7 +24,7 @@ def usingFuzzyLogicToAvoidObstacle():
         distantObstacle.append(0)
     for i in range (50,300):
         distantObstacle.append(i*(5)-250)
-    for i in range(300,INFINITY):
+    for i in range(300,INFINITY+1):
         distantObstacle.append(100)
 
     for i in range (-5,6):

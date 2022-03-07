@@ -34,8 +34,9 @@ class Simulation(Observable):
                 for obj in self._environment.getObjects():
                     if hasattr(obj,"move"):
                         obj.move()
-                    if hasattr(obj,"refresh"):
-                        obj.refresh()
+                for sensor in self._environment.getSensors():
+                    if hasattr(sensor, "refresh"):
+                        sensor.refresh()
                 self.notifyObservers("poseChanged")
             time.sleep(self.MINIMUM_TIME_STEP)
 

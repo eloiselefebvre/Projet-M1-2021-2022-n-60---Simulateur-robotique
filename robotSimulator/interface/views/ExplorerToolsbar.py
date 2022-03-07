@@ -16,6 +16,8 @@ class ExplorerToolsbar(QWidget, Observable):
 
     ITEMS = [Robot,Actuator,Sensor,Obstacle]
 
+    # TODO : Mettre tooltip et curseur main sur bouton
+
     def __init__(self,environment):
         super().__init__()
         self._environment=environment

@@ -8,7 +8,9 @@ from ..config import config
 class LIDAR(Telemeter):
 
     ANGULAR_RESOLUTION = 6
+    ANGULAR_RANGE = 360
     SCAN_RATE = 300 # rpm
+
 
     # TODO : Revoir le fonctionnement du LIDAR dans l'environnement
 
@@ -18,7 +20,7 @@ class LIDAR(Telemeter):
         rep=Representation(Circle(2,self._color))
         rep.setPose(Pose(0,0))
         self._representation.addSubRepresentation(rep)
-        self._angularSteps=int(360/self.ANGULAR_RESOLUTION)
+        self._angularSteps=int(self.ANGULAR_RANGE/self.ANGULAR_RESOLUTION)
         self._intersectionsBuffer = [None for _ in range(self._angularSteps)]
         self._bufferIndex=0
         self._laser.getRepresentation().setVisible(False)

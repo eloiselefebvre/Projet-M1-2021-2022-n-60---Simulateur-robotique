@@ -19,14 +19,11 @@ class SceneOverview(QWidget):
         painter = QPainter(self)
         painter.scale(self._zoomController.getMiniZoom(),self._zoomController.getMiniZoom())
 
-        # TODO : Ajout d'un z-index ?
+        objects = self._environment.getObjects().copy()
+        objects.extend(self._environment.getVirtualObjects())
+        objects.sort(key=lambda obj: obj.getZIndex())
 
-        for obj in self._environment.getVirtualObjects():
-            painter.save()
-            obj.paint(painter)
-            painter.restore()
-
-        for obj in self._environment.getObjects():
+        for obj in objects:
             painter.save()
             obj.paint(painter)
             painter.restore()
