@@ -51,8 +51,6 @@ def usingFuzzyLogicToAvoidObstacle():
 
     env = Environment(4000,2000)
     env.addObject(rob,1000,500,100)
-    # map = Map(env)
-    # map.generateObstacles()
 
     # env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
     # env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 50)
