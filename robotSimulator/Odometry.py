@@ -23,7 +23,7 @@ class Odometry: # TODO : Tout remettre dans TwoWheelsRobot et surcharger dans Fo
         robotShape = self._robot.getRepresentation().getShape()
         self._midWidthRobot = robotShape.getWidth()/2 if isinstance(robotShape,Rectangle) else robotShape.radius() + self._robot.getPose().getRotX() # TODO : Voir pour robot non rectange et non cercle
 
-    def odometry(self):
+    def odometry(self): # TODO : Revoir les formules
         vd = self._robot.getRightLinearSpeed()
         vg = self._robot.getLeftLinearSpeed()
         v = (vd + vg) / 2

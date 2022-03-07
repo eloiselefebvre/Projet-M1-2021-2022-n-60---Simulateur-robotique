@@ -21,7 +21,7 @@ class Robot(ABC,Object):
         self._drawTrajectory=False
         self._trajectory = []
         self._counter=0
-        self._drawOdometry=True #False
+        self._drawOdometry=False
         self._odometry = None
 
     def addComponent(self,comp,x=0,y=0,orientation=0):

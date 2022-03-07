@@ -103,7 +103,9 @@ class Scene(QWidget,Observable):
         for obj in self._environment.getObjects():
             obj.setSelected(False)
 
-        for obj in self._environment.getObjects():
+        objects = sorted(self._environment.getObjects(),key=lambda obj:obj.getZIndex())
+        objects.reverse()
+        for obj in objects:
             if obj.getRepresentation().contains(convertedMousePose) and obj.isVisible():
                 obj.setSelected(True)
                 pose = obj.getPose()
@@ -115,6 +117,7 @@ class Scene(QWidget,Observable):
                     self._selectedObjCollidedState=self._selectedObj.getCollidedState()
                     self._objectMoved=False
                     self._selectedObj.setCollidedState(True)
+                break
 
 
     def wheelEvent(self, event):
