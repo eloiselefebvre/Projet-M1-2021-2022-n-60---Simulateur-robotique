@@ -1,5 +1,4 @@
 from PyQt5.QtCore import QSize
-
 from robotSimulator import Object, Pose
 from robotSimulator.Odometry import Odometry
 from robotSimulator.representation import Representation
@@ -20,7 +19,11 @@ class Environment:
         self._size = QSize(width,height)
 
         self._sensors=[]
+        self._maze=False
         self.drawWalls()
+
+    def removeMaze(self):
+        pass
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
@@ -85,3 +88,9 @@ class Environment:
 
     def getSize(self):
         return self._size
+
+    def hasMaze(self):
+        return self._maze
+
+    def setMaze(self,bool):
+        self._maze = bool

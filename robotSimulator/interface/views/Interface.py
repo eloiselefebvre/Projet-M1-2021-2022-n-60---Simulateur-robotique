@@ -17,7 +17,7 @@ class Interface(QMainWindow):
         self._environment = environment
         self.setWindowTitle("Spicy Simulator")
 
-        self._headerWidget = Header()
+        self._headerWidget = Header(self._environment)
         self._toolbar=ToolsBar(self._environment,self)
 
         zoomController = ZoomController(self._environment)
