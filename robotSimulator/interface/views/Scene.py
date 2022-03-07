@@ -44,8 +44,8 @@ class Scene(QWidget,Observable):
         painter.translate(offset.x(), offset.y())
         painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
 
-        objects = self._environment.getObjects().copy()
-        objects.extend(self._environment.getVirtualObjects())
+        objects = self._environment.getVirtualObjects().copy()
+        objects.extend(self._environment.getObjects())
         objects.sort(key=lambda obj: obj.getZIndex())
 
         for obj in objects:

@@ -41,6 +41,7 @@ class LIDAR(Telemeter):
                     point.setVisible(
                         self.isVisible() and (self._parent.isVisible() if self._parent is not None else True))
                     self._intersectionsBuffer[self._bufferIndex] = point
+                    point.setZIndex(2)
                     self._parent.getEnv().addVirtualObject(point)
 
                 self._bufferIndex = (self._bufferIndex + 1) % self._angularSteps

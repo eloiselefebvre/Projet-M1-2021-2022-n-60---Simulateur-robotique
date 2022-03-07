@@ -1,5 +1,4 @@
-from robotSimulator.tests import usingLIDAR
+from robotSimulator.tests import collisionAndTelemeter
 
-usingLIDAR.LIDARTest()
-
+collisionAndTelemeter()
 

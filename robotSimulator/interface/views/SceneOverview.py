@@ -19,8 +19,8 @@ class SceneOverview(QWidget):
         painter = QPainter(self)
         painter.scale(self._zoomController.getMiniZoom(),self._zoomController.getMiniZoom())
 
-        objects = self._environment.getObjects().copy()
-        objects.extend(self._environment.getVirtualObjects())
+        objects = self._environment.getVirtualObjects().copy()
+        objects.extend(self._environment.getObjects())
         objects.sort(key=lambda obj: obj.getZIndex())
 
         for obj in objects:

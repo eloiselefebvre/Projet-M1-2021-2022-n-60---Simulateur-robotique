@@ -78,3 +78,6 @@ class Shape(ABC):
     @abstractmethod
     def contains(self, point):
         pass
+
+    def getColor(self):
+        return self._color

@@ -53,7 +53,6 @@ class Robot(ABC,Object):
             point = Object(Representation(Point(int(self._pose.getX()), int(self._pose.getY()),self.TRAJECTORY_COLOR)))
             self._trajectory.append(point)
             if self._drawTrajectory:
-                self._trajectory[-1].setZIndex(0)
                 self._env.addVirtualObject(self._trajectory[-1])
         self._counter=(self._counter+1)%10
 
