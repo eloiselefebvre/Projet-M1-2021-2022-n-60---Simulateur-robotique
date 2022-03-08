@@ -33,3 +33,6 @@ class Pose:
 
     def move(self,x,y):
         self._pose.move(x,y)
+
+    def copy(self):
+        return Pose(self._pose.getX(),self._pose.getY(),self._orientation)

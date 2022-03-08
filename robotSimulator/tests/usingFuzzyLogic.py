@@ -50,7 +50,7 @@ def usingFuzzyLogicToAvoidObstacle():
     rob.addComponent(rightTelemeter, -20, 20, 35)
 
     env = Environment(4000,2000)
-    env.addObject(rob,1000,500,100)
+    env.addObject(rob,1000,500,0)
 
     # env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
     # env.addObject(Obstacle(Representation(Circle(50, "#ff0"))), 500, 50)

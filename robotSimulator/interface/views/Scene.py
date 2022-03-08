@@ -90,6 +90,8 @@ class Scene(QWidget,Observable):
             self._objectMoved=True
             if isinstance(self._selectedObj,Robot):
                 self._selectedObj.deleteTrajectory()
+                self._selectedObj.deleteOdometry()
+                self._selectedObj.setOdometryPose(pose.copy())
 
             self._selectedObj.notifyObservers("poseChanged") # TODO : notify directement dans une méthode move de l'objet
 

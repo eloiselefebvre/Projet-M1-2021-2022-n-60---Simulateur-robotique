@@ -102,7 +102,7 @@ class ExplorerInfo(QWidget):
         trajectoryLabel.setStyleSheet("color:#f9f9f9")
         layoutTrajectory.addWidget(trajectoryLabel,90)
 
-        self._trajectoryButton=VisibilityButton()
+        self._trajectoryButton=VisibilityButton(self._selectedObject.getTrajectoryDrawn())
         self._trajectoryButton.clicked.connect(self.clickedTrajectoryButton)
         layoutTrajectory.addWidget(self._trajectoryButton,10)
 
@@ -118,7 +118,7 @@ class ExplorerInfo(QWidget):
         odometryLabel.setStyleSheet("color:#f9f9f9")
         layoutOdometry.addWidget(odometryLabel, 90)
 
-        self._odometryButton = VisibilityButton()
+        self._odometryButton = VisibilityButton(self._selectedObject.getOdometryDrawn())
         self._odometryButton.clicked.connect(self.clickedOdometryButton)
         layoutOdometry.addWidget(self._odometryButton, 10)
 
@@ -126,22 +126,18 @@ class ExplorerInfo(QWidget):
 
     def clickedTrajectoryButton(self):
         if isinstance(self._selectedObject,Robot):
-            self._selectedObject.setDrawTrajectory()
-            if self._selectedObject.getDrawTrajectory():
-                self._trajectoryButton.setVisibleObject(True)
+            self._selectedObject.toggleTrajectoryDrawn()
+            self._trajectoryButton.setVisibleObject(self._selectedObject.getTrajectoryDrawn())
+            if self._selectedObject.getTrajectoryDrawn():
                 self._selectedObject.showTrajectory()
             else:
                 self._selectedObject.hideTrajectory()
-                self._trajectoryButton.setVisibleObject(False)
 
     def clickedOdometryButton(self):
         if isinstance(self._selectedObject,Robot):
-            self._selectedObject.setDrawOdometry()
-            print(self._selectedObject.getDrawOdometry())
-            if self._selectedObject.getDrawOdometry():
-                self._odometryButton.setVisibleObject(True)
-                self._selectedObject.getOdometry().drawOdometry()
+            self._selectedObject.toggleOdometryDrawn()
+            self._odometryButton.setVisibleObject(self._selectedObject.getOdometryDrawn())
+            if self._selectedObject.getOdometryDrawn():
+                self._selectedObject.showOdometry()
             else:
-                self._selectedObject.getOdometry().hideOdometry()
-                self._selectedObject.setDrawOdometry()
-                self._odometryButton.setVisibleObject(False)
+                self._selectedObject.hideOdometry()

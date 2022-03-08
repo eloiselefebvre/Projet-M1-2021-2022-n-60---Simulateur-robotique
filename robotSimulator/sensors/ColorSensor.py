@@ -26,7 +26,6 @@ class ColorSensor(Sensor):
                         self._colorDetected = obj.getRepresentation().getShape().getColor().name()
             if self._colorDetected is None:
                 self._colorDetected = self.BACKGROUND_COLOR
-            print(self._colorDetected)
 
     def getSensorPose(self): # TODO : Méthode générale pour tous les capteurs et actionneurs !
         robotX = self._parent.getPose().getX()
