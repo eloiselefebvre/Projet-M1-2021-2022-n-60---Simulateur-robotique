@@ -130,6 +130,7 @@ class ExplorerTree(QTreeWidget):
             self._mainObjects[self._mainItems.index(self._selectedItem)].setSelected(False)
         if crawler in self._mainItems:
             selectedObject = self._mainObjects[self._mainItems.index(crawler)]
+            selectedObject.setSelected(True)
         else:
             selectedObject = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
             crawler.setColor(self.CRAWLER_COLOR)

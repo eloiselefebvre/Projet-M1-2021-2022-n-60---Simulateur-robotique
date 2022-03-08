@@ -41,9 +41,18 @@ class Header(QMenuBar):
         self.insertionMenu()
 
     def removeMaze(self):
+        freeObjects=[]
+        for obj in self._environment.getObjects():
+            for wall in self._maze.getWalls():
+                if obj.isCollidedWith(wall):
+                    freeObjects.append(obj)
+
         self._maze.deleteGrid()
         self._environment.setMaze(False)
         self.insertionMenu()
+
+        for freeObject in freeObjects:
+            freeObject.setCollidedState(False)
 
     def generateNewMaze(self):
         self.removeMaze()
