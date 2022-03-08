@@ -28,28 +28,27 @@ def factoryMap():
         obstacles.append(Object(Representation(Rectangle(30,30,"#DC7633"))))
 
     env = Environment(1525, 1100)
-    env.addVirtualObject(floors[0],125,125)
-    env.addVirtualObject(floors[1],550,125)
-    env.addVirtualObject(floors[2],975,125)
-    env.addVirtualObject(floors[3],1400,125)
-    env.addVirtualObject(floors[4],125,550)
-    env.addVirtualObject(floors[5],550,550)
-    env.addVirtualObject(floors[6],975,550)
-    env.addVirtualObject(floors[7],1400,550)
-    env.addVirtualObject(floors[8],125,975)
-    env.addVirtualObject(floors[9],550,975)
-    env.addVirtualObject(floors[10],975,975)
-    env.addVirtualObject(floors[11],1400,975)
+    i=0
 
-    env.addObject(obstacles[0],40,40)
-    env.addObject(obstacles[1],40,120)
-    env.addObject(obstacles[2],40,200)
-    env.addObject(obstacles[3],120,40)
-    env.addObject(obstacles[4],120,120)
-    env.addObject(obstacles[5],120,200)
-    env.addObject(obstacles[6],200,40)
-    env.addObject(obstacles[7],200,120)
-    env.addObject(obstacles[8],200,200)
+    while i<=11:
+        x = 125
+        y = 125
+        for y in range (125,976,425):
+            for x in range (125,1401,425):
+                print("x:",x)
+                print("y:",y)
+                env.addVirtualObject(floors[i],x,y)
+                i+=1
+
+    j=0
+    while j<=9:
+        x=40
+        y=40
+        for y in range(40,201,80):
+            for x in range(40,201,80):
+                env.addObject(obstacles[j],x,y)
+                j+=1
+
     env.addObject(rob1,230,300,-60)
 
     sim = Simulation(env)
