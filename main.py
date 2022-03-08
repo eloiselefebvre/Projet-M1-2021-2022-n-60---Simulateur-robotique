@@ -1,4 +1,4 @@
-from robotSimulator.tests import factoryMap
+from robotSimulator.tests import reinforcementLearningTest
 
-factoryMap()
+reinforcementLearningTest()
 

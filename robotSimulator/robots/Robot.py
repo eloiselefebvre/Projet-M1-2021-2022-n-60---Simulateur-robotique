@@ -78,3 +78,7 @@ class Robot(ABC,Object):
         self.hideTrajectory()
         self._trajectory.clear()
 
+    def setPosition(self,x,y):
+        self._x=x
+        self._y=y
+

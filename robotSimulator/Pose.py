@@ -3,6 +3,8 @@ from robotSimulator.representation.shapes import Point
 class Pose:
 
     def __init__(self, x, y,orientation=0,rx=0,ry=0):
+        self._x =x
+        self._y=y
         self._pose = Point(x,y)
         self.setRotationCenter(rx, ry)
         self._orientation = orientation
