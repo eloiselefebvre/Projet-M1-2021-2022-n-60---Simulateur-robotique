@@ -1,7 +1,6 @@
 from abc import ABC,abstractmethod
 from robotSimulator.Object import Object
 from ..Component import Component
-from ..Odometry import Odometry
 from ..representation.Representation import Representation
 from ..representation.shapes import Rectangle
 from ..representation.shapes.Point import Point
