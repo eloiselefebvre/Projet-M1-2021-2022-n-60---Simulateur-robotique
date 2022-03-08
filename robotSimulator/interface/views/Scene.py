@@ -94,11 +94,13 @@ class Scene(QWidget,Observable):
                 self._selectedObj.setOdometryPose(pose.copy())
 
             self._selectedObj.notifyObservers("poseChanged") # TODO : notify directement dans une méthode move de l'objet
+            self.update()
 
         if self._dragScene:
             current=event.pos()
             self._zoomController.setOffset(self._zoomController.getOffset()+(current-self._dragSceneOrigin))
             self._dragSceneOrigin=current
+            self.update()
 
     def _objectGrabbed(self, mousePose):
         convertedMousePose = (mousePose - self._zoomController.getOffset()) / self._zoomController.getZoom()
@@ -120,6 +122,7 @@ class Scene(QWidget,Observable):
                     self._objectMoved=False
                     self._selectedObj.setCollidedState(True)
                 break
+        self.update()
 
 
     def wheelEvent(self, event):
@@ -137,6 +140,7 @@ class Scene(QWidget,Observable):
             # pos1 doit devenir pos1 transformée dans le nouveau zoom
             getEqualCoordinatesOffset = (pos1-pos2)*self._zoomController.getZoom()
             self._zoomController.setOffset(offset-getEqualCoordinatesOffset)
+            self.update()
 
     def maximized(self):
         self._maximized=True
