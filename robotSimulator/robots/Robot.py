@@ -80,6 +80,7 @@ class Robot(ABC,Object):
     def hideTrajectory(self):
         for point in self._trajectory:
             self._env.removeVirtualObject(point)
+        self._drawTrajectory=False
 
     def deleteTrajectory(self):
         self.hideTrajectory()

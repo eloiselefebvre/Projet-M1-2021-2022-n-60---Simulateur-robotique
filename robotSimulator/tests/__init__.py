@@ -4,4 +4,5 @@ from .usingFuzzyLogic import usingFuzzyLogicToAvoidObstacle
 from .usingLIDAR import LIDARTest
 from .reinforcementLearning import reinforcementLearningTest
 from .factoryMap import factoryMap
+from .followLineWithColorSensor import followLineWithColorSensor
 

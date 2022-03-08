@@ -12,6 +12,8 @@ class Environment:
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
     def __init__(self,width,height):
+        self._width=width
+        self._height=height
         self._objects=[]
         self._virtualObjects=[]
         self._hasWalls=False
@@ -94,3 +96,9 @@ class Environment:
 
     def setMaze(self,bool):
         self._maze = bool
+
+    def getWidth(self):
+        return self._width
+
+    def getHeight(self):
+        return self._height
