@@ -1,6 +1,5 @@
 from PyQt5.QtCore import QSize
 from robotSimulator import Object, Pose
-from robotSimulator.Odometry import Odometry
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
 from robotSimulator.robots import Robot
@@ -29,16 +28,17 @@ class Environment:
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
-            obj.setPose(Pose(x,y,orientation))
+            pose=Pose(x,y,orientation)
+            obj.setPose(pose)
             obj.setEnv(self)
             self._objects.append(obj)
-        if isinstance(obj,Robot):
-            for comp in obj.getComponents():
-                if isinstance(comp, Sensor):
-                    self.addSensor(comp)
-            obj.addOdometry()
-        if isinstance(obj,Sensor):
-            self.addSensor(obj)
+            if isinstance(obj,Robot):
+                for comp in obj.getComponents():
+                    if isinstance(comp, Sensor):
+                        self.addSensor(comp)
+                obj.setOdometryPose(pose.copy())
+            if isinstance(obj,Sensor):
+                self.addSensor(obj)
 
     def addSensor(self,sensor):
         self._sensors.append(sensor)

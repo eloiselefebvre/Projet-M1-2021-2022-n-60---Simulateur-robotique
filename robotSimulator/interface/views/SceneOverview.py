@@ -53,8 +53,8 @@ class SceneOverview(QWidget):
         mouseRescale = mouse/self._zoomController.getMiniZoom()
         offset = self._zoomController.getOffset()
         sceneSize=self._zoomController.getSceneSize()
-        bx=-offset.x() # begin x
-        by=-offset.y()
+        bx=-offset.x()/self._zoomController.getZoom() # begin x
+        by=-offset.y()/self._zoomController.getZoom()
         ex = bx+sceneSize.width()
         ey = by+sceneSize.height()
 
@@ -65,6 +65,6 @@ class SceneOverview(QWidget):
     def mouseMoveEvent(self,event):
         if self._dragView:
             current=event.pos()/self._zoomController.getMiniZoom()
-            self._zoomController.setOffset(self._zoomController.getOffset() - (current - self._dragViewOrigin))
+            self._zoomController.setOffset(self._zoomController.getOffset() - (current - self._dragViewOrigin)*self._zoomController.getZoom())
             self._dragViewOrigin = current
 
