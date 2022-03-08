@@ -94,7 +94,7 @@ class Scene(QWidget,Observable):
                 self._selectedObj.setOdometryPose(pose.copy())
 
             self._selectedObj.notifyObservers("poseChanged") # TODO : notify directement dans une méthode move de l'objet
-            self.update()
+            self.update() # TODO : Si move robot, refresh sensors
 
         if self._dragScene:
             current=event.pos()

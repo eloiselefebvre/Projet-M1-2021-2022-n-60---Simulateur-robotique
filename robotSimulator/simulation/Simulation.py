@@ -30,7 +30,7 @@ class Simulation(Observable):
         while True:
             current=time.time()
             if self._playState:
-                if current-start_robot > config["time_step"]/self._acceleration:
+                if current-start_robot > config["time_step"]/self._acceleration: # TODO : Vérif accélération déplacement robot
                     start_robot = current
                     self._timeElapsed+=config["time_step"]*self._acceleration
                     for obj in self._environment.getObjects():
