@@ -1,4 +1,4 @@
-from robotSimulator.tests import collisionAndTelemeter
+from robotSimulator.tests import followLineWithColorSensor
 
-collisionAndTelemeter()
+followLineWithColorSensor()
 
