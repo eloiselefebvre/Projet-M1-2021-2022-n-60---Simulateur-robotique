@@ -47,10 +47,6 @@ class Path:
     def deleteElements(self):
         for item in self._pathElements:
             self._environment.removeVirtualObject(item)
-        self._pathElements = []
-
-    def getElements(self):
-        return self._pathElements
-
+        self._pathElements.clear()
 
 

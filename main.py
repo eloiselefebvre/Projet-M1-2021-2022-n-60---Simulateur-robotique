@@ -1,2 +1,2 @@
-from robotSimulator.tests import factoryMap
-factoryMap()
+from robotSimulator.tests import usingFuzzyLogic
+usingFuzzyLogic.usingFuzzyLogicToAvoidObstacle()
