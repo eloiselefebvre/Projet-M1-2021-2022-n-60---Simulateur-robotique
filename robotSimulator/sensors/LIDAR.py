@@ -46,3 +46,6 @@ class LIDAR(Telemeter):
 
                 self._bufferIndex = (self._bufferIndex + 1) % self._angularSteps
             self.getPose().rotate(step)
+
+    def getSpecifications(self):
+        return ""

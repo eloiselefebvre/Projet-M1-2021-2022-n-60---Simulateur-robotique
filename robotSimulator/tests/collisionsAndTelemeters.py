@@ -82,6 +82,8 @@ def collisionAndTelemeter():
     # env.addVirtualObject(Obstacle(Representation(Circle(200,'#ff8f8f'))),1000,500)
 
     sim = Simulation(env)
+    ledState = 0
+    start = sim.time()
     sim.setAcceleration(2)
     sim.run()
     sim.showInterface()

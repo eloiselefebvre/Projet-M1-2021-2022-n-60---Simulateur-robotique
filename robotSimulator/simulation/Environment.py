@@ -24,9 +24,6 @@ class Environment:
         self._path=False
         self.drawWalls()
 
-    def removeMaze(self):
-        pass
-
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
             pose=Pose(x,y,orientation)

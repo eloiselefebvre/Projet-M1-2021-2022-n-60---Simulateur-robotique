@@ -25,6 +25,10 @@ class LED(Actuator):
                 self._representation.getShape().setOpacity(255)
             else:
                 self._representation.getShape().setOpacity(40)
+        self.notifyObservers("stateChanged")
 
     def getState(self):
         return self._state
+
+    def getSpecifications(self):
+        return f"Current state : {'ON' if self._state else 'OFF'}"

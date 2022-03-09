@@ -12,57 +12,57 @@ class Header(QMenuBar):
         self._environment = environment
         self.setLayout(self._layout)
         self.setStyleSheet("background-color : #f9f9f9")
-        self._insertion = self.addMenu("Maze")
+        self._mazeMenu = self.addMenu("Maze")
         self._pathMenu = self.addMenu("Circle Path")
-        self._actions=[]
+        self._actionsMaze=[]
+        self._actionsPath = []
         self.insertionMaze()
         self.insertionPath()
         self._maze=Maze(self._environment)
         self._path=CirclePath(self._environment)
 
     def insertionMaze(self):
-        for action in self._actions:
-            self._insertion.removeAction(action)
-        self._actions=[]
+        for action in self._actionsMaze:
+            self._mazeMenu.removeAction(action)
+        self._actionsMaze.clear()
         if self._environment.hasMaze():
             generateNewMaze=QAction("Generate new maze", self)
-            self._insertion.addAction(generateNewMaze)
+            self._mazeMenu.addAction(generateNewMaze)
             generateNewMaze.triggered.connect(self.generateNewMaze)
-            self._actions.append(generateNewMaze)
+            self._actionsMaze.append(generateNewMaze)
             removeMaze=QAction("Remove maze",self)
-            self._insertion.addAction(removeMaze)
+            self._mazeMenu.addAction(removeMaze)
             removeMaze.triggered.connect(self.removeMaze)
-            self._actions.append(removeMaze)
+            self._actionsMaze.append(removeMaze)
         else:
             generateMaze = QAction("Generate maze",self)
-            self._insertion.addAction(generateMaze)
+            self._mazeMenu.addAction(generateMaze)
             generateMaze.triggered.connect(self.generateMaze)
-            self._actions.append(generateMaze)
+            self._actionsMaze.append(generateMaze)
 
     def insertionPath(self):
-        for action in self._actions:
+        for action in self._actionsPath:
             self._pathMenu.removeAction(action)
-        self._actions=[]
+        self._actionsPath.clear()
         if self._environment.hasPath():
             generateNewPath=QAction("Generate new circle path", self)
             self._pathMenu.addAction(generateNewPath)
             generateNewPath.triggered.connect(self.generateNewPath)
-            self._actions.append(generateNewPath)
+            self._actionsPath.append(generateNewPath)
             removePath=QAction("Remove Path",self)
             self._pathMenu.addAction(removePath)
             removePath.triggered.connect(self.removePath)
-            self._actions.append(removePath)
+            self._actionsPath.append(removePath)
         else:
             generatePath = QAction("Generate path",self)
             self._pathMenu.addAction(generatePath)
             generatePath.triggered.connect(self.generatePath)
-            self._actions.append(generatePath)
-
+            self._actionsPath.append(generatePath)
 
     def generateMaze(self):
         self._maze.drawGrid()
         self._environment.setMaze(True)
-        self.insertionMenu()
+        self.insertionMaze()
 
     def generatePath(self):
         self._path.drawPath()
@@ -78,24 +78,15 @@ class Header(QMenuBar):
 
         self._maze.deleteGrid()
         self._environment.setMaze(False)
-        self.insertionMenu()
+        self.insertionMaze()
 
         for freeObject in freeObjects:
             freeObject.setCollidedState(False)
 
     def removePath(self):
-        freeObjects = []
-        for obj in self._environment.getObjects():
-            for element in self._path.getElements():
-                if obj.isCollidedWith(element):
-                    freeObjects.append(obj)
-
         self._path.deleteElements()
         self._environment.setPath(False)
-        self.insertionPath()
-
-        for freeObject in freeObjects:
-            freeObject.setCollidedState(False)
+        self.insertionPath() # TODO : Revoir la suppression de tous les éléments
 
     def generateNewMaze(self):
         self.removeMaze()

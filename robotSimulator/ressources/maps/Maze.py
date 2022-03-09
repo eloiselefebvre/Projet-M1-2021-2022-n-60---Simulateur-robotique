@@ -11,7 +11,6 @@ class Maze:
     DEFAULT_BORDER_SCREEN_WIDTH = 2
     INTERVAL_SIZE = 150
 
-
     def __init__(self,environment):
         self._environment = environment
         self._width = self._environment.getSize().width()
@@ -19,6 +18,7 @@ class Maze:
         self._nbColumn = self._width//self.INTERVAL_SIZE
         self._nbLine = self._height//self.INTERVAL_SIZE
         self._mazeElements = []
+        # TODO : Prendre en compte si un Maze a déjà été crée au lancememnt du programme
 
     def drawGrid(self):
         for i in range(self._nbLine+1):
@@ -34,11 +34,10 @@ class Maze:
                         self._mazeElements.append(Object(Representation(Line(dw, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))))
                         self._environment.addObject(self._mazeElements[-1],j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE,-90)
 
-
     def deleteGrid(self):
         for item in self._mazeElements:
             self._environment.removeObject(item)
-        self._mazeElements=[]
+        self._mazeElements.clear()
 
     def getWalls(self):
         return self._mazeElements

@@ -22,7 +22,7 @@ def factoryMap():
 
 
     for i in range(12):
-        floors.append(Object(Representation(Rectangle(250,250,"#424949"))))
+        floors.append(Object(Representation(Rectangle(250,250,"#444"))))
 
     for i in range(20):
         obstacles.append(Object(Representation(Rectangle(30,30,"#DC7633"))))
@@ -31,19 +31,13 @@ def factoryMap():
     i=0
 
     while i<=11:
-        x = 125
-        y = 125
         for y in range (125,976,425):
             for x in range (125,1401,425):
-                print("x:",x)
-                print("y:",y)
                 env.addVirtualObject(floors[i],x,y)
                 i+=1
 
     j=0
     while j<=9:
-        x=40
-        y=40
         for y in range(40,201,80):
             for x in range(40,201,80):
                 env.addObject(obstacles[j],x,y)

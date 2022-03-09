@@ -50,9 +50,18 @@ class Telemeter(Sensor):
 
     def refresh(self):
         self._laser.setVisible(False)
+        previousDistance=self._distance
         self.getClosestCollisitionPointAndComputeDistance()
+        if self._distance!=previousDistance:
+            self.notifyObservers("stateChanged")
         self._laser.setVisible(True)
         self._laserLine.setLength(int(self._distance))
 
     def getValue(self):
         return self._distance
+
+    def getSpecifications(self):
+        specifications=f"Current measured distance : {round(self._distance,1)}px\n---\n"
+        specifications+=f"Measurement Range : ?px-?px"
+        return specifications
+

@@ -16,6 +16,7 @@ class ColorSensor(Sensor):
         self._colorDetected = None
 
     def refresh(self):
+        previousColor=self._colorDetected
         self._colorDetected=None
         if self._parent is not None:
             virtualObjects = sorted(self._parent.getEnv().getVirtualObjects(),key=lambda obj:obj.getZIndex())
@@ -25,6 +26,8 @@ class ColorSensor(Sensor):
                         self._colorDetected = obj.getRepresentation().getShape().getColor().name()
             if self._colorDetected is None:
                 self._colorDetected = self.BACKGROUND_COLOR
+        if self._colorDetected!=previousColor:
+            self.notifyObservers("stateChanged")
 
     def getSensorPose(self): # TODO : Méthode générale pour tous les capteurs et actionneurs !
         robotX = self._parent.getPose().getX()
@@ -37,6 +40,9 @@ class ColorSensor(Sensor):
 
     def getValue(self):
         return self._colorDetected
+
+    def getSpecifications(self):
+        return "Current detected color : " + self._colorDetected
 
 
 
