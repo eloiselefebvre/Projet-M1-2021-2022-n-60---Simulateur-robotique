@@ -1,2 +1,2 @@
-from robotSimulator.tests import usingFuzzyLogic
-usingFuzzyLogic.usingFuzzyLogicToAvoidObstacle()
+from robotSimulator.tests import collisionAndTelemeter
+collisionAndTelemeter()

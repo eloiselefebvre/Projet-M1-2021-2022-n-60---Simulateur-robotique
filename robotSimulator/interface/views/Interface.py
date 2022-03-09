@@ -73,5 +73,6 @@ class Interface(QMainWindow):
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._sceneWidget.updateLockedScene,"lockChanged")
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._explorerWidget.getExplorerTree().rebuildTree,'filterChanged')
 
+
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

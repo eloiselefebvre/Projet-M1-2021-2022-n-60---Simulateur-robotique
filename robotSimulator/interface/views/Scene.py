@@ -88,6 +88,7 @@ class Scene(QWidget,Observable):
             pose = self._selectedObj.getPose()
             pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])
             self._objectMoved=True
+            self._selectedObj.notifyObservers("stateChanged")
             if isinstance(self._selectedObj,Robot):
                 self._selectedObj.deleteTrajectory()
                 self._selectedObj.deleteOdometry()
