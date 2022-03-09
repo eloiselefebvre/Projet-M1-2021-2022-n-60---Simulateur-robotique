@@ -1,8 +1,11 @@
 import time
 
-from robotSimulator import Object
+from PyQt5.QtCore import QPoint
+
+from robotSimulator.Object import Object
+from robotSimulator.Obstacle import Obstacle
 from robotSimulator.representation import Representation
-from robotSimulator.representation.shapes import Rectangle
+from robotSimulator.representation.shapes import Rectangle, Circle, Point
 
 
 class PathFinding:
@@ -25,7 +28,7 @@ class PathFinding:
         self.__COLS_NUMBER = (self._environment.getHeight())/15
 
         self.__beginNode = (10,10)
-        self.__endNode = (20,20)
+        self.__endNode = (30,30)
         self._nodes = {}
         self.createNode(self.__beginNode)
         self.__astar()
@@ -44,9 +47,18 @@ class PathFinding:
 
     def __setNodeColor(self, node, color):
         self._nodes[node].setColor(color)
-        self.__refreshDisplay()
 
     def __getNodeValue(self, node):
+        for obj in self._environment.getObjects():
+            if isinstance(obj,Obstacle):
+                if obj.getRepresentation().contains(QPoint(node[0]*15,node[1]*15)):
+                    return False
+                if obj.getRepresentation().contains(QPoint(node[0]*15,(node[1]+1)*15)):
+                    return False
+                if obj.getRepresentation().contains(QPoint((node[0]+1)*15,node[1]*15)):
+                    return False
+                if obj.getRepresentation().contains(QPoint((node[0]+1)*15,(node[1]+1)*15)):
+                    return False
         return True
 
     def __getNodeNeighbors(self, node):
@@ -61,9 +73,6 @@ class PathFinding:
 
     def __isValidNode(self, node):
         return node[0] >= 0 and node[0] < self.__ROWS_NUMBER and node[1] >= 0 and node[1] < self.__COLS_NUMBER
-
-    def __refreshDisplay(self):
-        pass
 
     def __drawBeginNode(self):
         pass
@@ -82,7 +91,7 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            time.sleep(.01)
+            time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
             self.__setNodeColor(current, self.COLORS['closed_node'])
@@ -127,4 +136,12 @@ class PathFinding:
     def createNode(self,node):
         self._nodes[node]=Rectangle(15, 15, "#FF9900")
         self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*15+15/2,node[1]*15+15/2)
+
+    def refreshPath(self,sender):
+        self.__astar()
+
+
+
+
+
 

@@ -8,6 +8,7 @@ from robotSimulator.interface.views.Scene import Scene
 from robotSimulator.interface.views.Explorer import Explorer
 from robotSimulator.interface.views.SceneOverview import SceneOverview
 from robotSimulator.interface.views.ToolsBar import ToolsBar
+from robotSimulator.ressources.maps.PathFinding import PathFinding
 
 
 class Interface(QMainWindow):
@@ -16,6 +17,7 @@ class Interface(QMainWindow):
         self._simulation = simulation
         self._environment = environment
         self.setWindowTitle("Shiva Simulator")
+        # self._pathFinding=PathFinding(self._environment)
 
         self._headerWidget = Header(self._environment)
         self._toolbar=ToolsBar(self._environment,self)
@@ -73,6 +75,8 @@ class Interface(QMainWindow):
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._sceneWidget.updateLockedScene,"lockChanged")
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._explorerWidget.getExplorerTree().rebuildTree,'filterChanged')
 
+        # for obj in self._environment.getObjects():
+        #     obj.addObserverCallback(self._pathFinding.refreshPath,"stateChanged")
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)
