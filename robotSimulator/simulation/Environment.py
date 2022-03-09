@@ -21,6 +21,7 @@ class Environment:
 
         self._sensors=[]
         self._maze=False
+        self._path=False
         self.drawWalls()
 
     def removeMaze(self):
@@ -102,3 +103,9 @@ class Environment:
 
     def getHeight(self):
         return self._height
+
+    def setPath(self,bool):
+        self._path=bool
+
+    def hasPath(self):
+        return self._path

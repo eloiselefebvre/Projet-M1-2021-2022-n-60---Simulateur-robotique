@@ -1,5 +1,7 @@
 import time
 
+from PyQt5.QtCore import QPoint
+
 from robotSimulator import Obstacle, Object
 from robotSimulator.actuators import LED, Buzzer
 from robotSimulator.representation import Representation
@@ -11,9 +13,20 @@ from robotSimulator.simulation import Environment, Simulation
 
 
 def collisionAndTelemeter():
+
+    FORWARD_SPEED=300
+    TURN_SPEED=100
+
     rob1 = TwoWheelsRobot()
-    rob1.setLeftWheelSpeed(600)
-    rob1.setRightWheelSpeed(-600)
+    rob1 = TwoWheelsRobot()
+    colorSensorRight=ColorSensor()
+    rob1.addComponent(colorSensorRight,5,25)
+    colorSensorLeft=ColorSensor()
+    rob1.addComponent(colorSensorLeft,-5,25)
+    rob1.setRightWheelSpeed(200)
+    rob1.setLeftWheelSpeed(200)
+    # rob1.setLeftWheelSpeed(600)
+    # rob1.setRightWheelSpeed(-600)
     # rob1.setID("2W")
 
     led = LED(LED.RED)

@@ -5,4 +5,5 @@ from .usingLIDAR import LIDARTest
 from .reinforcementLearning import reinforcementLearningTest
 from .factoryMap import factoryMap
 from .followLineWithColorSensor import followLineWithColorSensor
+from .odometryTesting import odometryTesting
 
