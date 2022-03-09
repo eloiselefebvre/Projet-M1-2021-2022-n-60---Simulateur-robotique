@@ -28,3 +28,6 @@ class LED(Actuator):
 
     def getState(self):
         return self._state
+
+    def getSpecifications(self):
+        return ""

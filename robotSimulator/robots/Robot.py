@@ -47,7 +47,7 @@ class Robot(ABC,Object):
     def move(self):
         self.updateTrajectory()
         self.updateOdometry()
-        self.notifyObservers("poseChanged")
+        self.notifyObservers("stateChanged")
 
     def getComponents(self):
         return self._components

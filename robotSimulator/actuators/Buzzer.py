@@ -14,3 +14,6 @@ class Buzzer(Actuator):
 
     def off(self):
         pass
+
+    def getSpecifications(self):
+        return ""

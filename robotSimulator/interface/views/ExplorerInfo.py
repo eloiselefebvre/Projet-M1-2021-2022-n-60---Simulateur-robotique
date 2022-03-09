@@ -1,17 +1,18 @@
 from PyQt5.QtGui import QFont, QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QTextEdit
 
+from robotSimulator import Component
 from robotSimulator.Obstacle import Obstacle
 from robotSimulator.config import config
 from robotSimulator.interface.componants.Button import VisibilityButton
 from robotSimulator.robots.Robot import Robot
 from robotSimulator.sensors.Sensor import Sensor
 
-
 class ExplorerInfo(QWidget):
 
-    def __init__(self,selectedObject):
+    def __init__(self,env,selectedObject):
         super().__init__()
+        self._evironnement=env
         self._selectedObject = selectedObject
         self.setStyleSheet("background-color: #21212F;color:#f9f9f9")
 
@@ -24,14 +25,22 @@ class ExplorerInfo(QWidget):
         self._layoutInfo = QVBoxLayout()
         widget.setLayout(self._layoutInfo)
 
-        self._layoutInfo.addWidget(self.labelInformation())
-        self._layoutInfo.addWidget(self.positionInformations())
+        self._layoutInfo.addWidget(self.createIDWidget())
+        if self._selectedObject in self._evironnement.getObjects(): # TODO : Revoir le système de construction et de rafraichissement
+            self._layoutInfo.addWidget(self.positionInformations())
 
         if isinstance(self._selectedObject,Robot):
             self._layoutInfo.addWidget(self.showTrajectory())
             self._layoutInfo.addWidget(self.showOdometry())
 
-    def labelInformation(self):
+        self._specificationsWidget = QLabel()
+        self._specificationsWidget.setFont(QFont("Sanserif", 12))
+        if isinstance(self._selectedObject, Component):
+            self._specificationsWidget.setText(self._selectedObject.getSpecifications())
+            self._layoutInfo.addWidget(self._specificationsWidget)
+
+
+    def createIDWidget(self):
         labelInformations=QWidget()
         labelInformationsLayout=QHBoxLayout()
         labelInformations.setLayout(labelInformationsLayout)
@@ -48,7 +57,7 @@ class ExplorerInfo(QWidget):
             icon = QPixmap(f"{config['ressourcesPath']}/actuator.svg")
 
         labelIcon.setPixmap(icon)
-        labelIcon.setFixedWidth(50)
+        labelIcon.setFixedWidth(24)
 
         labelInformationsID=QLabel(self._selectedObject.getID())
         labelInformations.setFixedHeight(50)
@@ -62,8 +71,11 @@ class ExplorerInfo(QWidget):
         return labelInformations
 
     def refreshData(self,sender):
-        self._positionWidget.setText("("+str(round(sender.getPose().getX(),0))+","+str(round(sender.getPose().getY(),0))+") ")
-        self._oWidget.setText(str(round(sender.getPose().getOrientation(),0))+"°")
+        if self._selectedObject in self._evironnement.getObjects():
+            self._positionWidget.setText("("+str(round(sender.getPose().getX(),0))+","+str(round(sender.getPose().getY(),0))+") ")
+            self._oWidget.setText(str(round(sender.getPose().getOrientation(),0))+"°")
+        if isinstance(self._selectedObject, Component):
+            self._specificationsWidget.setText(self._selectedObject.getSpecifications())
 
     def positionInformations(self):
         positionInformationsWidget=QWidget()

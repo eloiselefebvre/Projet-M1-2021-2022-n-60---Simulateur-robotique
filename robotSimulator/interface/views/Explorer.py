@@ -29,15 +29,15 @@ class Explorer(QWidget):
 
     def showExplorerInfo(self,obj):
         if not self._showExplorerInfo:
-            self._explorerInfo = ExplorerInfo(obj)
-            obj.addObserverCallback(self._explorerInfo.refreshData, "poseChanged")
+            self._explorerInfo = ExplorerInfo(self._environment,obj)
+            obj.addObserverCallback(self._explorerInfo.refreshData, "stateChanged")
             self._layout.addWidget(self._explorerInfo, 2, 0)
             self._showExplorerInfo=True
 
     def hideExplorerInfo(self,obj):
         if self._showExplorerInfo:
             self._layout.removeWidget(self._explorerInfo)
-            obj.deleteObserverCallback(self._explorerInfo.refreshData, "poseChanged")
+            obj.deleteObserverCallback(self._explorerInfo.refreshData, "stateChanged")
             self._explorerInfo=None
             self._layout.update()
             self._showExplorerInfo=False

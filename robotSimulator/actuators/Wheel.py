@@ -24,3 +24,6 @@ class Wheel(Actuator):
     def getRadius(self):
         return self._radius
 
+    def getSpecifications(self):
+        return ""
+

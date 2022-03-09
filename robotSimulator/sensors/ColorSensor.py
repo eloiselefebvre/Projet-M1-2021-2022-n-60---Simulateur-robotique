@@ -39,6 +39,10 @@ class ColorSensor(Sensor):
     def getValue(self):
         return self._colorDetected
 
+    def getSpecifications(self):
+        specifications = "Current detected color : " + self._colorDetected
+        return specifications
+
 
 
 
