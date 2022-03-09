@@ -81,3 +81,6 @@ class Shape(ABC):
 
     def getColor(self):
         return self._color
+
+    def setColor(self,color):
+        self._color=QColor(color)

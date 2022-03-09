@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QHBoxLayout, QMenuBar, QAction
 
 from robotSimulator.ressources.maps.Maze import Maze
-from robotSimulator.ressources.maps.Path import Path
+from robotSimulator.ressources.maps.CirclePath import CirclePath
 
 
 class Header(QMenuBar):
@@ -18,7 +18,7 @@ class Header(QMenuBar):
         self.insertionMaze()
         self.insertionPath()
         self._maze=Maze(self._environment)
-        self._path=Path(self._environment)
+        self._path=CirclePath(self._environment)
 
     def insertionMaze(self):
         for action in self._actions:

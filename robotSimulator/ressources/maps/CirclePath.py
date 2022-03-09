@@ -6,7 +6,7 @@ from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Point, Rectangle, Circle
 
 
-class Path:
+class CirclePath:
 
     DEFAULT_WIDTH=20
     DEFAULT_PATH_COLOR="#444444"
@@ -47,7 +47,7 @@ class Path:
     def deleteElements(self):
         for item in self._pathElements:
             self._environment.removeVirtualObject(item)
-        self._pathElements = []
+        self._pathElements.clear()
 
     def getElements(self):
         return self._pathElements

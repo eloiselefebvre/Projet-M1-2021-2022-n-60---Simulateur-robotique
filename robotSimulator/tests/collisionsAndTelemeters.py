@@ -69,10 +69,10 @@ def collisionAndTelemeter():
     # rob5.setRightWheelSpeed(300)
     # rob5.setLeftWheelSpeed(300)
 
-    polygon = Object(Representation(Polygon([QPoint(200,200),QPoint(500,500),QPoint(500,200)],"#444444")))
+    # polygon = Object(Representation(Polygon([QPoint(200,200),QPoint(500,500),QPoint(500,200)],"#444444")))
 
     env = Environment(1500,900)
-    env.addVirtualObject(polygon,0,0,0)
+    # env.addVirtualObject(polygon,0,0,0)
     env.addObject(rob1, 1000, 100, 30)
     # env.addObject(rob2, 1050, 300, 0)
     # env.addObject(rob3, 500, 500, 45)
@@ -82,8 +82,6 @@ def collisionAndTelemeter():
     # env.addVirtualObject(Obstacle(Representation(Circle(200,'#ff8f8f'))),1000,500)
 
     sim = Simulation(env)
-    ledState = 0
-    start = sim.time()
     sim.setAcceleration(2)
     sim.run()
     sim.showInterface()

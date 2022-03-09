@@ -15,7 +15,7 @@ class Interface(QMainWindow):
         super().__init__()
         self._simulation = simulation
         self._environment = environment
-        self.setWindowTitle("Spicy Simulator")
+        self.setWindowTitle("Shiva Simulator")
 
         self._headerWidget = Header(self._environment)
         self._toolbar=ToolsBar(self._environment,self)

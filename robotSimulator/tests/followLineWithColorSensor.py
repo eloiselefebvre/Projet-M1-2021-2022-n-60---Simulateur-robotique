@@ -1,6 +1,6 @@
 import time
 
-from robotSimulator.ressources.maps.Path import Path
+from robotSimulator.ressources.maps.CirclePath import CirclePath
 from robotSimulator.robots import TwoWheelsRobot
 from robotSimulator.sensors.ColorSensor import ColorSensor
 from robotSimulator.simulation import Environment, Simulation
