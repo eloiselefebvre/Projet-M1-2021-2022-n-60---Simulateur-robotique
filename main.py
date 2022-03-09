@@ -1,4 +1,2 @@
-from robotSimulator.tests import collisionAndTelemeter
-
-collisionAndTelemeter()
-
+from robotSimulator.tests import factoryMap
+factoryMap()

@@ -32,6 +32,7 @@ class ExplorerTree(QTreeWidget):
 
         self._parent=parent
         self._selectedItem=None
+        self._selectedSubItem=None
         self._itemsShown=[Robot,Actuator,Sensor,Obstacle]
 
         self.setTreeWidgetConfiguration()
@@ -121,9 +122,6 @@ class ExplorerTree(QTreeWidget):
 
         self.itemClicked.connect(self.clickedItem)
 
-    def getSelectedObject(self):
-        return self._mainObjects[self._mainItems.index(self._selectedItem)] if self._selectedItem is not None else None
-
     def clickedItem(self):
         crawler = self.currentItem()
         if self._selectedItem is not None:
@@ -134,6 +132,7 @@ class ExplorerTree(QTreeWidget):
         else:
             selectedObject = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
             crawler.setColor(self.CRAWLER_COLOR)
+            self._selectedSubItem=crawler
         selectedObject.setSelected(True)
 
     def setSelectedItem(self,item):
@@ -141,7 +140,10 @@ class ExplorerTree(QTreeWidget):
         item.setExpanded(True)
         self.setCurrentItem(item)
         self._selectedItem=item
-        self._parent.showExplorerInfo(self.getSelectedObject())
+        if self._selectedSubItem is not None:
+            self._parent.showExplorerInfo(self._allObjects[1+ self._mainItems.index(self._selectedItem) + self._subItems.index(self._selectedSubItem)])
+        else:
+            self._parent.showExplorerInfo(self._mainObjects[self._mainItems.index(self._selectedItem)])
 
     def removeSelectedItem(self):
         if self._selectedItem is not None:
@@ -151,8 +153,12 @@ class ExplorerTree(QTreeWidget):
             for subItem in self._subItems:
                 subItem.setColor(self.ITEM_COLOR)
 
-            self._parent.hideExplorerInfo(self.getSelectedObject())
+            if self._selectedSubItem is not None:
+                self._parent.hideExplorerInfo(self._allObjects[1 + self._mainItems.index(self._selectedItem) + self._subItems.index(self._selectedSubItem)])
+            else:
+                self._parent.hideExplorerInfo(self._mainObjects[self._mainItems.index(self._selectedItem)])
             self._selectedItem=None
+            self._selectedSubItem=None
 
     def changeTreeSelection(self,sender):
         if sender in self._mainObjects:

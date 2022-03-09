@@ -17,6 +17,7 @@ class Wheel(Actuator):
 
     def setSpeed(self,speed): # En tour/min
         self._speed = speed
+        self.notifyObservers("stateChanged")
 
     def getSpeed(self):
         return self._speed
@@ -25,5 +26,7 @@ class Wheel(Actuator):
         return self._radius
 
     def getSpecifications(self):
-        return ""
+        specifications=f"Current speed : {self._speed}rpm\n---\n"
+        specifications+=f"Radius : {self._radius}px"
+        return specifications
 

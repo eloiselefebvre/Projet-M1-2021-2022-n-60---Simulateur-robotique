@@ -61,7 +61,7 @@ class Telemeter(Sensor):
         return self._distance
 
     def getSpecifications(self):
-        specifications="Current measured distance : "+str(round(self._distance,1))+"px\n---\n"
-        specifications+="Measurement Range : ?px-?px"
+        specifications=f"Current measured distance : {round(self._distance,1)}px\n---\n"
+        specifications+=f"Measurement Range : ?px-?px"
         return specifications
 
