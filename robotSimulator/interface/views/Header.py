@@ -13,7 +13,7 @@ class Header(QMenuBar):
         self.setLayout(self._layout)
         self.setStyleSheet("background-color : #f9f9f9")
         self._insertion = self.addMenu("Maze")
-        self._pathMenu = self.addMenu("Path")
+        self._pathMenu = self.addMenu("Circle Path")
         self._actions=[]
         self.insertionMaze()
         self.insertionPath()

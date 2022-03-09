@@ -16,7 +16,6 @@ class ColorSensor(Sensor):
         self._colorDetected = None
 
     def refresh(self):
-
         self._colorDetected=None
         if self._parent is not None:
             virtualObjects = sorted(self._parent.getEnv().getVirtualObjects(),key=lambda obj:obj.getZIndex())
