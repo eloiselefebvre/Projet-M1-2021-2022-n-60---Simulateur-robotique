@@ -11,6 +11,7 @@ class Polygon(Shape):
     def __init__(self,points,color="#000",opacity=255):
         super().__init__(color,opacity)
         self._points=points
+        # TODO: Convertir la liste de points en QPoint
 
     def paint(self, painter):
         super().paint(painter)
