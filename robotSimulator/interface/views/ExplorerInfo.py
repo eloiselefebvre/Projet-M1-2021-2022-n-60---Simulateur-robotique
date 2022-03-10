@@ -122,7 +122,8 @@ class ExplorerInfo(QWidget):
         positionInformationsLayout.addWidget(positionWidgetContainer,60)
         positionInformationsLayout.addWidget(orientationWidgetContainer,40)
 
-        positionInformationsWidget.setStyleSheet("border-bottom:2px solid #444; margin-bottom:8px; padding-bottom:12px;")
+        if not isinstance(self._selectedObject,Obstacle):
+            positionInformationsWidget.setStyleSheet("border-bottom:2px solid #444; margin-bottom:8px; padding-bottom:12px;")
 
         return positionInformationsWidget
 
