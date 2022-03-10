@@ -10,6 +10,7 @@ class LIDAR(Telemeter):
     ANGULAR_RESOLUTION = 6 # degrees
     ANGULAR_RANGE = 360 # degrees
     SCAN_RATE = 300  # rpm
+    # TODO : Rendre modifiable par l'utilisateur mais avec valeurs par défaut
 
     # TODO : Revoir le fonctionnement du LIDAR dans l'environnement
 
@@ -48,4 +49,8 @@ class LIDAR(Telemeter):
             self.getPose().rotate(step)
 
     def getSpecifications(self):
-        return ""
+        specifications = "---\n"
+        specifications += f"Angular Resolution : {self.ANGULAR_RESOLUTION}°\n"
+        specifications += f"Angular Range : {self.ANGULAR_RANGE}°\n"
+        specifications += f"Scan Rate : {self.SCAN_RATE}rpm"
+        return specifications
