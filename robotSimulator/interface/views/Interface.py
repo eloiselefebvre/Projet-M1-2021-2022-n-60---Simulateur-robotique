@@ -8,7 +8,6 @@ from robotSimulator.interface.views.Scene import Scene
 from robotSimulator.interface.views.Explorer import Explorer
 from robotSimulator.interface.views.SceneOverview import SceneOverview
 from robotSimulator.interface.views.ToolsBar import ToolsBar
-from robotSimulator.ressources.maps.PathFinding import PathFinding
 
 
 class Interface(QMainWindow):

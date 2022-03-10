@@ -148,3 +148,6 @@ class Robot(ABC,Object):
         self.deleteOdometry()
         self._odometryPose=pose
         self._odometryPose.setOrientation(-self._odometryPose.getOrientation())
+
+    def getOdometryPose(self):
+        return self._odometryPose

@@ -1,12 +1,7 @@
-import time
-
-from PyQt5.QtCore import QPoint
-
 from robotSimulator import Obstacle
 from robotSimulator.representation import Representation
-from robotSimulator.representation.shapes import Circle, Rectangle
-from robotSimulator.representation.shapes.Polygon import Polygon
-from robotSimulator.ressources.maps.PathFinding import PathFinding
+from robotSimulator.representation.shapes import Circle
+from robotSimulator.ressources.PathFinding import PathFinding
 from robotSimulator.simulation import Environment, Simulation
 
 def aStar():
