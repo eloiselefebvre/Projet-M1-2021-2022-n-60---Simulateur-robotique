@@ -7,8 +7,8 @@ from ..config import config
 
 
 class LIDAR(Telemeter):
-    ANGULAR_RESOLUTION = 6
-    ANGULAR_RANGE = 360
+    ANGULAR_RESOLUTION = 6 # degrees
+    ANGULAR_RANGE = 360 # degrees
     SCAN_RATE = 300  # rpm
 
     # TODO : Revoir le fonctionnement du LIDAR dans l'environnement

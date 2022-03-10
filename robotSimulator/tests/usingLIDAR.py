@@ -1,6 +1,9 @@
+from PyQt5.QtCore import QPoint
+
 from robotSimulator import Obstacle
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Circle, Rectangle
+from robotSimulator.representation.shapes.Polygon import Polygon
 from robotSimulator.robots import TwoWheelsRobot
 from robotSimulator.sensors import LIDAR
 from robotSimulator.simulation import Environment, Simulation
@@ -25,6 +28,7 @@ def LIDARTest():
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
     env.addObject(Obstacle(Representation(Rectangle(40, 200, "#ff8fff"))), 650, 400)
     env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850, 25)
+    env.addObject(Obstacle(Representation(Polygon([QPoint(500,500),QPoint(600,400),QPoint(800,400),QPoint(600,500),QPoint(800,700)], "#ff8fff"))))
 
     sim = Simulation(env)
     sim.setAcceleration(1)

@@ -53,6 +53,8 @@ class ExplorerTree(QTreeWidget):
         self.expandAll()
 
     def clearTree(self):
+        if self._selectedItem is not None:
+            self._mainObjects[self._mainItems.index(self._selectedItem)].setSelected(False)
         self.removeSelectedItem()
         self.itemClicked.disconnect(self.clickedItem)
 
