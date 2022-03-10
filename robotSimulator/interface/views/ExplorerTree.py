@@ -46,14 +46,17 @@ class ExplorerTree(QTreeWidget):
         self.resizeColumnToContents(1)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-    def rebuildTree(self,sender):
+    def rebuildTree(self,sender): # TODO : remove all selected objects | Pb sélection composants filtrés
         self._itemsShown=sender.getShownObjectClass()
         self.clearTree()
         self.buildTree()
         self.expandAll()
 
     def clearTree(self):
+        if self._selectedItem is not None:
+            self._mainObjects[self._mainItems.index(self._selectedItem)].setSelected(False)
         self.removeSelectedItem()
+        self.itemClicked.disconnect(self.clickedItem)
 
         root = self.invisibleRootItem()
         parents = []
@@ -67,19 +70,18 @@ class ExplorerTree(QTreeWidget):
         for parent in parents:
             root.removeChild(parent)
 
-        self._mainItems = []
-        self._subItems = []
-        self._allObjects = []
-        self._mainObjects = []
-        self._childrenButtons = []
-        self._mainItemsAssociatedChildren = []
-        self._visibilityButtons = []
+        self._mainItems.clear()
+        self._subItems.clear()
+        self._allObjects.clear()
+        self._mainObjects.clear()
+        self._childrenButtons.clear()
+        self._mainItemsAssociatedChildren.clear()
+        self._visibilityButtons.clear()
 
     def buildTree(self): # TODO : Voir si on peut faire plus simple et propre
         for obj in self._environment.getObjects():
              if type(obj) != Object:
                 if issubclass(type(obj),tuple(self._itemsShown)) or (isinstance(obj,Robot) and (Actuator in self._itemsShown or Sensor in self._itemsShown)):
-
                     parent=None
                     if not issubclass(type(obj),tuple(self._itemsShown)) and isinstance(obj,Robot) and (Actuator in self._itemsShown or Sensor in self._itemsShown):
                         sensors = [comp  for comp in obj.getComponents() if isinstance(comp,Sensor)]
@@ -128,7 +130,6 @@ class ExplorerTree(QTreeWidget):
             self._mainObjects[self._mainItems.index(self._selectedItem)].setSelected(False)
         if crawler in self._mainItems:
             selectedObject = self._mainObjects[self._mainItems.index(crawler)]
-            selectedObject.setSelected(True)
         else:
             selectedObject = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
             crawler.setColor(self.CRAWLER_COLOR)

@@ -27,8 +27,15 @@ class Polygon(Shape):
         return lines
 
     def contains(self, point):
-        for line in self.getLineDecomposition():
-            d = (line.x2() - line.x1()) * (point.y() - line.y1()) - (line.y2() - line.y1()) * (point.x() - line.x1())
-            if not d < 0:  # point à droite de la ligne (pas bon car sens trigonométrique)
-                return False
-        return True
+        # https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
+        pose = QPoint(self._pose.getX(), self._pose.getY())
+        c=False
+        j=len(self._points)-1
+        for i in range(len(self._points)):
+            previousEdge=self._points[j]+pose
+            edge = self._points[i] + pose
+            if ((edge.y() > point.y()) != (previousEdge.y() > point.y())) and (point.x() < (previousEdge.x() - edge.x()) * (point.y() - edge.y()) / (previousEdge.y() - edge.y()) + edge.x()):
+                c=not c
+            j=i
+        return c
+
