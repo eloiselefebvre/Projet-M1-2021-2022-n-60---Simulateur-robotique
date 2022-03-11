@@ -1,7 +1,9 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QGridLayout
 
 from robotSimulator.ZoomController import ZoomController
+from robotSimulator.config import config
 from robotSimulator.interface.views.Footer import Footer
 from robotSimulator.interface.views.Header import Header
 from robotSimulator.interface.views.Scene import Scene
@@ -15,8 +17,8 @@ class Interface(QMainWindow):
         super().__init__()
         self._simulation = simulation
         self._environment = environment
-        self.setWindowTitle("Shiva Simulator")
-        # self._pathFinding=PathFinding(self._environment)
+        self.setWindowTitle("Discovery")
+        self.setWindowIcon(QIcon(f"{config['ressourcesPath']}logo.svg"))
 
         self._headerWidget = Header(self._environment)
         self._toolbar=ToolsBar(self._environment,self)
