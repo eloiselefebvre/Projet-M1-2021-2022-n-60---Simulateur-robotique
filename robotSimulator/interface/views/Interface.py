@@ -10,6 +10,7 @@ from robotSimulator.interface.views.Scene import Scene
 from robotSimulator.interface.views.Explorer import Explorer
 from robotSimulator.interface.views.SceneOverview import SceneOverview
 from robotSimulator.interface.views.ToolsBar import ToolsBar
+from robotSimulator.robots import Robot
 
 
 class Interface(QMainWindow):
@@ -76,8 +77,9 @@ class Interface(QMainWindow):
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._sceneWidget.updateLockedScene,"lockChanged")
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._explorerWidget.getExplorerTree().rebuildTree,'filterChanged')
 
-        # for obj in self._environment.getObjects():
-        #     obj.addObserverCallback(self._pathFinding.refreshPath,"stateChanged")
+        for obj in self._environment.getObjects():
+            if isinstance(obj,Robot):
+                self._toolbar.addObserverCallback(obj.accelerationChanged, "accelerationChanged")
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

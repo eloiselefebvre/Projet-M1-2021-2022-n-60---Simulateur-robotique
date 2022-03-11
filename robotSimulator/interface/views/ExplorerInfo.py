@@ -72,7 +72,7 @@ class ExplorerInfo(QWidget):
 
     def refreshData(self,sender):
         if self._selectedObject in self._evironnement.getObjects():
-            self._positionWidget.setText("("+str(round(sender.getPose().getX(),0))+","+str(round(sender.getPose().getY(),0))+") ")
+            self._positionWidget.setText("("+str(int(sender.getPose().getX()))+", "+str(int(sender.getPose().getY()))+") ")
             self._oWidget.setText(str(round(sender.getPose().getOrientation(),0))+"°")
         if isinstance(self._selectedObject, Component):
             self._specificationsWidget.setText(self._selectedObject.getSpecifications())
