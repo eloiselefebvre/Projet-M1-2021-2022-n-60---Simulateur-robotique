@@ -145,7 +145,7 @@ class Robot(ABC,Object):
         return self._odometryDrawn
 
     def setOdometryPose(self,pose):
-        self.deleteOdometry()
+        # self.deleteOdometry()
         self._odometryPose=pose
         self._odometryPose.setOrientation(-self._odometryPose.getOrientation())
 

@@ -5,12 +5,13 @@ class ReinforcementLearning:
 
     def __init__(self,state):
         self._QTable={}
-        self._minimalSpeed = -600
+        self._minimalSpeed = 0
         self._maximalSpeed = 600
-        self._numberOfInterval = 4
+        self._numberOfInterval = 2
         self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval)
         self.fillQTable()
         self._learningFactor = 0.1
+        self._discountFactor = 0.5
         self._state = state
         self._initialState = state
         self._explorationRate=0.01
@@ -22,7 +23,7 @@ class ReinforcementLearning:
                 self._QTable[(i, j)] = [0, 0, 0, 0, 0]
 
     def executedActionFeedback(self,reward):
-        self._QTable[self._state][self._actionToExecuteIndex]=(1-self._learningFactor)*self._QTable[self._state][self._actionToExecuteIndex]+self._learningFactor*reward
+        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward)
         self._state=(self._actions[self._actionToExecuteIndex][0]+self._state[0],self._actions[self._actionToExecuteIndex][1]+self._state[1])
 
     def getPossibleActions(self):
@@ -51,6 +52,7 @@ class ReinforcementLearning:
                     maxIndex=index
             self._actionToExecuteIndex = maxIndex
         return self._actions[self._actionToExecuteIndex]
+
 
     def reset(self):
         self._state=self._initialState
