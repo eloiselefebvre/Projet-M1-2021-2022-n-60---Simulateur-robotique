@@ -18,25 +18,18 @@ class ColorSensor(Sensor):
     def refresh(self):
         previousColor=self._colorDetected
         self._colorDetected=None
-        if self._parent is not None:
-            virtualObjects = sorted(self._parent.getEnv().getVirtualObjects(),key=lambda obj:obj.getZIndex())
-            for obj in virtualObjects:
-                if obj.getZIndex()<=self._parent.getZIndex():
-                    if obj.getRepresentation().contains(self.getSensorPose()):
-                        self._colorDetected = obj.getRepresentation().getShape().getColor().name()
-            if self._colorDetected is None:
-                self._colorDetected = self.BACKGROUND_COLOR
+
+        sensorPose = self._frame.getAbsoluteCoordinates()
+        colorSensorPoint = QPoint(sensorPose.getX(),sensorPose.getY())
+        virtualObjects = sorted(self._env.getVirtualObjects(),key=lambda obj:obj.getZIndex())
+        for obj in virtualObjects:
+            if obj.getZIndex()<=self._parent.getZIndex():
+                if obj.getRepresentation().contains(colorSensorPoint):
+                    self._colorDetected = obj.getRepresentation().getShape().getColor().name()
+        if self._colorDetected is None:
+            self._colorDetected = self.BACKGROUND_COLOR
         if self._colorDetected!=previousColor:
             self.notifyObservers("stateChanged")
-
-    def getSensorPose(self): # TODO : Méthode générale pour tous les capteurs et actionneurs !
-        robotX = self._parent.getPose().getX()
-        robotY = self._parent.getPose().getY()
-        dx = self._pose.getX()
-        dy = self._pose.getY()
-        colorSensorX, colorSensorY = Point.computeTransformation(robotX, robotY, dx, dy,self._parent.getPose().getOrientation())
-        colorSensorPose = QPoint(colorSensorX, colorSensorY)
-        return colorSensorPose
 
     def getValue(self):
         return self._colorDetected

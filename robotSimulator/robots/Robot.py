@@ -1,6 +1,7 @@
 from abc import ABC,abstractmethod
 from robotSimulator.Object import Object
 from ..Component import Component
+from ..Frame import Frame
 from ..representation.Representation import Representation
 from ..representation.shapes import Rectangle
 from ..representation.shapes.Point import Point
@@ -37,12 +38,13 @@ class Robot(ABC,Object):
         self._odometryDrawn=False
         self._odometryPose=None
 
-        #self._odometry = None
-
     def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
-            comp.setPose(Pose(x,y,orientation))
+            pose=Pose(x,y,orientation)
+            comp.setPose(pose)
             comp.setParent(self)
+            comp.getFrame().setBaseFrame(self._frame)
+            comp.getFrame().setCoordinates(pose)
             self._components.append(comp)
             self._representation.addSubRepresentation(comp.getRepresentation())
 
@@ -98,7 +100,7 @@ class Robot(ABC,Object):
         self._trajectoryDrawn = not self._trajectoryDrawn
 
     # ODOMETRY METHODS
-    def updateOdometry(self): # TODO : Revoir les formules
+    def updateOdometry(self):
         vd = self.getRightLinearSpeed()
         vg = self.getLeftLinearSpeed()
         v = (vd + vg) / 2

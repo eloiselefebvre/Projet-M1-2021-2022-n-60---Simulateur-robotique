@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QSize
 from robotSimulator import Object, Pose
+from robotSimulator.Frame import Frame
 from robotSimulator.representation import Representation
 from robotSimulator.representation.shapes import Line
 from robotSimulator.robots import Robot
@@ -19,19 +20,28 @@ class Environment:
         self._hasWalls=False
         self._size = QSize(width,height)
 
+        self._frame=Frame(Pose(0,0))
+
         self._sensors=[]
         self._maze=False
         self._path=False
         self.drawWalls()
+
+
+    def getFrame(self):
+        return self._frame
 
     def addObject(self,obj,x=0,y=0,orientation=0):
         if isinstance(obj, Object):
             pose=Pose(x,y,orientation)
             obj.setPose(pose)
             obj.setEnv(self)
+            obj.getFrame().setBaseFrame(self._frame)
+            obj.getFrame().setCoordinates(pose)
             self._objects.append(obj)
             if isinstance(obj,Robot):
                 for comp in obj.getComponents():
+                    comp.setEnv(self)
                     if isinstance(comp, Sensor):
                         self.addSensor(comp)
                 obj.setOdometryPose(pose.copy())

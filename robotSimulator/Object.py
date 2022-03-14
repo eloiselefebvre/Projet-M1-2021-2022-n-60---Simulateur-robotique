@@ -1,3 +1,4 @@
+from robotSimulator.Frame import Frame
 from robotSimulator.Observable import Observable
 from robotSimulator.representation.shapes.Border import Border
 
@@ -18,11 +19,20 @@ class Object(Observable):
 
         self._z_index = 1
 
+        self._frame=Frame()
+
         self.setNumberOfInstances(type(self).__name__)
         self._id = type(self).__name__
         self.completeID()
 
         # TODO : Handle all visible variables here and not in representation
+
+    def setFrame(self,frame):
+        if isinstance(frame,Frame):
+            self._frame=frame
+
+    def getFrame(self):
+        return self._frame
 
     def setZIndex(self,index):
         self._z_index=index

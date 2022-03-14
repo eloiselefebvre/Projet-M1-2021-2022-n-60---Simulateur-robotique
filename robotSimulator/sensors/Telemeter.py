@@ -24,21 +24,14 @@ class Telemeter(Sensor):
         intersections = []
         self._laserLine.setLength(self.INFINITE_LENGTH)
         self._distance = self.INFINITE_LENGTH
-        if self._parent is not None:  # Telemeter monté sur un robot
-            robotX = self._parent.getPose().getX()
-            robotY = self._parent.getPose().getY()
-            dx = self._pose.getX()
-            dy = self._pose.getY()
-            telemeterX, telemeterY = Point.computeTransformation(robotX, robotY, dx, dy,self._parent.getPose().getOrientation())
-            self._laser.setPose(Pose(telemeterX, telemeterY, self._parent.getPose().getOrientation() + self._pose.getOrientation()))
-            for obj in self._parent.getEnv().getObjects():
-                if obj != self._parent:
-                    intersections.extend(self._laser.isCollidedWith(obj))
-        else:
-            self._laser.setPose(self._pose)
-            for obj in self._env.getObjects():
-                if obj != self:
-                    intersections.extend(self._laser.isCollidedWith(obj))
+
+        telemeterPose=self._frame.getAbsoluteCoordinates()
+        self._laser.setPose(telemeterPose)
+
+        for obj in self._env.getObjects():
+            if obj != self._parent and obj!=self:
+                intersections.extend(self._laser.isCollidedWith(obj))
+
         closest_point = None
         for point in intersections:
             di = ((self._laser.getPose().getX() - point.x()) ** 2 + (self._laser.getPose().getY() - point.y()) ** 2) ** 0.5

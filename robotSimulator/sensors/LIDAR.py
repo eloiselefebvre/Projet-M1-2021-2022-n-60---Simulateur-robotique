@@ -33,17 +33,16 @@ class LIDAR(Telemeter):
         if self._ddegree > self.ANGULAR_RESOLUTION:
             self._ddegree -= self.ANGULAR_RESOLUTION
             if self.getPose().getOrientation() < self.ANGULAR_RANGE / 2 or self.getPose().getOrientation() > 360 - self.ANGULAR_RANGE / 2:
-                if self._parent is not None and self._intersectionsBuffer[self._bufferIndex] is not None:
-                    self._parent.getEnv().removeVirtualObject(self._intersectionsBuffer[self._bufferIndex])
+                if self._intersectionsBuffer[self._bufferIndex] is not None:
+                    self._env.removeVirtualObject(self._intersectionsBuffer[self._bufferIndex])
 
                 intersection = self.getClosestCollisitionPointAndComputeDistance()
-                if self._parent is not None and intersection is not None:
+                if intersection is not None:
                     point = Object(Representation(Point(int(intersection.x()), int(intersection.y()), self._color)))
-                    point.setVisible(
-                        self.isVisible() and (self._parent.isVisible() if self._parent is not None else True))
+                    point.setVisible(self.isVisible() and (self._parent.isVisible() if self._parent is not None else True))
                     self._intersectionsBuffer[self._bufferIndex] = point
                     point.setZIndex(2)
-                    self._parent.getEnv().addVirtualObject(point)
+                    self._env.addVirtualObject(point)
 
                 self._bufferIndex = (self._bufferIndex + 1) % self._angularSteps
             self.getPose().rotate(step)
