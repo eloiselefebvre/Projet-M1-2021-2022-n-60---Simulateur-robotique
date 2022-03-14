@@ -33,6 +33,7 @@ class Simulation(Observable):
                 if current-start_robot > config["time_step"]/self._acceleration: # TODO : Vérif accélération déplacement robot
                     start_robot = current
                     self._timeElapsed+=config["time_step"]*self._acceleration
+                    self.notifyObservers("timeChanged")
                     for obj in self._environment.getObjects():
                         if hasattr(obj,"move"):
                             obj.move()
@@ -78,4 +79,5 @@ class Simulation(Observable):
 
     def updatePlayState(self,sender):
         self._playState=sender.getPlayState()
+
 

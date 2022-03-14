@@ -68,6 +68,8 @@ class Interface(QMainWindow):
         self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene,"poseChanged")
         zoomController.addObserverCallback(self._footer.updateZoom,"zoomChanged")
 
+        self._simulation.addObserverCallback(self._toolbar.updateTimeElapsed,"timeChanged")
+
         self._toolbar.addObserverCallback(self._simulation.updateAcceleration,"accelerationChanged")
         self._toolbar.addObserverCallback(self._simulation.updatePlayState, "playChanged")
 

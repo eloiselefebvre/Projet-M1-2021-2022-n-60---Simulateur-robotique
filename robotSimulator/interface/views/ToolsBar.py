@@ -1,7 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit
-
+from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit, QLabel
 from robotSimulator.Observable import Observable
 from robotSimulator.config import config
 
@@ -28,6 +27,8 @@ class ToolsBar(QToolBar,Observable):
         self._tb.addAction(self.increaseAcceleration())
         self._playPauseAction=self.playPause()
         self._tb.addAction(self._playPauseAction)
+        self._tb.addAction(self.timeElapsed())
+
 
         self._tb.setMovable(False)
 
@@ -115,3 +116,19 @@ class ToolsBar(QToolBar,Observable):
 
     def getPlayState(self):
         return self._playState
+
+    def timeElapsed(self):
+        timeElapsedWidget=QWidgetAction(self)
+        self._timeElapsed=QLabel()
+
+        timeElapsedWidget.setDefaultWidget(self._timeElapsed)
+
+        self._timeElapsed.setStyleSheet("color: #f0f0f0;border: none")
+        self._timeElapsed.setFont(QFont("Sanserif", 15))
+        self._timeElapsed.setFixedWidth(56)
+        self._timeElapsed.setAlignment(Qt.AlignCenter)
+
+        return timeElapsedWidget
+
+    def updateTimeElapsed(self,sender):
+        self._timeElapsed.setText(str(round(sender.time(),1)))

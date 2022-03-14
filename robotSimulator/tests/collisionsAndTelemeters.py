@@ -82,7 +82,7 @@ def collisionAndTelemeter():
     sim = Simulation(env)
     ledState = 0
     start = sim.time()
-    sim.setAcceleration(2)
+    # sim.setAcceleration(2)
     sim.run()
     sim.showInterface()
 
