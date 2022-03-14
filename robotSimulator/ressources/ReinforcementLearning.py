@@ -23,7 +23,7 @@ class ReinforcementLearning:
                 self._QTable[(i, j)] = [0, 0, 0, 0, 0]
 
     def executedActionFeedback(self,reward):
-        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward)
+        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * reward
         self._state=(self._actions[self._actionToExecuteIndex][0]+self._state[0],self._actions[self._actionToExecuteIndex][1]+self._state[1])
 
     def getPossibleActions(self):

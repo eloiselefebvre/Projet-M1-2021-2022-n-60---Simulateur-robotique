@@ -73,13 +73,13 @@ class TwoWheelsRobot(Robot):
         return self._rightWheel.getRadius() * self._rightWheel.getSpeed()
 
     def getRightElementarySpeed(self):
-        return self._rightWheel.getRadius() * self._rightWheel.getSpeed()*config["time_step"] / 60
+        return self._rightWheel.getRadius() * self._rightWheel.getSpeed()*config["time_step"] / 60 * self._acceleration
 
     def getLeftLinearSpeed(self):
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed()
 
     def getLeftElementarySpeed(self):
-        return self._leftWheel.getRadius() * self._leftWheel.getSpeed() * config["time_step"] / 60
+        return self._leftWheel.getRadius() * self._leftWheel.getSpeed() * config["time_step"] / 60 * self._acceleration
 
     def setWheelY(self,y):
         self._rightWheel.getRepresentation().getOrigin().setY(y)

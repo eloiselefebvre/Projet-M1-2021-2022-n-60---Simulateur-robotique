@@ -1,13 +1,16 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QGridLayout
 
 from robotSimulator.ZoomController import ZoomController
+from robotSimulator.config import config
 from robotSimulator.interface.views.Footer import Footer
 from robotSimulator.interface.views.Header import Header
 from robotSimulator.interface.views.Scene import Scene
 from robotSimulator.interface.views.Explorer import Explorer
 from robotSimulator.interface.views.SceneOverview import SceneOverview
 from robotSimulator.interface.views.ToolsBar import ToolsBar
+from robotSimulator.robots import Robot
 
 
 class Interface(QMainWindow):
@@ -15,8 +18,8 @@ class Interface(QMainWindow):
         super().__init__()
         self._simulation = simulation
         self._environment = environment
-        self.setWindowTitle("Shiva Simulator")
-        # self._pathFinding=PathFinding(self._environment)
+        self.setWindowTitle("Discovery")
+        self.setWindowIcon(QIcon(f"{config['ressourcesPath']}logo.svg"))
 
         self._headerWidget = Header(self._environment)
         self._toolbar=ToolsBar(self._environment,self)
@@ -76,8 +79,9 @@ class Interface(QMainWindow):
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._sceneWidget.updateLockedScene,"lockChanged")
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._explorerWidget.getExplorerTree().rebuildTree,'filterChanged')
 
-        # for obj in self._environment.getObjects():
-        #     obj.addObserverCallback(self._pathFinding.refreshPath,"stateChanged")
+        for obj in self._environment.getObjects():
+            if isinstance(obj,Robot):
+                self._toolbar.addObserverCallback(obj.accelerationChanged, "accelerationChanged")
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)
