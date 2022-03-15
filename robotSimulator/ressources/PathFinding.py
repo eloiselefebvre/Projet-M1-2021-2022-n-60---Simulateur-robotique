@@ -1,4 +1,5 @@
 import time
+from math import sqrt, atan, degrees
 
 from PyQt5.QtCore import QPoint
 
@@ -20,9 +21,14 @@ class PathFinding:
         "begin_node": "#30336B",
         "end_node": "#30336B"
     }
+    FORWARD_SPEED = 200
+    TURN_SPEED = 100
+    CELL_SIZE = 15
+    OFFSET = CELL_SIZE/2
 
-    def __init__(self, environment, NODE=None):
+    def __init__(self, environment, robot,NODE=None):
         self._environment=environment
+        self._robot=robot
 
         self.__ROWS_NUMBER = (self._environment.getWidth())/15
         self.__COLS_NUMBER = (self._environment.getHeight())/15
@@ -31,7 +37,11 @@ class PathFinding:
         self.__endNode = (30,30)
         self._nodes = {}
         self.createNode(self.__beginNode)
+        self.setRobotStartPosition()
         self.__astar()
+
+    def setRobotStartPosition(self):
+        self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
 
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
@@ -50,14 +60,15 @@ class PathFinding:
 
     def __getNodeValue(self, node):
         for obj in self._environment.getObjects():
+            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getWidth()/2+5)
             if isinstance(obj,Obstacle):
-                if obj.getRepresentation().contains(QPoint(node[0]*15,node[1]*15)):
+                if  obstacle.contains(QPoint(node[0]*15,node[1]*15)):
                     return False
-                if obj.getRepresentation().contains(QPoint(node[0]*15,(node[1]+1)*15)):
+                if  obstacle.contains(QPoint(node[0]*15,(node[1]+1)*15)):
                     return False
-                if obj.getRepresentation().contains(QPoint((node[0]+1)*15,node[1]*15)):
+                if  obstacle.contains(QPoint((node[0]+1)*15,node[1]*15)):
                     return False
-                if obj.getRepresentation().contains(QPoint((node[0]+1)*15,(node[1]+1)*15)):
+                if  obstacle.contains(QPoint((node[0]+1)*15,(node[1]+1)*15)):
                     return False
         return True
 
@@ -67,7 +78,7 @@ class PathFinding:
             i = node[0] + mv[0]
             j = node[1] + mv[1]
             n_node = (i, j)
-            if self.__isValidNode(n_node) and self.__getNodeValue(n_node):
+            if self.__isValidNode(n_node):
                 nodes.append(n_node)
         return nodes
 
@@ -91,14 +102,19 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            time.sleep(0.01)
+            # time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
             self.__setNodeColor(current, self.COLORS['closed_node'])
             neighbors = self.__getNodeNeighbors(current)
             for n in neighbors:
-                if not n in closed_nodes:
-                    distanceFromBeginNode = closed_nodes[current] + 1
+                weight = 0
+                for ne in self.__getNodeNeighbors(n):
+                    if not self.__getNodeValue(ne):
+                        weight = 2
+                        break
+                if not n in closed_nodes and self.__getNodeValue(n):
+                    distanceFromBeginNode = closed_nodes[current] + 1 + weight
                     if n in opened_nodes:
                         if distanceFromBeginNode < opened_nodes[n]:
                             opened_nodes[n] = distanceFromBeginNode
@@ -123,6 +139,7 @@ class PathFinding:
         path.reverse()
         for p in path:
             self.__setNodeColor(p, self.COLORS["path_node"])
+        self.goTo(path)
 
     def __heuristic(self, node):
         return self.__euclidDistanceToEnd(node)
@@ -135,13 +152,41 @@ class PathFinding:
 
     def createNode(self,node):
         self._nodes[node]=Rectangle(15, 15, "#FF9900")
-        self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*15+15/2,node[1]*15+15/2)
+        self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET)
 
     def refreshPath(self,sender):
         self.__astar()
 
+    def goTo(self,path):
+        pathPoints = [(p[0]*self.CELL_SIZE+self.OFFSET,p[1]*self.CELL_SIZE+self.OFFSET) for i,p in enumerate(path) if i%8==0]
+        del pathPoints[0]
+        for i in range (len(pathPoints)):
+            distance = sqrt((pathPoints[i][0]-self._robot.getPose().getX())**2+(pathPoints[i][1]-self._robot.getPose().getY())**2)
+            angularDistance = self.angularDistance(pathPoints[i])
+            while angularDistance>5 or angularDistance<-5:
+                if angularDistance < -5:
+                    self._robot.setRightWheelSpeed(self.TURN_SPEED)
+                    self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
+                elif angularDistance > 5:
+                    self._robot.setRightWheelSpeed(-self.TURN_SPEED)
+                    self._robot.setLeftWheelSpeed(self.TURN_SPEED)
+                angularDistance = self.angularDistance(pathPoints[i])
+            while distance > 10:
+                self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
+                self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
+                distance = sqrt((pathPoints[i][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[i][1] - self._robot.getPose().getY()) ** 2)
 
-
-
+    def angularDistance(self,pathPoint):
+        currentPosition=(self._robot.getPose().getX(),self._robot.getPose().getY())
+        dx = pathPoint[0]-currentPosition[0]
+        dy = pathPoint[1]-currentPosition[1]
+        theta = atan(dx/dy)
+        if self._robot.getPose().getOrientation() <= 180 - degrees(theta):
+            angularDistance = -(self._robot.getPose().getOrientation() + degrees(theta))
+        elif self._robot.getPose().getOrientation()>360-degrees(theta):
+            angularDistance = -((self._robot.getPose().getOrientation()-360)+degrees(theta))
+        else:
+            angularDistance = 360-(self._robot.getPose().getOrientation()) + degrees(theta)
+        return angularDistance
 
 

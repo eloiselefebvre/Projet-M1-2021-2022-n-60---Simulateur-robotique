@@ -63,3 +63,8 @@ class Rectangle(Shape):
             if not d<0: # point à droite de la ligne (pas bon car sens trigonométrique)
                 return False
         return True
+
+    def offset(self,value):
+        rectangle = Rectangle(self._width+value,self._height+value,self._color)
+        rectangle.setPose(self._pose)
+        return rectangle

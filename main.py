@@ -1,4 +1,4 @@
-from robotSimulator.tests import reinforcementLearningTest
+from robotSimulator.tests import aStar
 
-reinforcementLearningTest()
+aStar()
 

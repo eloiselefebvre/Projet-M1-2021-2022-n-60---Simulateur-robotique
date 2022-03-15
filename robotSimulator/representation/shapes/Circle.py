@@ -66,3 +66,8 @@ class Circle(Shape):
 
     def contains(self, point):
         return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2
+
+    def offset(self,value):
+        circle = Circle(self._radius+value,self._color)
+        circle.setPose(self._pose)
+        return circle

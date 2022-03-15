@@ -84,3 +84,6 @@ class Shape(ABC):
 
     def setColor(self,color):
         self._color=QColor(color)
+
+    def offset(self,value):
+        pass
