@@ -75,8 +75,7 @@ class Interface(QMainWindow):
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._explorerWidget.getExplorerTree().rebuildTree,'filterChanged')
 
         for obj in self._environment.getObjects():
-            if isinstance(obj,Robot):
-                self._toolbar.addObserverCallback(obj.accelerationChanged, "accelerationChanged")
+            self._toolbar.addObserverCallback(obj.accelerationChanged, "accelerationChanged")
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

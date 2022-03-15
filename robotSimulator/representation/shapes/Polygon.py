@@ -21,9 +21,9 @@ class Polygon(Shape):
     def getLineDecomposition(self):
         lines=[]
         pose = QPoint(self._pose.getX(),self._pose.getY())
-        for i in range (len(self._points)):
-            if i>0:
-                lines.append(QLineF(self._points[i-1]+pose,self._points[i]+pose))
+        points_number=len(self._points)
+        for i in range (1,points_number+1):
+            lines.append(QLineF(self._points[i-1]+pose,self._points[i if i<points_number else 0]+pose))
         return lines
 
     def contains(self, point):

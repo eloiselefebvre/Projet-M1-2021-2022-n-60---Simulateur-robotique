@@ -33,13 +33,13 @@ class FourWheelsRobot(TwoWheelsRobot):
         return self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()
 
     def getRightElementarySpeed(self):
-        return config["time_step"] / 60 * (self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()) * self._acceleration
+        return config["update_time_step"] / 60 * (self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()) * self._acceleration
 
     def getLeftLinearSpeed(self):
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()
 
     def getLeftElementarySpeed(self):
-        return config["time_step"] / 60 * (self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()) * self._acceleration
+        return config["update_time_step"] / 60 * (self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()) * self._acceleration
 
     def setLeftFrontWheelSpeed(self,speed):
         self._leftWheel.setSpeed(speed)

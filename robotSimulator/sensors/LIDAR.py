@@ -23,13 +23,11 @@ class LIDAR(Telemeter):
         self._bufferIndex = 0
         self._laser.getRepresentation().setVisible(False)
 
-        self._ddegree = 0
+        self._step_per_second = self.SCAN_RATE/60 * 360 / self.ANGULAR_RESOLUTION
 
     def refresh(self):
-        step = self.SCAN_RATE * 360 * config["sensor_time_step"] / 60
-        self._ddegree += step
-        if self._ddegree > self.ANGULAR_RESOLUTION:
-            self._ddegree -= self.ANGULAR_RESOLUTION
+        steps_number = int(self._step_per_second * config["update_time_step"]/(self._acceleration if self._parent is None else self._parent.getAcceleration()))
+        for _ in range(steps_number):
             if self.getPose().getOrientation() < self.ANGULAR_RANGE / 2 or self.getPose().getOrientation() > 360 - self.ANGULAR_RANGE / 2:
                 if self._intersectionsBuffer[self._bufferIndex] is not None:
                     self._env.removeVirtualObject(self._intersectionsBuffer[self._bufferIndex])
@@ -43,7 +41,7 @@ class LIDAR(Telemeter):
                     self._env.addVirtualObject(point)
 
                 self._bufferIndex = (self._bufferIndex + 1) % self._angularSteps
-            self.getPose().rotate(step)
+            self.getPose().rotate(self.ANGULAR_RESOLUTION)
 
     def getSpecifications(self):
         specifications = "---\n"

@@ -29,10 +29,10 @@ def LIDARTest():
     env.addObject(Obstacle(Representation(Rectangle(40, 200, "#ff8fff"))), 650, 400)
     env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850, 25)
     env.addObject(Obstacle(Representation(Polygon([QPoint(500,500),QPoint(600,400),QPoint(800,400),QPoint(600,500),QPoint(800,700)], "#ff8fff"))))
-    env.addObject(LIDAR(),50,50)
+    # env.addObject(LIDAR(),50,50)
 
     sim = Simulation(env)
-    sim.setAcceleration(1)
+    sim.setAcceleration(2)
     sim.run()
     sim.showInterface()
 

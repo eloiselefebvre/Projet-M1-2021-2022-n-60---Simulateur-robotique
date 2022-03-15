@@ -15,6 +15,8 @@ class Object(Observable):
         self._isCollided = False
         self._isSelected = False
 
+        self._acceleration = 1  # TODO : Revoir le changement lorsque l'accelaration est initialement définie et meilleure façon de partager des variables à plusieurs entités
+
         self._visibilityLocked = False
 
         self._z_index = 1
@@ -131,5 +133,8 @@ class Object(Observable):
     def isCollidedWith(self,obj):
         return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
 
+    def getAcceleration(self):
+        return self._acceleration
 
-
+    def accelerationChanged(self,sender):
+        self._acceleration=sender.getAcceleration()

@@ -25,26 +25,26 @@ class Simulation(Observable):
         th.start()
 
     def __run(self):
-        start_robot = time.time()
         start_update = time.time()
-        start_sensor = time.time()
+
         while True:
             current=time.time()
-            if current-start_robot > config["time_step"]/self._acceleration and self._playState:
-                start_robot = current
-                self._timeElapsed+=config["time_step"]*self._acceleration
+            if current - start_update > config["update_time_step"] / self._acceleration:
+                start_update = current
+
+                # ROBOT UPDATE
+                self._timeElapsed += config["update_time_step"] * self._acceleration
+
                 self.notifyObservers("timeChanged")
                 for obj in self._environment.getObjects():
-                    if hasattr(obj,"move"):
+                    if hasattr(obj, "move"):
                         obj.move()
-            if current-start_sensor > config["sensor_time_step"]/self._acceleration:
-                start_sensor = current
+
+                # SENSOR UPDATE
                 for sensor in self._environment.getSensors():
                     if hasattr(sensor, "refresh"):
                         sensor.refresh()
 
-            if current - start_update > config["update_time_step"] / self._acceleration:
-                start_update = current
                 self.notifyObservers("update")
             time.sleep(self.MINIMUM_TIME_STEP)
 

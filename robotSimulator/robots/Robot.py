@@ -25,8 +25,6 @@ class Robot(ABC,Object):
         self._sensors_counter=0
         self._actuators_counter=0
 
-        self._acceleration=1 # TODO : Revoir le changement lorsque l'accelaration est initialement définie
-
         # TRAJECTORY ATTRIBUTES
         self._trajectory = []
         self._trajectoryCounter=0
@@ -68,9 +66,6 @@ class Robot(ABC,Object):
     def getDistanceBetweenWheels(self):
         pass
 
-    def accelerationChanged(self,sender):
-        self._acceleration=sender.getAcceleration()
-
     # TRAJECTORY METHODS
     def updateTrajectory(self):
         if self._trajectoryCounter==0:
@@ -105,7 +100,7 @@ class Robot(ABC,Object):
         vg = self.getLeftLinearSpeed()
         v = (vd + vg) / 2
         e = self.getDistanceBetweenWheels()
-        d = v * config["time_step"] / 60
+        d = v * config["update_time_step"] / 60
 
         x=self._odometryPose.getX()
         y=self._odometryPose.getY()
