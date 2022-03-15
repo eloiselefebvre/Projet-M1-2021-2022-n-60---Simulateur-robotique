@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QGridLayout
 from robotSimulator.ZoomController import ZoomController
 from robotSimulator.config import config
 from robotSimulator.interface.views.Footer import Footer
-from robotSimulator.interface.views.Header import Header
 from robotSimulator.interface.views.Scene import Scene
 from robotSimulator.interface.views.Explorer import Explorer
 from robotSimulator.interface.views.SceneOverview import SceneOverview
@@ -21,7 +20,6 @@ class Interface(QMainWindow):
         self.setWindowTitle("Discovery")
         self.setWindowIcon(QIcon(f"{config['ressourcesPath']}logo.svg"))
 
-        self._headerWidget = Header(self._environment)
         self._toolbar=ToolsBar(self._environment,self)
 
         zoomController = ZoomController(self._environment)
@@ -29,8 +27,6 @@ class Interface(QMainWindow):
         self._sceneWidget=Scene(self._environment,zoomController)
         self._explorerWidget = Explorer(self._environment)
         self._footer = Footer(zoomController)
-
-        self.setMenuBar(self._headerWidget)
 
         miniSceneWindow = QWidget()
         layout = QVBoxLayout()

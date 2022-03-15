@@ -35,12 +35,12 @@ class ToolsBar(QToolBar,Observable):
         self._playState=True
 
     def increaseAcceleration(self):
-        increaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"),"IncreaseAcceleration",self._interface)
+        increaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"),"Increase Acceleration",self._interface)
         increaseAcceleration.triggered.connect(self.clickedIncreaseAcceleration)
         return increaseAcceleration
 
     def decreaseAcceleration(self):
-        decreaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"),"DecreaseAcceleration",self._interface)
+        decreaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"),"Decrease Acceleration",self._interface)
         decreaseAcceleration.triggered.connect(self.clickedDecreaseAcceleration)
         return decreaseAcceleration
 
@@ -96,11 +96,6 @@ class ToolsBar(QToolBar,Observable):
         self._playPause = QAction(QIcon(f"{config['ressourcesPath']}/pause.svg"),"Play/Pause",self._interface)
         self._playPause.triggered.connect(self.clickedPlayPause)
         return self._playPause
-
-    def lockUnlock(self):
-        self._lockUnlock = QAction(QIcon(f"{config['ressourcesPath']}/unlock.svg"),"Lock/Unlock",self._interface)
-        self._lockUnlock.triggered.connect(self.clickedLockUnlock)
-        return self._lockUnlock
 
     def clickedPlayPause(self): # TODO : Revoir avec composant Button
         self.togglePlayState()

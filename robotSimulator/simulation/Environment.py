@@ -13,8 +13,6 @@ class Environment:
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
     def __init__(self,width,height):
-        self._width=width
-        self._height=height
         self._objects=[]
         self._virtualObjects=[]
         self._hasWalls=False
@@ -23,8 +21,6 @@ class Environment:
         self._frame=Frame(Pose(0,0))
 
         self._sensors=[]
-        self._maze=False
-        self._path=False
         self.drawWalls()
 
 
@@ -90,29 +86,14 @@ class Environment:
             self.addObject(Object(Representation(Line(self._size.width(),self.DEFAULT_BORDER_SCREEN_WIDTH,self.DEFAULT_BORDER_SCREEN_COLOR))),0,self._size.height(),-90)
             self._hasWalls=True
 
-    def hasSize(self):
-        return not self._size.isEmpty()
-
     def setSize(self,size): # QSize
         self._size=size
 
     def getSize(self):
         return self._size
 
-    def hasMaze(self):
-        return self._maze
-
-    def setMaze(self,bool):
-        self._maze = bool
-
     def getWidth(self):
-        return self._width
+        return self._size.width()
 
     def getHeight(self):
-        return self._height
-
-    def setPath(self,bool):
-        self._path=bool
-
-    def hasPath(self):
-        return self._path
+        return self._size.height()

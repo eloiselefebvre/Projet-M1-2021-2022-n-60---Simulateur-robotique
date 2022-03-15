@@ -18,7 +18,7 @@ class Maze:
         self._nbColumn = self._width//self.INTERVAL_SIZE
         self._nbLine = self._height//self.INTERVAL_SIZE
         self._mazeElements = []
-        # TODO : Prendre en compte si un Maze a déjà été crée au lancememnt du programme
+        self.drawGrid()
 
     def drawGrid(self):
         for i in range(self._nbLine+1):

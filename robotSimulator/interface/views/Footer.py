@@ -26,8 +26,6 @@ class Footer(QStatusBar):
         self._zoom_text = QLabel("100%")
         self._zoom_text.setFont(fnt)
 
-        # TODO : QPalette ? pour gérer les couleurs
-
         zoom_menu = QMenuBar()
         self._zoom_menu_list = zoom_menu.addMenu("")
         self._zoom_menu_list.aboutToShow.connect(self.menuOpened)

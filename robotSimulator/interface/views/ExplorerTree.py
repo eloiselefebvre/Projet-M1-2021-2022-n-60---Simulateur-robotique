@@ -46,7 +46,7 @@ class ExplorerTree(QTreeWidget):
         self.resizeColumnToContents(1)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-    def rebuildTree(self,sender): # TODO : remove all selected objects | Pb sélection composants filtrés
+    def rebuildTree(self,sender):
         self._itemsShown=sender.getShownObjectClass()
         self.clearTree()
         self.buildTree()

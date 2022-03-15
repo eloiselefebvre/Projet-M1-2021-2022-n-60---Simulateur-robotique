@@ -59,11 +59,13 @@ class ExplorerToolsbar(QWidget, Observable):
     def createLockButtonWidget(self):
         lockButton=LockButton()
         lockButton.clicked.connect(self.__clickedLockUnlock)
+        lockButton.setToolTip("Lock/Unlock")
         return lockButton
 
     def createVisibleButtonWidget(self):
         visibleButtonWidget = VisibilityButton(self._areObjectVisible)
         visibleButtonWidget.clicked.connect(self.__clickedVisibilityButton)
+        visibleButtonWidget.setToolTip("Show/Hide")
         return visibleButtonWidget
 
     def getShownObjects(self):
@@ -109,7 +111,6 @@ class ExplorerToolsbar(QWidget, Observable):
         self.toggleObjectVisible()
         for object in objects:
             object.setVisible(self._areObjectVisible)
-        # TODO : Modifier avec Observer
 
 
     def toggleObjectVisible(self):
