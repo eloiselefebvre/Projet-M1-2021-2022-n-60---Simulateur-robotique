@@ -1,8 +1,10 @@
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QFont, QPixmap
-from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit, QLabel, QHBoxLayout
+from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit, QLabel, QHBoxLayout, QDialog
 from robotSimulator.Observable import Observable
 from robotSimulator.config import config
+from robotSimulator.interface.views.PopUp import PopUp
+
 
 class ToolsBar(QToolBar,Observable):
 
@@ -22,7 +24,7 @@ class ToolsBar(QToolBar,Observable):
         self._tb.setStyleSheet("background: #21212f")
 
         self._tb.setFixedHeight(self.TOOLS_BAR_FIXED_HEIGHT)
-        self._tb.addAction(self.logo())
+        self._tb.addAction(self.popUp())
         self._tb.addAction(QAction(QIcon(f"{config['ressourcesPath']}/timer.svg"),"Time",self._interface))
         self._tb.addAction(self.timeElapsed())
         self._tb.addAction(self.emptyWidget())
@@ -36,25 +38,20 @@ class ToolsBar(QToolBar,Observable):
 
         self._playState=True
 
-    def logo(self):
-        icon = QPixmap(f"{config['ressourcesPath']}/logo.svg")
-        labelLogo = QLabel()
-        widget = QWidgetAction(self)
-        widget.setDefaultWidget(labelLogo)
-        labelLogo.setFixedSize(200,self.TOOLS_BAR_FIXED_HEIGHT)
-        labelLogo.setContentsMargins(10,7,10,7)
-        labelLogo.setPixmap(icon)
-        labelLogo.setScaledContents(True)
-        icon.scaledToHeight(self.TOOLS_BAR_FIXED_HEIGHT)
-        labelLogo.setAlignment(Qt.AlignCenter)
+    def popUp(self):
+        widget = QAction(QIcon(f"{config['ressourcesPath']}/info.svg"), "Informations", self._interface)
+        widget.triggered.connect(self.clickedPopUp)
         return widget
+
+    def clickedPopUp(self):
+        self._popUp = PopUp()
 
     def emptyWidget(self):
         widget = QWidgetAction(self)
         label = QLabel()
         label.setFixedWidth(100)
         widget.setDefaultWidget(label)
-        label.setFixedWidth(self._tb.width()*14)
+        label.setFixedWidth(self._tb.width()*16)
         return widget
 
     def increaseAcceleration(self):
@@ -149,6 +146,6 @@ class ToolsBar(QToolBar,Observable):
         return timeElapsedWidget
 
     def updateTimeElapsed(self,sender):
-        self._timeElapsed.setText(str(round(sender.time(),1)))
+        self._timeElapsed.setText(str(round(sender.time(),1))+"s")
 
 
