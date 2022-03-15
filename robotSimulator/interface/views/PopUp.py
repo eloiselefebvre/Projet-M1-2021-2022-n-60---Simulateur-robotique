@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
 
@@ -15,6 +16,8 @@ class PopUp(QDialog):
         layout.addWidget(self.logo())
         self.setWindowTitle("About")
         self.setWindowIcon(QIcon(f"{config['ressourcesPath']}/info.svg"))
+
+        self.setWindowFlags(self.windowFlags() and Qt.WindowCloseButtonHint)
         self.exec()
 
     def logo(self):

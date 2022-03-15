@@ -6,7 +6,7 @@ from robotSimulator.config import config
 from robotSimulator.interface.views.PopUp import PopUp
 
 
-class ToolsBar(QToolBar,Observable):
+class ToolsBar(Observable):
 
     TOOLS_BAR_FIXED_HEIGHT = 48
 
@@ -25,42 +25,42 @@ class ToolsBar(QToolBar,Observable):
 
         self._tb.setFixedHeight(self.TOOLS_BAR_FIXED_HEIGHT)
 
-        self._tb.addAction(self.popUp())
-        self._tb.addSeparator()
-        self._tb.addAction(self.timeElapsed())
+        self._tb.addAction(self.createAboutAction())
         self._tb.addSeparator()
         self._tb.addAction(self.createTimerWidget())
         self._tb.addSeparator()
-        self._tb.addAction(self.decreaseAcceleration())
+        self._tb.addAction(self.createDecreaseAccelerationAction())
         self._tb.addAction(self.valueAcceleration())
-        self._tb.addAction(self.increaseAcceleration())
+        self._tb.addAction(self.createIncreaseAccelerationAction())
         self._tb.addSeparator()
         self._playPauseAction=self.playPause()
         self._tb.addAction(self._playPauseAction)
+
         self._tb.setMovable(False)
 
         self._playState=True
 
-    def popUp(self):
-        widget = QAction(QIcon(f"{config['ressourcesPath']}/info.svg"), "Informations", self._interface)
-        widget.triggered.connect(self.openPopUp)
-        return widget
+    def createAboutAction(self):
+        action = QAction(QIcon(f"{config['ressourcesPath']}/info.svg"), "Informations", self._interface)
+        action.setToolTip("About")
+        action.triggered.connect(self.openPopUp)
+        return action
 
     def openPopUp(self):
         popUp = PopUp()
 
-    def increaseAcceleration(self):
-        increaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"),"Increase Acceleration",self._interface)
-        increaseAcceleration.triggered.connect(self.clickedIncreaseAcceleration)
-        return increaseAcceleration
+    def createDecreaseAccelerationAction(self):
+        action=QAction(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"),"Decrease Acceleration",self._interface)
+        action.triggered.connect(self.clickedDecreaseAcceleration)
+        return action
 
-    def decreaseAcceleration(self):
-        decreaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"),"Decrease Acceleration",self._interface)
-        decreaseAcceleration.triggered.connect(self.clickedDecreaseAcceleration)
-        return decreaseAcceleration
+    def createIncreaseAccelerationAction(self):
+        action=QAction(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"),"Increase Acceleration",self._interface)
+        action.triggered.connect(self.clickedIncreaseAcceleration)
+        return action
 
     def valueAcceleration(self):
-        valueAccelerationWidget=QWidgetAction(self)
+        valueAccelerationWidget=QWidgetAction(self._tb)
         self._valueAcceleration = QLineEdit()
 
         valueAccelerationWidget.setDefaultWidget(self._valueAcceleration)
@@ -131,7 +131,7 @@ class ToolsBar(QToolBar,Observable):
         timer_icon.setPixmap(QPixmap(f"{config['ressourcesPath']}/timer.svg"))
         timer_icon.setStyleSheet("margin-right:6px")
 
-        timeElapsedWidget=QWidgetAction(self)
+        timeElapsedWidget=QWidgetAction(self._tb)
         timer = QWidget()
         timer_layout=QHBoxLayout(timer)
         self._timeElapsed=QLabel()
