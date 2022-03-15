@@ -16,8 +16,6 @@ class ExplorerTree(QTreeWidget):
     CRAWLER_COLOR = "#DFE0E5"
     BORDER_COLOR = "#25CCF7"
 
-    # TODO : Revoir la structure du code
-
     def __init__(self,environment,parent):
         super().__init__()
         self._environment = environment

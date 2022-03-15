@@ -4,3 +4,7 @@ config = {
     "update_time_step":0.01,
     "ressourcesPath" : "robotSimulator/ressources/icons/"
 }
+
+colors = {
+}
+# TODO : Gérer toutes les couleurs et fonts ici

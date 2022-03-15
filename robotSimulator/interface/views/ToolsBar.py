@@ -1,13 +1,12 @@
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QFont, QPixmap
-from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit, QLabel, QHBoxLayout
+from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit, QLabel, QHBoxLayout, QWidget
 from robotSimulator.Observable import Observable
 from robotSimulator.config import config
 
 class ToolsBar(QToolBar,Observable):
 
-    TOOLS_BAR_FIXED_HEIGHT = 70
-    BUTTON_FIXED_WIDTH = 150
+    TOOLS_BAR_FIXED_HEIGHT = 48
 
     ACCELERATION_MAX = 20.0
     ACCELERATION_MIN = 0.1
@@ -19,35 +18,22 @@ class ToolsBar(QToolBar,Observable):
         self._acceleration = 1.0
 
         self._tb = self._interface.addToolBar("ToolBar")
-        self._tb.setStyleSheet("background: #21212f")
+        self._tb.setStyleSheet("*{background: #21212f;color:#f0f0f0;border:none;}"
+                               "QToolBar::separator{background-color: #4D4D6D; width: 1px; margin: 0 12px;}")
 
         self._tb.setFixedHeight(self.TOOLS_BAR_FIXED_HEIGHT)
-        self._tb.addAction(self.logo())
-        self._tb.addAction(QAction(QIcon(f"{config['ressourcesPath']}/timer.svg"),"Time",self._interface))
-        self._tb.addAction(self.timeElapsed())
-        self._tb.addAction(self.emptyWidget())
+        self._tb.addSeparator()
+        self._tb.addAction(self.createTimerWidget())
+        self._tb.addSeparator()
         self._tb.addAction(self.decreaseAcceleration())
         self._tb.addAction(self.valueAcceleration())
         self._tb.addAction(self.increaseAcceleration())
+        self._tb.addSeparator()
         self._playPauseAction=self.playPause()
         self._tb.addAction(self._playPauseAction)
-
         self._tb.setMovable(False)
 
         self._playState=True
-
-    def logo(self):
-        icon = QPixmap(f"{config['ressourcesPath']}/logo.svg")
-        labelLogo = QLabel()
-        widget = QWidgetAction(self)
-        widget.setDefaultWidget(labelLogo)
-        labelLogo.setFixedSize(200,self.TOOLS_BAR_FIXED_HEIGHT)
-        labelLogo.setContentsMargins(10,7,10,7)
-        labelLogo.setPixmap(icon)
-        labelLogo.setScaledContents(True)
-        icon.scaledToHeight(self.TOOLS_BAR_FIXED_HEIGHT)
-        labelLogo.setAlignment(Qt.AlignCenter)
-        return widget
 
     def emptyWidget(self):
         widget = QWidgetAction(self)
@@ -74,7 +60,6 @@ class ToolsBar(QToolBar,Observable):
         valueAccelerationWidget.setDefaultWidget(self._valueAcceleration)
         self._valueAcceleration.returnPressed.connect(self.inputValueAcceleration)
 
-        self._valueAcceleration.setStyleSheet("color: #f0f0f0;border: none")
         self._valueAcceleration.setFont(QFont("Sanserif",15))
         self._valueAcceleration.setFixedWidth(56)
         self._valueAcceleration.setAlignment(Qt.AlignCenter)
@@ -135,20 +120,26 @@ class ToolsBar(QToolBar,Observable):
     def getPlayState(self):
         return self._playState
 
-    def timeElapsed(self):
+    def createTimerWidget(self):
+        timer_icon=QLabel()
+        timer_icon.setPixmap(QPixmap(f"{config['ressourcesPath']}/timer.svg"))
+        timer_icon.setStyleSheet("margin-right:6px")
+
         timeElapsedWidget=QWidgetAction(self)
+        timer = QWidget()
+        timer_layout=QHBoxLayout(timer)
         self._timeElapsed=QLabel()
 
-        timeElapsedWidget.setDefaultWidget(self._timeElapsed)
+        timer_layout.addWidget(timer_icon)
+        timer_layout.addWidget(self._timeElapsed)
 
-        self._timeElapsed.setStyleSheet("color: #f0f0f0;border: none")
+        timeElapsedWidget.setDefaultWidget(timer)
+
         self._timeElapsed.setFont(QFont("Sanserif", 15))
-        self._timeElapsed.setFixedWidth(56)
-        self._timeElapsed.setAlignment(Qt.AlignCenter)
 
         return timeElapsedWidget
 
     def updateTimeElapsed(self,sender):
-        self._timeElapsed.setText(str(round(sender.time(),1)))
+        self._timeElapsed.setText(f"{round(sender.time(),1)}s")
 
 

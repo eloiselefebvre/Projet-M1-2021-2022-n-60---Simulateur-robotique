@@ -12,8 +12,6 @@ class LIDAR(Telemeter):
     SCAN_RATE = 300  # rpm
     # TODO : Rendre modifiable par l'utilisateur mais avec valeurs par défaut
 
-    # TODO : Revoir le fonctionnement du LIDAR dans l'environnement
-
     def __init__(self, color="#f00"):
         super().__init__(color)
         self._representation.setShape(Circle(6, "#1C1E32"))
