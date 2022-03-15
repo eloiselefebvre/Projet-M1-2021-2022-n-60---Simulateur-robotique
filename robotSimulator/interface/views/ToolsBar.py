@@ -1,8 +1,10 @@
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtWidgets import QAction, QWidgetAction, QToolBar, QLineEdit, QLabel, QHBoxLayout, QWidget
 from robotSimulator.Observable import Observable
 from robotSimulator.config import config
+from robotSimulator.interface.views.PopUp import PopUp
+
 
 class ToolsBar(QToolBar,Observable):
 
@@ -22,6 +24,10 @@ class ToolsBar(QToolBar,Observable):
                                "QToolBar::separator{background-color: #4D4D6D; width: 1px; margin: 0 12px;}")
 
         self._tb.setFixedHeight(self.TOOLS_BAR_FIXED_HEIGHT)
+
+        self._tb.addAction(self.popUp())
+        self._tb.addSeparator()
+        self._tb.addAction(self.timeElapsed())
         self._tb.addSeparator()
         self._tb.addAction(self.createTimerWidget())
         self._tb.addSeparator()
@@ -35,13 +41,13 @@ class ToolsBar(QToolBar,Observable):
 
         self._playState=True
 
-    def emptyWidget(self):
-        widget = QWidgetAction(self)
-        label = QLabel()
-        label.setFixedWidth(100)
-        widget.setDefaultWidget(label)
-        label.setFixedWidth(self._tb.width()*14)
+    def popUp(self):
+        widget = QAction(QIcon(f"{config['ressourcesPath']}/info.svg"), "Informations", self._interface)
+        widget.triggered.connect(self.openPopUp)
         return widget
+
+    def openPopUp(self):
+        popUp = PopUp()
 
     def increaseAcceleration(self):
         increaseAcceleration=QAction(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"),"Increase Acceleration",self._interface)

@@ -18,7 +18,6 @@ class Interface(QMainWindow):
         self._simulation = simulation
         self._environment = environment
         self.setWindowTitle("Discovery")
-        self.setWindowIcon(QIcon(f"{config['ressourcesPath']}logo.svg"))
 
         self._toolbar=ToolsBar(self._environment,self)
 
