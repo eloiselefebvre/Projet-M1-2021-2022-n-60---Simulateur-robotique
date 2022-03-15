@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QIcon, QFont, QColor, QPixmap
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QStatusBar, QMenuBar, QMenu, QAction, QPushButton, QLabel, QTextEdit, \
-    QWidgetAction, QLineEdit
+    QWidgetAction, QLineEdit, QVBoxLayout
 
 from robotSimulator.config import config
 
@@ -62,7 +62,7 @@ class Footer(QStatusBar):
 
         zoom_menu.setStyleSheet("color : #444")
 
-        self._zoom_menu_list.setIcon(QIcon(f"{config['ressourcesPath']}/arrow_up.svg"))
+        self._zoom_menu_list.setIcon(QIcon(f"{config['ressourcesPath']}/arrowUp.svg"))
 
         zoom_layout.addWidget(self._zoom_text)
         zoom_layout.addWidget(zoom_menu)
@@ -84,13 +84,30 @@ class Footer(QStatusBar):
         pose_layout.addWidget(pose_icon)
         pose_layout.addWidget(self._pose_text)
 
+        scale=QWidget()
+        scale_layout=QVBoxLayout(scale)
+        scale_layout.setSpacing(0)
+        self._scale_text=QLabel("100")
+        fnt=QFont("Verdana",10)
+        fnt.setBold(True)
+        self._scale_text.setFont(fnt)
+        self._scale_text.setAlignment(Qt.AlignCenter)
+        scale_icon = QLabel()
+        scale_icon.setPixmap(QPixmap(f"{config['ressourcesPath']}/scale.svg"))
+        scale_icon.setFixedSize(100,12)
+
+        scale_layout.addWidget(self._scale_text)
+        scale_layout.addWidget(scale_icon)
+
         self.addPermanentWidget(pose)
+        self.addPermanentWidget(scale)
         self.addPermanentWidget(zoomWidget)
 
     def updateZoom(self,sender):
         zoom=round(sender.getZoom()*100)
         self._zoom_edit.setText(f"{zoom}%")
         self._zoom_text.setText(f"{zoom}%")
+        self._scale_text.setText(str(round(100/sender.getZoom())))
 
     def updateMousePoseFromScene(self,scene):
         mouse=scene.mousePose()
@@ -105,10 +122,8 @@ class Footer(QStatusBar):
             if self._zoomController.setZoom(zoom):
                 self._zoom_menu_list.close()
         else:
-            self._zoom_edit.setText(f"{round(self._zoomController.getZoom()*100)}%")
+            self._zoom_edit.setText(f"{int(self._zoomController.getZoom()*100)}%")
 
     def menuOpened(self):
         self._zoom_edit.selectAll()
         self._zoom_edit.setFocus()
-
-

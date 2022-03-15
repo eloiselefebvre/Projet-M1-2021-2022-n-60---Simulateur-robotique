@@ -32,7 +32,7 @@ class Robot(ABC,Object):
         self._trajectoryCounter=0
         self._trajectoryDrawn = False
 
-        # TODOMETRY ATTRIBUTES
+        # ODOMETRY ATTRIBUTES
         self._odometry = []
         self._odometryCounter=0
         self._odometryDrawn=False

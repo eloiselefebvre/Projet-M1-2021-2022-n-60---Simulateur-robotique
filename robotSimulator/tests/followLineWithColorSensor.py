@@ -19,7 +19,7 @@ def followLineWithColorSensor():
     rob1.setRightWheelSpeed(200)
     rob1.setLeftWheelSpeed(200)
 
-    env=Environment(1500,1500)
+    env=Environment(500,500)
     env.addObject(rob1,250,250)
 
     sim = Simulation(env)

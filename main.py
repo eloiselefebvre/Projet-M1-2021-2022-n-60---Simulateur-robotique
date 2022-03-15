@@ -1,4 +1,3 @@
-from robotSimulator.tests import aStar
+from robotSimulator.tests import collisionAndTelemeter
 
-aStar()
-
+collisionAndTelemeter()

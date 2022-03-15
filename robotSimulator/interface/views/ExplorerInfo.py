@@ -72,8 +72,8 @@ class ExplorerInfo(QWidget):
 
     def refreshData(self,sender):
         if self._selectedObject in self._evironnement.getObjects():
-            self._positionWidget.setText("("+str(int(sender.getPose().getX()))+", "+str(int(sender.getPose().getY()))+") ")
-            self._oWidget.setText(str(round(sender.getPose().getOrientation(),0))+"°")
+            self._positionWidget.setText(f"({round(sender.getPose().getX())}, {round(sender.getPose().getY())})")
+            self._oWidget.setText(f"{round(sender.getPose().getOrientation())}°")
         if isinstance(self._selectedObject, Component):
             self._specificationsWidget.setText(self._selectedObject.getSpecifications())
 
@@ -94,7 +94,7 @@ class ExplorerInfo(QWidget):
         positionIcon.setFixedWidth(48)
         positionIcon.setStyleSheet("border:none;")
 
-        self._positionWidget=QLabel("("+str(round(self._selectedObject.getPose().getX(),0))+","+str(round(self._selectedObject.getPose().getY(),0))+") ")
+        self._positionWidget=QLabel(f"({round(self._selectedObject.getPose().getX())}, {round(self._selectedObject.getPose().getY())})")
         self._positionWidget.setFont(QFont("Sanserif",12))
         self._positionWidget.setStyleSheet("border:none;")
 
@@ -111,7 +111,7 @@ class ExplorerInfo(QWidget):
         orientationIcon.setFixedWidth(42)
         orientationIcon.setStyleSheet("border:none;")
 
-        self._oWidget=QLabel(str(round(self._selectedObject.getPose().getOrientation(),0))+"°")
+        self._oWidget=QLabel(f"{round(self._selectedObject.getPose().getOrientation())}°")
         self._oWidget.setFont(QFont("Sanserif",12))
         self._oWidget.setStyleSheet("border:none;")
 

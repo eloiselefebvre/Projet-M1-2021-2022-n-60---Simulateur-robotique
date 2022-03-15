@@ -66,7 +66,7 @@ class Interface(QMainWindow):
                 for comp in object.getComponents():
                     comp.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
 
-        self._simulation.addObserverCallback(self._sceneWidget.refreshView,"poseChanged")
+        self._simulation.addObserverCallback(self._sceneWidget.refreshView,"update")
 
         self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene,"poseChanged")
         zoomController.addObserverCallback(self._footer.updateZoom,"zoomChanged")
