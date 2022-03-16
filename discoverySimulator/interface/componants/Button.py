@@ -9,8 +9,10 @@ class Button(QPushButton):
      def __init__(self):
          super().__init__()
          self.setFlat(True)
-         self.setFixedWidth(28)
+
+         self.setFixedSize(QSize(24,24))
          self.setIconSize(QSize(18, 18))
+         self.setStyleSheet("border-radius:2px;")
 
 class ToggleButton(Button):
     def __init__(self,state=True):

@@ -28,7 +28,7 @@ class Interface(QMainWindow):
 
         self._sceneWidget=Scene(self._environment,zoomController)
         self._explorerWidget = Explorer(self._environment)
-        # self._footer = Footer(zoomController)
+        self._footer = Footer(zoomController)
 
         miniSceneWindow = QWidget()
         layout = QVBoxLayout(miniSceneWindow)
@@ -44,13 +44,12 @@ class Interface(QMainWindow):
         general_layout.addWidget(self._sceneWidget,1,0)
         general_layout.addWidget(miniSceneWindow, 1, 0, Qt.AlignRight | Qt.AlignBottom)
         general_layout.addWidget(self._explorerWidget,1,1)
+        general_layout.addWidget(self._footer,2,0,1,2)
 
         general_layout.setContentsMargins(0, 0, 0, 0)
         general_layout.setSpacing(0)
 
         self.setCentralWidget(general_widget)
-        # general_layout.addWidget(centralWidget)
-        # self.setStatusBar(self._footer)
 
         self.showMaximized()
         self._sceneWidget.maximized()
@@ -64,8 +63,8 @@ class Interface(QMainWindow):
 
         self._simulation.addObserverCallback(self._sceneWidget.refreshView,"update")
 
-        # self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene,"poseChanged")
-        # zoomController.addObserverCallback(self._footer.updateZoom,"zoomChanged")
+        self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene,"poseChanged")
+        zoomController.addObserverCallback(self._footer.updateZoom,"zoomChanged")
 
         self._simulation.addObserverCallback(self._toolbar.updateTimeElapsed,"timeChanged")
 

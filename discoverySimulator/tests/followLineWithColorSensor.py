@@ -26,6 +26,8 @@ def followLineWithColorSensor():
     sim.run()
     sim.showInterface()
 
+    CirclePath(env)
+
     while True:
 
         if colorSensorRight.getValue()=="#444444" and colorSensorLeft.getValue()=="#444444":

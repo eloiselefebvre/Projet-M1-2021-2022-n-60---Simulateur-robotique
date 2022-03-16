@@ -14,6 +14,7 @@ class CirclePath:
     def  __init__(self, environment):
         self._environment = environment
         self._pathElements = []
+        self.drawPath()
 
     def drawPath(self):
 

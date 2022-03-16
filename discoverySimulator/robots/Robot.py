@@ -152,4 +152,6 @@ class Robot(ABC,Object):
         self._odometryPose.setOrientation(-self._odometryPose.getOrientation())
 
     def getOdometryPose(self):
-        return self._odometryPose
+        pose=self._odometryPose.copy()
+        pose.setOrientation(-self._odometryPose.getOrientation())
+        return pose

@@ -37,6 +37,7 @@ def reinforcementLearningTest():
             currentPosition=(robot.getOdometryPose().getX(),robot.getOdometryPose().getY())
 
             # MSO TODO : il semble y avoir un problème avec la localisation par odométrie : renvoie 90 quand l'orientation réelle est -90
+            # Normalement corrigé
             currentOrientation = robot.getOdometryPose().getOrientation()
 
 
@@ -44,8 +45,7 @@ def reinforcementLearningTest():
 
             # MSO TODO : à revoir : il faut faire la différence entre deux états successifs, et non avec l'état initial, pour percevoir l'effet de l'action
 
-            # MSO TODO : attention !! deux erreurs dans le calcul de distance
-            distance = sqrt((currentPosition[0]-startPosition[0])**2+(currentPosition[1]+startPosition[1]**2))
+            distance = sqrt((currentPosition[0]-startPosition[0])**2+(currentPosition[1]-startPosition[1])**2)
             produit = distance * cos(radians(currentOrientation-startOrientation))
 
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])

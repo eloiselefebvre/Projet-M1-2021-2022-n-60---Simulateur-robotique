@@ -10,7 +10,7 @@ from discoverySimulator.interface.views.PopUp import PopUp
 
 class Toolbar(QToolBar,Observable):
 
-    TOOLSBAR_FIXED_HEIGHT = 42
+    TOOLSBAR_FIXED_HEIGHT = 48
 
     ACCELERATION_MIN = 0.1
     ACCELERATION_MAX = 15.0
@@ -18,8 +18,10 @@ class Toolbar(QToolBar,Observable):
     def __init__(self):
         super().__init__()
         self.setFixedHeight(self.TOOLSBAR_FIXED_HEIGHT)
-        self.setStyleSheet("*{background: #21212f;color:#f0f0f0;border:none;}"
-                           "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}")
+        self.setStyleSheet("*{background-color: #21212f;color:#f0f0f0;border:none;}"
+                           "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}"
+                           "QPushButton:hover{background-color:#323247;}"
+                           "QPushButton:pressed{background-color:#4C4C68;}")
 
 
         self._acceleration = 1.0
@@ -36,11 +38,16 @@ class Toolbar(QToolBar,Observable):
         about.setObjectName("widget")
         about_layout=QHBoxLayout(about)
 
+        about_layout.setSpacing(0)
+        about.setContentsMargins(4, 0, 4, 0)
+
         about_button = Button()
         about_button.setIcon(QIcon(f"{config['ressourcesPath']}/info.svg"))
         about_button.setIconSize(QSize(22, 22))
         about_button.clicked.connect(self.__openPopUp)
         about_layout.addWidget(about_button)
+
+        about.setFixedHeight(self.TOOLSBAR_FIXED_HEIGHT)
 
         return about
 
@@ -49,9 +56,9 @@ class Toolbar(QToolBar,Observable):
 
     def createTimerWidget(self):
         timer_icon=QLabel()
-        timer_icon.setStyleSheet(f"margin-right:6px; image: url({config['ressourcesPath']}/timer.svg);"
+        timer_icon.setStyleSheet(f"image: url({config['ressourcesPath']}/timer.svg);"
                                  f"image-repeat:no-repeat; image-position:center; image-size:contain;")
-        timer_icon.setFixedWidth(22)
+        timer_icon.setFixedWidth(16)
 
 
         timer = QWidget()
@@ -59,9 +66,10 @@ class Toolbar(QToolBar,Observable):
         timer_layout=QHBoxLayout(timer)
 
         timer_layout.setSpacing(0)
-        timer_layout.setContentsMargins(12,0,12,0)
+        timer.setContentsMargins(4,0,4,0)
 
         self._timeElapsed=QLabel("0s")
+        self._timeElapsed.setStyleSheet("margin-left:8px;")
 
         timer_layout.addWidget(timer_icon)
         timer_layout.addWidget(self._timeElapsed)
@@ -78,10 +86,11 @@ class Toolbar(QToolBar,Observable):
 
         acceleration_layout=QHBoxLayout(acceleration)
         acceleration_layout.setSpacing(0)
-        acceleration_layout.setContentsMargins(0,0,0,0)
+        acceleration.setContentsMargins(4,0,4,0)
 
         decrease_button = Button()
         decrease_button.setIcon(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"))
+        decrease_button.setToolTip("Decrease Acceleration")
         decrease_button.clicked.connect(self.__clickedDecreaseAcceleration)
 
         self._valueAcceleration = QLineEdit()
@@ -94,13 +103,14 @@ class Toolbar(QToolBar,Observable):
 
         increase_button=Button()
         increase_button.setIcon(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"))
+        increase_button.setToolTip("Increase Acceleration")
         increase_button.clicked.connect(self.__clickedIncreaseAcceleration)
 
         acceleration_layout.addWidget(decrease_button)
         acceleration_layout.addWidget(self._valueAcceleration)
         acceleration_layout.addWidget(increase_button)
 
-        acceleration.setFixedWidth(114)
+        acceleration.setFixedWidth(132)
 
         return acceleration
 
@@ -139,10 +149,16 @@ class Toolbar(QToolBar,Observable):
         return self._acceleration
 
     def createPlayPauseWidget(self):
+        play = QWidget()
+        play_layout=QHBoxLayout(play)
+        play_layout.setSpacing(0)
+        play.setContentsMargins(4, 0, 4, 0)
+
         self._playPause = PlayButton(self._playState)
-        self._playPause.setStyleSheet("margin-left:12px;")
         self._playPause.clicked.connect(self.__togglePlayState)
-        return self._playPause
+
+        play_layout.addWidget(self._playPause)
+        return play
 
     def getPlayState(self):
         return self._playState
