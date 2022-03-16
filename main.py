@@ -1,3 +1,3 @@
-from robotSimulator.tests import usingLIDAR
+from discoverySimulator.tests import usingLIDAR
 
 usingLIDAR.LIDARTest()
