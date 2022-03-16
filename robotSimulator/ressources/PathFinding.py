@@ -38,20 +38,24 @@ class PathFinding:
         self._nodes = {}
         self.createNode(self.__beginNode)
         self.setRobotStartPosition()
+
         self.__astar()
 
     def setRobotStartPosition(self):
         self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
 
+
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__beginNode = node
+            self.__setNodeColor(self.__beginNode, self.COLORS['begin_node'])
             return True
         return False
 
     def __setEndNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__endNode = node
+            self.__setNodeColor(self.__endNode, self.COLORS['end_node'])
             return True
         return False
 
@@ -102,7 +106,7 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            # time.sleep(0.01)
+            time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
             self.__setNodeColor(current, self.COLORS['closed_node'])
@@ -133,13 +137,15 @@ class PathFinding:
     def __displayFoundPathAndDistance(self, predecessors, opened_nodes):
         path = []
         current = self.__endNode
+        self.__setNodeColor(self.__endNode,self.COLORS["end_node"])
         while current is not None:
             path.append(current)
             current = predecessors[current]
         path.reverse()
         for p in path:
             self.__setNodeColor(p, self.COLORS["path_node"])
-        self.goTo(path)
+        # self.goTo(path)
+        self.goToWithFuzzyLogic(path)
 
     def __heuristic(self, node):
         return self.__euclidDistanceToEnd(node)
@@ -158,7 +164,7 @@ class PathFinding:
         self.__astar()
 
     def goTo(self,path):
-        pathPoints = [(p[0]*self.CELL_SIZE+self.OFFSET,p[1]*self.CELL_SIZE+self.OFFSET) for i,p in enumerate(path) if i%8==0]
+        pathPoints = [(p[0]*self.CELL_SIZE+self.OFFSET,p[1]*self.CELL_SIZE+self.OFFSET) for i,p in enumerate(path) if i % 5 == 0]
         del pathPoints[0]
         for i in range (len(pathPoints)):
             distance = sqrt((pathPoints[i][0]-self._robot.getPose().getX())**2+(pathPoints[i][1]-self._robot.getPose().getY())**2)
@@ -175,6 +181,107 @@ class PathFinding:
                 self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
                 self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
                 distance = sqrt((pathPoints[i][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[i][1] - self._robot.getPose().getY()) ** 2)
+
+
+    def goToWithFuzzyLogic(self,path):
+
+        pointADroite=[]
+        pointAGauche=[]
+        offset=20
+        rightTurnRightWheel=[0 for _ in range(11)]
+        rightTurnLeftWheel = [0 for _ in range(11)]
+        leftTurnRightWheel = [0 for _ in range(11)]
+        leftTurnLeftWheel = [0 for _ in range(11)]
+        pathPoints = [(p[0] * self.CELL_SIZE + self.OFFSET, p[1] * self.CELL_SIZE + self.OFFSET) for i, p in enumerate(path) if i % 10 == 0]
+        del pathPoints[0]
+
+        for i in range(150):
+            pointADroite.append(0)
+        for i in range(150,190):
+            pointADroite.append(i*(1/2)+5)
+        for i in range(190,270):
+            pointADroite.append(i*(10/9))
+        for i in range(270,361):
+            pointADroite.append(i*(-2/9)+120)
+
+        for i in range(90):
+            pointAGauche.append(i*(2/9)+120)
+        for i in range(90,170):
+            pointAGauche.append(i*(-10/9))
+        for i in range(170,220):
+            pointAGauche.append(i*(-1/2)+5)
+        for i in range(220,361):
+            pointAGauche.append(0)
+
+        for i in range(-5, 6):
+            if i <= 0:
+                rightTurnRightWheel[i + 5] = 0
+            else:
+                rightTurnRightWheel[i + 5] =  int(i * (5/18) + 50/3)
+            leftTurnLeftWheel[i + 5] = rightTurnRightWheel[i + 5]
+        for i in range(-5, 6):
+            if i >= 0:
+                rightTurnLeftWheel[i + 5] = 0
+            else:
+                rightTurnLeftWheel[i + 5] = int(i * (-5/18) + 50/3)
+            leftTurnRightWheel[i + 5] = rightTurnLeftWheel[i + 5]
+
+
+        for index in range (len(pathPoints)):
+            distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
+
+            while (self._robot.getPose().getX()<=pathPoints[index][0]-offset or self._robot.getPose().getX()>=pathPoints[index][0]+offset or self._robot.getPose().getY()>=pathPoints[index][1]-offset or self._robot.getPose().getY()<=pathPoints[index][1]+offset) and distance>=20:
+                distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
+                print("distance",distance)
+                angularDistance = self.angularDistance(pathPoints[index])
+
+                pointADroiteValue = pointADroite[int(angularDistance)]
+                pointAGaucheValue = pointAGauche[int(angularDistance)]
+                print('angle',angularDistance)
+
+                numerator = 0
+                denominator = 0
+
+                #right wheel
+                for x in range(11):
+                    print("right")
+
+                    cutValueRightPoint = min(pointADroiteValue,rightTurnRightWheel[x])
+                    cutValueLeftPoint = min(pointAGaucheValue,leftTurnRightWheel[x])
+
+                    numerator += (x+5)*(cutValueRightPoint+cutValueLeftPoint)
+                    denominator += (cutValueLeftPoint+cutValueRightPoint)
+
+                    if denominator!=0:
+                        gravity=numerator/denominator
+                    else:
+                        gravity=100
+                    self._robot.setRightWheelSpeed(gravity)
+                    distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
+
+                numerator=0
+                denominator=0
+
+                #left wheel
+                for x in range(11):
+
+                    cutValueRightPoint = min(pointADroiteValue, rightTurnLeftWheel[x])
+                    cutValueLeftPoint = min(pointAGaucheValue, leftTurnLeftWheel[x])
+
+                    numerator += (x + 5) * (cutValueRightPoint + cutValueLeftPoint)
+                    denominator += (cutValueLeftPoint + cutValueRightPoint)
+
+                    if denominator != 0:
+                        gravity = numerator / denominator
+                    else:
+                        gravity = 100
+                    self._robot.setLeftWheelSpeed(gravity)
+
+                    time.sleep(.01)
+                    distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
+
+            print("next point >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+
 
     def angularDistance(self,pathPoint):
         currentPosition=(self._robot.getPose().getX(),self._robot.getPose().getY())

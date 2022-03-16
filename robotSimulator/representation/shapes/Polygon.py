@@ -1,4 +1,3 @@
-import random
 from PyQt5.QtCore import Qt, QLineF, QPoint
 from PyQt5.QtGui import QPolygon, QBrush
 
@@ -38,4 +37,3 @@ class Polygon(Shape):
                 c=not c
             j=i
         return c
-
