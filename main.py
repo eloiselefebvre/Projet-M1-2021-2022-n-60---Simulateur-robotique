@@ -1,3 +1,3 @@
-from robotSimulator.tests import aStar
+from discoverySimulator.tests import aStar
 
 aStar()

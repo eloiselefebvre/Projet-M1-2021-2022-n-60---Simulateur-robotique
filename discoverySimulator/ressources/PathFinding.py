@@ -144,8 +144,8 @@ class PathFinding:
         path.reverse()
         for p in path:
             self.__setNodeColor(p, self.COLORS["path_node"])
-        # self.goTo(path)
-        self.goToWithFuzzyLogic(path)
+        self.goTo(path)
+        # self.goToWithFuzzyLogic(path)
 
     def __heuristic(self, node):
         return self.__euclidDistanceToEnd(node)

@@ -1,12 +1,12 @@
 from PyQt5.QtCore import QPoint
 
-from robotSimulator import Obstacle
-from robotSimulator.representation import Representation
-from robotSimulator.representation.shapes import Circle
-from robotSimulator.representation.shapes.Polygon import Polygon
-from robotSimulator.ressources.PathFinding import PathFinding
-from robotSimulator.robots import TwoWheelsRobot
-from robotSimulator.simulation import Environment, Simulation
+from discoverySimulator import Obstacle
+from discoverySimulator.representation import Representation
+from discoverySimulator.representation.shapes import Circle
+from discoverySimulator.representation.shapes.Polygon import Polygon
+from discoverySimulator.ressources.PathFinding import PathFinding
+from discoverySimulator.robots import TwoWheelsRobot
+from discoverySimulator.simulation import Environment, Simulation
 
 # utiliser la fonction goToWithFuzzyLogic dans PathFinding
 
