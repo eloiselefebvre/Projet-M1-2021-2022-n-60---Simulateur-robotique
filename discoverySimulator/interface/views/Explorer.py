@@ -16,7 +16,9 @@ class Explorer(QWidget):
         self._explorerToolsbar = ExplorerToolsbar(self._environment)
         self.setAttribute(Qt.WA_StyledBackground)
 
-        self.setStyleSheet("background-color: #151825; border:none")
+        self.setStyleSheet("*{background-color: #151825; border:none}"
+                           "QPushButton:hover{background-color:#323247;}"
+                           "QPushButton:pressed{background-color:#4C4C68;}")
         self._layout.addWidget(self._explorerToolsbar, 0, 0)
 
         self._explorerInfo=None
