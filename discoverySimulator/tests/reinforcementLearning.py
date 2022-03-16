@@ -35,14 +35,23 @@ def reinforcementLearningTest():
         current=sim.time()
         if current-start<timeLearning:
             currentPosition=(robot.getOdometryPose().getX(),robot.getOdometryPose().getY())
+
+            # MSO TODO : il semble y avoir un problème avec la localisation par odométrie : renvoie 90 quand l'orientation réelle est -90
             currentOrientation = robot.getOdometryPose().getOrientation()
+
+
             action = reinforcementLearning.getActionToExecute()
+
+            # MSO TODO : à revoir : il faut faire la différence entre deux états successifs, et non avec l'état initial, pour percevoir l'effet de l'action
+
+            # MSO TODO : attention !! deux erreurs dans le calcul de distance
             distance = sqrt((currentPosition[0]-startPosition[0])**2+(currentPosition[1]+startPosition[1]**2))
             produit = distance * cos(radians(currentOrientation-startOrientation))
 
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
 
+            # MSO : vous pouvez directement utiliser le produit comme récompense
             if produit>produitMax:
                 produitMax=produit
                 reinforcementLearning.executedActionFeedback(3)
