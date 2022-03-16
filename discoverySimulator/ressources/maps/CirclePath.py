@@ -11,9 +11,11 @@ class CirclePath:
     DEFAULT_WIDTH=20
     DEFAULT_PATH_COLOR="#444444"
 
-    def  __init__(self, environment):
+    def  __init__(self, environment, color="#444444"):
         self._environment = environment
+        self._color = color
         self._pathElements = []
+        self.drawPath()
 
     def drawPath(self):
 
@@ -21,7 +23,7 @@ class CirclePath:
 
         if numberOfCircle==1:
             radius=random.randint(200,int(self._environment.getWidth()/2))
-            circle1 = Object(Representation(Circle(radius,"#444444")))
+            circle1 = Object(Representation(Circle(radius,self._color)))
             circle2 = Object(Representation(Circle(radius-20,"#f0f0f0")))
             self._environment.addVirtualObject(circle1,int(self._environment.getWidth()/2),int(self._environment.getHeight()/2))
             self._environment.addVirtualObject(circle2, int(self._environment.getWidth() / 2),int(self._environment.getHeight() / 2))
@@ -31,9 +33,9 @@ class CirclePath:
         else:
             radius1=random.randint(200,int(self._environment.getWidth()/4))
             radius2=random.randint(200,int(self._environment.getWidth()/4))
-            circle1 = Object(Representation(Circle(radius1, "#444444")))
+            circle1 = Object(Representation(Circle(radius1, self._color)))
             circle2 = Object(Representation(Circle(radius1 - 20, "#f0f0f0")))
-            circle3 = Object(Representation(Circle(radius2,"#444444")))
+            circle3 = Object(Representation(Circle(radius2,self._color)))
             circle4 = Object(Representation(Circle(radius2-20,"#f0f0f0")))
             self._environment.addVirtualObject(circle1, int(self._environment.getWidth()/2)-radius1,int(self._environment.getHeight() / 2))
             self._environment.addVirtualObject(circle2, int(self._environment.getWidth()/2)-radius1,int(self._environment.getHeight() / 2))

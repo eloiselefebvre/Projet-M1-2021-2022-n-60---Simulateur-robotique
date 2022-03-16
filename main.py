@@ -1,3 +1,3 @@
-from discoverySimulator.tests import aStar
+from discoverySimulator.demonstrations import roadDemo
 
-aStar()
+roadDemo()

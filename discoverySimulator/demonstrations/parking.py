@@ -1,22 +1,25 @@
 import time
 
-from robotSimulator import Object
-from robotSimulator.actuators import LED
-from robotSimulator.representation import Representation
-from robotSimulator.representation.shapes import Line
-from robotSimulator.robots import FourWheelsRobot
-from robotSimulator.sensors import Telemeter
-from robotSimulator.simulation import Environment, Simulation
+from discoverySimulator import Object
+from discoverySimulator.actuators import LED
+from discoverySimulator.representation import Representation
+from discoverySimulator.representation.shapes import Line, Rectangle
+from discoverySimulator.robots import FourWheelsRobot, TwoWheelsRobot
+from discoverySimulator.sensors import Telemeter
+from discoverySimulator.simulation import Environment, Simulation
 
+def parkingDemo():
 
-def measureSpeedWithTelemetersDemo():
-
-    envWidth=1000
-    envHeight=1000
+    envWidth=800
+    envHeight=800
     env=Environment(envWidth,envHeight)
 
     robot = FourWheelsRobot()
     env.addObject(robot,200,200,90)
+    robot2=TwoWheelsRobot()
+    env.addObject(robot2,100,100,90)
+    floor=Object(Representation(Rectangle(envWidth,envHeight,"#999999")))
+    env.addVirtualObject(floor,envWidth/2,envHeight/2)
 
     lines=[]
     telemeters=[]
@@ -24,11 +27,11 @@ def measureSpeedWithTelemetersDemo():
     greenLeds=[]
 
     for i in range(4):
-        lines.append(Object(Representation(Line(100,4,"#444444"))))
+        lines.append(Object(Representation(Line(100,4,"#fff"))))
         env.addVirtualObject(lines[i],envWidth-100,200+i*100,-90)
 
     for i in range(3):
-        telemeters.append(Telemeter("#444444"))
+        telemeters.append(Telemeter("#f00"))
         env.addObject(telemeters[i],envWidth-4,250+i*100,90)
 
     for i in range(3):
