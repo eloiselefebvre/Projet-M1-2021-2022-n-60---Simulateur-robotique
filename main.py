@@ -1,3 +1,3 @@
-from robotSimulator.tests import usingLIDAR
+from robotSimulator.tests import reinforcementLearningTest
 
-usingLIDAR.LIDARTest()
+reinforcementLearningTest()
