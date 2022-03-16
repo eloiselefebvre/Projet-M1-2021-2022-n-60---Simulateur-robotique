@@ -1,3 +1,3 @@
-from discoverySimulator.tests import usingLIDAR
+from discoverySimulator.demonstrations import roadDemo
 
-usingLIDAR.LIDARTest()
+roadDemo()
