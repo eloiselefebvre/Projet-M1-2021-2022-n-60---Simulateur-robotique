@@ -5,7 +5,7 @@ from ..Frame import Frame
 from ..representation.Representation import Representation
 from ..representation.shapes import Rectangle
 from ..representation.shapes.Point import Point
-from math import cos, pi, sin, radians, degrees
+from math import cos, pi, sin, radians, degrees, atan
 from discoverySimulator.config import config
 
 from ..Pose import Pose
@@ -98,25 +98,28 @@ class Robot(ABC,Object):
     def updateOdometry(self):
         vd = self.getRightLinearSpeed()
         vg = self.getLeftLinearSpeed()
+
         v = (vd + vg) / 2
         e = self.getDistanceBetweenWheels()
         d = v * config["update_time_step"]*self._acceleration/60
 
         x=self._odometryPose.getX()
         y=self._odometryPose.getY()
-        if vd != vg:
+        if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
             R = e * (vd + vg) / (vd - vg)
-            if R != 0:
-                # calcul des paramètres du cercle trajectoire
-                x0 = x + R * cos(-radians(self._odometryPose.getOrientation()))
-                y0 = y + R * sin(-radians(self._odometryPose.getOrientation()))
-                # calcul position du robot
-                d_teta = d / R
-                self._odometryPose.rotate(degrees(d_teta))
-                self._odometryPose.move(x0 - R * cos(-radians(self._odometryPose.getOrientation())),
-                                        y0 - R * sin(-radians(self._odometryPose.getOrientation())))
-
-        else:
+            # calcul des paramètres du cercle trajectoire
+            x0 = x + R * cos(-radians(self._odometryPose.getOrientation()))
+            y0 = y + R * sin(-radians(self._odometryPose.getOrientation()))
+            # calcul position du robot
+            dTheta = d / R
+            self._odometryPose.rotate(degrees(dTheta))
+            self._odometryPose.move(x0 - R * cos(-radians(self._odometryPose.getOrientation())),
+                                    y0 - R * sin(-radians(self._odometryPose.getOrientation())))
+        elif vd==-vg: # robot tourne sur place
+            dd=vd * config["update_time_step"]*self._acceleration/60
+            dTheta=atan(dd/e)
+            self._odometryPose.rotate(degrees(dTheta))
+        else: # robot en ligne droite
             nx=x-d * sin(-radians(self._odometryPose.getOrientation()))
             ny=y+d * cos(-radians(self._odometryPose.getOrientation()))
             self._odometryPose.move(nx,ny)
@@ -126,6 +129,7 @@ class Robot(ABC,Object):
             self._odometry.append(point)
             if self._odometryDrawn:
                 self._env.addVirtualObject(self._odometry[-1])
+        # print(self._odometryPose.getOrientation())
         self._odometryCounter = (self._odometryCounter + 1) % self.NUMBER_STEPS_BEFORE_REFRESH
 
     def showOdometry(self):
@@ -147,11 +151,8 @@ class Robot(ABC,Object):
         return self._odometryDrawn
 
     def setOdometryPose(self,pose):
-        # self.deleteOdometry()
         self._odometryPose=pose
         self._odometryPose.setOrientation(-self._odometryPose.getOrientation())
 
     def getOdometryPose(self):
-        pose=self._odometryPose.copy()
-        pose.setOrientation(-self._odometryPose.getOrientation())
-        return pose
+        return self._odometryPose

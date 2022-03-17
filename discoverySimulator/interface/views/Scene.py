@@ -31,6 +31,8 @@ class Scene(QWidget,Observable):
 
         self._convertedMousePose=QPoint(0, 0)
 
+        self._isPainting = False
+
     def refreshView(self,sender):
         self.update()
 
@@ -38,19 +40,22 @@ class Scene(QWidget,Observable):
         self._isSceneLocked=sender.getLockState()
 
     def paintEvent(self,event):
-        painter = QPainter(self)
-        offset=self._zoomController.getOffset()
-        painter.translate(offset.x(), offset.y())
-        painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
+        if not self._isPainting:
+            self._isPainting=True
+            painter = QPainter(self)
+            offset=self._zoomController.getOffset()
+            painter.translate(offset.x(), offset.y())
+            painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
 
-        objects = self._environment.getVirtualObjects().copy()
-        objects.extend(self._environment.getObjects())
-        objects.sort(key=lambda obj: obj.getZIndex())
+            objects = self._environment.getVirtualObjects().copy()
+            objects.extend(self._environment.getObjects())
+            objects.sort(key=lambda obj: obj.getZIndex())
 
-        for obj in objects:
-            painter.save()
-            obj.paint(painter)
-            painter.restore()
+            for obj in objects:
+                painter.save()
+                obj.paint(painter)
+                painter.restore()
+            self._isPainting=False
 
 
     def mousePressEvent(self, event):

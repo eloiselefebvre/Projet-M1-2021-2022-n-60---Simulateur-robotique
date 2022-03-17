@@ -22,7 +22,7 @@ class CirclePath:
         numberOfCircle=random.randint(1,2)
 
         if numberOfCircle==1:
-            radius=random.randint(200,int(self._environment.getWidth()/2))
+            radius=random.randint(int(self._environment.getWidth()/8),int(self._environment.getWidth()/2))
             circle1 = Object(Representation(Circle(radius,self._color)))
             circle2 = Object(Representation(Circle(radius-20,"#f0f0f0")))
             self._environment.addVirtualObject(circle1,int(self._environment.getWidth()/2),int(self._environment.getHeight()/2))
@@ -31,8 +31,8 @@ class CirclePath:
             self._pathElements.append(circle2)
 
         else:
-            radius1=random.randint(200,int(self._environment.getWidth()/4))
-            radius2=random.randint(200,int(self._environment.getWidth()/4))
+            radius1=random.randint(int(self._environment.getWidth()/8),int(self._environment.getWidth()/4))
+            radius2=random.randint(int(self._environment.getWidth()/8),int(self._environment.getWidth()/4))
             circle1 = Object(Representation(Circle(radius1, self._color)))
             circle2 = Object(Representation(Circle(radius1 - 20, "#f0f0f0")))
             circle3 = Object(Representation(Circle(radius2,self._color)))

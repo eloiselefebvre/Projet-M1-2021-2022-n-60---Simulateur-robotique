@@ -37,7 +37,6 @@ def reinforcementLearningTest():
             currentPosition=(robot.getOdometryPose().getX(),robot.getOdometryPose().getY())
 
             # MSO TODO : il semble y avoir un problème avec la localisation par odométrie : renvoie 90 quand l'orientation réelle est -90
-            # Normalement corrigé
             currentOrientation = robot.getOdometryPose().getOrientation()
 
 

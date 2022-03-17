@@ -1,3 +1,3 @@
-from discoverySimulator.tests import aStar
+from discoverySimulator.tests import followLineWithColorSensor
 
-aStar()
+followLineWithColorSensor()

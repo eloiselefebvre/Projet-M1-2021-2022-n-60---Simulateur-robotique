@@ -22,8 +22,6 @@ def followLineWithColorSensor():
     env=Environment(500,500)
     env.addObject(rob1,250,250)
 
-    CirclePath(env)
-
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
