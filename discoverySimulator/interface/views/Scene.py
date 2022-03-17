@@ -1,11 +1,15 @@
-from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QPainter, QPixmap
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
 
 from discoverySimulator.Observable import Observable
 from discoverySimulator.robots.Robot import Robot
 
+import time
+
 class Scene(QWidget,Observable):
+
+    MINIMUM_TIME_STEP = 1/60   # 60 FPS => largement suffisant pour l'oeil humain
 
     def __init__(self,environment,zoomController):
         super().__init__()
@@ -30,32 +34,30 @@ class Scene(QWidget,Observable):
         self.setStyleSheet("background-color: #f0f0f0")
 
         self._convertedMousePose=QPoint(0, 0)
+        self.update()   # first refresh
 
-        self._isPainting = False
-
-    def refreshView(self,sender):
-        self.update()
 
     def updateLockedScene(self,sender):
         self._isSceneLocked=sender.getLockState()
 
     def paintEvent(self,event):
-        if not self._isPainting:
-            self._isPainting=True
-            painter = QPainter(self)
-            offset=self._zoomController.getOffset()
-            painter.translate(offset.x(), offset.y())
-            painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
+        painter = QPainter(self)
+        offset=self._zoomController.getOffset()
+        painter.translate(offset.x(), offset.y())
+        painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
 
-            objects = self._environment.getVirtualObjects().copy()
-            objects.extend(self._environment.getObjects())
-            objects.sort(key=lambda obj: obj.getZIndex())
+        objects = self._environment.getVirtualObjects().copy()
+        objects.extend(self._environment.getObjects())
+        objects.sort(key=lambda obj: obj.getZIndex())
 
-            for obj in objects:
-                painter.save()
-                obj.paint(painter)
-                painter.restore()
-            self._isPainting=False
+        for obj in objects:
+            painter.save()
+            obj.paint(painter)
+            painter.restore()
+
+        time.sleep(Scene.MINIMUM_TIME_STEP)
+        self.update()
+
 
 
     def mousePressEvent(self, event):

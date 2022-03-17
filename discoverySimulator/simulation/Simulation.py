@@ -46,7 +46,6 @@ class Simulation(Observable):
                     if hasattr(sensor, "refresh"):
                         sensor.refresh()
 
-                self.notifyObservers("update")
             time.sleep(self.MINIMUM_TIME_STEP)
 
     def showInterface(self):
