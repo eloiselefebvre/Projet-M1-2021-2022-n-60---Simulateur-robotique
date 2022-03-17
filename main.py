@@ -1,3 +1,3 @@
-from discoverySimulator.demonstrations import roadDemo
+from discoverySimulator.demonstrations import measureSpeedWithTelemeters
 
-roadDemo()
+measureSpeedWithTelemeters()

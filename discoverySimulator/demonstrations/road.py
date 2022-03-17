@@ -1,6 +1,4 @@
 import time
-from random import random
-
 from discoverySimulator import Object
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Line, Circle, Rectangle
@@ -47,8 +45,7 @@ def roadDemo():
     env.addVirtualObject(start,int(envWidth/2)-2*radius1+10,int(envHeight/ 2))
     env.addVirtualObject(finish,int(envWidth/2)+2*radius2-30,int(envHeight/ 2))
 
-    # TODO : Améliorer la fluidité et voir pour la détection des couleurs quand le robot va vite
-
+    # TODO : Améliorer si possible la fluidité et voir pour la détection des couleurs quand le robot va vite
 
     sim = Simulation(env)
     sim.run()
@@ -57,9 +54,9 @@ def roadDemo():
     while True:
 
         if colorSensorRight.getValue() == green or colorSensorLeft.getValue() == green :
-            print("START !")
-            FORWARD_SPEED+=100
-            TURN_SPEED+=100
+            # print("START !")
+            FORWARD_SPEED+=50
+            TURN_SPEED+=50
             robot.setRightWheelSpeed(FORWARD_SPEED)
             robot.setLeftWheelSpeed(FORWARD_SPEED)
         elif colorSensorRight.getValue() == color and colorSensorLeft.getValue() == color:
@@ -72,11 +69,11 @@ def roadDemo():
             robot.setRightWheelSpeed(TURN_SPEED)
             robot.setLeftWheelSpeed(-TURN_SPEED)
         elif colorSensorRight.getValue() == red or colorSensorLeft.getValue() == red:
-            print("FINISHED !")
+            # print("FINISHED !")
             robot.setRightWheelSpeed(0)
             robot.setLeftWheelSpeed(0)
         else:
-            print("Out of path !")
+            # print("Out of path !")
             robot.setLeftWheelSpeed(0)
             robot.setRightWheelSpeed(0)
 
