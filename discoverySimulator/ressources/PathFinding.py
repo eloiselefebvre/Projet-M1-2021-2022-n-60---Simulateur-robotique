@@ -1,12 +1,10 @@
 import time
 from math import sqrt, atan, degrees
-
-from PyQt5.QtCore import QPoint
-
+from PyQt5.QtCore import QPoint, QLineF
 from discoverySimulator.Object import Object
 from discoverySimulator.Obstacle import Obstacle
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Rectangle, Circle, Point
+from discoverySimulator.representation.shapes import Rectangle, Circle, Point, Line
 
 
 class PathFinding:
@@ -38,7 +36,7 @@ class PathFinding:
         self._nodes = {}
         self.createNode(self.__beginNode)
         self.setRobotStartPosition()
-
+        time.sleep(1)
         self.__astar()
 
     def setRobotStartPosition(self):
@@ -48,14 +46,12 @@ class PathFinding:
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__beginNode = node
-            self.__setNodeColor(self.__beginNode, self.COLORS['begin_node'])
             return True
         return False
 
     def __setEndNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__endNode = node
-            self.__setNodeColor(self.__endNode, self.COLORS['end_node'])
             return True
         return False
 
@@ -106,7 +102,7 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            time.sleep(0.01)
+            # time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
             self.__setNodeColor(current, self.COLORS['closed_node'])
@@ -137,15 +133,15 @@ class PathFinding:
     def __displayFoundPathAndDistance(self, predecessors, opened_nodes):
         path = []
         current = self.__endNode
-        self.__setNodeColor(self.__endNode,self.COLORS["end_node"])
         while current is not None:
             path.append(current)
             current = predecessors[current]
         path.reverse()
         for p in path:
             self.__setNodeColor(p, self.COLORS["path_node"])
-        self.goTo(path)
+        self.followPath(self.simplifyPath(path))
         # self.goToWithFuzzyLogic(path)
+        # self.findPath(path)
 
     def __heuristic(self, node):
         return self.__euclidDistanceToEnd(node)
@@ -163,125 +159,72 @@ class PathFinding:
     def refreshPath(self,sender):
         self.__astar()
 
-    def goTo(self,path):
-        pathPoints = [(p[0]*self.CELL_SIZE+self.OFFSET,p[1]*self.CELL_SIZE+self.OFFSET) for i,p in enumerate(path) if i % 5 == 0]
-        del pathPoints[0]
-        for i in range (len(pathPoints)):
-            distance = sqrt((pathPoints[i][0]-self._robot.getPose().getX())**2+(pathPoints[i][1]-self._robot.getPose().getY())**2)
-            angularDistance = self.angularDistance(pathPoints[i])
-            while angularDistance>5 or angularDistance<-5:
-                if angularDistance < -5:
+    def followPath(self,path):
+        print(path[0])
+        for i in range (len(path)):
+            distance = sqrt((path[i][0]-self._robot.getPose().getX())**2+(path[i][1]-self._robot.getPose().getY())**2)
+            angularDistance = self.angularDistance(path[i])
+            while angularDistance>2 or angularDistance<-2:
+                if angularDistance < 0:
                     self._robot.setRightWheelSpeed(self.TURN_SPEED)
                     self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
-                elif angularDistance > 5:
+                else:
                     self._robot.setRightWheelSpeed(-self.TURN_SPEED)
                     self._robot.setLeftWheelSpeed(self.TURN_SPEED)
-                angularDistance = self.angularDistance(pathPoints[i])
+                angularDistance = self.angularDistance(path[i])
             while distance > 10:
                 self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
                 self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
-                distance = sqrt((pathPoints[i][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[i][1] - self._robot.getPose().getY()) ** 2)
+                distance = sqrt((path[i][0]- self._robot.getPose().getX()) ** 2 + (path[i][1]- self._robot.getPose().getY()) ** 2)
+        self._robot.setLeftWheelSpeed(0)
+        self._robot.setRightWheelSpeed(0)
 
+    def simplifyPath(self, path):
+        counter=1
+        lastPoint = path[0]
+        current=0
+        line=None
+        points=[]
 
-    def goToWithFuzzyLogic(self,path):
+        for i in range(1,len(path)):
 
-        pointADroite=[]
-        pointAGauche=[]
-        offset=20
-        rightTurnRightWheel=[0 for _ in range(11)]
-        rightTurnLeftWheel = [0 for _ in range(11)]
-        leftTurnRightWheel = [0 for _ in range(11)]
-        leftTurnLeftWheel = [0 for _ in range(11)]
-        pathPoints = [(p[0] * self.CELL_SIZE + self.OFFSET, p[1] * self.CELL_SIZE + self.OFFSET) for i, p in enumerate(path) if i % 10 == 0]
-        del pathPoints[0]
+            nextPoint = path[current+counter]
 
-        for i in range(150):
-            pointADroite.append(0)
-        for i in range(150,190):
-            pointADroite.append(i*(1/2)+5)
-        for i in range(190,270):
-            pointADroite.append(i*(10/9))
-        for i in range(270,361):
-            pointADroite.append(i*(-2/9)+120)
+            length = sqrt(((lastPoint[0]*self.CELL_SIZE+self.OFFSET)-(nextPoint[0]*self.CELL_SIZE+self.OFFSET))**2+((lastPoint[1]*self.CELL_SIZE+self.OFFSET)-(nextPoint[1]*self.CELL_SIZE+self.OFFSET))**2)
+            dx = nextPoint[0]*self.CELL_SIZE+self.OFFSET-(lastPoint[0]*self.CELL_SIZE+self.OFFSET)
+            dy = nextPoint[1]*self.CELL_SIZE+self.OFFSET-(lastPoint[1]*self.CELL_SIZE+self.OFFSET)
 
-        for i in range(90):
-            pointAGauche.append(i*(2/9)+120)
-        for i in range(90,170):
-            pointAGauche.append(i*(-10/9))
-        for i in range(170,220):
-            pointAGauche.append(i*(-1/2)+5)
-        for i in range(220,361):
-            pointAGauche.append(0)
+            if dy != 0:
+                theta = degrees(atan(dx / dy))
+                if dy<0:
+                    orientation=180-degrees(atan(dx / dy))
+                else :
+                    if theta>0:
+                        orientation=-theta
+                    else :
+                        orientation = 360-theta
+            else :
+                if dx>0:
+                    orientation=270
+                else :
+                    orientation=90
+            if line is not None:
+                self._environment.removeVirtualObject(line)
+            line = Object(Representation(Line(int(length),5,"#f00")))
+            self._environment.addVirtualObject(line,int(lastPoint[0]*self.CELL_SIZE+self.OFFSET),int(lastPoint[1]*self.CELL_SIZE+self.OFFSET),orientation)
 
-        for i in range(-5, 6):
-            if i <= 0:
-                rightTurnRightWheel[i + 5] = 0
-            else:
-                rightTurnRightWheel[i + 5] =  int(i * (5/18) + 50/3)
-            leftTurnLeftWheel[i + 5] = rightTurnRightWheel[i + 5]
-        for i in range(-5, 6):
-            if i >= 0:
-                rightTurnLeftWheel[i + 5] = 0
-            else:
-                rightTurnLeftWheel[i + 5] = int(i * (-5/18) + 50/3)
-            leftTurnRightWheel[i + 5] = rightTurnLeftWheel[i + 5]
-
-
-        for index in range (len(pathPoints)):
-            distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
-
-            while (self._robot.getPose().getX()<=pathPoints[index][0]-offset or self._robot.getPose().getX()>=pathPoints[index][0]+offset or self._robot.getPose().getY()>=pathPoints[index][1]-offset or self._robot.getPose().getY()<=pathPoints[index][1]+offset) and distance>=20:
-                distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
-                print("distance",distance)
-                angularDistance = self.angularDistance(pathPoints[index])
-
-                pointADroiteValue = pointADroite[int(angularDistance)]
-                pointAGaucheValue = pointAGauche[int(angularDistance)]
-                print('angle',angularDistance)
-
-                numerator = 0
-                denominator = 0
-
-                #right wheel
-                for x in range(11):
-                    print("right")
-
-                    cutValueRightPoint = min(pointADroiteValue,rightTurnRightWheel[x])
-                    cutValueLeftPoint = min(pointAGaucheValue,leftTurnRightWheel[x])
-
-                    numerator += (x+5)*(cutValueRightPoint+cutValueLeftPoint)
-                    denominator += (cutValueLeftPoint+cutValueRightPoint)
-
-                    if denominator!=0:
-                        gravity=numerator/denominator
-                    else:
-                        gravity=100
-                    self._robot.setRightWheelSpeed(gravity)
-                    distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
-
-                numerator=0
-                denominator=0
-
-                #left wheel
-                for x in range(11):
-
-                    cutValueRightPoint = min(pointADroiteValue, rightTurnLeftWheel[x])
-                    cutValueLeftPoint = min(pointAGaucheValue, leftTurnLeftWheel[x])
-
-                    numerator += (x + 5) * (cutValueRightPoint + cutValueLeftPoint)
-                    denominator += (cutValueLeftPoint + cutValueRightPoint)
-
-                    if denominator != 0:
-                        gravity = numerator / denominator
-                    else:
-                        gravity = 100
-                    self._robot.setLeftWheelSpeed(gravity)
-
-                    time.sleep(.01)
-                    distance = sqrt((pathPoints[index][0] - self._robot.getPose().getX()) ** 2 + (pathPoints[index][1] - self._robot.getPose().getY()) ** 2)
-
-            print("next point >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-
+            for obj in self._environment.getObjects():
+                if isinstance(obj,Obstacle):
+                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getWidth()/2+5).isCollidedWith(line.getRepresentation().getShape()):
+                        lastPoint=path[i]
+                        line=None
+                        current=i
+                        counter=0
+                        points.append((lastPoint[0]*self.CELL_SIZE+self.OFFSET,lastPoint[1]*self.CELL_SIZE+self.OFFSET))
+                        break
+            counter+=1
+        points.append((path[-1][0]*self.CELL_SIZE+self.OFFSET,path[-1][1]*self.CELL_SIZE+self.OFFSET))
+        return points
 
     def angularDistance(self,pathPoint):
         currentPosition=(self._robot.getPose().getX(),self._robot.getPose().getY())
@@ -295,5 +238,3 @@ class PathFinding:
         else:
             angularDistance = 360-(self._robot.getPose().getOrientation()) + degrees(theta)
         return angularDistance
-
-

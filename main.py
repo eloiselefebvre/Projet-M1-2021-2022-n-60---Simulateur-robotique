@@ -1,3 +1,3 @@
-from discoverySimulator.demonstrations import measureSpeedWithTelemeters
+from discoverySimulator.tests import aStar
 
-measureSpeedWithTelemeters()
+aStar()
