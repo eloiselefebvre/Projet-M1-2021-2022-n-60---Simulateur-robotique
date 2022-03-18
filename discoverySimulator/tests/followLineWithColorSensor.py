@@ -34,11 +34,11 @@ def followLineWithColorSensor():
             rob1.setLeftWheelSpeed(FORWARD_SPEED)
             rob1.setRightWheelSpeed(FORWARD_SPEED)
         elif colorSensorRight.getValue()!="#444444" and colorSensorLeft.getValue()=="#444444":
-            rob1.setLeftWheelSpeed(TURN_SPEED)
-            rob1.setRightWheelSpeed(-TURN_SPEED)
-        elif colorSensorRight.getValue()=="#444444" and colorSensorLeft.getValue()!="#444444":
-            rob1.setRightWheelSpeed(TURN_SPEED)
             rob1.setLeftWheelSpeed(-TURN_SPEED)
+            rob1.setRightWheelSpeed(TURN_SPEED)
+        elif colorSensorRight.getValue()=="#444444" and colorSensorLeft.getValue()!="#444444":
+            rob1.setRightWheelSpeed(-TURN_SPEED)
+            rob1.setLeftWheelSpeed(TURN_SPEED)
         else:
             # print("Out of path !")
             rob1.setLeftWheelSpeed(0)

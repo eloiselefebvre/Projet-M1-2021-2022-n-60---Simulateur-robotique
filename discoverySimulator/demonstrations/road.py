@@ -63,11 +63,11 @@ def roadDemo():
             robot.setLeftWheelSpeed(FORWARD_SPEED)
             robot.setRightWheelSpeed(FORWARD_SPEED)
         elif colorSensorRight.getValue() != color and colorSensorLeft.getValue() == color:
-            robot.setLeftWheelSpeed(TURN_SPEED)
-            robot.setRightWheelSpeed(-TURN_SPEED)
-        elif colorSensorRight.getValue() == color and colorSensorLeft.getValue() != color:
-            robot.setRightWheelSpeed(TURN_SPEED)
             robot.setLeftWheelSpeed(-TURN_SPEED)
+            robot.setRightWheelSpeed(TURN_SPEED)
+        elif colorSensorRight.getValue() == color and colorSensorLeft.getValue() != color:
+            robot.setRightWheelSpeed(-TURN_SPEED)
+            robot.setLeftWheelSpeed(TURN_SPEED)
         elif colorSensorRight.getValue() == red or colorSensorLeft.getValue() == red:
             # print("FINISHED !")
             robot.setRightWheelSpeed(0)
