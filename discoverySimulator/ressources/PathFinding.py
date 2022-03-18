@@ -162,7 +162,6 @@ class PathFinding:
                     self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
             else:
                 self._modifyOrientation=False
-
             if distance > 10 and not self._modifyOrientation:
                 self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
                 self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
@@ -173,7 +172,6 @@ class PathFinding:
 
             if self._nextPointIndex==len(self._pathSimplified):
                 self._followPath=False
-
                 self._robot.setLeftWheelSpeed(0)
                 self._robot.setRightWheelSpeed(0)
 

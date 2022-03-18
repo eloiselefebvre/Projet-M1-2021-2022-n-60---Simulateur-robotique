@@ -1,4 +1,4 @@
-from discoverySimulator.tests import antsColonyTest
+from discoverySimulator.tests import aStar
 
-antsColonyTest()
+aStar()
 

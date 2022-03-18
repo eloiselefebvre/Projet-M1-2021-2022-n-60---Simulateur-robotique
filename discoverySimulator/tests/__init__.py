@@ -7,6 +7,5 @@ from .factoryMap import factoryMap
 from .followLineWithColorSensor import followLineWithColorSensor
 from .odometryTesting import odometryTesting
 from .aStar import aStar
-from .aStartWithFuzzyLogic import aStarWithFuzzyLogic
 from .antsColony import antsColonyTest
 
