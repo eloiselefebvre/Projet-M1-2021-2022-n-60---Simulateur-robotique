@@ -23,7 +23,7 @@ class ReinforcementLearning:
         reachableStates = []
 
         for actionIndex in actionIndices:
-            reachableStates.append( self.getNextState(state, actionIndex))
+            reachableStates.append(self.getNextState(state, actionIndex))
 
         return reachableStates
 

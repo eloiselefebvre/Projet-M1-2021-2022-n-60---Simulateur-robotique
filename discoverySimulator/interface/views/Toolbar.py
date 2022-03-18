@@ -169,5 +169,18 @@ class Toolbar(QToolBar,Observable):
         self.notifyObservers("playChanged")
 
     def updateTimeElapsed(self,sender):
-        self._timeElapsed.setText(f"{round(sender.time(),1)}s")
+        time=sender.time()
+        hours=int(time//3600)
+        time-=hours*3600
+        minutes=int(time//60)
+        time-=minutes*60
+        seconds=time
+
+        str=""
+        if hours>0:
+            str+=f"{hours}h"
+        if minutes>0 or hours>0:
+            str+=f"{'0' if minutes<10 and hours>0 else ''}{minutes}min"
+        str+=f"{'0' if seconds<10 and (minutes>0 or hours>0) else ''}{round(seconds,1) if minutes==0 else int(seconds)}s"
+        self._timeElapsed.setText(str)
 

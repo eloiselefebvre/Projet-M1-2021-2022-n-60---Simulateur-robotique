@@ -36,7 +36,6 @@ class Scene(QWidget,Observable):
         self._convertedMousePose=QPoint(0, 0)
         self.update()   # first refresh
 
-
     def updateLockedScene(self,sender):
         self._isSceneLocked=sender.getLockState()
 
