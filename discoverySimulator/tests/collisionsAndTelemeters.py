@@ -74,7 +74,7 @@ def collisionAndTelemeter():
     env.addObject(rob5, 700, 180, 90)
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
     env.addObject(Telemeter(),500,4)
-    env.addVirtualObject(Obstacle(Representation(Circle(200,'#ff8f8f'))),1000,500)
+    env.addVirtualObject(Obstacle(Representation(Circle(50,'#ff8f8f'))),600,600)
 
     sim = Simulation(env)
     ledState = 0

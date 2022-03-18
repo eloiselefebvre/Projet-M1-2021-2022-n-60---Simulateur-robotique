@@ -27,7 +27,7 @@ def reinforcementLearningTest():
     previousProduit=0
     produitMax=0
 
-    timeLearning = 5
+    timeLearning = 6
     start=sim.time()
 
     while True:
@@ -36,7 +36,6 @@ def reinforcementLearningTest():
         if current-start<timeLearning:
             currentPosition=(robot.getPose().getX(),robot.getPose().getY())
 
-            # MSO TODO : il semble y avoir un problème avec la localisation par odométrie : renvoie 90 quand l'orientation réelle est -90
             currentOrientation = robot.getPose().getOrientation()
 
 
