@@ -27,7 +27,7 @@ def reinforcementLearningTest():
     currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
     reinforcementLearning = ReinforcementLearning(currentState)
 
-    timeLearning = 10
+    timeLearning = 6
     start=sim.time()
 
     while True:
@@ -35,7 +35,7 @@ def reinforcementLearningTest():
         current=sim.time()
         if current-start<timeLearning:
             currentPosition=(robot.getPose().getX(),robot.getPose().getY())
-            # MSO TODO : il semble y avoir un problème avec la localisation par odométrie : renvoie 90 quand l'orientation réelle est -90
+
             currentOrientation = robot.getPose().getOrientation()
 
             action = reinforcementLearning.getActionToExecute()
@@ -55,7 +55,7 @@ def reinforcementLearningTest():
             robot.setLeftWheelSpeed(0)
             robot.setRightWheelSpeed(0)
             robot.setCollidedState(False)
-            # robot.setOdometryPose(Pose(startPosition[0],startPosition[1],startOrientation))
+            robot.setOdometryPose(Pose(startPosition[0],startPosition[1],startOrientation))
             reinforcementLearning.reset()
 
         time.sleep(.01)

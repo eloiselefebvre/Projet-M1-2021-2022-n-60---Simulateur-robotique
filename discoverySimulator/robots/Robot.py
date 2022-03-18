@@ -108,21 +108,22 @@ class Robot(ABC,Object):
         y=self._odometryPose.getY()
         if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
             R = e * (vd + vg) / (vd - vg)
-            # calcul des paramètres du cercle trajectoire
-            x0 = x + R * cos(-radians(self._odometryPose.getOrientation()))
-            y0 = y + R * sin(-radians(self._odometryPose.getOrientation()))
+            # calcul des coordonnées du centre du cercle trajectoire
+            x0 = x - R * cos(radians(self._odometryPose.getOrientation()))
+            y0 = y - R * sin(radians(self._odometryPose.getOrientation()))
+
             # calcul position du robot
             dTheta = d / R
             self._odometryPose.rotate(degrees(dTheta))
-            self._odometryPose.move(x0 - R * cos(-radians(self._odometryPose.getOrientation())),
-                                    y0 - R * sin(-radians(self._odometryPose.getOrientation())))
+            self._odometryPose.move(x0 + R * cos(radians(self._odometryPose.getOrientation())),
+                                    y0 + R * sin(radians(self._odometryPose.getOrientation())))
         elif vd==-vg: # robot tourne sur place
             dd=vd * config["update_time_step"]*self._acceleration/60
             dTheta=atan(dd/e)
             self._odometryPose.rotate(degrees(dTheta))
         else: # robot en ligne droite
-            nx=x-d * sin(-radians(self._odometryPose.getOrientation()))
-            ny=y+d * cos(-radians(self._odometryPose.getOrientation()))
+            nx=x-d * sin(radians(self._odometryPose.getOrientation()))
+            ny=y+d * cos(radians(self._odometryPose.getOrientation()))
             self._odometryPose.move(nx,ny)
 
         if self._odometryCounter == 0:
@@ -153,7 +154,6 @@ class Robot(ABC,Object):
 
     def setOdometryPose(self,pose):
         self._odometryPose=pose
-        self._odometryPose.setOrientation(-self._odometryPose.getOrientation())
 
     def getOdometryPose(self):
         return self._odometryPose
