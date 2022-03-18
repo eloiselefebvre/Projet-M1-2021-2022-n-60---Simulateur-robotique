@@ -19,13 +19,13 @@ def reinforcementLearningTest():
 
     startPosition = (robot.getPose().getX(),robot.getPose().getY())
     startOrientation = robot.getPose().getOrientation()
+    previousPosition = startPosition
+    previousOrientation=startOrientation
+
     if startOrientation<0:
         startOrientation=360+startOrientation
     currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
     reinforcementLearning = ReinforcementLearning(currentState)
-    previousDistance=0
-    previousProduit=0
-    produitMax=0
 
     timeLearning = 6
     start=sim.time()
@@ -38,19 +38,15 @@ def reinforcementLearningTest():
 
             currentOrientation = robot.getPose().getOrientation()
 
-
             action = reinforcementLearning.getActionToExecute()
 
-            # MSO TODO : à revoir : il faut faire la différence entre deux états successifs, et non avec l'état initial, pour percevoir l'effet de l'action
-
-            distance = sqrt((currentPosition[0]-startPosition[0])**2+(currentPosition[1]-startPosition[1])**2)
-            produit = distance * cos(radians(currentOrientation-startOrientation))
+            distance = sqrt((currentPosition[0]-previousPosition[0])**2+(currentPosition[1]-previousPosition[1])**2)
+            product = distance * cos(radians(previousOrientation-currentOrientation))
 
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
 
-            # MSO : vous pouvez directement utiliser le produit comme récompense
-            reinforcementLearning.executedActionFeedback(produit)
+            reinforcementLearning.executedActionFeedback(product)
 
         else:
             start=sim.time()
