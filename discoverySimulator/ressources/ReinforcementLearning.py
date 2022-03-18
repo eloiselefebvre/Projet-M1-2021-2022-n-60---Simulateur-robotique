@@ -35,12 +35,11 @@ class ReinforcementLearning:
             for j in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
                 self._QTable[(i, j)] = [0, 0, 0, 0, 0]      # MSO TODO : revoir ces valeurs en dur, à générer automatiquement
 
-    # MSO TODO : utiliser getNextState() pour calculer le nouvelle Q-Valeur et passer à l'état suivant
     def executedActionFeedback(self,reward):
-        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * reward
-        self._state=(self._actions[self._actionToExecuteIndex][0]+self._state[0],self._actions[self._actionToExecuteIndex][1]+self._state[1])
+        nextState=self.getNextState(self._state,self._actionToExecuteIndex)
+        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward+0.1*max([self._QTable[nextState][index] for index in self.getPossibleActions(nextState)]))
+        self._state = nextState
 
-    # MSO : cadeau - j'ai un peu modifié votre fonction pour qu'elle donne les actions possibles dans un état spécifié et pas nécessairement dans l'état courant. Par défaut, l'état courant est utilisé (pour être rétrocompatible)
     def getPossibleActions(self, state = None):
 
         state = state if state is not None else self._state
@@ -59,7 +58,7 @@ class ReinforcementLearning:
 
     def getActionToExecute(self):
         possibleActionsIndexes=self.getPossibleActions()
-        if random.random() < self._explorationRate or self._QTable[self._state]==[0,0,0,0,0]:       # MSO TODO : la deuxième condition est inutile
+        if random.random() < self._explorationRate :
             self._actionToExecuteIndex = random.choice(possibleActionsIndexes)
         else:
             maxIndex=possibleActionsIndexes[0]

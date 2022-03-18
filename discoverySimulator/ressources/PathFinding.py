@@ -102,7 +102,7 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            # time.sleep(0.01)
+            time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
             self.__setNodeColor(current, self.COLORS['closed_node'])

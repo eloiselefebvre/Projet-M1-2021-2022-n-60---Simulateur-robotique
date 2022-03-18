@@ -34,10 +34,10 @@ def reinforcementLearningTest():
 
         current=sim.time()
         if current-start<timeLearning:
-            currentPosition=(robot.getOdometryPose().getX(),robot.getOdometryPose().getY())
+            currentPosition=(robot.getPose().getX(),robot.getPose().getY())
 
             # MSO TODO : il semble y avoir un problème avec la localisation par odométrie : renvoie 90 quand l'orientation réelle est -90
-            currentOrientation = robot.getOdometryPose().getOrientation()
+            currentOrientation = robot.getPose().getOrientation()
 
 
             action = reinforcementLearning.getActionToExecute()
@@ -51,16 +51,7 @@ def reinforcementLearningTest():
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
 
             # MSO : vous pouvez directement utiliser le produit comme récompense
-            if produit>produitMax:
-                produitMax=produit
-                reinforcementLearning.executedActionFeedback(3)
-            elif produit < previousProduit :
-                reinforcementLearning.executedActionFeedback(1)
-            else :
-                reinforcementLearning.executedActionFeedback(-1)
-
-            previousProduit=produit
-            previousDistance=distance
+            reinforcementLearning.executedActionFeedback(produit)
 
         else:
             start=sim.time()
@@ -69,8 +60,6 @@ def reinforcementLearningTest():
             robot.setLeftWheelSpeed(0)
             robot.setRightWheelSpeed(0)
             robot.setCollidedState(False)
-            previousDistance=0
-            previousProduit=0
             robot.setOdometryPose(Pose(startPosition[0],startPosition[1],startOrientation))
             reinforcementLearning.reset()
 
