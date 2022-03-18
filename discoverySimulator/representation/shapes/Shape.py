@@ -54,6 +54,7 @@ class Shape(ABC):
         # TODO : Gérer le cas du point (getLineDecomposition() renvoie [] comme pour le cercle)
         # intersection cercle/cercle
         if not shape1_lines and not shape2_lines:
+            # TODO : Return circle intersection points
             return ((self._pose.getX()-shape.getPose().getX())**2 + (self._pose.getY()-shape.getPose().getY())**2)**0.5 < self._radius+shape.getRadius()
         # intersection ligne/cercle
         elif shape1_lines and not shape2_lines:
@@ -77,6 +78,10 @@ class Shape(ABC):
 
     @abstractmethod
     def contains(self, point):
+        pass
+
+    @abstractmethod
+    def getBoundingBox(self):
         pass
 
     def getColor(self):

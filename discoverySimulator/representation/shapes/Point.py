@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPen
 
-from discoverySimulator.representation.shapes import Shape
+from discoverySimulator.representation.shapes import Shape, Rectangle
 from math import radians, cos, sin
 
 class Point(Shape): # TODO : Hérite de QPoint ? X,Y définisent la pose et translate de X,Y puis drawPoint(0,0)
@@ -46,3 +46,6 @@ class Point(Shape): # TODO : Hérite de QPoint ? X,Y définisent la pose et tran
 
     def contains(self, point):
         return False
+
+    def getBoundingBox(self):
+        return Rectangle(self.POINT_SIZE, self.POINT_SIZE)

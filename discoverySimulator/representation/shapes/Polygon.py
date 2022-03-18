@@ -1,7 +1,8 @@
 from PyQt5.QtCore import Qt, QLineF, QPoint
 from PyQt5.QtGui import QPolygon, QBrush
 
-from discoverySimulator.representation.shapes import Shape
+from discoverySimulator.representation.shapes import Shape, Rectangle
+
 
 class Polygon(Shape):
 
@@ -37,3 +38,20 @@ class Polygon(Shape):
                 c=not c
             j=i
         return c
+
+    def getBoundingBox(self):
+        min_x=self._points[0].x()
+        min_y = self._points[0].y()
+        max_x=self._points[0].x()
+        max_y = self._points[0].y()
+
+        for point in self._points:
+            if point.x()<min_x:
+                min_x=point.x()
+            if point.y()<min_y:
+                min_y = point.y()
+            if point.x()>max_x:
+                max_x = point.x()
+            if point.y()>max_y:
+                max_y=point.y()
+        return Rectangle(max_x-min_x,max_y-min_y)

@@ -11,6 +11,7 @@ from discoverySimulator.config import config
 from ..Pose import Pose
 from ..sensors import Sensor
 
+# TODO : Changer système de coordonnées du robot ? pour l'instant orientation 0 -> x vers la droite, y vers le bas
 
 class Robot(ABC,Object):
 

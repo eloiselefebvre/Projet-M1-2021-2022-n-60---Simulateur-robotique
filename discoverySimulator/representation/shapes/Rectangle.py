@@ -14,6 +14,7 @@ class Rectangle(Shape):
         self._height=height
         self._borderRadius=borderRadius
         self._orientationMark = False
+        self._rect=QRect(-int(self._width / 2), -int(self._height / 2), int(self._width), int(self._height))
 
     def getWidth(self):
         return self._width
@@ -27,7 +28,7 @@ class Rectangle(Shape):
     def paint(self,painter):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawRoundedRect(QRect(-int(self._width / 2), -int(self._height / 2), self._width, self._height),self._borderRadius,self._borderRadius) # dessiné à partir du center
+        painter.drawRoundedRect(self._rect,self._borderRadius,self._borderRadius) # dessiné à partir du center
         if self._orientationMark:
             self.paintOrientationMark(painter)
 
@@ -68,3 +69,6 @@ class Rectangle(Shape):
         rectangle = Rectangle(self._width+value,self._height+value,self._color)
         rectangle.setPose(self._pose)
         return rectangle
+
+    def getBoundingBox(self):
+        return self
