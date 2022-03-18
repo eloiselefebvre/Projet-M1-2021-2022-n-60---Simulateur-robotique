@@ -1,3 +1,2 @@
-from discoverySimulator.tests import followLineWithColorSensor
-
-followLineWithColorSensor()
+from discoverySimulator.tests import reinforcementLearningTest
+reinforcementLearningTest()
