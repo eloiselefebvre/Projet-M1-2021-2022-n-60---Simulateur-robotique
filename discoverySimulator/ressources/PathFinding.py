@@ -60,15 +60,15 @@ class PathFinding:
 
     def __getNodeValue(self, node):
         for obj in self._environment.getObjects():
-            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getWidth()/2+5)
+            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+5)
             if isinstance(obj,Obstacle):
-                if  obstacle.contains(QPoint(node[0]*15,node[1]*15)):
+                if obstacle.contains(QPoint(node[0]*15,node[1]*15)):
                     return False
-                if  obstacle.contains(QPoint(node[0]*15,(node[1]+1)*15)):
+                if obstacle.contains(QPoint(node[0]*15,(node[1]+1)*15)):
                     return False
-                if  obstacle.contains(QPoint((node[0]+1)*15,node[1]*15)):
+                if obstacle.contains(QPoint((node[0]+1)*15,node[1]*15)):
                     return False
-                if  obstacle.contains(QPoint((node[0]+1)*15,(node[1]+1)*15)):
+                if obstacle.contains(QPoint((node[0]+1)*15,(node[1]+1)*15)):
                     return False
         return True
 
@@ -156,21 +156,17 @@ class PathFinding:
         self._nodes[node]=Rectangle(15, 15, "#FF9900")
         self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET)
 
-    def refreshPath(self,sender):
-        self.__astar()
-
     def followPath(self,path):
-        print(path[0])
         for i in range (len(path)):
             distance = sqrt((path[i][0]-self._robot.getPose().getX())**2+(path[i][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(path[i])
             while angularDistance>2 or angularDistance<-2:
                 if angularDistance < 0:
-                    self._robot.setRightWheelSpeed(self.TURN_SPEED)
-                    self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
-                else:
                     self._robot.setRightWheelSpeed(-self.TURN_SPEED)
                     self._robot.setLeftWheelSpeed(self.TURN_SPEED)
+                else:
+                    self._robot.setRightWheelSpeed(self.TURN_SPEED)
+                    self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
                 angularDistance = self.angularDistance(path[i])
             while distance > 10:
                 self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
@@ -215,7 +211,7 @@ class PathFinding:
 
             for obj in self._environment.getObjects():
                 if isinstance(obj,Obstacle):
-                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getWidth()/2+5).isCollidedWith(line.getRepresentation().getShape()):
+                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+5).isCollidedWith(line.getRepresentation().getShape()):
                         lastPoint=path[i]
                         line=None
                         current=i

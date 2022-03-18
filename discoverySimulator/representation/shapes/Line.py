@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt, QLineF
 from PyQt5.QtGui import QPen
-from . import Shape
+from . import Shape, Rectangle
 from .Point import Point
 
 
@@ -38,3 +38,9 @@ class Line(Shape):
 
     def contains(self, point):
         return False
+
+    # def offset(self,value):
+        # return Rectangle(self._width+value,self._length+value)
+
+    def getBoundingBox(self):
+        return Rectangle(self._width,self._length)

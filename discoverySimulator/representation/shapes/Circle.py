@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt, QPointF
 from PyQt5.QtGui import QBrush
-from . import Shape
+from . import Shape, Rectangle
 from .Line import Line
 
 
@@ -71,3 +71,6 @@ class Circle(Shape):
         circle = Circle(self._radius+value,self._color)
         circle.setPose(self._pose)
         return circle
+
+    def getBoundingBox(self):
+        return Rectangle(self._radius*2,self._radius*2)

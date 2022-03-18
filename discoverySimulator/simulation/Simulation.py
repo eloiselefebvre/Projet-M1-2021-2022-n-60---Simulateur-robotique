@@ -8,7 +8,7 @@ from discoverySimulator.config import *
 
 class Simulation(Observable):
 
-    MINIMUM_TIME_STEP = 0.005
+    MINIMUM_TIME_STEP = 0.01
 
     def __init__(self,environment=None):
         super().__init__()
