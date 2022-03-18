@@ -16,8 +16,8 @@ class PathFinding:
         "opened_node":"#22A6B3",
         "computed_node" : "#FFFDC7",
         "path_node": "#FFFE60",
-        "begin_node": "#30336B",
-        "end_node": "#30336B"
+        "begin_node": "#45EB0E",
+        "end_node": "#E8221E"
     }
     FORWARD_SPEED = 200
     TURN_SPEED = 100
@@ -27,14 +27,13 @@ class PathFinding:
     def __init__(self, environment, robot,NODE=None):
         self._environment=environment
         self._robot=robot
-
         self.__ROWS_NUMBER = (self._environment.getWidth())/15
         self.__COLS_NUMBER = (self._environment.getHeight())/15
-
-        self.__beginNode = (10,10)
-        self.__endNode = (30,30)
         self._nodes = {}
-        self.createNode(self.__beginNode)
+        self.__setBeginNode((10,10))
+        self.__setEndNode((30,30))
+        self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
+        self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
         self.setRobotStartPosition()
         time.sleep(1)
         self.__astar()
@@ -42,18 +41,15 @@ class PathFinding:
     def setRobotStartPosition(self):
         self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
 
-
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
+            self.createNode(node)
             self.__beginNode = node
-            return True
-        return False
 
     def __setEndNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
+            self.createNode(node)
             self.__endNode = node
-            return True
-        return False
 
     def __setNodeColor(self, node, color):
         self._nodes[node].setColor(color)
@@ -85,15 +81,6 @@ class PathFinding:
     def __isValidNode(self, node):
         return node[0] >= 0 and node[0] < self.__ROWS_NUMBER and node[1] >= 0 and node[1] < self.__COLS_NUMBER
 
-    def __drawBeginNode(self):
-        pass
-
-    def __drawEndNode(self, background):
-        pass
-
-    def findShortestPathWith(self, algorithm):
-       pass
-
     def __astar(self):
         predecessors = {self.__beginNode: None}
         opened_nodes = {self.__beginNode: 0}
@@ -105,7 +92,8 @@ class PathFinding:
             time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
-            self.__setNodeColor(current, self.COLORS['closed_node'])
+            if current != self.__beginNode and current != self.__endNode:
+                self.__setNodeColor(current, self.COLORS['closed_node'])
             neighbors = self.__getNodeNeighbors(current)
             for n in neighbors:
                 weight = 0
@@ -124,10 +112,12 @@ class PathFinding:
                         self.createNode(n)
                         opened_nodes[n] = distanceFromBeginNode
                         opened_nodes_heuristic[n] = opened_nodes[n] + self.__heuristic(n)
-                        self.__setNodeColor(n, self.COLORS["opened_node"])
+                        if n != self.__beginNode and n != self.__endNode:
+                            self.__setNodeColor(n, self.COLORS["opened_node"])
                         predecessors[n] = current
             current = min(opened_nodes_heuristic,key=opened_nodes_heuristic.__getitem__)
-            self.__setNodeColor(current, self.COLORS["computed_node"])
+            if current != self.__beginNode and current != self.__endNode:
+                self.__setNodeColor(current, self.COLORS["computed_node"])
         self.__displayFoundPathAndDistance(predecessors,opened_nodes)
 
     def __displayFoundPathAndDistance(self, predecessors, opened_nodes):
@@ -138,7 +128,8 @@ class PathFinding:
             current = predecessors[current]
         path.reverse()
         for p in path:
-            self.__setNodeColor(p, self.COLORS["path_node"])
+            if p != self.__beginNode and p != self.__endNode:
+                self.__setNodeColor(p, self.COLORS["path_node"])
         self.followPath(self.simplifyPath(path))
         # self.goToWithFuzzyLogic(path)
         # self.findPath(path)

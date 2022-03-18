@@ -24,10 +24,8 @@ class ReinforcementLearning:
     def getReachableStates(self, state):
         actionIndices = self.getPossibleActions(state)
         reachableStates = []
-
         for actionIndex in actionIndices:
             reachableStates.append(self.getNextState(state, actionIndex))
-
         return reachableStates
 
     def getNextState(self, state, actionIndex):

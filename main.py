@@ -1,4 +1,4 @@
-from discoverySimulator.tests import reinforcementLearningTest
+from discoverySimulator.tests import aStar
 
-reinforcementLearningTest()
+aStar()
 
