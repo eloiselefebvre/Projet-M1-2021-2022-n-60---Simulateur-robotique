@@ -1,4 +1,5 @@
 import random
+import time
 
 
 class ReinforcementLearning:
@@ -11,11 +12,13 @@ class ReinforcementLearning:
         self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval)
         self.fillQTable()
         self._learningFactor = 0.1
-        self._discountFactor = 0.5
+        self._discountFactor = 0.9
         self._state = state
         self._initialState = state
         self._explorationRate=0.01
+        self._tab=[0,0,0,0,0]
         self._actions = [(self._step,0),(-self._step,0),(0,self._step),(0,-self._step),(0,0)]
+        self._actionToExecuteIndex=4
 
     # MSO : cadeau - sera utile pour Value Iteration
     def getReachableStates(self, state):
@@ -37,13 +40,11 @@ class ReinforcementLearning:
 
     def executedActionFeedback(self,reward):
         nextState=self.getNextState(self._state,self._actionToExecuteIndex)
-        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward+0.1*max([self._QTable[nextState][index] for index in self.getPossibleActions(nextState)]))
+        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward+self._discountFactor*max([self._QTable[nextState][index] for index in self.getPossibleActions(nextState)]))
         self._state = nextState
 
     def getPossibleActions(self, state = None):
-
         state = state if state is not None else self._state
-
         actions = []
         if state[0]+self._step<=self._maximalSpeed:
             actions.append(0)
@@ -58,8 +59,13 @@ class ReinforcementLearning:
 
     def getActionToExecute(self):
         possibleActionsIndexes=self.getPossibleActions()
-        if random.random() < self._explorationRate :
-            self._actionToExecuteIndex = random.choice(possibleActionsIndexes)
+        if random.random() < self._explorationRate:
+            minValue=self._tab[possibleActionsIndexes[0]]
+            self._actionToExecuteIndex=possibleActionsIndexes[0]
+            for index in possibleActionsIndexes:
+                if self._tab[index]<minValue:
+                    self._actionToExecuteIndex=index
+                    minValue = self._tab[index]
         else:
             maxIndex=possibleActionsIndexes[0]
             max=self._QTable[self._state][maxIndex]
@@ -68,10 +74,8 @@ class ReinforcementLearning:
                     max = self._QTable[self._state][index]
                     maxIndex=index
             self._actionToExecuteIndex = maxIndex
+        self._tab[self._actionToExecuteIndex]+=1
         return self._actions[self._actionToExecuteIndex]
-
 
     def reset(self):
         self._state=self._initialState
-
-

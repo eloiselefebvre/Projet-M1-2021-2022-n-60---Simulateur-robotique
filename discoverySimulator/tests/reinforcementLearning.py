@@ -19,15 +19,15 @@ def reinforcementLearningTest():
 
     startPosition = (robot.getPose().getX(),robot.getPose().getY())
     startOrientation = robot.getPose().getOrientation()
+    previousPosition = startPosition
+    previousOrientation=startOrientation
+
     if startOrientation<0:
         startOrientation=360+startOrientation
     currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
     reinforcementLearning = ReinforcementLearning(currentState)
-    previousDistance=0
-    previousProduit=0
-    produitMax=0
 
-    timeLearning = 5
+    timeLearning = 10
     start=sim.time()
 
     while True:
@@ -35,23 +35,18 @@ def reinforcementLearningTest():
         current=sim.time()
         if current-start<timeLearning:
             currentPosition=(robot.getPose().getX(),robot.getPose().getY())
-
             # MSO TODO : il semble y avoir un problème avec la localisation par odométrie : renvoie 90 quand l'orientation réelle est -90
             currentOrientation = robot.getPose().getOrientation()
 
-
             action = reinforcementLearning.getActionToExecute()
 
-            # MSO TODO : à revoir : il faut faire la différence entre deux états successifs, et non avec l'état initial, pour percevoir l'effet de l'action
-
-            distance = sqrt((currentPosition[0]-startPosition[0])**2+(currentPosition[1]-startPosition[1])**2)
-            produit = distance * cos(radians(currentOrientation-startOrientation))
+            distance = sqrt((currentPosition[0]-previousPosition[0])**2+(currentPosition[1]-previousPosition[1])**2)
+            product = distance * cos(radians(previousOrientation-currentOrientation))
 
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
 
-            # MSO : vous pouvez directement utiliser le produit comme récompense
-            reinforcementLearning.executedActionFeedback(produit)
+            reinforcementLearning.executedActionFeedback(product)
 
         else:
             start=sim.time()
@@ -60,7 +55,7 @@ def reinforcementLearningTest():
             robot.setLeftWheelSpeed(0)
             robot.setRightWheelSpeed(0)
             robot.setCollidedState(False)
-            robot.setOdometryPose(Pose(startPosition[0],startPosition[1],startOrientation))
+            # robot.setOdometryPose(Pose(startPosition[0],startPosition[1],startOrientation))
             reinforcementLearning.reset()
 
         time.sleep(.01)
