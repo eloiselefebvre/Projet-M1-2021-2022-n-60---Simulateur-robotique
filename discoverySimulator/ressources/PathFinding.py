@@ -76,7 +76,7 @@ class PathFinding:
 
     def __getNodeValue(self, node):
         for obj in self._environment.getObjects():
-            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN)
+            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN) # TODO : Tableau d'obstacles offset pour ne pas tout recalculer tout le temps
             if isinstance(obj,Obstacle):
                 if obstacle.contains(QPoint(node[0]*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
                    obstacle.contains(QPoint(node[0]*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)) or\
@@ -174,7 +174,7 @@ class PathFinding:
         if self._robot.isFollowingPath():
             distance = sqrt((self._pathSimplified[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._pathSimplified[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(self._pathSimplified[self._nextPointIndex])
-            if (angularDistance>1 or angularDistance<-1) and self._modifyOrientation:
+            if (angularDistance>1 or angularDistance<-1) and self._modifyOrientation: # TODO : Attention aux déviations sur les longues distances ! -> Algo de suivi de ligne ?
                 if angularDistance < 0:
                     self._robot.setRightWheelSpeed(-self.TURN_SPEED)
                     self._robot.setLeftWheelSpeed(self.TURN_SPEED)
