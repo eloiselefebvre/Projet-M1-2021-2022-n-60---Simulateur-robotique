@@ -51,23 +51,23 @@ class Shape(ABC):
         from .Point import Point
         if isinstance(self,Point) or isinstance(shape,Point):
             return []
+
         total_intersections=[]
         shape1_lines = self.getLineDecomposition()
         shape2_lines = shape.getLineDecomposition()
         # intersection cercle/cercle
         if not shape1_lines and not shape2_lines:
-            # TODO : Return circle intersection points
-            return ((self._pose.getX()-shape.getPose().getX())**2 + (self._pose.getY()-shape.getPose().getY())**2)**0.5 < self._radius+shape.getRadius()
+            total_intersections.extend(self.getIntersectionWithCircle(shape))
         # intersection ligne/cercle
         elif shape1_lines and not shape2_lines:
             for line in shape1_lines:
-                intersections=shape.isIntersectionWithLine(line)
+                intersections=shape.getIntersectionWithLine(line)
                 if intersections:
                     total_intersections.extend(intersections)
         # intersection cercle/ligne
         elif not shape1_lines and shape2_lines:
             for line in shape2_lines:
-                intersections = self.isIntersectionWithLine(line)
+                intersections = self.getIntersectionWithLine(line)
                 if intersections:
                     total_intersections.extend(intersections)
         else:

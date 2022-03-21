@@ -22,7 +22,7 @@ class Circle(Shape):
     def getLineDecomposition(self):
         return []
 
-    def isIntersectionWithLine(self,line): # TODO : Rename
+    def getIntersectionWithLine(self,line):
         intersections = []
         if line.x2()!=line.x1(): # pas ligne verticale
             a_line,b_line=Line.getLineCoefficient(line)
@@ -62,6 +62,28 @@ class Circle(Shape):
                     intersections.append(QPointF(line.x1(),y1))
                 if y2 >= min_y and y2 <= max_y:  # appartient au segment
                     intersections.append(QPointF(line.x1(),y2))
+        return intersections
+
+    def getIntersectionWithCircle(self, circle):  # TODO : Rename
+        # https://fr.planetcalc.com/8098/
+        intersections=[]
+
+        d=((self._pose.getX()-circle.getPose().getX())**2 + (self._pose.getY()-circle.getPose().getY())**2)**0.5
+        if d>self._radius+circle.getRadius() or d<abs(self._radius-circle.getRadius()) or d==0:
+            return intersections
+
+        a=(self._radius**2-circle.getRadius()**2+d**2)/(2*d)
+        h=(self._radius**2-a**2)**0.5
+        p1=QPointF(self._pose.getX(),self._pose.getY())
+        p2=QPointF(circle.getPose().getX(),circle.getPose().getY())
+        p3=p1+a/d*(p2-p1)
+
+        hd=h/d
+        dx=p2.x()-p1.x()
+        dy=p2.y()-p1.y()
+
+        intersections.append(QPointF(p3.x()+hd*dy,p3.y()-hd*dx))
+        intersections.append(QPointF(p3.x()-hd*dy,p3.y()+hd*dx))
         return intersections
 
     def contains(self, point):
