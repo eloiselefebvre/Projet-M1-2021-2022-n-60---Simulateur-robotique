@@ -215,7 +215,7 @@ class PathFinding:
 
             for obj in self._environment.getObjects():
                 if isinstance(obj,Obstacle):
-                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+5).isCollidedWith(line.getRepresentation().getShape()):
+                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+5).getIntersectionsWith(line.getRepresentation().getShape()):
                         lastPoint=path[i]
                         line=None
                         current=i

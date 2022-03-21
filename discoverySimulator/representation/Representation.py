@@ -42,6 +42,3 @@ class Representation:
 
     def contains(self,point):
         return self._shape.contains(point)
-
-
-

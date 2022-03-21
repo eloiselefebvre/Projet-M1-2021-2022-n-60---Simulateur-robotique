@@ -130,9 +130,11 @@ class Object(Observable):
                     self._isCollided=True
                     obj.setCollidedState(True)
 
-    # MSO TODO : attention, par convention, les méthodes isXXX() renvoient des booléens. J'ai l'impression qu'ici, on renvoie des intersections. Nom à revoir
+    def getIntersectionsWith(self,obj):
+        return self.getRepresentation().getShape().getIntersectionsWith(obj.getRepresentation().getShape())
+
     def isCollidedWith(self,obj):
-        return self.getRepresentation().getShape().isCollidedWith(obj.getRepresentation().getShape())
+        return len(self.getIntersectionsWith(obj))!=0
 
     def getAcceleration(self):
         return self._acceleration
