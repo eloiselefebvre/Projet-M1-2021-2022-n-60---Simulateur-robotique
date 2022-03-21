@@ -40,7 +40,7 @@ class Line(Shape):
         return False
 
     # def offset(self,value):
-        # return Rectangle(self._width+value,self._length+value)
+        # return Rectangle(self._width+value,self._length+value) # TODO : offset line
 
     def getBoundingBox(self):
         return Rectangle(self._width,self._length)

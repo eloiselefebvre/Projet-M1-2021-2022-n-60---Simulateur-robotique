@@ -11,7 +11,7 @@ class Component(ABC,Object):
         self._parent = parent
 
     @abstractmethod
-    def getSpecifications(self):
+    def getSpecifications(self): # TODO : Styliser avec HTML
         pass
 
 
