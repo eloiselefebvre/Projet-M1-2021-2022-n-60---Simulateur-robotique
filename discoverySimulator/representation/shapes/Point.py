@@ -1,6 +1,5 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPen
-
 from discoverySimulator.representation.shapes import Shape, Rectangle
 from math import radians, cos, sin
 

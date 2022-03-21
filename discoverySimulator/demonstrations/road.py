@@ -45,8 +45,6 @@ def roadDemo():
     env.addVirtualObject(start,int(envWidth/2)-2*radius1+10,int(envHeight/ 2))
     env.addVirtualObject(finish,int(envWidth/2)+2*radius2-30,int(envHeight/ 2))
 
-    # TODO : Améliorer si possible la fluidité et voir pour la détection des couleurs quand le robot va vite
-
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
