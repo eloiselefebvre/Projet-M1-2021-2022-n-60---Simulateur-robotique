@@ -1,23 +1,37 @@
 from PyQt5.QtCore import Qt, QPointF
-from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QBrush, QPen
 from . import Shape, Rectangle
 from .Line import Line
 
 
 class Circle(Shape):
 
+    ORIENTATION_MARK_WIDTH = 2
+    ORIENTATION_MARK_LIGHTER_FACTOR = 160 # TODO : Mettre dans shape ?
+
     def __init__(self,radius,color,opacity=255):
         super().__init__(color,opacity)
         self._radius=radius
+        self._orientationMark=False
 
     def getRadius(self):
         return self._radius
 
+    def addOrientationMark(self):
+        self._orientationMark = True
+
     def paint(self,painter):
-        # print(self._pose.getX(),self._pose.getY())
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center
+        if self._orientationMark:
+            self.paintOrientationMark(painter)
+
+    def paintOrientationMark(self,painter):
+        painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
+        widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
+        ypos = int(self._radius * 8/10)
+        painter.drawLine(widthToCompensate - int(self._radius / 2), ypos, int(self._radius / 2) - widthToCompensate, ypos)
 
     def getLineDecomposition(self):
         return []

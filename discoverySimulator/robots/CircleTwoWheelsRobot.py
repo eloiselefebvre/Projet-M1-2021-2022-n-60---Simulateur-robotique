@@ -10,5 +10,5 @@ class CircleTwoWheelsRobot(TwoWheelsRobot):
         self._color = random.choice(self.COLORS) if color is None else color
 
         rep=Circle(robotRadius,self._color)
-        # rep.addOrientationMark() # TODO : Add representation mark ?
+        rep.addOrientationMark()
         super().__init__(Representation(rep),color,distanceBetweenWheels,wheelsRadius,wheelYPos)

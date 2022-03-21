@@ -62,6 +62,7 @@ class Toolbar(QToolBar,Observable):
         about_button.setIcon(QIcon(f"{config['ressourcesPath']}/info.svg"))
         about_button.setIconSize(QSize(22, 22))
         about_button.clicked.connect(self.__openPopUp)
+        about_button.setToolTip("About")
         about_layout.addWidget(about_button)
 
         about.setFixedHeight(self.TOOLSBAR_FIXED_HEIGHT)
@@ -173,6 +174,7 @@ class Toolbar(QToolBar,Observable):
         play.setContentsMargins(4, 0, 4, 0)
 
         self._playPause = PlayButton(self._playState)
+        self._playPause.setToolTip("Pause" if self._playState else "Play")
         self._playPause.clicked.connect(self.__togglePlayState)
 
         play_layout.addWidget(self._playPause)
@@ -183,6 +185,7 @@ class Toolbar(QToolBar,Observable):
 
     def __togglePlayState(self):
         self._playState=not self._playState
+        self._playPause.setToolTip("Pause" if self._playState else "Play")
         self._playPause.setState(self._playState)
         self.notifyObservers("playChanged")
 

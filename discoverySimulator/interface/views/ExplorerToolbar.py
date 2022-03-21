@@ -52,13 +52,13 @@ class ExplorerToolsbar(QWidget, Observable):
     def createLockButtonWidget(self):
         lockButton=LockButton()
         lockButton.clicked.connect(self.__clickedLockUnlock)
-        lockButton.setToolTip("Lock/Unlock")
+        lockButton.setToolTip("Unlock" if self._isSceneLocked else "Lock")
         return lockButton
 
     def createVisibleButtonWidget(self):
         visibleButtonWidget = VisibilityButton(self._areObjectVisible)
         visibleButtonWidget.clicked.connect(self.__clickedVisibilityButton)
-        visibleButtonWidget.setToolTip("Show/Hide")
+        visibleButtonWidget.setToolTip("Hide" if self._areObjectVisible else "Show")
         return visibleButtonWidget
 
     def getShownObjects(self):
@@ -71,8 +71,6 @@ class ExplorerToolsbar(QWidget, Observable):
                     if issubclass(type(comp), tuple(self._itemsShown)):
                         objects.append(comp)
         return objects
-
-
 
     def getShownObjectClass(self):
         return self._itemsShown
@@ -91,6 +89,7 @@ class ExplorerToolsbar(QWidget, Observable):
     # Lock methods
     def __clickedLockUnlock(self):
         self.__toggleSceneLock()
+        self._lockButtonWidget.setToolTip("Unlock" if self._isSceneLocked else "Lock")
         self._lockButtonWidget.setState(self._isSceneLocked)
 
     def __toggleSceneLock(self):
@@ -104,6 +103,7 @@ class ExplorerToolsbar(QWidget, Observable):
     def __clickedVisibilityButton(self):
         objects=self.getShownObjects()
         self.toggleObjectVisible()
+        self._visibleButtonWidget.setToolTip("Hide" if self._areObjectVisible else "Show")
         for object in objects:
             object.setVisible(self._areObjectVisible)
 

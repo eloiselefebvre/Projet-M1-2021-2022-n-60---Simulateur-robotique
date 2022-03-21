@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QGridLayout, QWidget
 from PyQt5.QtCore import Qt
 
-from discoverySimulator.interface.views.ExplorerToolsbar import ExplorerToolsbar
+from discoverySimulator.interface.views.ExplorerToolbar import ExplorerToolsbar
 from discoverySimulator.interface.views.ExplorerInfo import ExplorerInfo
 from discoverySimulator.interface.views.ExplorerTree import ExplorerTree
 
