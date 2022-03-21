@@ -48,10 +48,12 @@ class Shape(ABC):
         -> ligne vs ligne
         -> cercle vs ligne
         """
+        from .Point import Point
+        if isinstance(self,Point) or isinstance(shape,Point):
+            return []
         total_intersections=[]
         shape1_lines = self.getLineDecomposition()
         shape2_lines = shape.getLineDecomposition()
-        # TODO : Gérer le cas du point (getLineDecomposition() renvoie [] comme pour le cercle)
         # intersection cercle/cercle
         if not shape1_lines and not shape2_lines:
             # TODO : Return circle intersection points

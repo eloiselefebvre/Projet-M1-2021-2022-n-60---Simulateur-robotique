@@ -22,7 +22,7 @@ class Circle(Shape):
     def getLineDecomposition(self):
         return []
 
-    def isIntersectionWithLine(self,line):
+    def isIntersectionWithLine(self,line): # TODO : Rename
         intersections = []
         if line.x2()!=line.x1(): # pas ligne verticale
             a_line,b_line=Line.getLineCoefficient(line)

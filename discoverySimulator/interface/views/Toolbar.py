@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QPixmap, QFont
-from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit
+from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, QWidgetAction
 
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import config
@@ -30,21 +30,25 @@ class Toolbar(QToolBar,Observable):
         self.setContentsMargins(0,0,0,0)
         self.addWidget(self.createAboutWidget())
 
-        self.addWidget(self.createSectionTitleWidget("Simulation"))
+        self.addAction(self.createSectionTitleWidget("Simulation"))
         self.addWidget(self.createTimerWidget())
         self.addWidget(self.createAccelerationWidget())
         self.addWidget(self.createPlayPauseWidget())
 
-        self.addWidget(self.createSectionTitleWidget("Robot"))
+        test=self.createSectionTitleWidget("Robot")
+        self.addAction(test)
+        self.removeAction(test)
 
 
     def createSectionTitleWidget(self,name=""):
+        labelWidget = QWidgetAction(self)
         label=QLabel(name+":")
         fnt=QFont("Sanserif",12)
         label.setFont(fnt)
         label.setStyleSheet("color:#fff; border-left:1px solid #4D4D6D;")
         label.setContentsMargins(8,0,0,0)
-        return label
+        labelWidget.setDefaultWidget(label)
+        return labelWidget
 
     def createAboutWidget(self):
         about=QWidget()
