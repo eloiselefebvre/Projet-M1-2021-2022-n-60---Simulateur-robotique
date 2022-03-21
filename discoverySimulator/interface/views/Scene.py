@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
 
 from discoverySimulator.Observable import Observable
+from discoverySimulator.ressources.PathFinding import PathFinding
 from discoverySimulator.robots.Robot import Robot
 
 import time
@@ -150,5 +151,5 @@ class Scene(QWidget,Observable):
             self._zoomController.setSceneSize(self._size)
 
     def followPathSelected(self,sender):
-        print('ok')
+        PathFinding(self._environment,sender.getRobotSelected())
 

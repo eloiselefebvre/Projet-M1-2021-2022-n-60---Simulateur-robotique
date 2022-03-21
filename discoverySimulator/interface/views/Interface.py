@@ -74,7 +74,7 @@ class Interface(QMainWindow):
             self._toolbar.addObserverCallback(obj.accelerationChanged, "accelerationChanged")
             if isinstance(obj,Robot):
                 obj.addObserverCallback(self._toolbar.robotSelected,'selectionChanged')
-                self._toolbar.addObserverCallback(self._sceneWidget.followPathSelected,'followPathSelected')
+        self._toolbar.addObserverCallback(self._sceneWidget.followPathSelected,'followPathSelected')
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)

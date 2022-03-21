@@ -30,20 +30,20 @@ class PathFinding:
         self.__ROWS_NUMBER = (self._environment.getWidth())/15
         self.__COLS_NUMBER = (self._environment.getHeight())/15
         self._nodes = {}
-        self.__setBeginNode((10,10))
+        self.__setBeginNode((int(self._robot.getX()*15),int(self._robot.getY()*15)))
         self.__setEndNode((30,30))
         self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
         self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
-        self.setRobotStartPosition()
-        time.sleep(1)
+        # self.setRobotStartPosition()
+        # time.sleep(1)
         self._pathSimplified=[]
         self._modifyOrientation = True
         self._nextPointIndex = 0
         self._followPath=True
         self.__astar()
 
-    def setRobotStartPosition(self):
-        self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
+    # def setRobotStartPosition(self):
+    #     self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
 
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):

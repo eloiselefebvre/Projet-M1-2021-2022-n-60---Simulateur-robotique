@@ -26,6 +26,8 @@ class Toolbar(QToolBar,Observable):
 
         self._acceleration = 1.0
         self._playState = True
+        self._robotTitleWidget=None
+        self._path_following_button=None
 
         self.setContentsMargins(0,0,0,0)
         self.addWidget(self.createAboutWidget())
@@ -35,10 +37,9 @@ class Toolbar(QToolBar,Observable):
         self.addWidget(self.createAccelerationWidget())
         self.addWidget(self.createPlayPauseWidget())
 
-        test=self.createSectionTitleWidget("Robot")
-        self.addAction(test)
-        self.removeAction(test)
-
+        self._robotTitleWidget = self.createSectionTitleWidget("Robot")
+        self._path_following_button=self.pathFollowingButton()
+        self._robotSelected=None
 
     def createSectionTitleWidget(self,name=""):
         labelWidget = QWidgetAction(self)
@@ -93,6 +94,7 @@ class Toolbar(QToolBar,Observable):
         timer_layout.setAlignment(Qt.AlignLeft)
 
         self._timeElapsed.setFont(QFont("Sanserif", 12))
+
 
         return timer
 
@@ -202,20 +204,25 @@ class Toolbar(QToolBar,Observable):
 
     def robotSelected(self,sender):
         if sender.isSelected():
-            self.addWidget(self.createSectionTitleWidget("Robot"))
-            self.addWidget(self.pathFollowingButton())
+            self._robotSelected=sender
+            self.addAction(self._robotTitleWidget)
+            self.addAction(self._path_following_button)
+        else:
+            self.removeAction(self._robotTitleWidget)
+            self.removeAction(self._path_following_button)
 
     def pathFollowingButton(self):
+        widget=QWidgetAction(self)
         path_following_button = Button()
+        widget.setDefaultWidget(path_following_button)
         path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/goTo.svg"))
         path_following_button.setToolTip("followPath")
         path_following_button.clicked.connect(self.__clickedFollowPath)
-        return path_following_button
+        return widget
 
     def __clickedFollowPath(self):
         self.notifyObservers('followPathSelected')
 
-
-
-
+    def getRobotSelected(self):
+        return self._robotSelected
 
