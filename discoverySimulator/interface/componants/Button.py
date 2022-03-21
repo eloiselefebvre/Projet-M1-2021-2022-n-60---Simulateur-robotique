@@ -51,7 +51,7 @@ class VisibilityButton(ToggleButton):
 
     def lock(self):
         self.setDisabled(True)
-        self.setIcon(QIcon(f"{config['ressourcesPath']}/point.svg"))
+        self.setIcon(QIcon(f"{config['ressourcesPath']}/states/point.svg"))
 
     def unlock(self):
         self.setDisabled(False)

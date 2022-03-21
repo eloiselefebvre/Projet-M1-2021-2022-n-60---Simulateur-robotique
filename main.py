@@ -1,2 +1,2 @@
-from discoverySimulator.tests import collisionAndTelemeter
-collisionAndTelemeter()
+from discoverySimulator.tests import usingLIDAR
+usingLIDAR.LIDARTest()

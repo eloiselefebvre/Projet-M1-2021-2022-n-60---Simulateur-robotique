@@ -59,14 +59,23 @@ class Scene(QWidget,Observable):
         self.update()
 
     def mousePressEvent(self, event):
-        self.setCursor(Qt.ClosedHandCursor)
+        self._convertedMousePose = (event.pos() - self._zoomController.getOffset()) / self._zoomController.getZoom()
+
         if event.button()==Qt.LeftButton:
-            self._objectGrabbed(event.pos())
+            self._objectGrabbed()
             self._dragObject=True
 
         if event.button() == Qt.MiddleButton:
             self._dragScene = True
             self._dragSceneOrigin = event.pos()
+
+        if self._pathFinding is not None:
+            self.setCursor(Qt.CrossCursor)
+            self._pathFinding.setEndPoint(self._convertedMousePose)
+            self._pathFinding.setIsFollowingPath(True)
+            self._pathFinding = None
+        else:
+            self.setCursor(Qt.ClosedHandCursor)
 
     def mouseReleaseEvent(self,event):
         self.setCursor(Qt.OpenHandCursor)
@@ -105,20 +114,18 @@ class Scene(QWidget,Observable):
             self._zoomController.setOffset(self._zoomController.getOffset()+(current-self._dragSceneOrigin))
             self._dragSceneOrigin=current
 
-    def _objectGrabbed(self, mousePose):
-
-        convertedMousePose = (mousePose - self._zoomController.getOffset()) / self._zoomController.getZoom()
+    def _objectGrabbed(self):
         for obj in self._environment.getObjects():
             obj.setSelected(False)
 
         objects = sorted(self._environment.getObjects(),key=lambda obj:obj.getZIndex())
         objects.reverse()
         for obj in objects:
-            if obj.getRepresentation().contains(convertedMousePose) and obj.isVisible():
+            if obj.getRepresentation().contains(self._convertedMousePose) and obj.isVisible():
                 obj.setSelected(True)
                 pose = obj.getPose()
-                dx = convertedMousePose.x() - pose.getX()
-                dy = convertedMousePose.y() - pose.getY()
+                dx = self._convertedMousePose.x() - pose.getX()
+                dy = self._convertedMousePose.y() - pose.getY()
                 self._selectionOffset = (dx, dy)
                 if not self._isSceneLocked:
                     self._selectedObj = obj
@@ -126,10 +133,6 @@ class Scene(QWidget,Observable):
                     self._objectMoved=False
                     self._selectedObj.setCollidedState(True)
                 break
-        if self._pathFinding is not None:
-            self._pathFinding.setEndPoint(convertedMousePose)
-            self._pathFinding.setIsFollowingPath(True)
-            self._pathFinding=None
 
     def wheelEvent(self, event):
         if event.modifiers() and Qt.ControlModifier:
@@ -156,6 +159,7 @@ class Scene(QWidget,Observable):
             self._zoomController.setSceneSize(self._size)
 
     def followPathSelected(self,sender):
+        self.setCursor(Qt.CrossCursor)
         robot=sender.getRobotSelected()
         self._pathFinding = PathFinding(self._environment,robot)
 

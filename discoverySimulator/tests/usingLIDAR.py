@@ -29,7 +29,9 @@ def LIDARTest():
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
     env.addObject(Obstacle(Representation(Rectangle(40, 200, "#ff8fff"))), 650, 400)
     env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850, 25)
-    env.addObject(Obstacle(Representation(Polygon([(500,500),(600,400),(800,400),(600,500),(800,700)], "#ff8fff"))))
+    pol=Polygon([(500,500),(600,400),(800,400),(600,500),(800,700)],"#ff8fff")
+    env.addObject(Obstacle(Representation(pol)))
+    env.addObject(Obstacle(Representation(pol.offset(-20))))
     # env.addObject(LIDAR(),50,50)
 
     sim = Simulation(env)

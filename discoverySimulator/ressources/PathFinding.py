@@ -174,7 +174,7 @@ class PathFinding:
         if self._robot.isFollowingPath():
             distance = sqrt((self._pathSimplified[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._pathSimplified[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(self._pathSimplified[self._nextPointIndex])
-            if (angularDistance>2 or angularDistance<-2) and self._modifyOrientation:
+            if (angularDistance>1 or angularDistance<-1) and self._modifyOrientation:
                 if angularDistance < 0:
                     self._robot.setRightWheelSpeed(-self.TURN_SPEED)
                     self._robot.setLeftWheelSpeed(self.TURN_SPEED)

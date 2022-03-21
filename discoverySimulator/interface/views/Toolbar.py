@@ -27,7 +27,7 @@ class Toolbar(QToolBar,Observable):
         self._acceleration = 1.0
         self._playState = True
         self._robotTitleWidget=None
-        self._path_following_button=None
+        self._pathFollowingWidget=None
 
         self.setContentsMargins(0,0,0,0)
         self.addWidget(self.createAboutWidget())
@@ -38,7 +38,7 @@ class Toolbar(QToolBar,Observable):
         self.addWidget(self.createPlayPauseWidget())
 
         self._robotTitleWidget = self.createSectionTitleWidget("Robot")
-        self._path_following_button=self.pathFollowingButton()
+        self._pathFollowingWidget=self.pathFollowingButton()
         self._robotSelected=None
 
     def createSectionTitleWidget(self,name=""):
@@ -209,21 +209,23 @@ class Toolbar(QToolBar,Observable):
         if sender.isSelected():
             self._robotSelected=sender
             self.addAction(self._robotTitleWidget)
-            self.addAction(self._path_following_button)
+            self.addAction(self._pathFollowingWidget)
         else:
+            # self._path_following_button.setStyleSheet("background:none;")
             self.removeAction(self._robotTitleWidget)
-            self.removeAction(self._path_following_button)
+            self.removeAction(self._pathFollowingWidget)
 
     def pathFollowingButton(self):
         widget=QWidgetAction(self)
-        path_following_button = Button()
-        widget.setDefaultWidget(path_following_button)
-        path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
-        path_following_button.setToolTip("followPath")
-        path_following_button.clicked.connect(self.__clickedFollowPath)
+        self._path_following_button = Button()
+        widget.setDefaultWidget(self._path_following_button)
+        self._path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
+        self._path_following_button.setToolTip("Go To")
+        self._path_following_button.clicked.connect(self.__clickedFollowPath)
         return widget
 
     def __clickedFollowPath(self):
+        # self.sender().setStyleSheet("background-color:#4C4C68; border-radius:2px;") # + add disable go to
         self.notifyObservers('followPathSelected')
 
     def getRobotSelected(self):

@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt, QLineF, QPoint
-from PyQt5.QtGui import QPolygon, QBrush
+from PyQt5.QtCore import Qt, QLineF, QPoint, QPointF
+from PyQt5.QtGui import QPolygon, QBrush, QPen, QColor
 
 from discoverySimulator.representation.shapes import Shape, Rectangle
 
@@ -10,13 +10,15 @@ class Polygon(Shape):
 
     def __init__(self,points,color=None,opacity=255):
         super().__init__(color,opacity)
-        self._points=points
-
-        for i in range (len(self._points)):
-            self._points[i]=QPoint(self._points[i][0],self._points[i][1])
+        self._points=[QPoint(point[0],point[1]) for point in points]
 
     def paint(self, painter):
         super().paint(painter)
+        # painter.setPen(QPen(QColor("#f00"), 4, Qt.SolidLine))
+        # painter.drawLine(QLineF(350.0, 300.0, 250.0, 350.0))
+        # painter.drawLine(QLineF(300.0, 200.0, 300.0, 100.0))
+        # painter.drawLine(QLineF(300.0, 200.0, 309.0, 206.0))
+
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawPolygon(QPolygon(self._points))
 
@@ -57,3 +59,34 @@ class Polygon(Shape):
             if point.y()>max_y:
                 max_y=point.y()
         return Rectangle(max_x-min_x,max_y-min_y)
+
+    def offset(self,value): # sens horaire
+        points_offset=[]
+        points_number=len(self._points)
+        for curr in range(points_number):
+            prev = (curr + points_number - 1) % points_number
+            next = (curr + 1) % points_number
+
+            line1 = QLineF(self._points[prev].x(),self._points[prev].y(),self._points[curr].x(),self._points[curr].y())
+            line2 = QLineF(self._points[curr].x(),self._points[curr].y(),self._points[next].x(),self._points[next].y())
+            line1_normal=line1.normalVector()
+            line2_normal=line2.normalVector()
+
+            na = QPointF(line1_normal.x2()-line1_normal.x1(),line1_normal.y2()-line1_normal.y1())
+            na/=line1_normal.length()
+
+            nb = QPointF(line2_normal.x2()-line2_normal.x1(),line2_normal.y2()-line2_normal.y1())
+            nb/=line2_normal.length()
+
+            bis=na+nb
+            length_bis = (bis.x()**2+bis.y()**2)**0.5
+            bis/=length_bis
+
+            l=value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
+
+            p_prime = self._points[curr]+l*bis
+            points_offset.append((round(p_prime.x()),round(p_prime.y())))
+
+        pol=Polygon(points_offset)
+        pol.setPose(self._pose.copy())
+        return pol
