@@ -32,6 +32,7 @@ class PathFinding:
     def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.01):
         self._environment=environment
         self._robot=robot
+        self._robot.setIsFollowingPath(False)
         self._robot.setPathFinding(self)
         self._displayEnabled = displayEnabled
         self._displayDelay = displayDelay

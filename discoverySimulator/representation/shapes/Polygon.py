@@ -8,7 +8,7 @@ class Polygon(Shape):
 
     POINT_SIZE = 5
 
-    def __init__(self,points,color="#000",opacity=255):
+    def __init__(self,points,color=None,opacity=255):
         super().__init__(color,opacity)
         self._points=points
 

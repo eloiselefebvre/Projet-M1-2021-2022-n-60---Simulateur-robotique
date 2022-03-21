@@ -63,7 +63,7 @@ def collisionAndTelemeter():
     rob5.setRightWheelSpeed(300)
     rob5.setLeftWheelSpeed(300)
 
-    polygon=Object(Representation(Polygon([(300,200),(100,150),(500,200)])))
+    polygon=Object(Representation(Polygon([(300,200),(400,200),(500,300),(400,350),(350,300)],"#f0f")))
 
     env = Environment(1500,900)
     env.addObject(rob1, 1000, 100, 30)
