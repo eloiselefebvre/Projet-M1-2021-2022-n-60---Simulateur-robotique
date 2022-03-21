@@ -1,7 +1,6 @@
 from . import TwoWheelsRobot
 from discoverySimulator.representation.shapes.Circle import Circle
 from discoverySimulator.representation.Representation import Representation
-
 import random
 
 class CircleTwoWheelsRobot(TwoWheelsRobot):

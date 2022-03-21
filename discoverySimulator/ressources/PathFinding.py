@@ -24,17 +24,18 @@ class PathFinding:
     CELL_SIZE = 15
     OFFSET = CELL_SIZE/2
 
-    def __init__(self, environment, robot,NODE=None):
+    def __init__(self, environment, robot):
         self._environment=environment
         self._robot=robot
+        self._robot.setLeftWheelSpeed(0)
+        self._robot.setRightWheelSpeed(0)
         self.__ROWS_NUMBER = (self._environment.getWidth())/15
         self.__COLS_NUMBER = (self._environment.getHeight())/15
         self._nodes = {}
-        self.__setBeginNode((int(self._robot.getX()*15),int(self._robot.getY()*15)))
-        self.__setEndNode((30,30))
+        self.__setBeginNode((int(self._robot.getPose().getX()/self.CELL_SIZE),int(self._robot.getPose().getY()/self.CELL_SIZE)))
+        self.__setEndNode()
         self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
         self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
-        # self.setRobotStartPosition()
         # time.sleep(1)
         self._pathSimplified=[]
         self._modifyOrientation = True
@@ -45,12 +46,15 @@ class PathFinding:
     # def setRobotStartPosition(self):
     #     self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
 
+    def getEndNode(self):
+        return self.__endNode
+
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.createNode(node)
             self.__beginNode = node
 
-    def __setEndNode(self, node):
+    def __setEndNode(self, node=(30,30)):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.createNode(node)
             self.__endNode = node
@@ -96,8 +100,8 @@ class PathFinding:
             # time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
-            if current != self.__beginNode and current != self.__endNode:
-                self.__setNodeColor(current, self.COLORS['closed_node'])
+            # if current != self.__beginNode and current != self.__endNode:
+                # self.__setNodeColor(current, self.COLORS['closed_node'])
             neighbors = self.__getNodeNeighbors(current)
             for n in neighbors:
                 weight = 0
@@ -116,12 +120,12 @@ class PathFinding:
                         self.createNode(n)
                         opened_nodes[n] = distanceFromBeginNode
                         opened_nodes_heuristic[n] = opened_nodes[n] + self.__heuristic(n)
-                        if n != self.__beginNode and n != self.__endNode:
-                            self.__setNodeColor(n, self.COLORS["opened_node"])
+                        # if n != self.__beginNode and n != self.__endNode:
+                            # self.__setNodeColor(n, self.COLORS["opened_node"])
                         predecessors[n] = current
             current = min(opened_nodes_heuristic,key=opened_nodes_heuristic.__getitem__)
-            if current != self.__beginNode and current != self.__endNode:
-                self.__setNodeColor(current, self.COLORS["computed_node"])
+            # if current != self.__beginNode and current != self.__endNode:
+                # self.__setNodeColor(current, self.COLORS["computed_node"])
         self.__displayFoundPathAndDistance(predecessors,opened_nodes)
 
     def __displayFoundPathAndDistance(self, predecessors, opened_nodes):
@@ -131,9 +135,9 @@ class PathFinding:
             path.append(current)
             current = predecessors[current]
         path.reverse()
-        for p in path:
-            if p != self.__beginNode and p != self.__endNode:
-                self.__setNodeColor(p, self.COLORS["path_node"])
+        # for p in path:
+            # if p != self.__beginNode and p != self.__endNode:
+            #     self.__setNodeColor(p, self.COLORS["path_node"])
         self._pathSimplified=self.simplifyPath(path)
 
     def __heuristic(self, node):
@@ -146,7 +150,7 @@ class PathFinding:
         return ((self.__endNode[0] - node[0]) ** 2 + (self.__endNode[1] - node[1]) ** 2) ** 0.5
 
     def createNode(self,node):
-        self._nodes[node]=Rectangle(15, 15, "#FF9900")
+        self._nodes[node]=Rectangle(15, 15, "#F0F0F0")
         self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET)
 
     def followSimplifyPath(self):
@@ -169,11 +173,11 @@ class PathFinding:
                 if not self._modifyOrientation:
                     self._nextPointIndex+=1
                 self._modifyOrientation=True
-
             if self._nextPointIndex==len(self._pathSimplified):
                 self._followPath=False
-                self._robot.setLeftWheelSpeed(0)
                 self._robot.setRightWheelSpeed(0)
+                self._robot.setLeftWheelSpeed(0)
+                self._robot.setIsFollowingPath(False)
 
     def simplifyPath(self, path):
         counter=1
