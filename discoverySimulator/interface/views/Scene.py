@@ -129,6 +129,7 @@ class Scene(QWidget,Observable):
         if self._pathFinding is not None:
             self._pathFinding.setEndPoint(convertedMousePose)
             self._pathFinding.setIsFollowingPath(True)
+            self._pathFinding=None
 
     def wheelEvent(self, event):
         if event.modifiers() and Qt.ControlModifier:

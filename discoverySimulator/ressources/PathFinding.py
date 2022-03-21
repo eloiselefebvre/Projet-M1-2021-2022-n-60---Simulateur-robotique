@@ -28,7 +28,7 @@ class PathFinding:
 
     SECURITY_MARGIN = 20
 
-    def __init__(self, environment, robot, displayEnabled=True ,displayDelay=0.001):
+    def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.001):
         self._environment=environment
         self._robot=robot
         self._displayEnabled = displayEnabled
