@@ -44,8 +44,8 @@ class LIDAR(Telemeter):
             self.getPose().rotate(self.ANGULAR_RESOLUTION)
 
     def getSpecifications(self):
-        specifications = "---\n"
-        specifications += f"Angular Resolution : {self.ANGULAR_RESOLUTION}°\n"
-        specifications += f"Angular Range : {self.ANGULAR_RANGE}°\n"
+        specifications = "---<br>"
+        specifications += f"Angular Resolution : {self.ANGULAR_RESOLUTION}°<br>"
+        specifications += f"Angular Range : {self.ANGULAR_RANGE}°<br>"
         specifications += f"Scan Rate : {self.SCAN_RATE}rpm"
         return specifications

@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QTextEdit
 
@@ -34,6 +35,7 @@ class ExplorerInfo(QWidget):
             self._layoutInfo.addWidget(self.showOdometry())
 
         self._specificationsWidget = QLabel()
+        self._specificationsWidget.setTextFormat(Qt.RichText)
         self._specificationsWidget.setFont(QFont("Sanserif", 12))
         if isinstance(self._selectedObject, Component):
             self._specificationsWidget.setText(self._selectedObject.getSpecifications())

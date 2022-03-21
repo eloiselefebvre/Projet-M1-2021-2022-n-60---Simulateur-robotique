@@ -35,7 +35,6 @@ class Scene(QWidget,Observable):
         self.setStyleSheet("background-color: #f0f0f0")
 
         self._convertedMousePose=QPoint(0, 0)
-        self.update()   # first refresh
 
     def updateLockedScene(self,sender):
         self._isSceneLocked=sender.getLockState()

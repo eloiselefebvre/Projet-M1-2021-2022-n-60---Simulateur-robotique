@@ -12,6 +12,7 @@ def aStar():
     env=Environment(1500,1500)
     robot = CircleTwoWheelsRobot()
     obs=Obstacle(Representation(Circle(50,"#f00")))
+    env.addObject(robot,100,100)
     env.addObject(obs,250,250)
     sim = Simulation(env)
     sim.run()

@@ -26,7 +26,7 @@ class Wheel(Actuator):
         return self._radius
 
     def getSpecifications(self):
-        specifications=f"Current speed : {self._speed}rpm\n---\n"
+        specifications=f"Current speed : {self._speed}rpm<br>---<br>"
         specifications+=f"Radius : {self._radius}px"
         return specifications
 

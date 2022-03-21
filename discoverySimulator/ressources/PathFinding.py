@@ -1,6 +1,8 @@
 import time
 from math import sqrt, atan, degrees
 from PyQt5.QtCore import QPoint, QLineF
+
+from discoverySimulator.Pose import Pose
 from discoverySimulator.Object import Object
 from discoverySimulator.Obstacle import Obstacle
 from discoverySimulator.representation import Representation
@@ -24,9 +26,14 @@ class PathFinding:
     CELL_SIZE = 15
     OFFSET = CELL_SIZE/2
 
-    def __init__(self, environment, robot):
+    SECURITY_MARGIN = 20
+
+    def __init__(self, environment, robot, displayEnabled=True ,displayDelay=0.001):
         self._environment=environment
         self._robot=robot
+        self._displayEnabled = displayEnabled
+        self._displayDelay = displayDelay
+
         self._robot.setLeftWheelSpeed(0)
         self._robot.setRightWheelSpeed(0)
         self.__ROWS_NUMBER = (self._environment.getWidth())/15
@@ -36,15 +43,13 @@ class PathFinding:
         self.__setEndNode()
         self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
         self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
-        # time.sleep(1)
+
         self._pathSimplified=[]
         self._modifyOrientation = True
         self._nextPointIndex = 0
         self._followPath=True
-        self.__astar()
 
-    # def setRobotStartPosition(self):
-    #     self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
+        self.__astar()
 
     def getEndNode(self):
         return self.__endNode
@@ -64,15 +69,12 @@ class PathFinding:
 
     def __getNodeValue(self, node):
         for obj in self._environment.getObjects():
-            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+5)
+            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN)
             if isinstance(obj,Obstacle):
-                if obstacle.contains(QPoint(node[0]*15,node[1]*15)):
-                    return False
-                if obstacle.contains(QPoint(node[0]*15,(node[1]+1)*15)):
-                    return False
-                if obstacle.contains(QPoint((node[0]+1)*15,node[1]*15)):
-                    return False
-                if obstacle.contains(QPoint((node[0]+1)*15,(node[1]+1)*15)):
+                if obstacle.contains(QPoint(node[0]*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
+                   obstacle.contains(QPoint(node[0]*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)) or\
+                   obstacle.contains(QPoint((node[0]+1)*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
+                   obstacle.contains(QPoint((node[0]+1)*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)):
                     return False
         return True
 
@@ -97,11 +99,11 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            # time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
-            # if current != self.__beginNode and current != self.__endNode:
-                # self.__setNodeColor(current, self.COLORS['closed_node'])
+            if current != self.__beginNode and current != self.__endNode and self._displayEnabled:
+                self.__setNodeColor(current, self.COLORS['closed_node'])
+                time.sleep(self._displayDelay)
             neighbors = self.__getNodeNeighbors(current)
             for n in neighbors:
                 weight = 0
@@ -120,24 +122,27 @@ class PathFinding:
                         self.createNode(n)
                         opened_nodes[n] = distanceFromBeginNode
                         opened_nodes_heuristic[n] = opened_nodes[n] + self.__heuristic(n)
-                        # if n != self.__beginNode and n != self.__endNode:
-                            # self.__setNodeColor(n, self.COLORS["opened_node"])
+                        if n != self.__beginNode and n != self.__endNode  and self._displayEnabled:
+                            self.__setNodeColor(n, self.COLORS["opened_node"])
                         predecessors[n] = current
             current = min(opened_nodes_heuristic,key=opened_nodes_heuristic.__getitem__)
-            # if current != self.__beginNode and current != self.__endNode:
-                # self.__setNodeColor(current, self.COLORS["computed_node"])
-        self.__displayFoundPathAndDistance(predecessors,opened_nodes)
 
-    def __displayFoundPathAndDistance(self, predecessors, opened_nodes):
+            if current != self.__beginNode and current != self.__endNode and self._displayEnabled:
+                self.__setNodeColor(current, self.COLORS["computed_node"])
+
+        self.__displayFoundPathAndDistance(predecessors)
+
+    def __displayFoundPathAndDistance(self, predecessors):
         path = []
         current = self.__endNode
         while current is not None:
             path.append(current)
             current = predecessors[current]
         path.reverse()
-        # for p in path:
-            # if p != self.__beginNode and p != self.__endNode:
-            #     self.__setNodeColor(p, self.COLORS["path_node"])
+        if self._displayEnabled:
+            for p in path:
+                if p != self.__beginNode and p != self.__endNode:
+                    self.__setNodeColor(p, self.COLORS["path_node"])
         self._pathSimplified=self.simplifyPath(path)
 
     def __heuristic(self, node):
@@ -150,8 +155,11 @@ class PathFinding:
         return ((self.__endNode[0] - node[0]) ** 2 + (self.__endNode[1] - node[1]) ** 2) ** 0.5
 
     def createNode(self,node):
-        self._nodes[node]=Rectangle(15, 15, "#F0F0F0")
-        self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET)
+        self._nodes[node]=Rectangle(15, 15)
+        if self._displayEnabled:
+            self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET)
+        else:
+            self._nodes[node].setPose(Pose(node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET))
 
     def followSimplifyPath(self):
         if self._followPath:
@@ -208,14 +216,17 @@ class PathFinding:
                     orientation=270
                 else :
                     orientation=90
-            if line is not None:
+            if self._displayEnabled and line is not None:
                 self._environment.removeVirtualObject(line)
             line = Object(Representation(Line(int(length),5,"#f00")))
-            self._environment.addVirtualObject(line,int(lastPoint[0]*self.CELL_SIZE+self.OFFSET),int(lastPoint[1]*self.CELL_SIZE+self.OFFSET),orientation)
+            if self._displayEnabled:
+                self._environment.addVirtualObject(line, int(lastPoint[0] * self.CELL_SIZE + self.OFFSET),int(lastPoint[1] * self.CELL_SIZE + self.OFFSET), orientation)
+            else:
+                line.setPose(Pose(int(lastPoint[0]*self.CELL_SIZE+self.OFFSET),int(lastPoint[1]*self.CELL_SIZE+self.OFFSET),orientation))
 
             for obj in self._environment.getObjects():
                 if isinstance(obj,Obstacle):
-                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+5).getIntersectionsWith(line.getRepresentation().getShape()):
+                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN).getIntersectionsWith(line.getRepresentation().getShape()):
                         lastPoint=path[i]
                         line=None
                         current=i

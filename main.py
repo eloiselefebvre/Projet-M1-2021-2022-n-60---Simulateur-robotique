@@ -1,2 +1,2 @@
-from discoverySimulator.tests import usingLIDAR
-usingLIDAR.LIDARTest()
+from discoverySimulator.tests import aStar
+aStar()
