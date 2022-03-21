@@ -46,8 +46,8 @@ class VisibilityButton(ToggleButton):
 
     def __init__(self,visibiliy=True):
         super().__init__(visibiliy)
-        self.setTrueStateIcon(QIcon(f"{config['ressourcesPath']}/visible.svg"))
-        self.setFalseStateIcon(QIcon(f"{config['ressourcesPath']}/invisible.svg"))
+        self.setTrueStateIcon(QIcon(f"{config['ressourcesPath']}/states/visible.svg"))
+        self.setFalseStateIcon(QIcon(f"{config['ressourcesPath']}/states/invisible.svg"))
 
     def lock(self):
         self.setDisabled(True)
@@ -61,12 +61,12 @@ class LockButton(ToggleButton):
 
     def __init__(self,lock=False):
         super().__init__(lock)
-        self.setTrueStateIcon(QIcon(f"{config['ressourcesPath']}/lock.svg"))
-        self.setFalseStateIcon(QIcon(f"{config['ressourcesPath']}/unlock.svg"))
+        self.setTrueStateIcon(QIcon(f"{config['ressourcesPath']}/states/lock.svg"))
+        self.setFalseStateIcon(QIcon(f"{config['ressourcesPath']}/states/unlock.svg"))
 
 class PlayButton(ToggleButton):
 
     def __init__(self,play=False):
         super().__init__(play)
-        self.setTrueStateIcon(QIcon(f"{config['ressourcesPath']}/pause.svg"))
-        self.setFalseStateIcon(QIcon(f"{config['ressourcesPath']}/play.svg"))
+        self.setTrueStateIcon(QIcon(f"{config['ressourcesPath']}/toolbar/pause.svg"))
+        self.setFalseStateIcon(QIcon(f"{config['ressourcesPath']}/toolbar/play.svg"))

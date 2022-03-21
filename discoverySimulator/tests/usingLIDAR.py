@@ -17,7 +17,7 @@ def LIDARTest():
     rob.setRightWheelSpeed(400)
     rob.setLeftWheelSpeed(400)
 
-    lidar2 = LIDAR("#00f")
+    lidar2 = LIDAR()
     rob2 = RectangleTwoWheelsRobot()
     rob2.addComponent(lidar2)
     rob2.setRightWheelSpeed(200)
@@ -29,7 +29,7 @@ def LIDARTest():
     env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
     env.addObject(Obstacle(Representation(Rectangle(40, 200, "#ff8fff"))), 650, 400)
     env.addObject(Obstacle(Representation(Rectangle(400, 100, "#ff8fff"))), 250, 850, 25)
-    env.addObject(Obstacle(Representation(Polygon([QPoint(500,500),QPoint(600,400),QPoint(800,400),QPoint(600,500),QPoint(800,700)], "#ff8fff"))))
+    env.addObject(Obstacle(Representation(Polygon([(500,500),(600,400),(800,400),(600,500),(800,700)], "#ff8fff"))))
     # env.addObject(LIDAR(),50,50)
 
     sim = Simulation(env)

@@ -15,14 +15,14 @@ class PopUp(QDialog):
         self.setLayout(layout)
         layout.addWidget(self.logo())
         self.setWindowTitle("About")
-        self.setWindowIcon(QIcon(f"{config['ressourcesPath']}/info.svg"))
+        self.setWindowIcon(QIcon(f"{config['ressourcesPath']}/toolbar/info.svg"))
 
         self.setWindowFlags(self.windowFlags() and Qt.WindowCloseButtonHint)
         self.exec()
 
     def logo(self):
         widget = QLabel()
-        logo = QPixmap(f"{config['ressourcesPath']}/popUp.svg")
+        logo = QPixmap(f"{config['ressourcesPath']}/infos/popUp.svg")
         widget.setPixmap(logo)
         return widget
 

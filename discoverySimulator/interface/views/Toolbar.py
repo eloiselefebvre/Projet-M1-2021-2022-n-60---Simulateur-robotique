@@ -59,7 +59,7 @@ class Toolbar(QToolBar,Observable):
         about.setContentsMargins(4, 0, 4, 0)
 
         about_button = Button()
-        about_button.setIcon(QIcon(f"{config['ressourcesPath']}/info.svg"))
+        about_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/info.svg"))
         about_button.setIconSize(QSize(22, 22))
         about_button.clicked.connect(self.__openPopUp)
         about_button.setToolTip("About")
@@ -74,7 +74,7 @@ class Toolbar(QToolBar,Observable):
 
     def createTimerWidget(self):
         timer_icon=QLabel()
-        timer_icon.setStyleSheet(f"image: url({config['ressourcesPath']}/timer.svg);"
+        timer_icon.setStyleSheet(f"image: url({config['ressourcesPath']}/toolbar/timer.svg);"
                                  f"image-repeat:no-repeat; image-position:center; image-size:contain;")
         timer_icon.setFixedWidth(16)
 
@@ -108,7 +108,7 @@ class Toolbar(QToolBar,Observable):
         acceleration.setContentsMargins(4,0,4,0)
 
         decrease_button = Button()
-        decrease_button.setIcon(QIcon(f"{config['ressourcesPath']}/decreaseAcceleration.svg"))
+        decrease_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/decreaseAcceleration.svg"))
         decrease_button.setToolTip("Decrease Acceleration")
         decrease_button.clicked.connect(self.__clickedDecreaseAcceleration)
 
@@ -121,7 +121,7 @@ class Toolbar(QToolBar,Observable):
         self.__accelerationChanged()
 
         increase_button=Button()
-        increase_button.setIcon(QIcon(f"{config['ressourcesPath']}/increaseAcceleration.svg"))
+        increase_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/increaseAcceleration.svg"))
         increase_button.setToolTip("Increase Acceleration")
         increase_button.clicked.connect(self.__clickedIncreaseAcceleration)
 
@@ -218,7 +218,7 @@ class Toolbar(QToolBar,Observable):
         widget=QWidgetAction(self)
         path_following_button = Button()
         widget.setDefaultWidget(path_following_button)
-        path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/goTo.svg"))
+        path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
         path_following_button.setToolTip("followPath")
         path_following_button.clicked.connect(self.__clickedFollowPath)
         return widget
