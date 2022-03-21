@@ -22,6 +22,8 @@ class Robot(ABC,Object):
         self._components=[]
         self._sensors_counter=0
         self._actuators_counter=0
+        self._isFollowingPath=False
+        self._pathFinding=None
 
         # TRAJECTORY ATTRIBUTES
         self._trajectory = []
@@ -48,6 +50,8 @@ class Robot(ABC,Object):
         self.updateTrajectory()
         self.updateOdometry()
         self.notifyObservers("stateChanged")
+        if self._isFollowingPath:
+            self._pathFinding.followSimplifyPath()
 
     def getComponents(self):
         return self._components
@@ -154,3 +158,9 @@ class Robot(ABC,Object):
 
     def getOdometryPose(self):
         return self._odometryPose
+
+    def setIsFollowingPath(self,state):
+        self._isFollowingPath=state
+
+    def setPathFinding(self,pathFinding):
+        self._pathFinding=pathFinding

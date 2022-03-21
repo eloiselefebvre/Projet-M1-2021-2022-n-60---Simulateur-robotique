@@ -8,7 +8,7 @@ class Rectangle(Shape):
     ORIENTATION_MARK_WIDTH = 2
     ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
-    def __init__(self,width,height,color,borderRadius=0,opacity=255):
+    def __init__(self,width,height,color=None,borderRadius=0,opacity=255):
         super().__init__(color,opacity)
         self._width=width
         self._height=height

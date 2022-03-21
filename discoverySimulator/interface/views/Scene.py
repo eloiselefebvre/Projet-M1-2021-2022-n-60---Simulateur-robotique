@@ -151,5 +151,9 @@ class Scene(QWidget,Observable):
             self._zoomController.setSceneSize(self._size)
 
     def followPathSelected(self,sender):
-        PathFinding(self._environment,sender.getRobotSelected())
+        robot=sender.getRobotSelected()
+        pathFinding=PathFinding(self._environment,robot)
+        robot.setPathFinding(pathFinding)
+        robot.setIsFollowingPath(True)
+
 

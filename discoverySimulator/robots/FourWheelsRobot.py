@@ -38,16 +38,20 @@ class FourWheelsRobot(RectangleTwoWheelsRobot):
         return config["update_time_step"] / 60 * (self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()) * self._acceleration
 
     def setLeftFrontWheelSpeed(self,speed):
-        self._leftWheel.setSpeed(speed)
+        if not self._isFollowingPath:
+            self._leftWheel.setSpeed(speed)
 
     def setRightFrontWheelSpeed(self,speed):
-        self._rightWheel.setSpeed(speed)
+        if not self._isFollowingPath:
+            self._rightWheel.setSpeed(speed)
 
     def setLeftBackWheelSpeed(self,speed):
-        self._backLeftWheel.setSpeed(speed)
+        if not self._isFollowingPath:
+            self._backLeftWheel.setSpeed(speed)
 
     def setRightBackWheelSpeed(self,speed):
-        self._backRightWheel.setSpeed(speed)
+        if not self._isFollowingPath:
+            self._backRightWheel.setSpeed(speed)
 
     def setBackWheelY(self,y):
         self._backRightWheel.getPose().setY(y)
