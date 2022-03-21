@@ -1,15 +1,12 @@
 from abc import ABC,abstractmethod
-from discoverySimulator.Object import Object
-from ..Component import Component
-from ..Frame import Frame
-from ..representation.Representation import Representation
-from ..representation.shapes import Rectangle
-from ..representation.shapes.Point import Point
-from math import cos, pi, sin, radians, degrees, atan
-from discoverySimulator.config import config
 
+from .. import Object
+from ..Component import Component
+from ..representation.Representation import Representation
+from ..representation.shapes.Point import Point
+from math import cos, sin, radians, degrees, atan
+from discoverySimulator.config import config
 from ..Pose import Pose
-from ..sensors import Sensor
 
 # TODO : Changer système de coordonnées du robot ? pour l'instant orientation 0 -> x vers la droite, y vers le bas
 

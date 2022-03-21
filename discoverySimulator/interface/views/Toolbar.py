@@ -200,3 +200,22 @@ class Toolbar(QToolBar,Observable):
         str+=f"{'0' if seconds<10 and (minutes>0 or hours>0) else ''}{round(seconds,1) if minutes==0 else int(seconds)}s"
         self._timeElapsed.setText(str)
 
+    def robotSelected(self,sender):
+        if sender.isSelected():
+            self.addWidget(self.createSectionTitleWidget("Robot"))
+            self.addWidget(self.pathFollowingButton())
+
+    def pathFollowingButton(self):
+        path_following_button = Button()
+        path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/goTo.svg"))
+        path_following_button.setToolTip("followPath")
+        path_following_button.clicked.connect(self.__clickedFollowPath)
+        return path_following_button
+
+    def __clickedFollowPath(self):
+        self.notifyObservers('followPathSelected')
+
+
+
+
+
