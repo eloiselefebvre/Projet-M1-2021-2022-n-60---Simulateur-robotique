@@ -14,9 +14,6 @@ from discoverySimulator.simulation import Environment, Simulation
 
 def collisionAndTelemeter():
 
-    FORWARD_SPEED=300
-    TURN_SPEED=100
-
     rob1 = RectangleTwoWheelsRobot()
     colorSensorRight=ColorSensor()
     rob1.addComponent(colorSensorRight,5,25)

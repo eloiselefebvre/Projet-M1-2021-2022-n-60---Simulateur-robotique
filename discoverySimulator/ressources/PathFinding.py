@@ -1,5 +1,5 @@
 import time
-from math import sqrt, atan, degrees
+from math import sqrt, atan, degrees, cos, radians, sin, acos
 from PyQt5.QtCore import QPoint, QLineF
 
 from discoverySimulator.Pose import Pose
@@ -19,7 +19,8 @@ class PathFinding:
         "computed_node" : "#FFFDC7",
         "path_node": "#FFFE60",
         "begin_node": "#45EB0E",
-        "end_node": "#E8221E"
+        "end_node": "#E8221E",
+        "simplified_path":"#F9886A"
     }
     FORWARD_SPEED = 200
     TURN_SPEED = 100
@@ -28,9 +29,10 @@ class PathFinding:
 
     SECURITY_MARGIN = 20
 
-    def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.001):
+    def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.0):
         self._environment=environment
         self._robot=robot
+        self._robot.setPathFinding(self)
         self._displayEnabled = displayEnabled
         self._displayDelay = displayDelay
 
@@ -41,11 +43,13 @@ class PathFinding:
         self._nodes = {}
         self.__endNode=None
         self.__setBeginNode((int(self._robot.getPose().getX()/self.CELL_SIZE),int(self._robot.getPose().getY()/self.CELL_SIZE)))
+        #self.__setEndNode()
         # self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
+        # self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
+
         self._pathSimplified=[]
         self._modifyOrientation = True
         self._nextPointIndex = 0
-        self._followPath=True
 
     def setEndPoint(self,mousePose):
         self.__endNode=(int(mousePose.x()/self.CELL_SIZE),int(mousePose.y()/self.CELL_SIZE))
@@ -101,7 +105,6 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            # time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
             if current != self.__beginNode and current != self.__endNode and self._displayEnabled:
@@ -112,7 +115,7 @@ class PathFinding:
                 weight = 0
                 for ne in self.__getNodeNeighbors(n):
                     if not self.__getNodeValue(ne):
-                        weight = 2
+                        weight = 1
                         break
                 if not n in closed_nodes and self.__getNodeValue(n):
                     distanceFromBeginNode = closed_nodes[current] + 1 + weight
@@ -122,11 +125,13 @@ class PathFinding:
                             opened_nodes_heuristic[n] = opened_nodes[n] + self.__heuristic(n)
                             predecessors[n] = current
                     else:
-                        self.createNode(n)
+                        if n != self.__beginNode and n!= self.__endNode and self._displayEnabled:
+                            self.createNode(n)
+                            self.__setNodeColor(n, self.COLORS["opened_node"])
+
                         opened_nodes[n] = distanceFromBeginNode
                         opened_nodes_heuristic[n] = opened_nodes[n] + self.__heuristic(n)
-                        if n != self.__beginNode and n != self.__endNode  and self._displayEnabled:
-                            self.__setNodeColor(n, self.COLORS["opened_node"])
+
                         predecessors[n] = current
             current = min(opened_nodes_heuristic,key=opened_nodes_heuristic.__getitem__)
 
@@ -165,7 +170,7 @@ class PathFinding:
             self._nodes[node].setPose(Pose(node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET))
 
     def followSimplifyPath(self):
-        if self._followPath:
+        if self._robot.isFollowingPath():
             distance = sqrt((self._pathSimplified[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._pathSimplified[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(self._pathSimplified[self._nextPointIndex])
             if (angularDistance>2 or angularDistance<-2) and self._modifyOrientation:
@@ -185,7 +190,6 @@ class PathFinding:
                     self._nextPointIndex+=1
                 self._modifyOrientation=True
             if self._nextPointIndex==len(self._pathSimplified):
-                self._followPath=False
                 self._robot.setRightWheelSpeed(0)
                 self._robot.setLeftWheelSpeed(0)
                 self._robot.setIsFollowingPath(False)
@@ -221,7 +225,7 @@ class PathFinding:
                     orientation=90
             if self._displayEnabled and line is not None:
                 self._environment.removeVirtualObject(line)
-            line = Object(Representation(Line(int(length),5,"#f00")))
+            line = Object(Representation(Line(int(length),5,self.COLORS["simplified_path"])))
             if self._displayEnabled:
                 self._environment.addVirtualObject(line, int(lastPoint[0] * self.CELL_SIZE + self.OFFSET),int(lastPoint[1] * self.CELL_SIZE + self.OFFSET), orientation)
             else:
@@ -241,16 +245,24 @@ class PathFinding:
         return points
 
     def angularDistance(self,pathPoint):
+        # https://fr.wikihow.com/calculer-l%E2%80%99angle-entre-deux-vecteurs
+
         currentPosition=(self._robot.getPose().getX(),self._robot.getPose().getY())
         dx = pathPoint[0]-currentPosition[0]
         dy = pathPoint[1]-currentPosition[1]
-        theta = atan(dx/dy)
-        if self._robot.getPose().getOrientation() <= 180 - degrees(theta):
-            angularDistance = -(self._robot.getPose().getOrientation() + degrees(theta))
-        elif self._robot.getPose().getOrientation()>360-degrees(theta):
-            angularDistance = -((self._robot.getPose().getOrientation()-360)+degrees(theta))
-        else:
-            angularDistance = 360-(self._robot.getPose().getOrientation()) + degrees(theta)
-        return angularDistance
+
+        delta_degrees=2 # turn right
+        v1 = (sin(-radians(self._robot.getPose().getOrientation())),cos(-radians(self._robot.getPose().getOrientation()))) # norm 1
+        v1_delta = (sin(-radians(self._robot.getPose().getOrientation()+delta_degrees)),cos(-radians(self._robot.getPose().getOrientation()+delta_degrees)))
+        v2=(dx,dy)
+
+        dot_product = v1[0]*v2[0]+v1[1]*v2[1]
+        dot_product_delta = v1_delta[0]*v2[0]+v1_delta[1]*v2[1]
+        norm_v2=(v2[0]**2+v2[1]**2)**0.5
+
+        theta = acos(dot_product/norm_v2)
+        theta_delta = acos(dot_product_delta/norm_v2)
+
+        return degrees(theta) * (1 if degrees(theta)-degrees(theta_delta)>0 else -1)
 
 

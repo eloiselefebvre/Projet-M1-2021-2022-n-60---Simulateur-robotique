@@ -17,7 +17,7 @@ def aStar():
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    pathFinding = PathFinding(env,robot)
+    pathFinding = PathFinding(env,robot,True)
 
     while True:
         pathFinding.followSimplifyPath()

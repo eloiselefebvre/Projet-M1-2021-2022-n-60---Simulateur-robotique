@@ -164,3 +164,6 @@ class Robot(ABC,Object):
 
     def setPathFinding(self,pathFinding):
         self._pathFinding=pathFinding
+
+    def isFollowingPath(self):
+        return self._isFollowingPath

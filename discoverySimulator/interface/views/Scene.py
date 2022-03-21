@@ -158,7 +158,7 @@ class Scene(QWidget,Observable):
     def followPathSelected(self,sender):
         robot=sender.getRobotSelected()
         self._pathFinding = PathFinding(self._environment,robot)
-        robot.setPathFinding(self._pathFinding)
+
 
 
 
