@@ -1,3 +1,5 @@
+import time
+
 from discoverySimulator import Obstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle
@@ -14,5 +16,9 @@ def aStar():
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    PathFinding(env,robot)
+    pathFinding = PathFinding(env,robot)
+
+    while True:
+        pathFinding.followSimplifyPath()
+        time.sleep(.01)
 

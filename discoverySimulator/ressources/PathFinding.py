@@ -36,6 +36,10 @@ class PathFinding:
         self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
         self.setRobotStartPosition()
         time.sleep(1)
+        self._pathSimplified=[]
+        self._modifyOrientation = True
+        self._nextPointIndex = 0
+        self._followPath=True
         self.__astar()
 
     def setRobotStartPosition(self):
@@ -89,7 +93,7 @@ class PathFinding:
 
         current = self.__beginNode
         while current != self.__endNode:
-            time.sleep(0.01)
+            # time.sleep(0.01)
             closed_nodes[current] = opened_nodes.pop(current)
             opened_nodes_heuristic.pop(current)
             if current != self.__beginNode and current != self.__endNode:
@@ -130,9 +134,7 @@ class PathFinding:
         for p in path:
             if p != self.__beginNode and p != self.__endNode:
                 self.__setNodeColor(p, self.COLORS["path_node"])
-        self.followPath(self.simplifyPath(path))
-        # self.goToWithFuzzyLogic(path)
-        # self.findPath(path)
+        self._pathSimplified=self.simplifyPath(path)
 
     def __heuristic(self, node):
         return self.__euclidDistanceToEnd(node)
@@ -147,24 +149,31 @@ class PathFinding:
         self._nodes[node]=Rectangle(15, 15, "#FF9900")
         self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET)
 
-    def followPath(self,path):
-        for i in range (len(path)):
-            distance = sqrt((path[i][0]-self._robot.getPose().getX())**2+(path[i][1]-self._robot.getPose().getY())**2)
-            angularDistance = self.angularDistance(path[i])
-            while angularDistance>2 or angularDistance<-2:
+    def followSimplifyPath(self):
+        if self._followPath:
+            distance = sqrt((self._pathSimplified[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._pathSimplified[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
+            angularDistance = self.angularDistance(self._pathSimplified[self._nextPointIndex])
+            if (angularDistance>2 or angularDistance<-2) and self._modifyOrientation:
                 if angularDistance < 0:
                     self._robot.setRightWheelSpeed(-self.TURN_SPEED)
                     self._robot.setLeftWheelSpeed(self.TURN_SPEED)
                 else:
                     self._robot.setRightWheelSpeed(self.TURN_SPEED)
                     self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
-                angularDistance = self.angularDistance(path[i])
-            while distance > 10:
+            else:
+                self._modifyOrientation=False
+            if distance > 10 and not self._modifyOrientation:
                 self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
                 self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
-                distance = sqrt((path[i][0]- self._robot.getPose().getX()) ** 2 + (path[i][1]- self._robot.getPose().getY()) ** 2)
-        self._robot.setLeftWheelSpeed(0)
-        self._robot.setRightWheelSpeed(0)
+            else:
+                if not self._modifyOrientation:
+                    self._nextPointIndex+=1
+                self._modifyOrientation=True
+
+            if self._nextPointIndex==len(self._pathSimplified):
+                self._followPath=False
+                self._robot.setLeftWheelSpeed(0)
+                self._robot.setRightWheelSpeed(0)
 
     def simplifyPath(self, path):
         counter=1
@@ -225,3 +234,5 @@ class PathFinding:
         else:
             angularDistance = 360-(self._robot.getPose().getOrientation()) + degrees(theta)
         return angularDistance
+
+
