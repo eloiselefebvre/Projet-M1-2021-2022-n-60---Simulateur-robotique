@@ -90,7 +90,7 @@ class ExplorerTree(QTreeWidget):
                     else:
                         parent = Item(self, obj.getID(), 12, setBold=True)
                         classname = [item for item in self._itemsShown if isinstance(obj,item)][0].__name__
-                        parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/{classname.lower()}.svg"))
+                        parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
                         self._visibilityButtons.append(VisibilityButton(obj.isVisible()))
                         self.setItemWidget(parent, 1, self._visibilityButtons[-1])
 
@@ -114,7 +114,7 @@ class ExplorerTree(QTreeWidget):
                                     self._allObjects.append(comp)
                                     parent.addChild(child)
                                     classname = [item for item in self._itemsShown if isinstance(comp, item)][0].__name__
-                                    child.setIcon(0,QIcon(f"{config['ressourcesPath']}/{classname.lower()}.svg"))
+                                    child.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
 
         for button in self._visibilityButtons:
             if button is not None:

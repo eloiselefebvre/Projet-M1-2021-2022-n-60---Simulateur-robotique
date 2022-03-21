@@ -50,13 +50,13 @@ class ExplorerInfo(QWidget):
         labelIcon = QLabel()
 
         if isinstance(self._selectedObject,Robot):
-            icon = QPixmap(f"{config['ressourcesPath']}/robot.svg")
+            icon = QPixmap(f"{config['ressourcesPath']}/objects/robot.svg")
         elif isinstance(self._selectedObject,Obstacle):
-            icon = QPixmap(f"{config['ressourcesPath']}/obstacle.svg")
+            icon = QPixmap(f"{config['ressourcesPath']}/objects/obstacle.svg")
         elif isinstance(self._selectedObject,Sensor):
-            icon = QPixmap(f"{config['ressourcesPath']}/sensor.svg")
+            icon = QPixmap(f"{config['ressourcesPath']}/objects/sensor.svg")
         else: # actuator
-            icon = QPixmap(f"{config['ressourcesPath']}/actuator.svg")
+            icon = QPixmap(f"{config['ressourcesPath']}/objects/actuator.svg")
 
         labelIcon.setPixmap(icon)
         labelIcon.setFixedWidth(24)
@@ -91,7 +91,7 @@ class ExplorerInfo(QWidget):
         positionWidgetLayout = QHBoxLayout(positionWidgetContainer)
 
         positionIcon=QLabel()
-        icon=QPixmap(f"{config['ressourcesPath']}/position.svg")
+        icon=QPixmap(f"{config['ressourcesPath']}/infos/position.svg")
         positionIcon.setPixmap(icon)
         positionIcon.setFixedWidth(48)
         positionIcon.setStyleSheet("border:none;")
@@ -108,7 +108,7 @@ class ExplorerInfo(QWidget):
         orientationWidgetLayout = QHBoxLayout(orientationWidgetContainer)
 
         orientationIcon = QLabel()
-        icon2 = QPixmap(f"{config['ressourcesPath']}/orientation.svg")
+        icon2 = QPixmap(f"{config['ressourcesPath']}/infos/orientation.svg")
         orientationIcon.setPixmap(icon2)
         orientationIcon.setFixedWidth(42)
         orientationIcon.setStyleSheet("border:none;")

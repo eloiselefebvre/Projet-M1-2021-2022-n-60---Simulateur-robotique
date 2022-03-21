@@ -41,11 +41,10 @@ class ExplorerToolsbar(QWidget, Observable):
         filterWidget.setFont(fnt)
         filterWidget.setFixedSize(215,30)
         filterWidget.setStyleSheet("background-color: #f0f0f0; border:none")
-        filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/allObjects.svg"),"All objects")
+        filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/allObjects.svg"),"All objects")
         for item in self.ITEMS:
             classname=item.__name__
-            filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/{classname.lower()}.svg"),classname+"s")
-
+            filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"),classname+"s")
         filterWidget.currentIndexChanged.connect(self.__filterChanged)
         return filterWidget
 
