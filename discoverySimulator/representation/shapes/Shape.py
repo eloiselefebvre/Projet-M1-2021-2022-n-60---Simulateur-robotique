@@ -41,7 +41,7 @@ class Shape(ABC):
     def getLineDecomposition(self):
         pass
 
-    def isCollidedWith(self, shape):
+    def getIntersectionsWith(self, shape):
         """
         3 cas possibles du fait de la décomposition en lignes :
         -> cercle vs cercle

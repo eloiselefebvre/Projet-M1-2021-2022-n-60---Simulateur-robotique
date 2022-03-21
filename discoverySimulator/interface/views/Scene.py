@@ -87,7 +87,7 @@ class Scene(QWidget,Observable):
         self.notifyObservers("poseChanged")
         if self._dragObject and self._selectedObj is not None:
             for obj in self._environment.getObjects():
-                if self._selectedObj.isCollidedWith(obj) and self._selectedObj!=obj:
+                if self._selectedObj.getIntersectionsWith(obj) and self._selectedObj!=obj:
                     obj.setCollidedState(False)
             pose = self._selectedObj.getPose()
             pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])

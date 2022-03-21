@@ -30,7 +30,7 @@ class Telemeter(Sensor):
 
         for obj in self._env.getObjects():
             if obj != self._parent and obj!=self:
-                intersections.extend(self._laser.isCollidedWith(obj))
+                intersections.extend(self._laser.getIntersectionsWith(obj))
 
         closest_point = None
         for point in intersections:
