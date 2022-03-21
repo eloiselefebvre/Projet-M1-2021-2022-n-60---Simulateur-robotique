@@ -1,7 +1,7 @@
 import time
 
 from discoverySimulator.ressources.maps.Maze import Maze
-from discoverySimulator.robots import TwoWheelsRobot
+from discoverySimulator.robots import RectangleTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.simulation import Environment, Simulation
 
@@ -11,7 +11,7 @@ COLLISION_TH = 70
 
 def usingFuzzyLogicToAvoidObstacle():
 
-    rob = TwoWheelsRobot()
+    rob = RectangleTwoWheelsRobot()
 
     INFINITY = 10000
     distantObstacle=[]

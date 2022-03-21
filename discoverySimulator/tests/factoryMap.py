@@ -1,7 +1,7 @@
 from discoverySimulator import Obstacle, Object
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Rectangle
-from discoverySimulator.robots import TwoWheelsRobot
+from discoverySimulator.robots import RectangleTwoWheelsRobot
 from discoverySimulator.sensors.ColorSensor import ColorSensor
 from discoverySimulator.simulation import Environment, Simulation
 import time
@@ -11,7 +11,7 @@ def factoryMap():
     FORWARD_SPEED=300
     TURN_SPEED=100
 
-    rob1 = TwoWheelsRobot()
+    rob1 = RectangleTwoWheelsRobot()
     colorSensorRight=ColorSensor()
     rob1.addComponent(colorSensorRight,20,25)
     colorSensorLeft=ColorSensor()

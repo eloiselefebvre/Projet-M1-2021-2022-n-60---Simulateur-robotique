@@ -3,7 +3,7 @@ from discoverySimulator import Object
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Line, Circle, Rectangle
 from discoverySimulator.ressources.maps.CirclePath import CirclePath
-from discoverySimulator.robots import TwoWheelsRobot
+from discoverySimulator.robots import RectangleTwoWheelsRobot
 from discoverySimulator.sensors.ColorSensor import ColorSensor
 from discoverySimulator.simulation import Environment, Simulation
 
@@ -19,7 +19,7 @@ def roadDemo():
     red="#ff0033"
     green="#33ff00"
 
-    robot = TwoWheelsRobot()
+    robot = RectangleTwoWheelsRobot()
     colorSensorRight = ColorSensor()
     robot.addComponent(colorSensorRight, 5, 25)
     colorSensorLeft = ColorSensor()

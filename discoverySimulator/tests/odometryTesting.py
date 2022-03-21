@@ -1,12 +1,12 @@
 from discoverySimulator import Obstacle, Object
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle, Point, Line
-from discoverySimulator.robots import TwoWheelsRobot
+from discoverySimulator.robots import RectangleTwoWheelsRobot
 
 from discoverySimulator.simulation import Environment, Simulation
 
 def odometryTesting():
-    rob = TwoWheelsRobot()
+    rob = RectangleTwoWheelsRobot()
     rob.setRightWheelSpeed(400) # avec 400 : dteta = 0.7639437268410916 degré
 
     env = Environment(1500, 900)
