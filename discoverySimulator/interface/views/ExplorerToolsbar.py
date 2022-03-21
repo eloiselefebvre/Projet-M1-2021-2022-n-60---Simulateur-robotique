@@ -1,15 +1,11 @@
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout
-
 from discoverySimulator.config import config
-
 from discoverySimulator.Observable import Observable
-
 from discoverySimulator.Obstacle import Obstacle
 from discoverySimulator.actuators import Actuator
 from discoverySimulator.robots.Robot import Robot
 from discoverySimulator.sensors.Sensor import Sensor
-
 from discoverySimulator.interface.componants.Button import VisibilityButton, LockButton
 
 class ExplorerToolsbar(QWidget, Observable):
@@ -37,7 +33,6 @@ class ExplorerToolsbar(QWidget, Observable):
         self._layout.addWidget(self._filterWidget)
         self._layout.addWidget(self._lockButtonWidget)
         self._layout.addWidget(self._visibleButtonWidget)
-
 
     # Widgets
     def createFilterWidget(self):
@@ -76,6 +71,8 @@ class ExplorerToolsbar(QWidget, Observable):
                     if issubclass(type(comp), tuple(self._itemsShown)):
                         objects.append(comp)
         return objects
+
+
 
     def getShownObjectClass(self):
         return self._itemsShown

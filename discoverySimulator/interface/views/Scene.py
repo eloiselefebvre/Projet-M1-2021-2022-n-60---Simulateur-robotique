@@ -57,8 +57,6 @@ class Scene(QWidget,Observable):
         time.sleep(Scene.MINIMUM_TIME_STEP)
         self.update()
 
-
-
     def mousePressEvent(self, event):
         self.setCursor(Qt.ClosedHandCursor)
         if event.button()==Qt.LeftButton:
@@ -150,4 +148,7 @@ class Scene(QWidget,Observable):
         if self._maximized:
             self._size=self.size()
             self._zoomController.setSceneSize(self._size)
+
+    def followPathSelected(self,sender):
+        print('ok')
 

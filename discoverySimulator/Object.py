@@ -2,6 +2,7 @@ from discoverySimulator.Frame import Frame
 from discoverySimulator.Observable import Observable
 from discoverySimulator.representation.shapes.Border import Border
 
+
 class Object(Observable):
 
     SELECTED_COLOR = "#25CCF7"

@@ -180,7 +180,6 @@ class ExplorerTree(QTreeWidget):
                     for children_button in children_buttons:
                         children_button.lock()
 
-
     def toggleObjectVisibily(self):
         button = self.sender()
         obj = self._allObjects[self._visibilityButtons.index(button)]

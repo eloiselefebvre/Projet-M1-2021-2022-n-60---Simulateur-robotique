@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QPixmap, QFont
-from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit
+from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, QPushButton
 
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import config
@@ -34,9 +34,6 @@ class Toolbar(QToolBar,Observable):
         self.addWidget(self.createTimerWidget())
         self.addWidget(self.createAccelerationWidget())
         self.addWidget(self.createPlayPauseWidget())
-
-        self.addWidget(self.createSectionTitleWidget("Robot"))
-
 
     def createSectionTitleWidget(self,name=""):
         label=QLabel(name+":")
@@ -195,4 +192,23 @@ class Toolbar(QToolBar,Observable):
             str+=f"{'0' if minutes<10 and hours>0 else ''}{minutes}min"
         str+=f"{'0' if seconds<10 and (minutes>0 or hours>0) else ''}{round(seconds,1) if minutes==0 else int(seconds)}s"
         self._timeElapsed.setText(str)
+
+    def robotSelected(self,sender):
+        if sender.isSelected():
+            self.addWidget(self.createSectionTitleWidget("Robot"))
+            self.addWidget(self.pathFollowingButton())
+
+    def pathFollowingButton(self):
+        path_following_button = Button()
+        path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/goTo.svg"))
+        path_following_button.setToolTip("followPath")
+        path_following_button.clicked.connect(self.__clickedFollowPath)
+        return path_following_button
+
+    def __clickedFollowPath(self):
+        self.notifyObservers('followPathSelected')
+
+
+
+
 

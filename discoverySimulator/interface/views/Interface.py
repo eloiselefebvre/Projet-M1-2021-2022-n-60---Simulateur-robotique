@@ -54,13 +54,6 @@ class Interface(QMainWindow):
         self.showMaximized()
         self._sceneWidget.maximized()
 
-        for object in self._environment.getObjects():
-            object.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeSelection,"selectionChanged")
-            object.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
-            if hasattr(object,"getComponents"):
-                for comp in object.getComponents():
-                    comp.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
-
         self._sceneWidget.addObserverCallback(self._footer.updateMousePoseFromScene,"poseChanged")
         zoomController.addObserverCallback(self._footer.updateZoom,"zoomChanged")
 
@@ -73,7 +66,15 @@ class Interface(QMainWindow):
         self._explorerWidget.getExplorerToolsbar().addObserverCallback(self._explorerWidget.getExplorerTree().rebuildTree,'filterChanged')
 
         for obj in self._environment.getObjects():
+            obj.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeSelection, "selectionChanged")
+            obj.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeVisibility, "visibilityChanged")
+            if hasattr(obj, "getComponents"):
+                for comp in obj.getComponents():
+                    comp.addObserverCallback(self._explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
             self._toolbar.addObserverCallback(obj.accelerationChanged, "accelerationChanged")
+            if isinstance(obj,Robot):
+                obj.addObserverCallback(self._toolbar.robotSelected,'selectionChanged')
+                self._toolbar.addObserverCallback(self._sceneWidget.followPathSelected,'followPathSelected')
 
     def closeEvent(self, event):
         self._simulation.setAppShown(False)
