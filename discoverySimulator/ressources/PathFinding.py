@@ -11,7 +11,7 @@ from discoverySimulator.representation.shapes import Rectangle, Circle, Point, L
 
 class PathFinding:
 
-    MOVES = [(-1, 0), (0, 1), (1, 0), (0,-1)]
+    MOVES = [(-1, 0),(-1,1), (0, 1),(1,1), (1, 0),(1,-1), (0,-1),(-1,-1)]
     DISPLAY_DELAY = 0
     COLORS = {
         "closed_node": "#40C9E0",
@@ -29,7 +29,7 @@ class PathFinding:
 
     SECURITY_MARGIN = 20
 
-    def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.0):
+    def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.01):
         self._environment=environment
         self._robot=robot
         self._robot.setPathFinding(self)
@@ -43,9 +43,6 @@ class PathFinding:
         self._nodes = {}
         self.__endNode=None
         self.__setBeginNode((int(self._robot.getPose().getX()/self.CELL_SIZE),int(self._robot.getPose().getY()/self.CELL_SIZE)))
-        #self.__setEndNode()
-        # self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
-        # self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
 
         self._pathSimplified=[]
         self._modifyOrientation = True
@@ -54,7 +51,6 @@ class PathFinding:
     def setEndPoint(self,mousePose):
         self.__endNode=(int(mousePose.x()/self.CELL_SIZE),int(mousePose.y()/self.CELL_SIZE))
         self.__setEndNode(self.__endNode)
-        # self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
         self.__astar()
 
     def setIsFollowingPath(self,state):
@@ -64,11 +60,15 @@ class PathFinding:
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.createNode(node)
             self.__beginNode = node
+            if self._displayEnabled:
+                self.__setNodeColor(self.__beginNode, self.COLORS['begin_node'])
 
     def __setEndNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.createNode(node)
             self.__endNode = node
+            if self._displayEnabled:
+                self.__setNodeColor(self.__endNode, self.COLORS['end_node'])
 
     def __setNodeColor(self, node, color):
         self._nodes[node].setColor(color)
@@ -118,7 +118,7 @@ class PathFinding:
                         weight = 1
                         break
                 if not n in closed_nodes and self.__getNodeValue(n):
-                    distanceFromBeginNode = closed_nodes[current] + 1 + weight
+                    distanceFromBeginNode = closed_nodes[current] + weight + ((n[0]-current[0])**2+(n[1]-current[1])**2)**0.5
                     if n in opened_nodes:
                         if distanceFromBeginNode < opened_nodes[n]:
                             opened_nodes[n] = distanceFromBeginNode

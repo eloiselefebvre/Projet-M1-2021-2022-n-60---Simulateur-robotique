@@ -1,5 +1,7 @@
 import time
 
+from PyQt5.QtCore import QPointF
+
 from discoverySimulator import Obstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle
@@ -18,6 +20,8 @@ def aStar():
     sim.run()
     sim.showInterface()
     pathFinding = PathFinding(env,robot,True)
+    pathFinding.setEndPoint(QPointF(500,500))
+    pathFinding.setIsFollowingPath(True)
 
     while True:
         pathFinding.followSimplifyPath()
