@@ -1,2 +1,2 @@
-from discoverySimulator.tests import reinforcementLearning
-reinforcementLearning.reinforcementLearningTest()
+from discoverySimulator.tests import usingLIDAR
+usingLIDAR.LIDARTest()

@@ -20,7 +20,7 @@ class FourWheelsRobot(TwoWheelsRobot):
     def move(self):
         super().move()
 
-    def setRotCenter(self):
+    def setRotationCenter(self):
         self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX() + self._backRightWheel.getPose().getX() + self._backLeftWheel.getPose().getX()) / 4,
                                      (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY() + self._backRightWheel.getPose().getY() + self._backLeftWheel.getPose().getY()) / 4)
 

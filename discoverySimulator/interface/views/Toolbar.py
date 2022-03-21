@@ -29,13 +29,25 @@ class Toolbar(QToolBar,Observable):
 
         self.setContentsMargins(0,0,0,0)
         self.addWidget(self.createAboutWidget())
+
+        self.addWidget(self.createSectionTitleWidget("Simulation"))
         self.addWidget(self.createTimerWidget())
         self.addWidget(self.createAccelerationWidget())
         self.addWidget(self.createPlayPauseWidget())
 
+        self.addWidget(self.createSectionTitleWidget("Robot"))
+
+
+    def createSectionTitleWidget(self,name=""):
+        label=QLabel(name+":")
+        fnt=QFont("Sanserif",12)
+        label.setFont(fnt)
+        label.setStyleSheet("color:#fff; border-left:1px solid #4D4D6D;")
+        label.setContentsMargins(8,0,0,0)
+        return label
+
     def createAboutWidget(self):
         about=QWidget()
-        about.setObjectName("widget")
         about_layout=QHBoxLayout(about)
 
         about_layout.setSpacing(0)

@@ -41,7 +41,7 @@ def reinforcementLearningTest():
             action = reinforcementLearning.getActionToExecute()
 
             distance = sqrt((currentPosition[0]-previousPosition[0])**2+(currentPosition[1]-previousPosition[1])**2)
-            product = distance * cos(radians(previousOrientation-currentOrientation))
+            product = distance * cos(radians(currentOrientation-previousOrientation))
 
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
