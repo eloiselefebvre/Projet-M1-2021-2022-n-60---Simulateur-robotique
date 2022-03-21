@@ -31,6 +31,7 @@ class Scene(QWidget,Observable):
         self._selectedObj = None
         self._objectMoved=True
         self._selectedObjCollidedState=False
+        self._pathFinding=None
 
         self.setStyleSheet("background-color: #f0f0f0")
 
@@ -106,6 +107,7 @@ class Scene(QWidget,Observable):
             self._dragSceneOrigin=current
 
     def _objectGrabbed(self, mousePose):
+
         convertedMousePose = (mousePose - self._zoomController.getOffset()) / self._zoomController.getZoom()
         for obj in self._environment.getObjects():
             obj.setSelected(False)
@@ -125,6 +127,9 @@ class Scene(QWidget,Observable):
                     self._objectMoved=False
                     self._selectedObj.setCollidedState(True)
                 break
+        if self._pathFinding is not None:
+            self._pathFinding.setEndPoint(convertedMousePose)
+            self._pathFinding.setIsFollowingPath(True)
 
     def wheelEvent(self, event):
         if event.modifiers() and Qt.ControlModifier:
@@ -152,8 +157,9 @@ class Scene(QWidget,Observable):
 
     def followPathSelected(self,sender):
         robot=sender.getRobotSelected()
-        pathFinding=PathFinding(self._environment,robot)
-        robot.setPathFinding(pathFinding)
-        robot.setIsFollowingPath(True)
+        self._pathFinding = PathFinding(self._environment,robot)
+        robot.setPathFinding(self._pathFinding)
+
+
 
 

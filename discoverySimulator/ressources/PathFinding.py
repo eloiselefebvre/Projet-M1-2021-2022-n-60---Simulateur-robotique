@@ -1,6 +1,8 @@
 import time
 from math import sqrt, atan, degrees
 from PyQt5.QtCore import QPoint, QLineF
+
+from discoverySimulator.Pose import Pose
 from discoverySimulator.Object import Object
 from discoverySimulator.Obstacle import Obstacle
 from discoverySimulator.representation import Representation
@@ -32,29 +34,29 @@ class PathFinding:
         self.__ROWS_NUMBER = (self._environment.getWidth())/15
         self.__COLS_NUMBER = (self._environment.getHeight())/15
         self._nodes = {}
+        self.__endNode=None
         self.__setBeginNode((int(self._robot.getPose().getX()/self.CELL_SIZE),int(self._robot.getPose().getY()/self.CELL_SIZE)))
-        self.__setEndNode()
-        self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
-        self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
-        # time.sleep(1)
+        # self.__setNodeColor(self.__beginNode,self.COLORS['begin_node'])
         self._pathSimplified=[]
         self._modifyOrientation = True
         self._nextPointIndex = 0
         self._followPath=True
+
+    def setEndPoint(self,mousePose):
+        self.__endNode=(int(mousePose.x()/self.CELL_SIZE),int(mousePose.y()/self.CELL_SIZE))
+        self.__setEndNode(self.__endNode)
+        # self.__setNodeColor(self.__endNode,self.COLORS['end_node'])
         self.__astar()
 
-    # def setRobotStartPosition(self):
-    #     self._environment.addObject(self._robot,self.__beginNode[0]*15+7,self.__beginNode[1]*15+7)
-
-    def getEndNode(self):
-        return self.__endNode
+    def setIsFollowingPath(self,state):
+        self._robot.setIsFollowingPath(state)
 
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.createNode(node)
             self.__beginNode = node
 
-    def __setEndNode(self, node=(30,30)):
+    def __setEndNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.createNode(node)
             self.__endNode = node
@@ -208,10 +210,11 @@ class PathFinding:
                     orientation=270
                 else :
                     orientation=90
-            if line is not None:
-                self._environment.removeVirtualObject(line)
+            # if line is not None:
+                # self._environment.removeVirtualObject(line)
             line = Object(Representation(Line(int(length),5,"#f00")))
-            self._environment.addVirtualObject(line,int(lastPoint[0]*self.CELL_SIZE+self.OFFSET),int(lastPoint[1]*self.CELL_SIZE+self.OFFSET),orientation)
+            line.setPose(Pose(int(lastPoint[0]*self.CELL_SIZE+self.OFFSET),int(lastPoint[1]*self.CELL_SIZE+self.OFFSET),orientation))
+            # self._environment.addVirtualObject(line,int(lastPoint[0]*self.CELL_SIZE+self.OFFSET),int(lastPoint[1]*self.CELL_SIZE+self.OFFSET),orientation)
 
             for obj in self._environment.getObjects():
                 if isinstance(obj,Obstacle):
