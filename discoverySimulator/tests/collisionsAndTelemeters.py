@@ -6,8 +6,7 @@ from discoverySimulator import Obstacle, Object
 from discoverySimulator.actuators import LED, Buzzer
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle, Line
-from discoverySimulator.representation.shapes.Polygon import Polygon
-from discoverySimulator.robots import TwoWheelsRobot, FourWheelsRobot
+from discoverySimulator.robots import RectangleTwoWheelsRobot, FourWheelsRobot, CircleTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.sensors.ColorSensor import ColorSensor
 from discoverySimulator.simulation import Environment, Simulation
@@ -18,7 +17,7 @@ def collisionAndTelemeter():
     FORWARD_SPEED=300
     TURN_SPEED=100
 
-    rob1 = TwoWheelsRobot()
+    rob1 = RectangleTwoWheelsRobot()
     colorSensorRight=ColorSensor()
     rob1.addComponent(colorSensorRight,5,25)
     colorSensorLeft=ColorSensor()
@@ -36,7 +35,7 @@ def collisionAndTelemeter():
     rob1.addComponent(led2, 0, 10)
 
 
-    rob2 = TwoWheelsRobot()
+    rob2 = CircleTwoWheelsRobot()
     rob2.addComponent(led3, 0, 0)
     rob2.setRightWheelSpeed(200)
     rob2.setLeftWheelSpeed(300)
@@ -48,7 +47,7 @@ def collisionAndTelemeter():
     buzzer = Buzzer()
     telemeter = Telemeter("#0f0")
     telemeter.setID("Front Telemeter")
-    rob3 = TwoWheelsRobot("#F97F51", 60, 80, 60)
+    rob3 = RectangleTwoWheelsRobot("#F97F51", 60, 80, 60)
     rob3.addComponent(buzzer, 0, 0)
     rob3.addComponent(telemeter, 0, 32, 0)
 
@@ -62,7 +61,7 @@ def collisionAndTelemeter():
     rob4.setLeftBackWheelSpeed(500)
     rob4.setLeftFrontWheelSpeed(-300)
 
-    rob5 = TwoWheelsRobot()
+    rob5 = RectangleTwoWheelsRobot()
     rob5.setRightWheelSpeed(300)
     rob5.setLeftWheelSpeed(300)
 

@@ -1,17 +1,17 @@
-from . import TwoWheelsRobot
+from . import RectangleTwoWheelsRobot
 from discoverySimulator.actuators.Wheel import Wheel
 
 from discoverySimulator.config import *
 
-class FourWheelsRobot(TwoWheelsRobot):
+class FourWheelsRobot(RectangleTwoWheelsRobot):
     instances_counter=0
 
     def __init__(self,color=None,robotWidth=50,robotHeight=60,distanceBetweenWheels=50,wheelsRadius=10,frontWheelYPos=15,backWheelYPos=-15):
         super().__init__(color,robotWidth,robotHeight,distanceBetweenWheels,wheelsRadius,frontWheelYPos)
         self._backLeftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._backRightWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._backLeftWheel, (distanceBetweenWheels - TwoWheelsRobot.DEFAULT_WHEEL_WIDTH)/2, backWheelYPos)
-        self.addComponent(self._backRightWheel, (-distanceBetweenWheels + TwoWheelsRobot.DEFAULT_WHEEL_WIDTH)/2, backWheelYPos)
+        self.addComponent(self._backLeftWheel, (distanceBetweenWheels - RectangleTwoWheelsRobot.DEFAULT_WHEEL_WIDTH) / 2, backWheelYPos)
+        self.addComponent(self._backRightWheel, (-distanceBetweenWheels + RectangleTwoWheelsRobot.DEFAULT_WHEEL_WIDTH) / 2, backWheelYPos)
         self._backLeftWheel.setID("BackLeftWheel")
         self._backRightWheel.setID("BackRightWheel")
         self._leftWheel.setID("FrontLeftWheel")

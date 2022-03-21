@@ -3,14 +3,14 @@ from math import sqrt, cos, radians
 
 from discoverySimulator import Pose
 from discoverySimulator.ressources.ReinforcementLearning import ReinforcementLearning
-from discoverySimulator.robots import TwoWheelsRobot
+from discoverySimulator.robots import RectangleTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 
 
 def reinforcementLearningTest():
 
     env=Environment(1500,1500)
-    robot=TwoWheelsRobot()
+    robot=RectangleTwoWheelsRobot()
     env.addObject(robot,500,400,-90)
 
     sim = Simulation(env)
