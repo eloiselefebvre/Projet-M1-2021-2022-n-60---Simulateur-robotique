@@ -21,8 +21,8 @@ class TwoWheelsRobot(Robot):
         super().__init__(representation)
         self._leftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftWheel,(-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
-        self.addComponent(self._rightWheel,(distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
+        self.addComponent(self._leftWheel,(-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH)/2,wheelYPosition)
+        self.addComponent(self._rightWheel,(distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH)/2,wheelYPosition)
         self._distanceBetweenWheels = distanceBetweenWheels
         self._leftWheel.setID("LeftWheel")
         self._rightWheel.setID("RightWheel")
