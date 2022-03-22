@@ -1,6 +1,4 @@
 from discoverySimulator import Component
-
-
 class Actuator(Component):
 
     def __init__(self,representation):
