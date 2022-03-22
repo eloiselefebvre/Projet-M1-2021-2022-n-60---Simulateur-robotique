@@ -1,4 +1,4 @@
-from discoverySimulator.tests.reinforcementLearningMSO import reinforcementLearningTest
-reinforcementLearningTest()
+from discoverySimulator.tests import collisionAndTelemeter
+collisionAndTelemeter()
 
 

@@ -1,9 +1,6 @@
 import time
-
-from discoverySimulator import Obstacle, Object
 from discoverySimulator.actuators import LED
-from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Circle, Line, Polygon
+from discoverySimulator.obstacles.CircularObstacle import CircularObstacle
 from discoverySimulator.robots import RectangularTwoWheelsRobot, FourWheelsRobot, CircularTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.sensors.ColorSensor import ColorSensor

@@ -125,6 +125,7 @@ class Robot(ABC,Object):
 
         x=self._odometryPose.getX()
         y=self._odometryPose.getY()
+
         if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
             R = e * (vd + vg) / (vd - vg)
             # calcul des coordonnées du centre du cercle trajectoire
