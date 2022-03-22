@@ -1,7 +1,6 @@
-from PyQt5.QtGui import QPainter, QPixmap
+from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
-
 from discoverySimulator.Observable import Observable
 from discoverySimulator.ressources.PathFinding import PathFinding
 from discoverySimulator.robots.Robot import Robot
@@ -10,44 +9,39 @@ import time
 
 class Scene(QWidget,Observable):
 
-    MINIMUM_TIME_STEP = 1/60   # 60 FPS => largement suffisant pour l'oeil humain
+    MINIMUM_TIME_STEP = 1/60
 
     def __init__(self,environment,zoomController):
         super().__init__()
-        self._environment = environment
-
-        self._zoomController = zoomController
-        self._dragObject=False
-        self._isSceneLocked=False
-        self._dragScene = False
-        self._dragSceneOrigin=QPoint(0,0)
-
-        self._selectionOffset=(0,0)
-        self._maximized = False
-        self._size=None
+        self.__environment = environment
+        self.__zoomController = zoomController
+        self.__dragObject=False
+        self.__isSceneLocked=False
+        self.__dragScene = False
+        self.__dragSceneOrigin=QPoint(0, 0)
+        self.__selectionOffset=(0, 0)
+        self.__maximized = False
+        self.__size=None
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
-
-        self._selectedObj = None
-        self._objectMoved=True
-        self._selectedObjCollidedState=False
-        self._pathFinding=None
-
+        self.__selectedObj = None
+        self.__objectMoved=True
+        self.__selectedObjCollidedState=False
+        self.__pathFinding=None
         self.setStyleSheet("background-color: #f0f0f0")
-
         self._convertedMousePose=QPoint(0, 0)
 
     def updateLockedScene(self,sender):
-        self._isSceneLocked=sender.getLockState()
+        self.__isSceneLocked=sender.getLockState()
 
     def paintEvent(self,event):
         painter = QPainter(self)
-        offset=self._zoomController.getOffset()
+        offset=self.__zoomController.getOffset()
         painter.translate(offset.x(), offset.y())
-        painter.scale(self._zoomController.getZoom(),self._zoomController.getZoom())
+        painter.scale(self.__zoomController.getZoom(), self.__zoomController.getZoom())
 
-        objects = self._environment.getVirtualObjects().copy()
-        objects.extend(self._environment.getObjects())
+        objects = self.__environment.getVirtualObjects().copy()
+        objects.extend(self.__environment.getObjects())
         objects.sort(key=lambda obj: obj.getZIndex())
 
         for obj in objects:
@@ -59,66 +53,95 @@ class Scene(QWidget,Observable):
         self.update()
 
     def mousePressEvent(self, event):
-        self._convertedMousePose = (event.pos() - self._zoomController.getOffset()) / self._zoomController.getZoom()
+        self._convertedMousePose = (event.pos() - self.__zoomController.getOffset()) / self.__zoomController.getZoom()
 
         if event.button()==Qt.LeftButton:
-            self._objectGrabbed()
-            self._dragObject=True
+            self.__objectGrabbed()
+            self.__dragObject=True
 
         if event.button() == Qt.MiddleButton:
-            self._dragScene = True
-            self._dragSceneOrigin = event.pos()
+            self.__dragScene = True
+            self.__dragSceneOrigin = event.pos()
 
-        if self._pathFinding is not None:
+        if self.__pathFinding is not None:
             self.setCursor(Qt.CrossCursor)
-            self._pathFinding.setEndPoint(self._convertedMousePose)
-            self._pathFinding.setIsFollowingPath(True)
-            self._pathFinding = None
+            self.__pathFinding.setEndPoint(self._convertedMousePose)
+            self.__pathFinding.setIsFollowingPath(True)
+            self.__pathFinding = None
         else:
             self.setCursor(Qt.ClosedHandCursor)
 
     def mouseReleaseEvent(self,event):
         self.setCursor(Qt.OpenHandCursor)
-        self._dragObject=False
-        self._dragScene=False
-        if self._selectedObj is not None:
-            if not self._objectMoved:
-                self._selectedObj.setCollidedState(self._selectedObjCollidedState)
+        self.__dragObject=False
+        self.__dragScene=False
+        if self.__selectedObj is not None:
+            if not self.__objectMoved:
+                self.__selectedObj.setCollidedState(self.__selectedObjCollidedState)
             else:
-                self._selectedObj.setCollidedState(False)
-            self._selectedObj=None
+                self.__selectedObj.setCollidedState(False)
+            self.__selectedObj=None
 
     def mousePose(self):
         return self._convertedMousePose
 
     def mouseMoveEvent(self, event):
-        self._convertedMousePose = (event.pos() -  self._zoomController.getOffset()) /  self._zoomController.getZoom()
+        self._convertedMousePose = (event.pos() - self.__zoomController.getOffset()) / self.__zoomController.getZoom()
         self.notifyObservers("poseChanged")
-        if self._dragObject and self._selectedObj is not None:
-            for obj in self._environment.getObjects():
-                if self._selectedObj.getIntersectionsWith(obj) and self._selectedObj!=obj:
+        if self.__dragObject and self.__selectedObj is not None:
+            for obj in self.__environment.getObjects():
+                if self.__selectedObj.getIntersectionsWith(obj) and self.__selectedObj!=obj:
                     obj.setCollidedState(False)
-            pose = self._selectedObj.getPose()
-            pose.move(self._convertedMousePose.x() - self._selectionOffset[0], self._convertedMousePose.y() - self._selectionOffset[1])
-            self._objectMoved=True
-            self._selectedObj.notifyObservers("stateChanged")
-            if isinstance(self._selectedObj,Robot):
-                self._selectedObj.deleteTrajectory()
-                self._selectedObj.deleteOdometry()
-                self._selectedObj.setOdometryPose(pose.copy())
+            pose = self.__selectedObj.getPose()
+            pose.move(self._convertedMousePose.x() - self.__selectionOffset[0], self._convertedMousePose.y() - self.__selectionOffset[1])
+            self.__objectMoved=True
+            self.__selectedObj.notifyObservers("stateChanged")
+            if isinstance(self.__selectedObj, Robot):
+                self.__selectedObj.deleteTrajectory()
+                self.__selectedObj.deleteOdometry()
+                self.__selectedObj.setOdometryPose(pose.copy())
 
-            self._selectedObj.notifyObservers("poseChanged") # TODO : notify directement dans une méthode move de l'objet
+            self.__selectedObj.notifyObservers("poseChanged") # TODO : notify directement dans une méthode move de l'objet
 
-        if self._dragScene:
+        if self.__dragScene:
             current=event.pos()
-            self._zoomController.setOffset(self._zoomController.getOffset()+(current-self._dragSceneOrigin))
-            self._dragSceneOrigin=current
+            self.__zoomController.setOffset(self.__zoomController.getOffset() + (current - self.__dragSceneOrigin))
+            self.__dragSceneOrigin=current
 
-    def _objectGrabbed(self):
-        for obj in self._environment.getObjects():
+    def wheelEvent(self, event):
+        if event.modifiers() and Qt.ControlModifier:
+            dir=event.angleDelta().y()
+            dir/=abs(dir)
+
+            pos1 = (event.pos() - self.__zoomController.getOffset()) / self.__zoomController.getZoom()
+
+            self.__zoomController.zoomIn() if dir > 0 else self.__zoomController.zoomOut()
+
+            s = ((self.__size - self.__size * self.__zoomController.getZoom()) / 2)
+            offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
+            pos2 = (event.pos() - offset) / self.__zoomController.getZoom()
+            # pos1 doit devenir pos1 transformée dans le nouveau zoom
+            getEqualCoordinatesOffset = (pos1-pos2)*self.__zoomController.getZoom()
+            self.__zoomController.setOffset(offset - getEqualCoordinatesOffset)
+
+    def maximized(self):
+        self.__maximized=True
+
+    def resizeEvent(self,event):
+        if self.__maximized:
+            self.__size=self.size()
+            self.__zoomController.setSceneSize(self.__size)
+
+    def followPathSelected(self,sender):
+        self.setCursor(Qt.CrossCursor)
+        robot=sender.getRobotSelected()
+        self.__pathFinding = PathFinding(self.__environment, robot)
+
+    def __objectGrabbed(self):
+        for obj in self.__environment.getObjects():
             obj.setSelected(False)
 
-        objects = sorted(self._environment.getObjects(),key=lambda obj:obj.getZIndex())
+        objects = sorted(self.__environment.getObjects(), key=lambda obj:obj.getZIndex())
         objects.reverse()
         for obj in objects:
             if obj.getRepresentation().contains(self._convertedMousePose) and obj.isVisible():
@@ -126,44 +149,11 @@ class Scene(QWidget,Observable):
                 pose = obj.getPose()
                 dx = self._convertedMousePose.x() - pose.getX()
                 dy = self._convertedMousePose.y() - pose.getY()
-                self._selectionOffset = (dx, dy)
-                if not self._isSceneLocked:
-                    self._selectedObj = obj
-                    self._selectedObjCollidedState=self._selectedObj.getCollidedState()
-                    self._objectMoved=False
-                    self._selectedObj.setCollidedState(True)
+                self.__selectionOffset = (dx, dy)
+                if not self.__isSceneLocked:
+                    self.__selectedObj = obj
+                    self.__selectedObjCollidedState=self.__selectedObj.getCollidedState()
+                    self.__objectMoved=False
+                    self.__selectedObj.setCollidedState(True)
                 break
-
-    def wheelEvent(self, event):
-        if event.modifiers() and Qt.ControlModifier:
-            dir=event.angleDelta().y()
-            dir/=abs(dir)
-
-            pos1 = (event.pos() - self._zoomController.getOffset()) / self._zoomController.getZoom()
-
-            self._zoomController.zoomIn() if dir>0 else self._zoomController.zoomOut()
-
-            s = ((self._size - self._size * self._zoomController.getZoom()) / 2)
-            offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
-            pos2 = (event.pos() - offset) / self._zoomController.getZoom()
-            # pos1 doit devenir pos1 transformée dans le nouveau zoom
-            getEqualCoordinatesOffset = (pos1-pos2)*self._zoomController.getZoom()
-            self._zoomController.setOffset(offset-getEqualCoordinatesOffset)
-
-    def maximized(self):
-        self._maximized=True
-
-    def resizeEvent(self,event):
-        if self._maximized:
-            self._size=self.size()
-            self._zoomController.setSceneSize(self._size)
-
-    def followPathSelected(self,sender):
-        self.setCursor(Qt.CrossCursor)
-        robot=sender.getRobotSelected()
-        self._pathFinding = PathFinding(self._environment,robot)
-
-
-
-
 

@@ -6,22 +6,35 @@ from PyQt5.QtWidgets import QHBoxLayout, QWidget, QMenuBar, QAction, QLabel, \
 from discoverySimulator.config import config
 
 class Footer(QToolBar):
+
     FOOTER_FIXED_HEIGHT = 48
 
     def __init__(self,zoomController):
         super().__init__()
-        self._zoomController=zoomController
+        self.__zoomController=zoomController
         self.setContentsMargins(0,0,0,0)
-
         self.setFixedHeight(self.FOOTER_FIXED_HEIGHT)
         self.setStyleSheet("*{background-color: #f9f9f9;color:#444;border:none;}"
                            "#widget{border-right:1px solid #C4C4C4; margin-top:8px; margin-bottom:8px;}")
+        self.addWidget(self.__createZoomMenuWidget())
+        self.addWidget(self.__createScaleWidget())
+        self.addWidget(self.__createMousePoseWidget())
 
-        self.addWidget(self.createZoomMenuWidget())
-        self.addWidget(self.createScaleWidget())
-        self.addWidget(self.createMousePoseWidget())
+    def updateZoom(self,sender):
+        zoom=round(sender.getZoom()*100)
+        self._zoom_edit.setText(f"{zoom}%")
+        self._zoom_text.setText(f"{zoom}%")
+        self._scale_text.setText(str(round(100/sender.getZoom())))
 
-    def createZoomMenuWidget(self):
+    def updateMousePoseFromScene(self,scene):
+        mouse=scene.mousePose()
+        self._pose_text.setText(f"({mouse.x()}, {mouse.y()})")
+
+    def menuOpened(self):
+        self._zoom_edit.selectAll()
+        self._zoom_edit.setFocus()
+
+    def __createZoomMenuWidget(self) -> QWidget:
         zoomWidget=QWidget()
         zoomWidget.setContentsMargins(12,0,12,0)
         zoomWidget.setFixedWidth(138)
@@ -50,14 +63,14 @@ class Footer(QToolBar):
         # ACTIONS
         zoom_in = QAction("Zoom in", self)
         zoom_in.setShortcut("ctrl++")
-        zoom_in.triggered.connect(self._zoomController.zoomIn)
+        zoom_in.triggered.connect(self.__zoomController.zoomIn)
 
         zoom_out = QAction("Zoom out", self)
         zoom_out.setShortcut("ctrl+-")
-        zoom_out.triggered.connect(self._zoomController.zoomOut)
+        zoom_out.triggered.connect(self.__zoomController.zoomOut)
 
         zoom_to_fit = QAction("Zoom to fit", self)
-        zoom_to_fit.triggered.connect(self._zoomController.zoomToFit)
+        zoom_to_fit.triggered.connect(self.__zoomController.zoomToFit)
 
         zoom_input = QWidgetAction(self)
         self._zoom_edit = QLineEdit()
@@ -78,8 +91,7 @@ class Footer(QToolBar):
 
         return zoomWidget
 
-
-    def createScaleWidget(self):
+    def __createScaleWidget(self) -> QWidget:
         scaleWidget = QWidget()
         scaleWidget.setObjectName("widget")
         scaleLayout = QVBoxLayout(scaleWidget)
@@ -101,7 +113,7 @@ class Footer(QToolBar):
 
         return scaleWidget
 
-    def createMousePoseWidget(self):
+    def __createMousePoseWidget(self) -> QWidget:
         poseWidget = QWidget()
         poseLayout = QHBoxLayout()
         poseWidget.setLayout(poseLayout)
@@ -124,27 +136,14 @@ class Footer(QToolBar):
 
         return poseWidget
 
-    def updateZoom(self,sender):
-        zoom=round(sender.getZoom()*100)
-        self._zoom_edit.setText(f"{zoom}%")
-        self._zoom_text.setText(f"{zoom}%")
-        self._scale_text.setText(str(round(100/sender.getZoom())))
-
-    def updateMousePoseFromScene(self,scene):
-        mouse=scene.mousePose()
-        self._pose_text.setText(f"({mouse.x()}, {mouse.y()})")
-
     def __zoomInputChanged(self):
         text=self._zoom_edit.text()
         if text[-1]=='%':
             text=text.rstrip('%')
         if text.isnumeric():
             zoom=int(text)/100
-            if self._zoomController.setZoom(zoom):
+            if self.__zoomController.setZoom(zoom):
                 self._zoomMenu.close()
         else:
-            self._zoom_edit.setText(f"{int(self._zoomController.getZoom()*100)}%")
+            self._zoom_edit.setText(f"{int(self.__zoomController.getZoom() * 100)}%")
 
-    def menuOpened(self):
-        self._zoom_edit.selectAll()
-        self._zoom_edit.setFocus()

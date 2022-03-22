@@ -5,12 +5,12 @@ from discoverySimulator.Observable import Observable
 from discoverySimulator.config import config
 from discoverySimulator.interface.components.Button import Button, PlayButton
 from discoverySimulator.interface.views.PopUp import PopUp
+from discoverySimulator.robots import Robot
 
 
 class Toolbar(QToolBar,Observable):
 
     TOOLSBAR_FIXED_HEIGHT = 48
-
     ACCELERATION_MIN = 0.1
     ACCELERATION_MAX = 15.0
 
@@ -21,25 +21,50 @@ class Toolbar(QToolBar,Observable):
                            "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}"
                            "QPushButton:hover{background-color:#323247;}"
                            "QPushButton:pressed{background-color:#4C4C68;}")
-        self._acceleration = 1.0
-        self._playState = True
-        self._robotTitleWidget=None
-        self._pathFollowingWidget=None
+        self.__acceleration = 1.0
+        self.__playState = True
+        self.__robotTitleWidget=None
+        self.__pathFollowingWidget=None
 
         self.setContentsMargins(0,0,0,0)
-        self.addWidget(self.createAboutWidget())
+        self.addWidget(self.__createAboutWidget())
 
-        self.addAction(self.createSectionTitleWidget("Simulation"))
-        self.addWidget(self.createTimerWidget())
-        self.addWidget(self.createAccelerationWidget())
-        self.addWidget(self.createPlayPauseWidget())
+        self.addAction(self.__createSectionTitleWidget("Simulation"))
+        self.addWidget(self.__createTimerWidget())
+        self.addWidget(self.__createAccelerationWidget())
+        self.addWidget(self.__createPlayPauseWidget())
 
-        self._robotTitleWidget = self.createSectionTitleWidget("Robot")
-        self._pathFollowingWidget=self.pathFollowingButton()
-        self._robotSelected=None
-        self._previousSender=None
+        self.__robotTitleWidget = self.__createSectionTitleWidget("Robot")
+        self.__pathFollowingWidget=self.pathFollowingWidget()
+        self.__robotSelected=None
 
-    def createSectionTitleWidget(self,name=""):
+    # GETTERS
+    def getAcceleration(self) -> float:
+        return self.__acceleration
+
+    def getPlayState(self) -> bool:
+        return self.__playState
+
+    def getRobotSelected(self) -> Robot:
+        return self.__robotSelected
+
+    def updateTimeElapsed(self,sender):
+        time=sender.time()
+        hours=int(time//3600)
+        time-=hours*3600
+        minutes=int(time//60)
+        time-=minutes*60
+        seconds=time
+
+        str=""
+        if hours>0:
+            str+=f"{hours}h"
+        if minutes>0 or hours>0:
+            str+=f"{'0' if minutes<10 and hours>0 else ''}{minutes}min"
+        str+=f"{'0' if seconds<10 and (minutes>0 or hours>0) else ''}{round(seconds,1) if minutes==0 else int(seconds)}s"
+        self._timeElapsed.setText(str)
+
+    def __createSectionTitleWidget(self, name="") -> QWidgetAction:
         labelWidget = QWidgetAction(self)
         label=QLabel(name+":")
         fnt=QFont("Sanserif",12)
@@ -49,20 +74,18 @@ class Toolbar(QToolBar,Observable):
         labelWidget.setDefaultWidget(label)
         return labelWidget
 
-    def createAboutWidget(self):
+    def __createAboutWidget(self) -> QWidget:
         about=QWidget()
         about_layout=QHBoxLayout(about)
 
         about_layout.setSpacing(0)
         about.setContentsMargins(4, 0, 4, 0)
-
         about_button = Button()
         about_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/info.svg"))
         about_button.setIconSize(QSize(22, 22))
         about_button.clicked.connect(self.__openPopUp)
         about_button.setToolTip("About")
         about_layout.addWidget(about_button)
-
         about.setFixedHeight(self.TOOLSBAR_FIXED_HEIGHT)
 
         return about
@@ -70,7 +93,7 @@ class Toolbar(QToolBar,Observable):
     def __openPopUp(self):
         PopUp()
 
-    def createTimerWidget(self):
+    def __createTimerWidget(self) -> QWidget:
         timer_icon=QLabel()
         timer_icon.setStyleSheet(f"image: url({config['ressourcesPath']}/toolbar/timer.svg);"
                                  f"image-repeat:no-repeat; image-position:center; image-size:contain;")
@@ -95,7 +118,7 @@ class Toolbar(QToolBar,Observable):
 
         return timer
 
-    def createAccelerationWidget(self):
+    def __createAccelerationWidget(self) -> QWidget:
         acceleration=QWidget()
         acceleration.setObjectName("widget")
 
@@ -136,93 +159,71 @@ class Toolbar(QToolBar,Observable):
         try:
             acc=float(text)
             if acc >= self.ACCELERATION_MIN and acc <= self.ACCELERATION_MAX:
-                self._acceleration=acc
+                self.__acceleration=acc
             if acc > self.ACCELERATION_MAX:
-                self._acceleration= self.ACCELERATION_MAX
+                self.__acceleration= self.ACCELERATION_MAX
         except ValueError:
             return
         finally:
             self.__accelerationChanged()
 
     def __accelerationChanged(self):
-        self._acceleration=round(self._acceleration,1)
-        self._valueAcceleration.setText(f'x{self._acceleration}')
+        self.__acceleration=round(self.__acceleration, 1)
+        self._valueAcceleration.setText(f'x{self.__acceleration}')
         self._valueAcceleration.clearFocus()
         self.notifyObservers("accelerationChanged")
 
     def __clickedDecreaseAcceleration(self):
-        self._acceleration-= 0.1 if self._acceleration<=1 else 1.0
-        self._acceleration=max(self._acceleration,self.ACCELERATION_MIN)
+        self.__acceleration-= 0.1 if self.__acceleration <= 1 else 1.0
+        self.__acceleration=max(self.__acceleration, self.ACCELERATION_MIN)
         self.__accelerationChanged()
 
     def __clickedIncreaseAcceleration(self):
-        self._acceleration += 0.1 if self._acceleration<1 else 1.0
-        self._acceleration=min(self._acceleration,self.ACCELERATION_MAX)
+        self.__acceleration += 0.1 if self.__acceleration < 1 else 1.0
+        self.__acceleration=min(self.__acceleration, self.ACCELERATION_MAX)
         self.__accelerationChanged()
 
-    def getAcceleration(self):
-        return self._acceleration
-
-    def createPlayPauseWidget(self):
+    def __createPlayPauseWidget(self) -> QWidget:
         play = QWidget()
         play_layout=QHBoxLayout(play)
         play_layout.setSpacing(0)
         play.setContentsMargins(4, 0, 4, 0)
 
-        self._playPause = PlayButton(self._playState)
-        self._playPause.setToolTip("Pause" if self._playState else "Play")
+        self._playPause = PlayButton(self.__playState)
+        self._playPause.setToolTip("Pause" if self.__playState else "Play")
         self._playPause.clicked.connect(self.__togglePlayState)
 
         play_layout.addWidget(self._playPause)
         return play
 
-    def getPlayState(self):
-        return self._playState
-
     def __togglePlayState(self):
-        self._playState=not self._playState
-        self._playPause.setToolTip("Pause" if self._playState else "Play")
-        self._playPause.setState(self._playState)
+        self.__playState=not self.__playState
+        self._playPause.setToolTip("Pause" if self.__playState else "Play")
+        self._playPause.setState(self.__playState)
         self.notifyObservers("playChanged")
 
-    def updateTimeElapsed(self,sender):
-        time=sender.time()
-        hours=int(time//3600)
-        time-=hours*3600
-        minutes=int(time//60)
-        time-=minutes*60
-        seconds=time
-
-        str=""
-        if hours>0:
-            str+=f"{hours}h"
-        if minutes>0 or hours>0:
-            str+=f"{'0' if minutes<10 and hours>0 else ''}{minutes}min"
-        str+=f"{'0' if seconds<10 and (minutes>0 or hours>0) else ''}{round(seconds,1) if minutes==0 else int(seconds)}s"
-        self._timeElapsed.setText(str)
 
     def robotSelected(self,sender):
         if sender.isSelected():
-            self._robotSelected=sender
-            self.addAction(self._robotTitleWidget)
-            self.addAction(self._pathFollowingWidget)
+            self.__robotSelected=sender
+            self.addAction(self.__robotTitleWidget)
+            self.addAction(self.__pathFollowingWidget)
         else:
-            self.removeAction(self._robotTitleWidget)
-            self.removeAction(self._pathFollowingWidget)
+            self.removeAction(self.__robotTitleWidget)
+            self.removeAction(self.__pathFollowingWidget)
 
-    def pathFollowingButton(self):
+    def pathFollowingWidget(self) -> QWidgetAction:
         widget=QWidgetAction(self)
-        self._pathFollowingButton = Button()
-        widget.setDefaultWidget(self._pathFollowingButton)
-        self._pathFollowingButton.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
-        self._pathFollowingButton.setToolTip("Go To")
-        self._pathFollowingButton.clicked.connect(self.__clickedFollowPath)
+        self.__pathFollowingButton = Button()
+        widget.setDefaultWidget(self.__pathFollowingButton)
+        self.__pathFollowingButton.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
+        self.__pathFollowingButton.setToolTip("Go To")
+        self.__pathFollowingButton.clicked.connect(self.__clickedFollowPath)
         return widget
 
     def __clickedFollowPath(self):
         self._pathFollowingButton.setDown(True)
         self.notifyObservers('followPathSelected')
 
-    def getRobotSelected(self):
-        return self._robotSelected
+
 
