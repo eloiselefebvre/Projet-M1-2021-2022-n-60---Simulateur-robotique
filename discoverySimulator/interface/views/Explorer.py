@@ -23,7 +23,7 @@ class Explorer(QWidget):
         self.__layout.setContentsMargins(0, 0, 0, 0)
         self.__layout.setSpacing(0)
 
-    # Getters
+    # GETTERS
     def getExplorerTree(self):
         return self.__explorerTree
 

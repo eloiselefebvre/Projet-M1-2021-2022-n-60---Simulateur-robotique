@@ -13,6 +13,7 @@ class Line(Shape):
         self._length=length
         self._width=width
 
+    # SETTERS
     def setLength(self,length:float):
         """
         This method is used to change the length of a line
@@ -20,6 +21,7 @@ class Line(Shape):
         """
         self._length=length
 
+    # GETTERS
     @staticmethod
     def getLineCoefficient(line: QLineF) -> Tuple[float, float]:
         a = (line.y2() - line.y1()) / (line.x2() - line.x1())

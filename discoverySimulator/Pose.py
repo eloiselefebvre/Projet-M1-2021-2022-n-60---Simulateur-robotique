@@ -5,6 +5,7 @@ class Pose:
         self.setRotationCenter(rx, ry)
         self._orientation = orientation
 
+    # SETTERS
     def setX(self,x:float):
         self._pose[0]=x
 
@@ -17,6 +18,7 @@ class Pose:
     def setRotationCenter(self, rx:float, ry:float):
         self._rotationCenter=(rx,ry)
 
+    # GETTERS
     def getX(self) -> float:
         return self._pose[0]
 

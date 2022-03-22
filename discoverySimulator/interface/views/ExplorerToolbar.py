@@ -31,7 +31,7 @@ class ExplorerToolsbar(QWidget, Observable):
         self.__layout.addWidget(self.__lockButtonWidget)
         self.__layout.addWidget(self.__visibleButtonWidget)
 
-    # Getters
+    # GETTERS
     def getShownObjects(self):
         objects=[]
         for object in self.__environment.getObjects():

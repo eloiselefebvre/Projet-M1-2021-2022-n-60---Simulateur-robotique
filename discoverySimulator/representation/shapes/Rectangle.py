@@ -26,6 +26,7 @@ class Rectangle(Shape):
         self._orientationMark = False
         self._rect=QRect(-int(self._width / 2), -int(self._height / 2), int(self._width), int(self._height))
 
+    # GETTERS
     def getWidth(self) -> float:
         """
         This method is used to get the width of a rectangle
@@ -42,13 +43,6 @@ class Rectangle(Shape):
 
     def getBoundingBox(self):
         return self
-
-    def contains(self, point) -> bool:
-        for line in self.getLineDecomposition():
-            d = (line.x2()-line.x1())*(point.y()-line.y1())-(line.y2()-line.y1())*(point.x()-line.x1())
-            if not d<0: # point à droite de la ligne (pas bon car sens trigonométrique)
-                return False
-        return True
 
     def getLineDecomposition(self) -> List[QLineF]:
         lines=[]
@@ -69,6 +63,14 @@ class Rectangle(Shape):
         for i in range(4):
             lines.append(QLineF(pts[i][0],pts[i][1],pts[i+1][0],pts[i+1][1]))
         return lines
+
+
+    def contains(self, point) -> bool:
+        for line in self.getLineDecomposition():
+            d = (line.x2()-line.x1())*(point.y()-line.y1())-(line.y2()-line.y1())*(point.x()-line.x1())
+            if not d<0: # point à droite de la ligne (pas bon car sens trigonométrique)
+                return False
+        return True
 
     def addOrientationMark(self):
         self._orientationMark=True

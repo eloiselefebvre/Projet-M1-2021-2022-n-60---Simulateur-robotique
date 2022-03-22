@@ -20,9 +20,17 @@ class Shape(ABC):
     def removeBorder(self):
         self._border=None
 
+    # SETTERS
     def setPose(self,pose:Pose):
         self._pose=pose
 
+    def setOpacity(self,opacity:int):
+        self._opacity=opacity
+
+    def setColor(self,color:str):
+        self._color=QColor(color)
+
+    # GETTERS
     def getPose(self):
         return self._pose
 
@@ -36,8 +44,8 @@ class Shape(ABC):
         else:
             painter.setPen(Qt.NoPen)
 
-    def setOpacity(self,opacity:int):
-        self._opacity=opacity
+    def getColor(self):
+        return self._color  # TODO : return hex
 
     @abstractmethod
     def getLineDecomposition(self):
@@ -81,18 +89,12 @@ class Shape(ABC):
         return total_intersections
 
     @abstractmethod
-    def contains(self, point):
-        pass
-
-    @abstractmethod
     def getBoundingBox(self):
         pass
 
-    def getColor(self):
-        return self._color # TODO : return hex
-
-    def setColor(self,color:str):
-        self._color=QColor(color)
+    @abstractmethod
+    def contains(self, point):
+        pass
 
     def offset(self,value:float):
         pass

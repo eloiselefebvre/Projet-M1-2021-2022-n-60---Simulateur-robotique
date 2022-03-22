@@ -34,18 +34,13 @@ class Object(Observable):
         self._id = type(self).__name__
         self.completeID()
 
+    # SETTERS
     def setFrame(self,frame:Frame):
         if isinstance(frame,Frame):
             self._frame=frame
 
-    def getFrame(self) -> Frame:
-        return self._frame
-
     def setZIndex(self,index:int):
         self._zIndex=int(index)
-
-    def getZIndex(self) -> int:
-        return self._zIndex
 
     def setNumberOfInstances(self,name:str):
         """
@@ -57,19 +52,59 @@ class Object(Observable):
         else:
             Object.number_of_instances[name]=1
 
+    def setPose(self,pose:Pose):
+        self._pose=pose
+        self._representation.setPose(self._pose)
+
+    def setVisible(self, visible:bool):
+        if not self._visibilityLocked:
+            self._representation.setVisible(visible)
+            self.visibylityChanged()
+
+    def setVisibilityLocked(self,state:bool):
+        self._visibilityLocked=state
+
+    def setID(self,id:str):
+        """
+        This method is used to change the ID of an object
+        :param id: new id of the object
+        """
+        self._id=id
+        Object.number_of_instances[type(self).__name__] -= 1
+        self.setNumberOfInstances(self._id)
+        self.completeID()
+
+    def setSelected(self,selected:bool):
+        if selected!=self._isSelected:
+            self._isSelected=selected
+            if self._isSelected:
+                self._representation.getShape().addBorder(Border(4, self.SELECTED_COLOR))
+            else:
+                self._representation.getShape().removeBorder()
+            self.notifyObservers("selectionChanged")
+
+    def setCollidedState(self,state):
+        self._isCollided=state
+
+    def setEnvironnement(self, environnement):
+        self._environnement=environnement
+
+    # GETTERS
+    def getFrame(self) -> Frame:
+        return self._frame
+
+    def getAcceleration(self) -> float:
+        return self._acceleration
+
+    def getZIndex(self) -> int:
+        return self._zIndex
+
     def getRepresentation(self) -> Representation:
         """
         This method is used to get the representation of an object
         :return: the representation of the object
         """
         return self._representation
-
-    def paint(self, painter:QPainter):
-        self._representation.paint(painter)
-
-    def setPose(self,pose:Pose):
-        self._pose=pose
-        self._representation.setPose(self._pose)
 
     def getPose(self) -> Pose:
         return self._pose
@@ -81,13 +116,23 @@ class Object(Observable):
         """
         return self._id
 
+    def getVisibilityLocked(self) -> bool:
+        return self._visibilityLocked
+
+    def getEnvironnement(self) :
+        return self._environnement
+
+    def getCollidedState(self) -> bool:
+        return self._isCollided
+
+    def getIntersectionsWith(self,obj) -> List[QPointF]:
+        return self.getRepresentation().getShape().getIntersectionsWith(obj.getRepresentation().getShape())
+
+    def paint(self, painter:QPainter):
+        self._representation.paint(painter)
+
     def isVisible(self) -> bool:
         return self._representation.isVisible()
-
-    def setVisible(self, visible:bool):
-        if not self._visibilityLocked:
-            self._representation.setVisible(visible)
-            self.visibylityChanged()
 
     def toggleVisible(self):
         if not self._visibilityLocked:
@@ -100,48 +145,11 @@ class Object(Observable):
                 comp.setVisibilityLocked(not self.isVisible())
         self.notifyObservers("visibilityChanged")
 
-    def setVisibilityLocked(self,state:bool):
-        self._visibilityLocked=state
-
-    def getVisibilityLocked(self) -> bool:
-        return self._visibilityLocked
-
-    def setID(self,id:str):
-        """
-        This method is used to change the ID of an object
-        :param id: new id of the object
-        """
-        self._id=id
-        Object.number_of_instances[type(self).__name__] -= 1
-        self.setNumberOfInstances(self._id)
-        self.completeID()
-
     def completeID(self):
         self._id+="_"+str(Object.number_of_instances[self._id])
 
-    def setSelected(self,selected:bool):
-        if selected!=self._isSelected:
-            self._isSelected=selected
-            if self._isSelected:
-                self._representation.getShape().addBorder(Border(4, self.SELECTED_COLOR))
-            else:
-                self._representation.getShape().removeBorder()
-            self.notifyObservers("selectionChanged")
-
     def isSelected(self) -> bool:
         return self._isSelected
-
-    def setEnvironnement(self, environnement):
-        self._environnement=environnement
-
-    def getEnvironnement(self) :
-        return self._environnement
-
-    def getCollidedState(self) -> bool:
-        return self._isCollided
-
-    def setCollidedState(self,state):
-        self._isCollided=state
 
     def isCollided(self):
         if not self._isCollided:
@@ -150,14 +158,8 @@ class Object(Observable):
                     self._isCollided=True
                     obj.setCollidedState(True)
 
-    def getIntersectionsWith(self,obj) -> List[QPointF]:
-        return self.getRepresentation().getShape().getIntersectionsWith(obj.getRepresentation().getShape())
-
     def isCollidedWith(self,obj) -> bool:
         return len(self.getIntersectionsWith(obj))!=0
-
-    def getAcceleration(self) -> float:
-        return self._acceleration
 
     def accelerationChanged(self,sender):
         self._acceleration=sender.getAcceleration()

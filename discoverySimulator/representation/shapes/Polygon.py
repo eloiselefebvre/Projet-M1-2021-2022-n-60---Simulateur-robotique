@@ -20,6 +20,7 @@ class Polygon(Shape):
         super().__init__(color,opacity)
         self._points=[QPoint(point[0],point[1]) for point in points]
 
+    # GETTERS
     def getBoundingBox(self) -> Rectangle:
         min_x=self._points[0].x()
         min_y = self._points[0].y()
@@ -37,6 +38,14 @@ class Polygon(Shape):
                 max_y=point.y()
         return Rectangle(max_x-min_x,max_y-min_y)
 
+    def getLineDecomposition(self) -> List[QLineF]:
+        lines=[]
+        pose = QPoint(self._pose.getX(),self._pose.getY())
+        points_number=len(self._points)
+        for i in range (1,points_number+1):
+            lines.append(QLineF(self._points[i-1]+pose,self._points[i if i<points_number else 0]+pose))
+        return lines
+
     def contains(self, point) -> bool:
         # https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
         pose = QPoint(self._pose.getX(), self._pose.getY())
@@ -49,14 +58,6 @@ class Polygon(Shape):
                 c=not c
             j=i
         return c
-
-    def getLineDecomposition(self) -> List[QLineF]:
-        lines=[]
-        pose = QPoint(self._pose.getX(),self._pose.getY())
-        points_number=len(self._points)
-        for i in range (1,points_number+1):
-            lines.append(QLineF(self._points[i-1]+pose,self._points[i if i<points_number else 0]+pose))
-        return lines
 
     def offset(self,value:float): # TODO : attention au sens
         # https://stackoverflow.com/questions/54033808/how-to-offset-polygon-edges
