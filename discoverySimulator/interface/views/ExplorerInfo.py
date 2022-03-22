@@ -1,9 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QTextEdit
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
 from discoverySimulator import Component
-from discoverySimulator.Obstacle import Obstacle
+from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.config import config
 from discoverySimulator.interface.componants.Button import VisibilityButton
 from discoverySimulator.robots.Robot import Robot

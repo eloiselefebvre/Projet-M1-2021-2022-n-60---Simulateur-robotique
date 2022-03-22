@@ -1,12 +1,12 @@
 import time
 from math import sqrt, atan, degrees, cos, radians, sin, acos
-from PyQt5.QtCore import QPoint, QLineF
+from PyQt5.QtCore import QPoint
 
 from discoverySimulator.Pose import Pose
 from discoverySimulator.Object import Object
-from discoverySimulator.Obstacle import Obstacle
+from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Rectangle, Circle, Point, Line
+from discoverySimulator.representation.shapes import Rectangle, Line
 
 
 class PathFinding:

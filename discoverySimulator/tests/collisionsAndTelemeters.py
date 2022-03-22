@@ -2,9 +2,10 @@ import time
 
 from discoverySimulator import Obstacle, Object
 from discoverySimulator.actuators import LED, Buzzer
+from discoverySimulator.obstacles.CircularObstacle import CircularObstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle, Line, Polygon
-from discoverySimulator.robots import RectangleTwoWheelsRobot, FourWheelsRobot, CircleTwoWheelsRobot
+from discoverySimulator.robots import RectangularTwoWheelsRobot, FourWheelsRobot, CircularTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.sensors.ColorSensor import ColorSensor
 from discoverySimulator.simulation import Environment, Simulation
@@ -12,7 +13,7 @@ from discoverySimulator.simulation import Environment, Simulation
 
 def collisionAndTelemeter():
 
-    rob1 = RectangleTwoWheelsRobot()
+    rob1 = RectangularTwoWheelsRobot()
     colorSensorRight=ColorSensor()
     rob1.addComponent(colorSensorRight,5,25)
     colorSensorLeft=ColorSensor()
@@ -30,7 +31,7 @@ def collisionAndTelemeter():
     rob1.addComponent(led2, 0, 10)
 
 
-    rob2 = CircleTwoWheelsRobot()
+    rob2 = CircularTwoWheelsRobot()
     rob2.addComponent(led3, 0, 0)
     rob2.setRightWheelSpeed(200)
     rob2.setLeftWheelSpeed(300)
@@ -42,7 +43,7 @@ def collisionAndTelemeter():
     buzzer = Buzzer()
     telemeter = Telemeter("#0f0")
     telemeter.setID("Front Telemeter")
-    rob3 = RectangleTwoWheelsRobot("#F97F51", 60, 80, 60)
+    rob3 = RectangularTwoWheelsRobot("#F97F51", 60, 80, 60)
     rob3.addComponent(buzzer, 0, 0)
     rob3.addComponent(telemeter, 0, 32, 0)
 
@@ -56,7 +57,7 @@ def collisionAndTelemeter():
     rob4.setLeftBackWheelSpeed(500)
     rob4.setLeftFrontWheelSpeed(-300)
 
-    rob5 = RectangleTwoWheelsRobot()
+    rob5 = RectangularTwoWheelsRobot()
     rob5.setRightWheelSpeed(300)
     rob5.setLeftWheelSpeed(300)
 
@@ -68,10 +69,10 @@ def collisionAndTelemeter():
     env.addObject(rob3, 500, 500, 45)
     env.addObject(rob4, 700, 500, 90)
     env.addObject(rob5, 700, 180, 90)
-    env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180) # TODO : Ajout d'une classe de confort
+    env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
     env.addObject(Telemeter(),500,4)
     # env.addObject(polygon,100,100)
-    env.addVirtualObject(Obstacle(Representation(Circle(50,'#ff8f8f'))),600,600)
+    env.addVirtualObject(CircularObstacle(50,'#ff8f8f'),600,600)
 
     sim = Simulation(env)
     ledState = 0

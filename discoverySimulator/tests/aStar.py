@@ -7,13 +7,13 @@ from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle
 from discoverySimulator.representation.shapes.Polygon import Polygon
 from discoverySimulator.ressources.PathFinding import PathFinding
-from discoverySimulator.robots.CircleTwoWheelsRobot import CircleTwoWheelsRobot
+from discoverySimulator.robots.CircularTwoWheelsRobot import CircularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 
 def aStar():
 
     env=Environment(1500,1500)
-    robot = CircleTwoWheelsRobot()
+    robot = CircularTwoWheelsRobot()
     pol=Polygon([(200,200),(300,200),(400,300),(300,350),(250,300)],"#f0f")
     obs=Obstacle(Representation(pol))
     env.addObject(robot,100,100)

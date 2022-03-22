@@ -1,5 +1,5 @@
 from .Robot import Robot
 from .TwoWheelsRobot import TwoWheelsRobot
-from .RectangleTwoWheelsRobot import RectangleTwoWheelsRobot
-from .CircleTwoWheelsRobot import CircleTwoWheelsRobot
+from .RectangularTwoWheelsRobot import RectangularTwoWheelsRobot
+from .CircularTwoWheelsRobot import CircularTwoWheelsRobot
 from .FourWheelsRobot import FourWheelsRobot

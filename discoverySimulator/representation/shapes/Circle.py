@@ -9,7 +9,7 @@ class Circle(Shape):
     ORIENTATION_MARK_WIDTH = 2
     ORIENTATION_MARK_LIGHTER_FACTOR = 160 # TODO : Mettre dans shape ?
 
-    def __init__(self,radius,color,opacity=255):
+    def __init__(self,radius,color=None,opacity=255):
         super().__init__(color,opacity)
         self._radius=radius
         self._orientationMark=False

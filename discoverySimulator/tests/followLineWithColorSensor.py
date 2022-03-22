@@ -1,7 +1,7 @@
 import time
 
 from discoverySimulator.ressources.maps.CirclePath import CirclePath
-from discoverySimulator.robots import RectangleTwoWheelsRobot
+from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.sensors.ColorSensor import ColorSensor
 from discoverySimulator.simulation import Environment, Simulation
 
@@ -11,7 +11,7 @@ def followLineWithColorSensor():
     FORWARD_SPEED=300
     TURN_SPEED=100
 
-    rob1 = RectangleTwoWheelsRobot()
+    rob1 = RectangularTwoWheelsRobot()
 
     colorSensorRight=ColorSensor()
     colorSensorLeft=ColorSensor()

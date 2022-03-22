@@ -2,7 +2,7 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout
 from discoverySimulator.config import config
 from discoverySimulator.Observable import Observable
-from discoverySimulator.Obstacle import Obstacle
+from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.actuators import Actuator
 from discoverySimulator.robots.Robot import Robot
 from discoverySimulator.sensors.Sensor import Sensor
