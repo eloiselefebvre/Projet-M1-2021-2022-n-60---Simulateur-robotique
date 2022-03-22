@@ -1,5 +1,5 @@
 from discoverySimulator.Observable import Observable
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPoint, QSize
 
 
 class ZoomController(Observable):
@@ -10,64 +10,64 @@ class ZoomController(Observable):
 
     def __init__(self,environnement):
         super().__init__()
-        self._envSize = environnement.getSize()
-        self._sceneSize = None
-        self._miniSceneSize = None
+        self.__environnementSize = environnement.getSize()
+        self.__sceneSize = None
+        self.__miniSceneSize = None
 
-        self._zoom=1.0
-        self._miniZoom=1.0
+        self.__zoom=1.0
+        self.__miniZoom=1.0
 
-        self._offset=QPoint(0,0)
+        self.__offset=QPoint(0, 0)
 
-    def zoomIn(self):
-        self._zoom+=self.ZOOM_STEP
-        self._zoom = min(self._zoom,self.ZOOM_MAX)
-        self.zoomChanged()
-
-    def zoomOut(self):
-        self._zoom-=self.ZOOM_STEP
-        self._zoom = max(self._zoom,self.ZOOM_MIN)
-        self.zoomChanged()
-
-    def zoomToFit(self):
-        self._zoom=min(self._sceneSize.width()/self._envSize.width(),self._sceneSize.height()/self._envSize.height())
-        self._offset=QPoint(0,0)
-        self.zoomChanged()
-
-    def zoomToMiniFit(self):
-        self._miniZoom=min(self._miniSceneSize.width()/self._envSize.width(),self._miniSceneSize.height()/self._envSize.height())
-
-    def setZoom(self,zoom):
-        if zoom>=self.ZOOM_MIN and zoom<=self.ZOOM_MAX:
-            self._zoom=zoom
+    def setZoom(self, zoom:float):
+        if zoom >= ZoomController.ZOOM_MIN and zoom <= ZoomController.ZOOM_MAX:
+            self.__zoom = zoom
             self.zoomChanged()
             return True
-        if zoom>self.ZOOM_MAX:
-            self._zoom=self.ZOOM_MAX
+        if zoom > self.ZOOM_MAX:
+            self.__zoom = ZoomController.ZOOM_MAX
             self.zoomChanged()
             return True
         return False
 
+    def setSceneSize(self, size:QSize):
+        self.__sceneSize = size
+
+    def setMiniSceneSize(self, size:QSize):
+        self.__miniSceneSize = size
+
+    def setOffset(self, offset:QPoint):
+        self.__offset = offset
+
     def getZoom(self):
-        return self._zoom
+        return self.__zoom
 
     def getMiniZoom(self):
-        return self._miniZoom
+        return self.__miniZoom
 
-    def setOffset(self,offset):
-        self._offset=offset
-
-    def getOffset(self):
-        return self._offset
-
-    def setSceneSize(self,size):
-        self._sceneSize=size
+    def getOffset(self) -> QPoint:
+        return self.__offset
 
     def getSceneSize(self):
-        return self._sceneSize
+        return self.__sceneSize
 
-    def setMiniSceneSize(self,size):
-        self._miniSceneSize=size
+    def zoomIn(self):
+        self.__zoom+=ZoomController.ZOOM_STEP
+        self.__zoom = min(self.__zoom, ZoomController.ZOOM_MAX)
+        self.zoomChanged()
+
+    def zoomOut(self):
+        self.__zoom-=ZoomController.ZOOM_STEP
+        self.__zoom = max(self.__zoom, ZoomController.ZOOM_MIN)
+        self.zoomChanged()
+
+    def zoomToFit(self):
+        self.__zoom=min(self.__sceneSize.width() / self.__environnementSize.width(), self.__sceneSize.height() / self.__environnementSize.height())
+        self.__offset=QPoint(0, 0)
+        self.zoomChanged()
+
+    def zoomToMiniFit(self):
+        self.__miniZoom=min(self.__miniSceneSize.width() / self.__environnementSize.width(), self.__miniSceneSize.height() / self.__environnementSize.height())
 
     def zoomChanged(self):
         self.notifyObservers("zoomChanged")

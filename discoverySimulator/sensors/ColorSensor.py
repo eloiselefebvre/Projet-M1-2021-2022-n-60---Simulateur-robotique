@@ -7,7 +7,7 @@ class ColorSensor(Sensor):
 
     BACKGROUND_COLOR = "#f0f0f0"
 
-    def __init__(self,color="#000"):
+    def __init__(self,color:str=None):
         """
         This method is used to create a new color sensor
         :param color: color of the sensor
@@ -28,11 +28,11 @@ class ColorSensor(Sensor):
                 if obj.getRepresentation().contains(colorSensorPoint):
                     self._colorDetected = obj.getRepresentation().getShape().getColor().name()
         if self._colorDetected is None:
-            self._colorDetected = self.BACKGROUND_COLOR
+            self._colorDetected = ColorSensor.BACKGROUND_COLOR
         if self._colorDetected!=previousColor:
             self.notifyObservers("stateChanged")
 
-    def getValue(self):
+    def getValue(self) -> str:
         """
         This method allows to get the captured color by the sensor
         :return: the captured color

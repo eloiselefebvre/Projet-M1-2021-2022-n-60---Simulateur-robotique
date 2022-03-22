@@ -7,7 +7,7 @@ class Wheel(Actuator):
     DEFAULT_BORDER_RADIUS = 3
     DEFAULT_BORDER_WIDTH = 2
 
-    def __init__(self,radius:int,width:int):
+    def __init__(self,radius:float,width:float):
         """
         This method is used to create a new wheel
         :param radius: the radius of the wheel [px]

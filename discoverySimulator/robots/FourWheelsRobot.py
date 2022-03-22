@@ -4,7 +4,6 @@ from discoverySimulator.actuators.Wheel import Wheel
 from discoverySimulator.config import *
 
 class FourWheelsRobot(RectangularTwoWheelsRobot):
-    instances_counter=0
 
     def __init__(self, color:str=None, robotWidth:int=50, robotHeight:int=60, distanceBetweenWheels:int=50, wheelsRadius:int=10, frontWheelYPosition:int=15, backWheelYPosition:int=-15):
         """

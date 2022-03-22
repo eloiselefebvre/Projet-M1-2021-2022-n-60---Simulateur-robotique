@@ -1,5 +1,9 @@
-from PyQt5.QtCore import Qt, QPointF
+from typing import List
+
+from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QBrush, QPen
+from PyQt5.QtGui import QPainter
+
 from . import Shape, Rectangle
 from .Line import Line
 
@@ -9,7 +13,7 @@ class Circle(Shape):
     ORIENTATION_MARK_WIDTH = 2
     ORIENTATION_MARK_LIGHTER_FACTOR = 160 # TODO : Mettre dans shape ?
 
-    def __init__(self,radius,color,opacity=255):
+    def __init__(self,radius:float,color:str,opacity:int=255):
         """
         This method is used to create a circle
         :param radius: radius of the circle [px]
@@ -30,25 +34,25 @@ class Circle(Shape):
     def addOrientationMark(self):
         self._orientationMark = True
 
-    def paint(self,painter):
+    def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center
         if self._orientationMark:
             self.paintOrientationMark(painter)
 
-    def paintOrientationMark(self,painter):
+    def paintOrientationMark(self,painter:QPainter):
         painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
         widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
         ypos = int(self._radius * 8/10)
         painter.drawLine(widthToCompensate - int(self._radius / 2), ypos, int(self._radius / 2) - widthToCompensate, ypos)
 
-    def getLineDecomposition(self):
+    def getLineDecomposition(self) -> List[QLineF]:
         return []
 
-    def getIntersectionWithLine(self,line):
+    def getIntersectionWithLine(self,line:QLineF) -> List[QPointF]:
         intersections = []
-        if line.x2()!=line.x1(): # pas ligne verticale
+        if line.x2()!=line.x1(): # not a vertical line
             a_line,b_line=Line.getLineCoefficient(line)
 
             A = 1+a_line**2
@@ -70,7 +74,7 @@ class Circle(Shape):
                     intersections.append(QPointF(x1,y1))
                 if x2>=min_x and x2<=max_x: # appartient au segment
                     intersections.append(QPointF(x2, y2))
-        else: # ligne verticale
+        else: # vertical line
             A=1
             B=-2*self.getPose().getY()
             C=self.getPose().getY()**2+(line.x1()-self.getPose().getX())**2-self._radius**2
@@ -110,10 +114,10 @@ class Circle(Shape):
         intersections.append(QPointF(p3.x()-hd*dy,p3.y()+hd*dx))
         return intersections
 
-    def contains(self, point):
+    def contains(self, point:QPointF):
         return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2
 
-    def offset(self,value):
+    def offset(self,value:float):
         circle = Circle(self._radius+value,self._color)
         circle.setPose(self._pose)
         return circle

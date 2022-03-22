@@ -55,14 +55,12 @@ def reinforcementLearningTest():
 
             distance = sqrt((endPosition[0]-startPosition[0])**2+(endPosition[1]-startPosition[1])**2)
 
-            # reward = distance / (1 + (endOrientation-startOrientation)**2)     # incite à aller tout droit
-            reward = (endOrientation-startOrientation)/(distance+1)             # inclite à tourner sur soi-même
+            reward = distance / (1 + (endOrientation-startOrientation)**2)     # incite à aller tout droit
+            # reward = (endOrientation-startOrientation)/(distance+1)             # inclite à tourner sur soi-même
 
             # print(currentState, action, distance, startOrientation, endOrientation, reward)
 
             reinforcementLearning.learn(reward)
-
-
 
         else:
             start=sim.time()
