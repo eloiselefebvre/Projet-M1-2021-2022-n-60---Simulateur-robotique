@@ -1,11 +1,10 @@
-from typing import List
+from typing import List, Tuple
 
 from PyQt5.QtCore import Qt, QLineF
-from PyQt5.QtGui import QPen
+from PyQt5.QtGui import QPen, QPainter
 from . import Shape, Rectangle
 from .Point import Point
 
-from typing import Tuple
 
 class Line(Shape):
 
@@ -13,11 +12,6 @@ class Line(Shape):
         super().__init__(color,opacity)
         self._length=length
         self._width=width
-
-    def paint(self,painter):
-        super().paint(painter)
-        painter.setPen(QPen(self._color, self._width, Qt.SolidLine))
-        painter.drawLine(0,0,0,self._length) # vertical line
 
     def setLength(self,length:float):
         """
@@ -27,10 +21,16 @@ class Line(Shape):
         self._length=length
 
     @staticmethod
-    def getLineCoefficient(line:QLineF) -> Tuple[float,float]:
+    def getLineCoefficient(line: QLineF) -> Tuple[float, float]:
         a = (line.y2() - line.y1()) / (line.x2() - line.x1())
-        b = line.y1()-a*line.x1()
-        return a,b
+        b = line.y1() - a * line.x1()
+        return a, b
+
+    def getBoundingBox(self) -> Rectangle:
+        return Rectangle(self._width,self._length)
+
+    def contains(self, point) -> bool:
+        return False
 
     def getLineDecomposition(self) -> List[QLineF]:
         x1 = self._pose.getX()
@@ -41,9 +41,6 @@ class Line(Shape):
 
         return [QLineF(x1,y1,x2,y2)]
 
-    def contains(self, point) -> bool:
-        return False
-
     def offset(self,value:float) -> Rectangle:
         rec = Rectangle(self._width+value,self._length+value)
         pose=self._pose.copy()
@@ -52,5 +49,7 @@ class Line(Shape):
         rec.setPose(pose)
         return rec
 
-    def getBoundingBox(self) -> Rectangle:
-        return Rectangle(self._width,self._length)
+    def paint(self,painter:QPainter):
+        super().paint(painter)
+        painter.setPen(QPen(self._color, self._width, Qt.SolidLine))
+        painter.drawLine(0,0,0,self._length) # vertical line

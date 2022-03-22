@@ -1,8 +1,10 @@
 from abc import ABC,abstractmethod
 from PyQt5.QtCore import Qt, QPointF, QLineF
-from PyQt5.QtGui import QColor, QPen
+from PyQt5.QtGui import QColor, QPen, QPainter
 
 from .Border import Border
+from ...Pose import Pose
+
 
 class Shape(ABC):
     def __init__(self,color,opacity):
@@ -18,13 +20,13 @@ class Shape(ABC):
     def removeBorder(self):
         self._border=None
 
-    def setPose(self,pose):
+    def setPose(self,pose:Pose):
         self._pose=pose
 
     def getPose(self):
         return self._pose
 
-    def paint(self,painter):
+    def paint(self,painter:QPainter):
         painter.translate(self._pose.getX() + self._pose.getRotationCenterX(), self._pose.getY() + self._pose.getRotationCenterY())
         painter.rotate(self._pose.getOrientation())
         painter.translate(-self._pose.getRotationCenterX(), -self._pose.getRotationCenterY())
@@ -34,7 +36,7 @@ class Shape(ABC):
         else:
             painter.setPen(Qt.NoPen)
 
-    def setOpacity(self,opacity):
+    def setOpacity(self,opacity:int):
         self._opacity=opacity
 
     @abstractmethod
@@ -87,10 +89,10 @@ class Shape(ABC):
         pass
 
     def getColor(self):
-        return self._color
+        return self._color # TODO : return hex
 
-    def setColor(self,color):
+    def setColor(self,color:str):
         self._color=QColor(color)
 
-    def offset(self,value):
+    def offset(self,value:float):
         pass

@@ -29,6 +29,9 @@ class Telemeter(Sensor):
         """
         return self._distance
 
+    def getMaximumMesurableDistance(self) -> int:
+        return self._maximumMesurableDistance
+
     def getSpecifications(self) -> str:
         specifications=f"Current measured distance : {round(self._distance,1)}px<br>---<br>"
         specifications+=f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
@@ -40,7 +43,7 @@ class Telemeter(Sensor):
         self._distance = self._maximumMesurableDistance
         telemeterPose=self._frame.getAbsoluteCoordinates()
         self._laser.setPose(telemeterPose)
-        for obj in self._env.getObjects():
+        for obj in self._environnement.getObjects():
             if obj != self._parent and obj!=self:
                 intersections.extend(self._laser.getIntersectionsWith(obj))
         closest_point = None

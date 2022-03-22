@@ -84,13 +84,13 @@ class Environment:
         if isinstance(object, Object):
             pose=Pose(x,y,orientation)
             object.setPose(pose)
-            object.setEnv(self)
+            object.setEnvironnement(self)
             object.getFrame().setBaseFrame(self.__frame)
             object.getFrame().setCoordinates(pose)
             self.__objects.append(object)
             if isinstance(object, Robot):
                 for comp in object.getComponents():
-                    comp.setEnv(self)
+                    comp.setEnvironnement(self)
                     if isinstance(comp, Sensor):
                         self.__addSensor(comp)
                 object.setOdometryPose(pose.copy())
@@ -107,7 +107,7 @@ class Environment:
         """
         if isinstance(virtualObject, Object):
             virtualObject.setPose(Pose(x, y, orientation))
-            virtualObject.setEnv(self)
+            virtualObject.setEnvironnement(self)
             self.__virtualObjects.append(virtualObject)
 
     def removeObject(self, object:Object):
