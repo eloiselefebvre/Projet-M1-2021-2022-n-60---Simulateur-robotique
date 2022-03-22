@@ -21,6 +21,7 @@ class Polygon(Shape):
         self.__points=[QPoint(point[0], point[1]) for point in points]
         self.__clockwise=clockwise
 
+    # GETTERS
     def getBoundingBox(self) -> Rectangle:
         min_x=self.__points[0].x()
         min_y = self.__points[0].y()
@@ -59,7 +60,7 @@ class Polygon(Shape):
             lines.append(QLineF(self.__points[i - 1] + pose, self.__points[i if i < points_number else 0] + pose))
         return lines
 
-    def offset(self,value:float): # TODO : attention au sens
+    def offset(self,value:float):
         # https://stackoverflow.com/questions/54033808/how-to-offset-polygon-edges
         points_offset=[]
         points_number=len(self.__points)

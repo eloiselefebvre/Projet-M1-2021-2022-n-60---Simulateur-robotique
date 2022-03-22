@@ -1,7 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
-
 from discoverySimulator.config import config
 from discoverySimulator.interface.components.Button import VisibilityButton
 from discoverySimulator.Object import Object
@@ -18,25 +17,22 @@ class ExplorerTree(QTreeWidget):
 
     def __init__(self,environment,parent):
         super().__init__()
-        self._environment = environment
-
-        self._mainItems=[]
-        self._subItems=[]
-        self._allObjects = []
-        self._mainObjects=[]
-        self._childrenButtons=[]
-        self._mainItemsAssociatedChildren=[]
-        self._visibilityButtons=[]
-
-        self._parent=parent
-        self._selectedItem=None
-        self._selectedSubItem=None
-        self._itemsShown=[Robot,Actuator,Sensor,Obstacle]
-
-        self.setTreeWidgetConfiguration()
+        self.__environment = environment
+        self.__mainItems=[]
+        self.__subItems=[]
+        self.__allObjects = []
+        self.__mainObjects=[]
+        self.__childrenButtons=[]
+        self.__mainItemsAssociatedChildren=[]
+        self.__visibilityButtons=[]
+        self.__parent=parent
+        self.__selectedItem=None
+        self.__selectedSubItem=None
+        self.__itemsShown=[Robot, Actuator, Sensor, Obstacle]
+        self.__setTreeWidgetConfiguration()
         self.buildTree()
 
-    def setTreeWidgetConfiguration(self):
+    def __setTreeWidgetConfiguration(self):
         self.setHeaderHidden(True)
         self.setColumnCount(2)
         self.setColumnWidth(0, 300)
@@ -45,14 +41,14 @@ class ExplorerTree(QTreeWidget):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
     def rebuildTree(self,sender):
-        self._itemsShown=sender.getShownObjectClass()
+        self.__itemsShown=sender.getShownObjectClass()
         self.clearTree()
         self.buildTree()
         self.expandAll()
 
     def clearTree(self):
-        if self._selectedItem is not None:
-            self._mainObjects[self._mainItems.index(self._selectedItem)].setSelected(False)
+        if self.__selectedItem is not None:
+            self.__mainObjects[self.__mainItems.index(self.__selectedItem)].setSelected(False)
         self.removeSelectedItem()
         self.itemClicked.disconnect(self.clickedItem)
 
@@ -68,108 +64,108 @@ class ExplorerTree(QTreeWidget):
         for parent in parents:
             root.removeChild(parent)
 
-        self._mainItems.clear()
-        self._subItems.clear()
-        self._allObjects.clear()
-        self._mainObjects.clear()
-        self._childrenButtons.clear()
-        self._mainItemsAssociatedChildren.clear()
-        self._visibilityButtons.clear()
+        self.__mainItems.clear()
+        self.__subItems.clear()
+        self.__allObjects.clear()
+        self.__mainObjects.clear()
+        self.__childrenButtons.clear()
+        self.__mainItemsAssociatedChildren.clear()
+        self.__visibilityButtons.clear()
 
     def buildTree(self):
-        for obj in self._environment.getObjects():
+        for obj in self.__environment.getObjects():
              if type(obj) != Object:
-                if issubclass(type(obj),tuple(self._itemsShown)) or (isinstance(obj,Robot) and (Actuator in self._itemsShown or Sensor in self._itemsShown)):
+                if issubclass(type(obj), tuple(self.__itemsShown)) or (isinstance(obj, Robot) and (Actuator in self.__itemsShown or Sensor in self.__itemsShown)):
                     parent=None
-                    if not issubclass(type(obj),tuple(self._itemsShown)) and isinstance(obj,Robot) and (Actuator in self._itemsShown or Sensor in self._itemsShown):
+                    if not issubclass(type(obj), tuple(self.__itemsShown)) and isinstance(obj, Robot) and (Actuator in self.__itemsShown or Sensor in self.__itemsShown):
                         sensors = [comp  for comp in obj.getComponents() if isinstance(comp,Sensor)]
-                        if (Sensor in self._itemsShown and sensors) or (Actuator in self._itemsShown and len(obj.getComponents())-len(sensors)!=0):
+                        if (Sensor in self.__itemsShown and sensors) or (Actuator in self.__itemsShown and len(obj.getComponents()) - len(sensors) != 0):
                             parent = Item(self, obj.getID(), 12, setBold=True)
                             parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/robotDisabled.svg"))
-                            self._visibilityButtons.append(None)
+                            self.__visibilityButtons.append(None)
                     else:
                         parent = Item(self, obj.getID(), 12, setBold=True)
-                        classname = [item for item in self._itemsShown if isinstance(obj,item)][0].__name__
+                        classname = [item for item in self.__itemsShown if isinstance(obj, item)][0].__name__
                         parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
-                        self._visibilityButtons.append(VisibilityButton(obj.isVisible()))
-                        self.setItemWidget(parent, 1, self._visibilityButtons[-1])
+                        self.__visibilityButtons.append(VisibilityButton(obj.isVisible()))
+                        self.setItemWidget(parent, 1, self.__visibilityButtons[-1])
                     if parent is not None:
-                        self._mainItems.append(parent)
-                        self._mainObjects.append(obj)
-                        self._allObjects.append(obj)
-                        self._mainItemsAssociatedChildren.append([])
-                        self._childrenButtons.append([])
+                        self.__mainItems.append(parent)
+                        self.__mainObjects.append(obj)
+                        self.__allObjects.append(obj)
+                        self.__mainItemsAssociatedChildren.append([])
+                        self.__childrenButtons.append([])
                         if hasattr(obj,"getComponents"):
                             for comp in obj.getComponents():
-                                if issubclass(type(comp),tuple(self._itemsShown)):
+                                if issubclass(type(comp), tuple(self.__itemsShown)):
                                     child = Item(parent,comp.getID())
-                                    self._visibilityButtons.append(VisibilityButton(comp.isVisible()))
+                                    self.__visibilityButtons.append(VisibilityButton(comp.isVisible()))
                                     if comp.getVisibilityLocked():
-                                        self._visibilityButtons[-1].lock()
-                                    self.setItemWidget(child, 1, self._visibilityButtons[-1])
-                                    self._subItems.append(child)
-                                    self._mainItemsAssociatedChildren[-1].append(child)
-                                    self._childrenButtons[-1].append(self._visibilityButtons[-1])
-                                    self._allObjects.append(comp)
+                                        self.__visibilityButtons[-1].lock()
+                                    self.setItemWidget(child, 1, self.__visibilityButtons[-1])
+                                    self.__subItems.append(child)
+                                    self.__mainItemsAssociatedChildren[-1].append(child)
+                                    self.__childrenButtons[-1].append(self.__visibilityButtons[-1])
+                                    self.__allObjects.append(comp)
                                     parent.addChild(child)
-                                    classname = [item for item in self._itemsShown if isinstance(comp, item)][0].__name__
+                                    classname = [item for item in self.__itemsShown if isinstance(comp, item)][0].__name__
                                     child.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
-        for button in self._visibilityButtons:
+        for button in self.__visibilityButtons:
             if button is not None:
                 button.clicked.connect(self.toggleObjectVisibily)
         self.itemClicked.connect(self.clickedItem)
 
     def clickedItem(self):
         crawler = self.currentItem()
-        if self._selectedItem is not None:
-            self._mainObjects[self._mainItems.index(self._selectedItem)].setSelected(False)
-        if crawler in self._mainItems:
-            selectedObject = self._mainObjects[self._mainItems.index(crawler)]
+        if self.__selectedItem is not None:
+            self.__mainObjects[self.__mainItems.index(self.__selectedItem)].setSelected(False)
+        if crawler in self.__mainItems:
+            selectedObject = self.__mainObjects[self.__mainItems.index(crawler)]
         else:
-            selectedObject = self._mainObjects[[i for i in range(len(self._mainItems)) if crawler in self._mainItemsAssociatedChildren[i]][0]]
+            selectedObject = self.__mainObjects[[i for i in range(len(self.__mainItems)) if crawler in self.__mainItemsAssociatedChildren[i]][0]]
             crawler.setColor(self.CRAWLER_COLOR)
-            self._selectedSubItem=crawler
+            self.__selectedSubItem=crawler
         selectedObject.setSelected(True)
 
     def setSelectedItem(self,item):
         item.setColor(self.CRAWLER_COLOR)
         item.setExpanded(True)
         self.setCurrentItem(item)
-        self._selectedItem=item
-        if self._selectedSubItem is not None:
-            self._parent.showExplorerInfo(self._allObjects[1+ self._mainItems.index(self._selectedItem) + self._subItems.index(self._selectedSubItem)])
+        self.__selectedItem=item
+        if self.__selectedSubItem is not None:
+            self.__parent.showExplorerInfo(self.__allObjects[1 + self.__mainItems.index(self.__selectedItem) + self.__subItems.index(self.__selectedSubItem)])
         else:
-            self._parent.showExplorerInfo(self._mainObjects[self._mainItems.index(self._selectedItem)])
+            self.__parent.showExplorerInfo(self.__mainObjects[self.__mainItems.index(self.__selectedItem)])
 
     def removeSelectedItem(self):
-        if self._selectedItem is not None:
+        if self.__selectedItem is not None:
             self.clearSelection()
-            self._selectedItem.setColor(self.ITEM_COLOR)
+            self.__selectedItem.setColor(self.ITEM_COLOR)
 
-            for subItem in self._subItems:
+            for subItem in self.__subItems:
                 subItem.setColor(self.ITEM_COLOR)
 
-            if self._selectedSubItem is not None:
-                self._parent.hideExplorerInfo(self._allObjects[1 + self._mainItems.index(self._selectedItem) + self._subItems.index(self._selectedSubItem)])
+            if self.__selectedSubItem is not None:
+                self.__parent.hideExplorerInfo(self.__allObjects[1 + self.__mainItems.index(self.__selectedItem) + self.__subItems.index(self.__selectedSubItem)])
             else:
-                self._parent.hideExplorerInfo(self._mainObjects[self._mainItems.index(self._selectedItem)])
-            self._selectedItem=None
-            self._selectedSubItem=None
+                self.__parent.hideExplorerInfo(self.__mainObjects[self.__mainItems.index(self.__selectedItem)])
+            self.__selectedItem=None
+            self.__selectedSubItem=None
 
     def changeTreeSelection(self,sender):
-        if sender in self._mainObjects:
-            crawler = self._mainItems[self._mainObjects.index(sender)]
+        if sender in self.__mainObjects:
+            crawler = self.__mainItems[self.__mainObjects.index(sender)]
             if sender.isSelected():
                 self.setSelectedItem(crawler)
             else:
                 self.removeSelectedItem()
 
     def changeTreeVisibility(self,sender):
-        if sender in self._allObjects:
-            button=self._visibilityButtons[self._allObjects.index(sender)]
+        if sender in self.__allObjects:
+            button=self.__visibilityButtons[self.__allObjects.index(sender)]
             button.setState(sender.isVisible())
-            if sender in self._mainObjects:
-                children_buttons = self._childrenButtons[self._mainObjects.index(sender)]
+            if sender in self.__mainObjects:
+                children_buttons = self.__childrenButtons[self.__mainObjects.index(sender)]
                 if sender.isVisible():
                     for children_button in children_buttons:
                         children_button.unlock()
@@ -179,7 +175,7 @@ class ExplorerTree(QTreeWidget):
 
     def toggleObjectVisibily(self):
         button = self.sender()
-        obj = self._allObjects[self._visibilityButtons.index(button)]
+        obj = self.__allObjects[self.__visibilityButtons.index(button)]
         obj.toggleVisible()
 
 class Item(QTreeWidgetItem):

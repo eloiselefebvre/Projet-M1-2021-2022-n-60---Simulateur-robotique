@@ -14,28 +14,40 @@ class ExplorerToolsbar(QWidget, Observable):
 
     def __init__(self,environment):
         super().__init__()
-        self._environment=environment
-        self._robots = []
-        self._sensors = []
-        self._obstacles = []
-        self._actuators = []
+        self.__environment=environment
+        self.__robots = []
+        self.__sensors = []
+        self.__obstacles = []
+        self.__actuators = []
+        self.__itemsShown=self.ITEMS
+        self.__isSceneLocked=False
+        self.__areObjectVisible=True
+        self.__filterWidget=self.__createFilterWidget()
+        self.__lockButtonWidget=self.__createLockButtonWidget()
+        self.__visibleButtonWidget=self.__createVisibleButtonWidget()
 
-        self._itemsShown=self.ITEMS
+        self.__layout = QHBoxLayout(self)
+        self.__layout.addWidget(self.__filterWidget)
+        self.__layout.addWidget(self.__lockButtonWidget)
+        self.__layout.addWidget(self.__visibleButtonWidget)
 
-        self._isSceneLocked=False
-        self._areObjectVisible=True
+    # GETTERS
+    def getShownObjects(self):
+        objects=[]
+        for object in self.__environment.getObjects():
+            if issubclass(type(object), tuple(self.__itemsShown)):
+                objects.append(object)
+            if isinstance(object, Robot):
+                for comp in object.getComponents():
+                    if issubclass(type(comp), tuple(self.__itemsShown)):
+                        objects.append(comp)
+        return objects
 
-        self._filterWidget=self.createFilterWidget()
-        self._lockButtonWidget=self.createLockButtonWidget()
-        self._visibleButtonWidget=self.createVisibleButtonWidget()
-
-        self._layout = QHBoxLayout(self)
-        self._layout.addWidget(self._filterWidget)
-        self._layout.addWidget(self._lockButtonWidget)
-        self._layout.addWidget(self._visibleButtonWidget)
+    def getShownObjectClass(self):
+        return self.__itemsShown
 
     # Widgets
-    def createFilterWidget(self):
+    def __createFilterWidget(self) -> QComboBox:
         fnt=QFont("Verdana", 12)
         filterWidget = QComboBox()
         filterWidget.setFont(fnt)
@@ -48,67 +60,53 @@ class ExplorerToolsbar(QWidget, Observable):
         filterWidget.currentIndexChanged.connect(self.__filterChanged)
         return filterWidget
 
-    def createLockButtonWidget(self):
+    def __createLockButtonWidget(self) -> LockButton:
         lockButton=LockButton()
         lockButton.clicked.connect(self.__clickedLockUnlock)
-        lockButton.setToolTip("Unlock" if self._isSceneLocked else "Lock")
+        lockButton.setToolTip("Unlock" if self.__isSceneLocked else "Lock")
         return lockButton
 
-    def createVisibleButtonWidget(self):
-        visibleButtonWidget = VisibilityButton(self._areObjectVisible)
+    def __createVisibleButtonWidget(self) -> VisibilityButton:
+        visibleButtonWidget = VisibilityButton(self.__areObjectVisible)
         visibleButtonWidget.clicked.connect(self.__clickedVisibilityButton)
-        visibleButtonWidget.setToolTip("Hide" if self._areObjectVisible else "Show")
+        visibleButtonWidget.setToolTip("Hide" if self.__areObjectVisible else "Show")
         return visibleButtonWidget
-
-    def getShownObjects(self):
-        objects=[]
-        for object in self._environment.getObjects():
-            if issubclass(type(object),tuple(self._itemsShown)):
-                objects.append(object)
-            if isinstance(object, Robot):
-                for comp in object.getComponents():
-                    if issubclass(type(comp), tuple(self._itemsShown)):
-                        objects.append(comp)
-        return objects
-
-    def getShownObjectClass(self):
-        return self._itemsShown
 
     # Filter methods
     def __filterChanged(self):
-        idx = self._filterWidget.currentIndex()
+        idx = self.__filterWidget.currentIndex()
         if idx!=0:
-            self._itemsShown =[]
-            self._itemsShown.append(self.ITEMS[idx-1])
+            self.__itemsShown =[]
+            self.__itemsShown.append(self.ITEMS[idx - 1])
         else:
-            self._itemsShown = self.ITEMS
+            self.__itemsShown = self.ITEMS
         self.setObjectVisible(True)
         self.notifyObservers("filterChanged")
 
     # Lock methods
     def __clickedLockUnlock(self):
         self.__toggleSceneLock()
-        self._lockButtonWidget.setToolTip("Unlock" if self._isSceneLocked else "Lock")
-        self._lockButtonWidget.setState(self._isSceneLocked)
+        self.__lockButtonWidget.setToolTip("Unlock" if self.__isSceneLocked else "Lock")
+        self.__lockButtonWidget.setState(self.__isSceneLocked)
 
     def __toggleSceneLock(self):
-        self._isSceneLocked=not self._isSceneLocked
+        self.__isSceneLocked=not self.__isSceneLocked
         self.notifyObservers("lockChanged")
 
-    def getLockState(self):
-        return self._isSceneLocked
+    def getLockState(self) -> bool:
+        return self.__isSceneLocked
 
     # Visibility methods
     def __clickedVisibilityButton(self):
         objects=self.getShownObjects()
         self.toggleObjectVisible()
-        self._visibleButtonWidget.setToolTip("Hide" if self._areObjectVisible else "Show")
+        self.__visibleButtonWidget.setToolTip("Hide" if self.__areObjectVisible else "Show")
         for object in objects:
-            object.setVisible(self._areObjectVisible)
+            object.setVisible(self.__areObjectVisible)
 
     def toggleObjectVisible(self):
-        self.setObjectVisible(not self._areObjectVisible)
+        self.setObjectVisible(not self.__areObjectVisible)
 
     def setObjectVisible(self,state):
-        self._areObjectVisible=state
-        self._visibleButtonWidget.setState(self._areObjectVisible)
+        self.__areObjectVisible=state
+        self.__visibleButtonWidget.setState(self.__areObjectVisible)

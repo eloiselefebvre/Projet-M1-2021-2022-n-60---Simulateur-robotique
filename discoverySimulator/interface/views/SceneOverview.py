@@ -6,21 +6,31 @@ class SceneOverview(QWidget):
 
     def __init__(self,environment,zoomController): # TODO : Rafraichir l'affichage du drag même en pause
         super().__init__()
-        self._environment = environment
-        self._zoomController=zoomController
-
-        self._dragView=False
+        self.__environment = environment
+        self.__zoomController=zoomController
+        self.__dragView=False
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
+        self.__dragViewOrigin = QPoint(0, 0)
 
-        self._dragViewOrigin = QPoint(0, 0)
+    def __viewGrabbed(self, mouse):
+        mouseRescale = mouse/self.__zoomController.getMiniZoom()
+        offset = self.__zoomController.getOffset()
+        sceneSize=self.__zoomController.getSceneSize()
+        bx=-offset.x()/self.__zoomController.getZoom() # begin x
+        by=-offset.y()/self.__zoomController.getZoom()
+        ex = bx+sceneSize.width()
+        ey = by+sceneSize.height()
+
+        if mouseRescale.x()>bx and mouseRescale.y()>by and mouseRescale.x()<ex and mouseRescale.y()<ey:
+            self.__dragView=True
+            self.__dragViewOrigin=mouseRescale
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.scale(self._zoomController.getMiniZoom(),self._zoomController.getMiniZoom())
-
-        objects = self._environment.getVirtualObjects().copy()
-        objects.extend(self._environment.getObjects())
+        painter.scale(self.__zoomController.getMiniZoom(), self.__zoomController.getMiniZoom())
+        objects = self.__environment.getVirtualObjects().copy()
+        objects.extend(self.__environment.getObjects())
         objects.sort(key=lambda obj: obj.getZIndex())
 
         for obj in objects:
@@ -30,41 +40,28 @@ class SceneOverview(QWidget):
 
         painter.setPen(QPen(QColor("#675BB5"),8, Qt.SolidLine))
 
-        offset = -self._zoomController.getOffset()/self._zoomController.getZoom()
+        offset = -self.__zoomController.getOffset() / self.__zoomController.getZoom()
         ox=int(offset.x())
         oy=int(offset.y())
 
-        sceneSize=self._zoomController.getSceneSize()
-        w=int(sceneSize.width()/self._zoomController.getZoom())
-        h=int(sceneSize.height()/self._zoomController.getZoom())
+        sceneSize=self.__zoomController.getSceneSize()
+        w=int(sceneSize.width() / self.__zoomController.getZoom())
+        h=int(sceneSize.height() / self.__zoomController.getZoom())
 
         painter.drawRect(ox,oy,w,h)
 
     def mousePressEvent(self,event):
         self.setCursor(Qt.ClosedHandCursor)
         if event.button() == Qt.LeftButton:
-            self._viewGrabbed(event.pos())
+            self.__viewGrabbed(event.pos())
 
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.OpenHandCursor)
-        self._dragView=False
-
-    def _viewGrabbed(self,mouse):
-        mouseRescale = mouse/self._zoomController.getMiniZoom()
-        offset = self._zoomController.getOffset()
-        sceneSize=self._zoomController.getSceneSize()
-        bx=-offset.x()/self._zoomController.getZoom() # begin x
-        by=-offset.y()/self._zoomController.getZoom()
-        ex = bx+sceneSize.width()
-        ey = by+sceneSize.height()
-
-        if mouseRescale.x()>bx and mouseRescale.y()>by and mouseRescale.x()<ex and mouseRescale.y()<ey:
-            self._dragView=True
-            self._dragViewOrigin=mouseRescale
+        self.__dragView=False
 
     def mouseMoveEvent(self,event):
-        if self._dragView:
-            current=event.pos()/self._zoomController.getMiniZoom()
-            self._zoomController.setOffset(self._zoomController.getOffset() - (current - self._dragViewOrigin)*self._zoomController.getZoom())
-            self._dragViewOrigin = current
+        if self.__dragView:
+            current=event.pos()/self.__zoomController.getMiniZoom()
+            self.__zoomController.setOffset(self.__zoomController.getOffset() - (current - self.__dragViewOrigin) * self.__zoomController.getZoom())
+            self.__dragViewOrigin = current
 

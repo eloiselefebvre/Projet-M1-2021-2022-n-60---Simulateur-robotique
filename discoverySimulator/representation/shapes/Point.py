@@ -12,6 +12,7 @@ class Point(Shape):
     def __init__(self,color:str="#000",opacity:int=255):
         super().__init__(color,opacity)
 
+    # GETTERS
     def getBoundingBox(self) -> Rectangle:
         return Rectangle(self.POINT_SIZE, self.POINT_SIZE)
 

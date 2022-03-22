@@ -1,9 +1,7 @@
 from typing import List
-
 from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QBrush, QPen
 from PyQt5.QtGui import QPainter
-
 from . import Shape, Rectangle
 from .Line import Line
 
@@ -24,6 +22,7 @@ class Circle(Shape):
         self._radius=radius
         self._orientationMark=False
 
+    # GETTERS
     def getRadius(self):
         """
         This method allows to get the radius of a circle
