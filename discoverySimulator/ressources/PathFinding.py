@@ -30,7 +30,7 @@ class PathFinding:
 
     SECURITY_MARGIN = 20
 
-    def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.01):
+    def __init__(self, environment, robot, displayEnabled:bool=False ,displayDelay:float=0.01):
         # TODO : regarder la nouvelle synthaxe de Python pour la documentation (bool)
         """
         This method is used to create a pathfinding
