@@ -1,2 +1,2 @@
-from discoverySimulator.demonstrations import parking
-parking.parkingDemo()
+from discoverySimulator.tests import collisionAndTelemeter
+collisionAndTelemeter()

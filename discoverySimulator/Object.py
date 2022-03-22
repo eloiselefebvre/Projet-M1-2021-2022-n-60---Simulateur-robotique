@@ -30,8 +30,8 @@ class Object(Observable):
         self._visibilityLocked = False
         self._zIndex = 1
         self._frame=Frame()
-        self.setNumberOfInstances(type(self).__name__)
-        self._id = type(self).__name__
+        self._id = type(self).__name__.replace('Rectangular','').replace('Circular','')
+        self.setNumberOfInstances(self._id)
         self.completeID()
 
     def setFrame(self,frame:Frame):
@@ -140,7 +140,7 @@ class Object(Observable):
     def getCollidedState(self) -> bool:
         return self._isCollided
 
-    def setCollidedState(self,state):
+    def setCollidedState(self,state:bool):
         self._isCollided=state
 
     def isCollided(self):

@@ -46,6 +46,8 @@ def reinforcementLearningTest():
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
 
+            time.sleep(0.1)
+
             reinforcementLearning.executedActionFeedback(product)
 
         else:

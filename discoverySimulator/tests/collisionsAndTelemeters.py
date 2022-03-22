@@ -1,6 +1,10 @@
 import time
+
+from discoverySimulator import Object
 from discoverySimulator.actuators import LED
 from discoverySimulator.obstacles.CircularObstacle import CircularObstacle
+from discoverySimulator.representation import Representation
+from discoverySimulator.representation.shapes import Polygon
 from discoverySimulator.robots import RectangularTwoWheelsRobot, FourWheelsRobot, CircularTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.sensors.ColorSensor import ColorSensor
@@ -55,7 +59,7 @@ def collisionAndTelemeter():
     rob5.setRightWheelSpeed(300)
     rob5.setLeftWheelSpeed(300)
 
-    # polygon=Object(Representation(Polygon([(300,200),(400,200),(500,300),(400,350),(350,300)],"#f0f")))
+    polygon=Object(Representation(Polygon([(300,200),(400,200),(500,300),(400,350),(350,300)],"#f0f")))
 
     env = Environment(1500,900)
     env.addObject(rob1, 1000, 100, 30)
@@ -71,7 +75,6 @@ def collisionAndTelemeter():
     sim = Simulation(env)
     ledState = 0
     start = sim.time()
-    # sim.setAcceleration(2)
     sim.run()
     sim.showInterface()
 
