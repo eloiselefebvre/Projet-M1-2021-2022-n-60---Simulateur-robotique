@@ -54,5 +54,6 @@ class LIDAR(Telemeter):
         specifications = "---<br>"
         specifications += f"Angular Resolution : {self.__angularResolution}°<br>"
         specifications += f"Angular Range : {self.__angularRange}°<br>"
-        specifications += f"Scan Rate : {self.__scanRate}rpm"
+        specifications += f"Scan Rate : {self.__scanRate}rpm<br>"
+        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
         return specifications
