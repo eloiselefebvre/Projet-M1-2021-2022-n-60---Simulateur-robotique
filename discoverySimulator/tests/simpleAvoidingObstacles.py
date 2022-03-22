@@ -3,7 +3,7 @@ import time
 from discoverySimulator import Obstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle, Rectangle
-from discoverySimulator.robots import RectangleTwoWheelsRobot
+from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.simulation import Environment, Simulation
 
@@ -13,7 +13,7 @@ COLLISION_TH = 70
 
 def simpleAvoidingObstacle():
 
-    rob = RectangleTwoWheelsRobot("#888", 60, 80, 60)
+    rob = RectangularTwoWheelsRobot("#888", 60, 80, 60)
 
     telemeters = []
 

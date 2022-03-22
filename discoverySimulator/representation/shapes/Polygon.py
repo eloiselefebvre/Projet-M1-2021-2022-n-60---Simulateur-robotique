@@ -61,7 +61,8 @@ class Polygon(Shape):
                 max_y=point.y()
         return Rectangle(max_x-min_x,max_y-min_y)
 
-    def offset(self,value):
+    def offset(self,value): # sens horaire
+        # https://stackoverflow.com/questions/54033808/how-to-offset-polygon-edges
         points_offset=[]
         points_number=len(self._points)
         for curr in range(points_number):

@@ -39,11 +39,11 @@ class LIDAR(Telemeter):
 
                 intersection = self.getClosestCollisitionPointAndComputeDistance()
                 if intersection is not None:
-                    point = Object(Representation(Point(int(intersection.x()), int(intersection.y()), self._color)))
+                    point = Object(Representation(Point(self._color)))
                     point.setVisible(self.isVisible() and (self._parent.isVisible() if self._parent is not None else True))
                     self._intersectionsBuffer[self._bufferIndex] = point
                     point.setZIndex(2)
-                    self._env.addVirtualObject(point)
+                    self._env.addVirtualObject(point,intersection.x(), intersection.y())
 
                 self._bufferIndex = (self._bufferIndex + 1) % self._angularSteps
             self.getPose().rotate(self._angularResolution)

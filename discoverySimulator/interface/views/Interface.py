@@ -18,7 +18,6 @@ class Interface(QMainWindow):
         self._environment = environment
         self.setWindowTitle("Discovery Simulator")
 
-        # self._toolbar=ToolsBar(self._environment,self)
         self._toolbar = Toolbar()
 
         general_widget=QWidget()

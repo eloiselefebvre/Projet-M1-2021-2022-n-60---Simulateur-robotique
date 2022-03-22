@@ -4,7 +4,7 @@ from discoverySimulator import Object
 from discoverySimulator.actuators import LED
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Line, Rectangle
-from discoverySimulator.robots import FourWheelsRobot, RectangleTwoWheelsRobot
+from discoverySimulator.robots import FourWheelsRobot, RectangularTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.simulation import Environment, Simulation
 
@@ -16,7 +16,7 @@ def parkingDemo():
 
     robot = FourWheelsRobot()
     env.addObject(robot,200,200,90)
-    robot2=RectangleTwoWheelsRobot()
+    robot2=RectangularTwoWheelsRobot()
     env.addObject(robot2,100,100,90)
     floor=Object(Representation(Rectangle(envWidth,envHeight,"#999999")))
     env.addVirtualObject(floor,envWidth/2,envHeight/2)

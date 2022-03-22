@@ -21,8 +21,8 @@ class TwoWheelsRobot(Robot):
         super().__init__(representation)
         self._leftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftWheel, (distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH) / 2, wheelYPosition)
-        self.addComponent(self._rightWheel, (-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH) / 2, wheelYPosition)
+        self.addComponent(self._leftWheel,(-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
+        self.addComponent(self._rightWheel,(distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
         self._distanceBetweenWheels = distanceBetweenWheels
         self._leftWheel.setID("LeftWheel")
         self._rightWheel.setID("RightWheel")
@@ -44,7 +44,9 @@ class TwoWheelsRobot(Robot):
             self.setRotationCenter() # TODO : Not each time
             self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
             self._pose.rotate(dPhi)
+
             self.isCollided()
+
         super().move()
 
     def getAverageSpeed(self):

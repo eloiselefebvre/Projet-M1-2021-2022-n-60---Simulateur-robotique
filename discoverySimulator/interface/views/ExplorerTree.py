@@ -6,7 +6,7 @@ from discoverySimulator.config import config
 from discoverySimulator.interface.componants.Button import VisibilityButton
 from discoverySimulator.Object import Object
 from discoverySimulator.robots.Robot import Robot
-from discoverySimulator.Obstacle import Obstacle
+from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.sensors.Sensor import Sensor
 from discoverySimulator.actuators.Actuator import Actuator
 

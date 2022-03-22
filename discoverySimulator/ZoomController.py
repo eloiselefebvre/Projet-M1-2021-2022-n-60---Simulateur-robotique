@@ -17,7 +17,7 @@ class ZoomController(Observable):
         self._zoom=1.0
         self._miniZoom=1.0
 
-        self._offset=QPoint(0,0) # TODO : utiliser Point qui hériterait de QPoint?
+        self._offset=QPoint(0,0)
 
     def zoomIn(self):
         self._zoom+=self.ZOOM_STEP

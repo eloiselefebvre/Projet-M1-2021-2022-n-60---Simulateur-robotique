@@ -7,7 +7,7 @@ class ReinforcementLearning:
     def __init__(self,state, algorithm = "ValueIteration"):
 
         self._learn = self.__getattribute__(f"_learn{algorithm}")  # raises an error if not found
-        self._minimalSpeed = 0
+        self._minimalSpeed = -600
         self._maximalSpeed = 600
         self._numberOfInterval = 2
         self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval)

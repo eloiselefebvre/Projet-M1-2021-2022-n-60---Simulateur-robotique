@@ -3,7 +3,7 @@ from discoverySimulator.representation.shapes.Rectangle import Rectangle
 from discoverySimulator.representation.Representation import Representation
 import random
 
-class RectangleTwoWheelsRobot(TwoWheelsRobot):
+class RectangularTwoWheelsRobot(TwoWheelsRobot):
 
     def __init__(self, color=None, robotWidth=50, robotHeight=60, distanceBetweenWheels=50, wheelsRadius=10, wheelYPosition=0):
         """

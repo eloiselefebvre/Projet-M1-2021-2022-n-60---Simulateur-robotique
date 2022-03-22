@@ -25,7 +25,6 @@ class Object(Observable):
         self.setNumberOfInstances(type(self).__name__)
         self._id = type(self).__name__
         self.completeID()
-        # TODO : Handle all visible variables here and not in representation
 
     def setFrame(self,frame):
         if isinstance(frame,Frame):
