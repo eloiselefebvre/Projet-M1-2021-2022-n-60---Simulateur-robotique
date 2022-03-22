@@ -1,6 +1,8 @@
 import time
 
 from discoverySimulator import Obstacle
+from discoverySimulator.obstacles import RectangularObstacle
+from discoverySimulator.obstacles.CircularObstacle import CircularObstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle, Rectangle
 from discoverySimulator.robots import RectangularTwoWheelsRobot
@@ -34,10 +36,9 @@ def simpleAvoidingObstacle():
     env = Environment(1500,900)
     env.addObject(rob,500,500,90)
 
-    #env.addObject(Obstacle(Representation(Circle(40,"#f0f"))),0,300)
-    env.addObject(Obstacle(Representation(Circle(50,"#ff0"))),800,800)
-    env.addObject(Obstacle(Representation(Rectangle(200,180,"#0ff"))),750,530)
-    env.addObject(Obstacle(Representation(Circle(90,"#f0f"))),1000,300)
+    env.addObject(CircularObstacle(50,"#ff0"),800,800)
+    env.addObject(RectangularObstacle(200,180,"#0ff"),750,530)
+    env.addObject(CircularObstacle(90,"#f0f"),1000,300)
 
     sim = Simulation(env)
     sim.run()

@@ -22,7 +22,7 @@ def aStar():
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    pathFinding = PathFinding(env,robot,True,0)
+    pathFinding = PathFinding(env,robot,True)
     pathFinding.setEndPoint(QPointF(500,500))
     pathFinding.setIsFollowingPath(True)
 

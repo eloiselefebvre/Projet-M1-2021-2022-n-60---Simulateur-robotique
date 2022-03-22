@@ -1,4 +1,5 @@
 from discoverySimulator import Obstacle, Object
+from discoverySimulator.obstacles import RectangularObstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Rectangle
 from discoverySimulator.robots import RectangularTwoWheelsRobot
@@ -22,10 +23,10 @@ def factoryMap():
 
 
     for i in range(12):
-        floors.append(Object(Representation(Rectangle(250,250,"#444"))))
+        floors.append(RectangularObstacle(250,250,"#444"))
 
     for i in range(20):
-        obstacles.append(Object(Representation(Rectangle(30,30,"#DC7633"))))
+        obstacles.append(RectangularObstacle(30,30,"#DC7633"))
 
     env = Environment(1525, 1100)
     i=0

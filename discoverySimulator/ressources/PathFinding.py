@@ -7,6 +7,7 @@ from discoverySimulator.Object import Object
 from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Rectangle, Line
+from discoverySimulator.robots import Robot
 
 
 class PathFinding:
@@ -37,6 +38,8 @@ class PathFinding:
         self._displayEnabled = displayEnabled
         self._displayDelay = displayDelay
 
+        self._obstaclesWithOffset=[obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN) for obj in self._environment.getObjects() if not isinstance(obj,Robot)]
+
         self._robot.setLeftWheelSpeed(0)
         self._robot.setRightWheelSpeed(0)
         self.__ROWS_NUMBER = (self._environment.getWidth())/15
@@ -48,6 +51,7 @@ class PathFinding:
         self._pathSimplified=[]
         self._modifyOrientation = True
         self._nextPointIndex = 0
+
 
     def setEndPoint(self,mousePose):
         self.__endNode=(int(mousePose.x()/self.CELL_SIZE),int(mousePose.y()/self.CELL_SIZE))
@@ -75,14 +79,12 @@ class PathFinding:
         self._nodes[node].setColor(color)
 
     def __getNodeValue(self, node):
-        for obj in self._environment.getObjects():
-            obstacle = obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN) # TODO : Tableau d'obstacles offset pour ne pas tout recalculer tout le temps
-            if isinstance(obj,Obstacle):
-                if obstacle.contains(QPoint(node[0]*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
-                   obstacle.contains(QPoint(node[0]*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)) or\
-                   obstacle.contains(QPoint((node[0]+1)*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
-                   obstacle.contains(QPoint((node[0]+1)*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)):
-                    return False
+        for obj in self._obstaclesWithOffset:
+            if obj.contains(QPoint(node[0]*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
+               obj.contains(QPoint(node[0]*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)) or\
+               obj.contains(QPoint((node[0]+1)*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
+               obj.contains(QPoint((node[0]+1)*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)):
+                return False
         return True
 
     def __getNodeNeighbors(self, node):
@@ -228,19 +230,18 @@ class PathFinding:
                 self._environment.removeVirtualObject(line)
             line = Object(Representation(Line(int(length),5,self.COLORS["simplified_path"])))
             if self._displayEnabled:
-                self._environment.addVirtualObject(line, int(lastPoint[0] * self.CELL_SIZE + self.OFFSET),int(lastPoint[1] * self.CELL_SIZE + self.OFFSET), orientation)
+                self._environment.addVirtualObject(line,lastPoint[0] * self.CELL_SIZE + self.OFFSET,lastPoint[1] * self.CELL_SIZE + self.OFFSET, orientation)
             else:
-                line.setPose(Pose(int(lastPoint[0]*self.CELL_SIZE+self.OFFSET),int(lastPoint[1]*self.CELL_SIZE+self.OFFSET),orientation))
+                line.setPose(Pose(lastPoint[0]*self.CELL_SIZE+self.OFFSET,lastPoint[1]*self.CELL_SIZE+self.OFFSET,orientation))
 
-            for obj in self._environment.getObjects():
-                if isinstance(obj,Obstacle):
-                    if obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN).getIntersectionsWith(line.getRepresentation().getShape()):
-                        lastPoint=path[i]
-                        line=None
-                        current=i
-                        counter=0
-                        points.append((lastPoint[0]*self.CELL_SIZE+self.OFFSET,lastPoint[1]*self.CELL_SIZE+self.OFFSET))
-                        break
+            for obj in self._obstaclesWithOffset:
+                if obj.getIntersectionsWith(line.getRepresentation().getShape()):
+                    lastPoint=path[i]
+                    line=None
+                    current=i
+                    counter=0
+                    points.append((lastPoint[0]*self.CELL_SIZE+self.OFFSET,lastPoint[1]*self.CELL_SIZE+self.OFFSET))
+                    break
             counter+=1
         points.append((path[-1][0]*self.CELL_SIZE+self.OFFSET,path[-1][1]*self.CELL_SIZE+self.OFFSET))
         return points
@@ -264,6 +265,6 @@ class PathFinding:
         theta = acos(dot_product/norm_v2)
         theta_delta = acos(dot_product_delta/norm_v2)
 
-        return degrees(theta) * (1 if degrees(theta)-degrees(theta_delta)>0 else -1)
+        return degrees(theta) * (-1 if degrees(theta)-degrees(theta_delta)>0 else 1)
 
 

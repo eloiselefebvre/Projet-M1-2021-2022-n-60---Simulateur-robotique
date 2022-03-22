@@ -34,10 +34,7 @@ def LIDARTest():
     pol=Polygon([(500,500),(600,400),(800,400),(600,500),(800,700)],"#ff8fff")
     env.addObject(Obstacle(Representation(pol)))
     env.addObject(Obstacle(Representation(pol.offset(-20))))
-    # env.addObject(LIDAR(),50,50)
 
     sim = Simulation(env)
-    sim.setAcceleration(1)
     sim.run()
     sim.showInterface()
-

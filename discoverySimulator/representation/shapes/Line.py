@@ -1,3 +1,5 @@
+from math import sin, cos
+
 from PyQt5.QtCore import Qt, QLineF
 from PyQt5.QtGui import QPen
 from . import Shape, Rectangle
@@ -27,7 +29,6 @@ class Line(Shape):
         return a,b
 
     def getLineDecomposition(self):
-        # ligne plutôt rectangle du fait de son épaisseur ?
         x1 = self._pose.getX()
         y1 = self._pose.getY()
         dx = 0
@@ -39,8 +40,13 @@ class Line(Shape):
     def contains(self, point):
         return False
 
-    # def offset(self,value):
-        # return Rectangle(self._width+value,self._length+value) # TODO : offset line
+    def offset(self,value):
+        rec = Rectangle(self._width+value,self._length+value)
+        pose=self._pose.copy()
+        dx,dy=Point.computeTransformation(pose.getX(),pose.getY(),0,self._length/2,pose.getOrientation())
+        pose.move(dx,dy)
+        rec.setPose(pose)
+        return rec
 
     def getBoundingBox(self):
         return Rectangle(self._width,self._length)

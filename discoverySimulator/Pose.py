@@ -1,9 +1,15 @@
 class Pose:
 
     def __init__(self, x, y,orientation=0,rx=0,ry=0):
-        self._pose = (x,y)
+        self._pose = [x,y]
         self.setRotationCenter(rx, ry)
         self._orientation = orientation
+
+    def setX(self,x):
+        self._pose[0]=x
+
+    def setY(self,y):
+        self._pose[1]=y
 
     def getX(self):
         return self._pose[0]
@@ -30,7 +36,7 @@ class Pose:
         self._orientation = (self._orientation+angle)%360
 
     def move(self,x,y):
-        self._pose=(x,y)
+        self._pose=[x,y]
 
     def copy(self):
-        return Pose(self._pose[0],self._pose[1],self._orientation)
+        return Pose(self._pose[0],self._pose[1],self._orientation,self._rotationCenter[0],self._rotationCenter[1])
