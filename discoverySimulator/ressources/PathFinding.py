@@ -30,7 +30,7 @@ class PathFinding:
 
     SECURITY_MARGIN = 20
 
-    def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.01):
+    def __init__(self, environment, robot, displayEnabled:bool=False ,displayDelay:float=0.01):
         # TODO : regarder la nouvelle synthaxe de Python pour la documentation (bool)
         """
         This method is used to create a pathfinding
@@ -273,6 +273,6 @@ class PathFinding:
         theta = acos(dot_product/norm_v2)
         theta_delta = acos(dot_product_delta/norm_v2)
 
-        return degrees(theta) * (-1 if degrees(theta)-degrees(theta_delta)>0 else 1)
+        return degrees(theta) * (1 if degrees(theta)-degrees(theta_delta)>0 else -1)
 
 
