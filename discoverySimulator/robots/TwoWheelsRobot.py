@@ -20,8 +20,8 @@ class TwoWheelsRobot(Robot):
         super().__init__(rep)
         self._leftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
         self._rightWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftWheel,(distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
-        self.addComponent(self._rightWheel,(-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
+        self.addComponent(self._leftWheel,(-distanceBetweenWheels+self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
+        self.addComponent(self._rightWheel,(distanceBetweenWheels-self.DEFAULT_WHEEL_WIDTH)/2,wheelYPos)
         self._distanceBetweenWheels = distanceBetweenWheels
         self._leftWheel.setID("LeftWheel")
         self._rightWheel.setID("RightWheel")
@@ -38,7 +38,7 @@ class TwoWheelsRobot(Robot):
             dy = averageSpeedRobot * sin(Phi)
 
             # vitesse angulaire
-            dPhi = degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels))
+            dPhi = degrees(-(self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels)) # repère indirect -> signe -
 
             self.setRotationCenter() # TODO : Not each time
             self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)

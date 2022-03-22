@@ -1,2 +1,2 @@
-from discoverySimulator.tests.reinforcementLearningMSO import reinforcementLearningTest
-reinforcementLearningTest()
+from discoverySimulator.demonstrations import roadDemo
+roadDemo()

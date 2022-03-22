@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPen
 from discoverySimulator.representation.shapes import Shape, Rectangle
 from math import radians, cos, sin
 
-class Point(Shape): # TODO : Hérite de QPoint ? X,Y définisent la pose et translate de X,Y puis drawPoint(0,0)
+class Point(Shape): # X,Y définisent la pose et translate de X,Y puis drawPoint(0,0)
 
     POINT_SIZE = 5
 

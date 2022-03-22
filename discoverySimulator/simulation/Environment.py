@@ -27,24 +27,31 @@ class Environment:
     def getFrame(self):
         return self._frame
 
-    def addObject(self,obj,x=0,y=0,orientation=0):
-        if isinstance(obj, Object):
+    def addObject(self, object, x=0, y=0, orientation=0):
+        """
+        This method allows to add an object in the environment
+        :param object: object of the class Object or which inherits from Object
+        :param x: x coordinate of the object in the environment [px]
+        :param y: y coordinate of the object in the environment [px]
+        :param orientation: orientation of the object in the environment [degrees]
+        """
+        if isinstance(object, Object):
             pose=Pose(x,y,orientation)
-            obj.setPose(pose)
-            obj.setEnv(self)
-            obj.getFrame().setBaseFrame(self._frame)
-            obj.getFrame().setCoordinates(pose)
-            self._objects.append(obj)
-            if isinstance(obj,Robot):
-                for comp in obj.getComponents():
+            object.setPose(pose)
+            object.setEnv(self)
+            object.getFrame().setBaseFrame(self._frame)
+            object.getFrame().setCoordinates(pose)
+            self._objects.append(object)
+            if isinstance(object, Robot):
+                for comp in object.getComponents():
                     comp.setEnv(self)
                     if isinstance(comp, Sensor):
-                        self.addSensor(comp)
-                obj.setOdometryPose(pose.copy())
-            if isinstance(obj,Sensor):
-                self.addSensor(obj)
+                        self.__addSensor(comp)
+                object.setOdometryPose(pose.copy())
+            if isinstance(object, Sensor):
+                self.__addSensor(object)
 
-    def addSensor(self,sensor):
+    def __addSensor(self,sensor):
         self._sensors.append(sensor)
 
     def getSensors(self):

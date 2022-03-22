@@ -1,12 +1,9 @@
 import time
 
-from PyQt5.QtCore import QPoint
-
 from discoverySimulator import Obstacle, Object
 from discoverySimulator.actuators import LED, Buzzer
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Circle, Line
-from discoverySimulator.representation.shapes.Polygon import Polygon
+from discoverySimulator.representation.shapes import Circle, Line, Polygon
 from discoverySimulator.robots import RectangleTwoWheelsRobot, FourWheelsRobot, CircleTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.sensors.ColorSensor import ColorSensor
@@ -63,7 +60,7 @@ def collisionAndTelemeter():
     rob5.setRightWheelSpeed(300)
     rob5.setLeftWheelSpeed(300)
 
-    polygon=Object(Representation(Polygon([(300,200),(400,200),(500,300),(400,350),(350,300)],"#f0f")))
+    # polygon=Object(Representation(Polygon([(300,200),(400,200),(500,300),(400,350),(350,300)],"#f0f")))
 
     env = Environment(1500,900)
     env.addObject(rob1, 1000, 100, 30)
@@ -71,9 +68,9 @@ def collisionAndTelemeter():
     env.addObject(rob3, 500, 500, 45)
     env.addObject(rob4, 700, 500, 90)
     env.addObject(rob5, 700, 180, 90)
-    env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180)
+    env.addObject(Obstacle(Representation(Circle(40, "#ff8fff"))), 150, 180) # TODO : Ajout d'une classe de confort
     env.addObject(Telemeter(),500,4)
-    env.addObject(polygon,100,100)
+    # env.addObject(polygon,100,100)
     env.addVirtualObject(Obstacle(Representation(Circle(50,'#ff8f8f'))),600,600)
 
     sim = Simulation(env)

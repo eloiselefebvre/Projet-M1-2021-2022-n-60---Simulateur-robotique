@@ -38,7 +38,7 @@ class Robot(ABC,Object):
 
     def addComponent(self,comp,x=0,y=0,orientation=0):
         if isinstance(comp,Component):
-            pose=Pose(x,y,orientation)
+            pose=Pose(-x,y,orientation)
             comp.setPose(pose)
             comp.setParent(self)
             comp.getFrame().setBaseFrame(self._frame)
