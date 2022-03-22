@@ -1,7 +1,6 @@
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QIcon, QPixmap, QFont
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, QWidgetAction
-
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import config
 from discoverySimulator.interface.componants.Button import Button, PlayButton
@@ -22,8 +21,6 @@ class Toolbar(QToolBar,Observable):
                            "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}"
                            "QPushButton:hover{background-color:#323247;}"
                            "QPushButton:pressed{background-color:#4C4C68;}")
-
-
         self._acceleration = 1.0
         self._playState = True
         self._robotTitleWidget=None
@@ -40,6 +37,7 @@ class Toolbar(QToolBar,Observable):
         self._robotTitleWidget = self.createSectionTitleWidget("Robot")
         self._pathFollowingWidget=self.pathFollowingButton()
         self._robotSelected=None
+        self._previousSender=None
 
     def createSectionTitleWidget(self,name=""):
         labelWidget = QWidgetAction(self)
@@ -70,14 +68,13 @@ class Toolbar(QToolBar,Observable):
         return about
 
     def __openPopUp(self):
-        popUp = PopUp()
+        PopUp()
 
     def createTimerWidget(self):
         timer_icon=QLabel()
         timer_icon.setStyleSheet(f"image: url({config['ressourcesPath']}/toolbar/timer.svg);"
                                  f"image-repeat:no-repeat; image-position:center; image-size:contain;")
         timer_icon.setFixedWidth(16)
-
 
         timer = QWidget()
         timer.setObjectName("widget")
@@ -95,7 +92,6 @@ class Toolbar(QToolBar,Observable):
         timer_layout.setAlignment(Qt.AlignLeft)
 
         self._timeElapsed.setFont(QFont("Sanserif", 12))
-
 
         return timer
 
@@ -211,21 +207,20 @@ class Toolbar(QToolBar,Observable):
             self.addAction(self._robotTitleWidget)
             self.addAction(self._pathFollowingWidget)
         else:
-            # self._path_following_button.setStyleSheet("background:none;")
             self.removeAction(self._robotTitleWidget)
             self.removeAction(self._pathFollowingWidget)
 
     def pathFollowingButton(self):
         widget=QWidgetAction(self)
-        self._path_following_button = Button()
-        widget.setDefaultWidget(self._path_following_button)
-        self._path_following_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
-        self._path_following_button.setToolTip("Go To")
-        self._path_following_button.clicked.connect(self.__clickedFollowPath)
+        self._pathFollowingButton = Button()
+        widget.setDefaultWidget(self._pathFollowingButton)
+        self._pathFollowingButton.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
+        self._pathFollowingButton.setToolTip("Go To")
+        self._pathFollowingButton.clicked.connect(self.__clickedFollowPath)
         return widget
 
     def __clickedFollowPath(self):
-        # self.sender().setStyleSheet("background-color:#4C4C68; border-radius:2px;") # + add disable go to
+        self._pathFollowingButton.setDown(True)
         self.notifyObservers('followPathSelected')
 
     def getRobotSelected(self):
