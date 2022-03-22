@@ -16,13 +16,37 @@ class Simulation(Observable):
         :param environment: environment where the simulation will take place
         """
         super().__init__()
-        self._environment=environment
-        self._app = None
-        self._interface=None
-        self._appShown = False
-        self._acceleration = 1
-        self._timeElapsed = 0
-        self._playState=True
+        self.__environment=environment
+        self.__app = None
+        self.__interface=None
+        self.__appShown = False
+        self.__acceleration = 1
+        self.__timeElapsed = 0.0
+        self.__playState=True
+
+    def getAcceleration(self) -> float:
+        """
+        This method is used to get the acceleration of the simulation
+        :return: the acceleration of the simulation
+        """
+        return self.__acceleration
+
+    def time(self) -> float:
+        """
+        This method is used to get the time elasped since the beginning of the simulation
+        :return: time elapsed [s]
+        """
+        return self.__timeElapsed
+
+    def setAcceleration(self, acceleration:float): # TODO : Notify toolsbar
+        """
+        This method is used to change the acceleration of the simulation
+        :param acceleration: new acceleration of the simulation
+        """
+        self.__acceleration=acceleration
+
+    def setAppShown(self,shown:bool):
+        self.__appShown=shown
 
     def run(self):
         """
@@ -31,76 +55,53 @@ class Simulation(Observable):
         th = threading.Thread(target=self.__run)
         th.start()
 
-    def __run(self):
-        start_update = time.time()
-        while True:
-            current=time.time()
-            if current - start_update > config["update_time_step"] / self._acceleration:
-                start_update = current
-
-                # ROBOT UPDATE
-                if self._playState:
-                    self._timeElapsed += config["update_time_step"] * self._acceleration
-
-                    self.notifyObservers("timeChanged")
-                    for obj in self._environment.getObjects():
-                        if hasattr(obj, "move"):
-                            obj.move()
-
-                # SENSOR UPDATE
-                for sensor in self._environment.getSensors():
-                    if hasattr(sensor, "refresh"):
-                        sensor.refresh()
-            time.sleep(self.MINIMUM_TIME_STEP)
-
     def showInterface(self):
         """
         This method allows to show the interface where the simulation takes place
         """
-        if self._environment is not None and not self._appShown:
+        if self.__environment is not None and not self.__appShown:
             th=threading.Thread(target=self.__startApplication)
             th.start()
-            self._appShown = True
-
-    def __startApplication(self):
-        self._app = QApplication([sys.argv])
-        self._interface=Interface(self,self._environment)
-        sys.exit(self._app.exec())
-
-    def setAcceleration(self, acceleration): # TODO : Notify toolsbar
-        """
-        This method is used to change the acceleration of the simulation
-        :param acceleration: new acceleration of the simulation
-        """
-        self._acceleration=acceleration
-
-    def time(self):
-        """
-        This method is used to get the time elasped since the beginning of the simulation
-        :return: the time elapsed [s]
-        """
-        return self._timeElapsed
-
-    def setAppShown(self,shown):
-        self._appShown=shown
+            self.__appShown = True
 
     def closeInterface(self):
-        if self._appShown:
-            self._appShown = False
-            self._interface.close()
+        if self.__appShown:
+            self.__appShown = False
+            self.__interface.close()
         # TODO : fermer également l'application ?
 
-    def getAcceleration(self):
-        """
-        This method is used to get the acceleration of the simulation
-        :return: the acceleration of the simulation
-        """
-        return self._acceleration
-
+    # NOTIFY METHOD
     def updateAcceleration(self,sender):
-        self._acceleration=sender.getAcceleration()
+        self.__acceleration=sender.getAcceleration()
 
+    # NOTIFY METHOD
     def updatePlayState(self,sender):
-        self._playState=sender.getPlayState()
+        self.__playState=sender.getPlayState()
 
+    def __run(self):
+        start_update = time.time()
+        while True:
+            current=time.time()
+            if current - start_update > config["update_time_step"] / self.__acceleration:
+                start_update = current
+
+                # ROBOT UPDATE
+                if self.__playState:
+                    self.__timeElapsed += config["update_time_step"] * self.__acceleration
+
+                    self.notifyObservers("timeChanged")
+                    for obj in self.__environment.getObjects():
+                        if hasattr(obj, "move"):
+                            obj.move()
+
+                # SENSOR UPDATE
+                for sensor in self.__environment.getSensors():
+                    if hasattr(sensor, "refresh"):
+                        sensor.refresh()
+            time.sleep(self.MINIMUM_TIME_STEP)
+
+    def __startApplication(self):
+        self.__app = QApplication([sys.argv])
+        self.__interface=Interface(self, self.__environment)
+        sys.exit(self.__app.exec())
 

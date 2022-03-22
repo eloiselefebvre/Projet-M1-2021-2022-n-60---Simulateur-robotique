@@ -3,7 +3,7 @@ from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
 
 from discoverySimulator.config import config
-from discoverySimulator.interface.componants.Button import VisibilityButton
+from discoverySimulator.interface.components.Button import VisibilityButton
 from discoverySimulator.Object import Object
 from discoverySimulator.robots.Robot import Robot
 from discoverySimulator.obstacles.Obstacle import Obstacle

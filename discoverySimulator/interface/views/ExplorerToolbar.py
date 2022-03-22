@@ -6,7 +6,7 @@ from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.actuators import Actuator
 from discoverySimulator.robots.Robot import Robot
 from discoverySimulator.sensors.Sensor import Sensor
-from discoverySimulator.interface.componants.Button import VisibilityButton, LockButton
+from discoverySimulator.interface.components.Button import VisibilityButton, LockButton
 
 class ExplorerToolsbar(QWidget, Observable):
 

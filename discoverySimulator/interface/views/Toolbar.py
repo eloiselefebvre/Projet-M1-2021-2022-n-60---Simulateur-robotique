@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, QWidgetAction
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import config
-from discoverySimulator.interface.componants.Button import Button, PlayButton
+from discoverySimulator.interface.components.Button import Button, PlayButton
 from discoverySimulator.interface.views.PopUp import PopUp
 
 
