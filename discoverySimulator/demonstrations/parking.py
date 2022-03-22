@@ -31,7 +31,7 @@ def parkingDemo():
         env.addVirtualObject(lines[i],envWidth-100,200+i*100,-90)
 
     for i in range(3):
-        telemeters.append(Telemeter("#f00"))
+        telemeters.append(Telemeter("#f00",100))
         env.addObject(telemeters[i],envWidth-4,250+i*100,90)
 
     for i in range(3):

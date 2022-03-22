@@ -1,15 +1,14 @@
 from PyQt5.QtGui import QColor
 
 
-
 class Border:
 
-    def __init__(self,width=0,color=None): # et borderRadius ?
-        self._width = width
+    def __init__(self,width:int=0,color:str=None):
+        self._width = int(width)
         self._color = QColor(color)
 
-    def getWidth(self):
+    def getWidth(self) -> int:
         return self._width
 
-    def getColor(self):
+    def getColor(self) -> str:
         return self._color

@@ -1,5 +1,12 @@
+from typing import List
+
+from PyQt5.QtCore import QPointF
+from PyQt5.QtGui import QPainter
+
+from discoverySimulator.Pose import Pose
 from discoverySimulator.Frame import Frame
 from discoverySimulator.Observable import Observable
+from discoverySimulator.representation.Representation import Representation
 from discoverySimulator.representation.shapes.Border import Border
 
 
@@ -16,31 +23,31 @@ class Object(Observable):
         super().__init__()
         self._pose = None
         self._representation = representation
-        self._env= None
+        self._environnement= None
         self._isCollided = False
         self._isSelected = False
         self._acceleration = 1  # TODO : Revoir le changement lorsque l'accelaration est initialement définie et meilleure façon de partager des variables à plusieurs entités
         self._visibilityLocked = False
-        self._z_index = 1
+        self._zIndex = 1
         self._frame=Frame()
         self.setNumberOfInstances(type(self).__name__)
         self._id = type(self).__name__
         self.completeID()
 
-    def setFrame(self,frame):
+    def setFrame(self,frame:Frame):
         if isinstance(frame,Frame):
             self._frame=frame
 
-    def getFrame(self):
+    def getFrame(self) -> Frame:
         return self._frame
 
-    def setZIndex(self,index):
-        self._z_index=index
+    def setZIndex(self,index:int):
+        self._zIndex=int(index)
 
-    def getZIndex(self):
-        return self._z_index
+    def getZIndex(self) -> int:
+        return self._zIndex
 
-    def setNumberOfInstances(self,name):
+    def setNumberOfInstances(self,name:str):
         """
         This method is used to count the number of instances of an object
         :param name: name of the object
@@ -50,34 +57,34 @@ class Object(Observable):
         else:
             Object.number_of_instances[name]=1
 
-    def getRepresentation(self):
+    def getRepresentation(self) -> Representation:
         """
         This method is used to get the representation of an object
         :return: the representation of the object
         """
         return self._representation
 
-    def paint(self, painter):
+    def paint(self, painter:QPainter):
         self._representation.paint(painter)
 
-    def setPose(self,pose):
+    def setPose(self,pose:Pose):
         self._pose=pose
         self._representation.setPose(self._pose)
 
-    def getPose(self):
+    def getPose(self) -> Pose:
         return self._pose
 
-    def getID(self):
+    def getID(self) -> str:
         """
         This method is used to get the ID of an object
         :return: the ID of the object
         """
         return self._id
 
-    def isVisible(self):
+    def isVisible(self) -> bool:
         return self._representation.isVisible()
 
-    def setVisible(self, visible):
+    def setVisible(self, visible:bool):
         if not self._visibilityLocked:
             self._representation.setVisible(visible)
             self.visibylityChanged()
@@ -93,13 +100,13 @@ class Object(Observable):
                 comp.setVisibilityLocked(not self.isVisible())
         self.notifyObservers("visibilityChanged")
 
-    def setVisibilityLocked(self,state):
+    def setVisibilityLocked(self,state:bool):
         self._visibilityLocked=state
 
-    def getVisibilityLocked(self):
+    def getVisibilityLocked(self) -> bool:
         return self._visibilityLocked
 
-    def setID(self,id):
+    def setID(self,id:str):
         """
         This method is used to change the ID of an object
         :param id: new id of the object
@@ -112,7 +119,7 @@ class Object(Observable):
     def completeID(self):
         self._id+="_"+str(Object.number_of_instances[self._id])
 
-    def setSelected(self,selected):
+    def setSelected(self,selected:bool):
         if selected!=self._isSelected:
             self._isSelected=selected
             if self._isSelected:
@@ -121,16 +128,16 @@ class Object(Observable):
                 self._representation.getShape().removeBorder()
             self.notifyObservers("selectionChanged")
 
-    def isSelected(self):
+    def isSelected(self) -> bool:
         return self._isSelected
 
-    def setEnv(self,env):
-        self._env=env
+    def setEnvironnement(self, environnement):
+        self._environnement=environnement
 
-    def getEnv(self):
-        return self._env
+    def getEnvironnement(self) :
+        return self._environnement
 
-    def getCollidedState(self):
+    def getCollidedState(self) -> bool:
         return self._isCollided
 
     def setCollidedState(self,state):
@@ -138,18 +145,18 @@ class Object(Observable):
 
     def isCollided(self):
         if not self._isCollided:
-            for obj in self._env.getObjects():
+            for obj in self._environnement.getObjects():
                 if self!=obj and self.isCollidedWith(obj):
                     self._isCollided=True
                     obj.setCollidedState(True)
 
-    def getIntersectionsWith(self,obj):
+    def getIntersectionsWith(self,obj) -> List[QPointF]:
         return self.getRepresentation().getShape().getIntersectionsWith(obj.getRepresentation().getShape())
 
-    def isCollidedWith(self,obj):
+    def isCollidedWith(self,obj) -> bool:
         return len(self.getIntersectionsWith(obj))!=0
 
-    def getAcceleration(self):
+    def getAcceleration(self) -> float:
         return self._acceleration
 
     def accelerationChanged(self,sender):

@@ -31,21 +31,11 @@ class Circle(Shape):
         """
         return self._radius
 
-    def addOrientationMark(self):
-        self._orientationMark = True
+    def getBoundingBox(self):
+        return Rectangle(self._radius*2,self._radius*2)
 
-    def paint(self,painter:QPainter):
-        super().paint(painter)
-        painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center
-        if self._orientationMark:
-            self.paintOrientationMark(painter)
-
-    def paintOrientationMark(self,painter:QPainter):
-        painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
-        widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
-        ypos = int(self._radius * 8/10)
-        painter.drawLine(widthToCompensate - int(self._radius / 2), ypos, int(self._radius / 2) - widthToCompensate, ypos)
+    def contains(self, point:QPointF):
+        return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2
 
     def getLineDecomposition(self) -> List[QLineF]:
         return []
@@ -114,14 +104,23 @@ class Circle(Shape):
         intersections.append(QPointF(p3.x()-hd*dy,p3.y()+hd*dx))
         return intersections
 
-    def contains(self, point:QPointF):
-        return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2
+    def addOrientationMark(self):
+        self._orientationMark = True
 
     def offset(self,value:float):
         circle = Circle(self._radius+value,self._color)
         circle.setPose(self._pose)
         return circle
 
-    def getBoundingBox(self):
-        return Rectangle(self._radius*2,self._radius*2)
+    def paint(self,painter:QPainter):
+        super().paint(painter)
+        painter.setBrush(QBrush(self._color, Qt.SolidPattern))
+        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center
+        if self._orientationMark:
+            self.paintOrientationMark(painter)
 
+    def paintOrientationMark(self,painter:QPainter):
+        painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
+        widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
+        ypos = int(self._radius * 8/10)
+        painter.drawLine(widthToCompensate - int(self._radius / 2), ypos, int(self._radius / 2) - widthToCompensate, ypos)

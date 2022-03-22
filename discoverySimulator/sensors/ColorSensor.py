@@ -22,7 +22,7 @@ class ColorSensor(Sensor):
         self._colorDetected=None
         sensorPose = self._frame.getAbsoluteCoordinates()
         colorSensorPoint = QPoint(sensorPose.getX(),sensorPose.getY())
-        virtualObjects = sorted(self._env.getVirtualObjects(),key=lambda obj:obj.getZIndex())
+        virtualObjects = sorted(self._environnement.getVirtualObjects(), key=lambda obj:obj.getZIndex())
         for obj in virtualObjects:
             if obj.getZIndex()<=self._parent.getZIndex():
                 if obj.getRepresentation().contains(colorSensorPoint):

@@ -89,7 +89,7 @@ class Robot(ABC,Object):
             point = Object(Representation(Point(self.TRAJECTORY_COLOR)))
             self._trajectory.append(point)
             if self._trajectoryDrawn:
-                self._env.addVirtualObject(self._trajectory[-1],self._pose.getX(), self._pose.getY())
+                self._environnement.addVirtualObject(self._trajectory[-1], self._pose.getX(), self._pose.getY())
             else:
                 self._trajectory[-1].setPose(Pose(self._pose.getX(),self._pose.getY()))
         self._trajectoryCounter=(self._trajectoryCounter+1)%self.NUMBER_STEPS_BEFORE_REFRESH
@@ -97,11 +97,11 @@ class Robot(ABC,Object):
     def showTrajectory(self):
         for point in self._trajectory:
             point_pose=point.getPose()
-            self._env.addVirtualObject(point,point_pose.getX(),point_pose.getY())
+            self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideTrajectory(self):
         for point in self._trajectory:
-            self._env.removeVirtualObject(point)
+            self._environnement.removeVirtualObject(point)
         self._drawTrajectory=False
 
     def deleteTrajectory(self):
@@ -150,7 +150,7 @@ class Robot(ABC,Object):
             point = Object(Representation(Point(self.ODOMETRY_COLOR)))
             self._odometry.append(point)
             if self._odometryDrawn:
-                self._env.addVirtualObject(self._odometry[-1],self._odometryPose.getX(),self._odometryPose.getY())
+                self._environnement.addVirtualObject(self._odometry[-1], self._odometryPose.getX(), self._odometryPose.getY())
             else:
                 self._odometry[-1].setPose(Pose(self._pose.getX(), self._pose.getY()))
         self._odometryCounter = (self._odometryCounter + 1) % self.NUMBER_STEPS_BEFORE_REFRESH
@@ -158,11 +158,11 @@ class Robot(ABC,Object):
     def showOdometry(self):
         for point in self._odometry:
             point_pose = point.getPose()
-            self._env.addVirtualObject(point, point_pose.getX(), point_pose.getY())
+            self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideOdometry(self):
         for point in self._odometry:
-            self._env.removeVirtualObject(point)
+            self._environnement.removeVirtualObject(point)
 
     def deleteOdometry(self):
         self.hideOdometry()
