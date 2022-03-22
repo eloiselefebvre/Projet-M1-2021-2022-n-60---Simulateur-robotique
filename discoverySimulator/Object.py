@@ -69,8 +69,8 @@ class Object(Observable):
         This method is used to change the ID of an object
         :param id: new id of the object
         """
+        Object.number_of_instances[self._id.split("_")[0]] -= 1
         self._id=id
-        Object.number_of_instances[type(self).__name__] -= 1
         self.setNumberOfInstances(self._id)
         self.completeID()
 

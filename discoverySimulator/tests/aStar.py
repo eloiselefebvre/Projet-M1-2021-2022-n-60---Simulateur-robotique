@@ -21,7 +21,6 @@ def aStar():
     sim.showInterface()
     pathFinding = PathFinding(env,robot,True)
     pathFinding.setEndPoint(QPointF(500,500))
-    pathFinding.setIsFollowingPath(True)
 
     while True:
         pathFinding.followSimplifyPath()

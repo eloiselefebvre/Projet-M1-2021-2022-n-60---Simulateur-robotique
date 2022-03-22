@@ -222,7 +222,7 @@ class Toolbar(QToolBar,Observable):
         return widget
 
     def __clickedFollowPath(self):
-        self._pathFollowingButton.setDown(True)
+        self.__pathFollowingButton.setDown(True) # TODO : Si reclique : arrêter le mode choix destination
         self.notifyObservers('followPathSelected')
 
 

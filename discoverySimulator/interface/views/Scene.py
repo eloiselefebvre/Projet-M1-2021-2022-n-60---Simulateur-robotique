@@ -66,7 +66,6 @@ class Scene(QWidget,Observable):
         if self.__pathFinding is not None:
             self.setCursor(Qt.CrossCursor)
             self.__pathFinding.setEndPoint(self._convertedMousePose)
-            self.__pathFinding.setIsFollowingPath(True)
             self.__pathFinding = None
         else:
             self.setCursor(Qt.ClosedHandCursor)
@@ -135,7 +134,7 @@ class Scene(QWidget,Observable):
     def followPathSelected(self,sender):
         self.setCursor(Qt.CrossCursor)
         robot=sender.getRobotSelected()
-        self.__pathFinding = PathFinding(self.__environment, robot)
+        self.__pathFinding=PathFinding(self.__environment, robot)
 
     def __objectGrabbed(self):
         for obj in self.__environment.getObjects():

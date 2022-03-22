@@ -1,3 +1,4 @@
+import threading
 import time
 from math import sqrt, atan, degrees, cos, radians, sin, acos
 from PyQt5.QtCore import QPoint
@@ -31,7 +32,6 @@ class PathFinding:
     SECURITY_MARGIN = 20
 
     def __init__(self, environment, robot, displayEnabled:bool=False ,displayDelay:float=0.01):
-        # TODO : regarder la nouvelle synthaxe de Python pour la documentation (bool)
         """
         This method is used to create a pathfinding
         :param environment: environment where the pathfinding will take place
@@ -50,11 +50,11 @@ class PathFinding:
 
         self._robot.setLeftWheelSpeed(0)
         self._robot.setRightWheelSpeed(0)
-        self.__ROWS_NUMBER = (self._environment.getWidth())/15
-        self.__COLS_NUMBER = (self._environment.getHeight())/15
+        self.__ROWS_NUMBER = (self._environment.getWidth())/PathFinding.CELL_SIZE
+        self.__COLS_NUMBER = (self._environment.getHeight())/PathFinding.CELL_SIZE
         self._nodes = {}
         self.__endNode=None
-        self.__setBeginNode((int(self._robot.getPose().getX()/self.CELL_SIZE),int(self._robot.getPose().getY()/self.CELL_SIZE)))
+        self.__setBeginNode((int(self._robot.getPose().getX()/PathFinding.CELL_SIZE),int(self._robot.getPose().getY()/PathFinding.CELL_SIZE)))
 
         self._pathSimplified=[]
         self._modifyOrientation = True
@@ -62,9 +62,10 @@ class PathFinding:
 
 
     def setEndPoint(self,mousePose):
-        self.__endNode=(int(mousePose.x()/self.CELL_SIZE),int(mousePose.y()/self.CELL_SIZE))
+        self.__endNode=(int(mousePose.x()/PathFinding.CELL_SIZE),int(mousePose.y()/PathFinding.CELL_SIZE))
         self.__setEndNode(self.__endNode)
-        self.__astar()
+        th = threading.Thread(target=self.__astar)
+        th.start()
 
     def setIsFollowingPath(self,state):
         self._robot.setIsFollowingPath(state)
@@ -87,11 +88,11 @@ class PathFinding:
         self._nodes[node].setColor(color)
 
     def __getNodeValue(self, node):
-        for obj in self._obstaclesWithOffset:
-            if obj.contains(QPoint(node[0]*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
-               obj.contains(QPoint(node[0]*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)) or\
-               obj.contains(QPoint((node[0]+1)*self.CELL_SIZE,node[1]*self.CELL_SIZE)) or\
-               obj.contains(QPoint((node[0]+1)*self.CELL_SIZE,(node[1]+1)*self.CELL_SIZE)):
+        for obj in self._obstaclesWithOffset: # TODO : Replace with two line intersection
+            if obj.contains(QPoint(node[0]*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
+               obj.contains(QPoint(node[0]*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)) or\
+               obj.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
+               obj.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)):
                 return False
         return True
 
@@ -149,9 +150,6 @@ class PathFinding:
             if current != self.__beginNode and current != self.__endNode and self._displayEnabled:
                 self.__setNodeColor(current, self.COLORS["computed_node"])
 
-        self.__displayFoundPathAndDistance(predecessors)
-
-    def __displayFoundPathAndDistance(self, predecessors):
         path = []
         current = self.__endNode
         while current is not None:
@@ -163,6 +161,7 @@ class PathFinding:
                 if p != self.__beginNode and p != self.__endNode:
                     self.__setNodeColor(p, self.COLORS["path_node"])
         self._pathSimplified=self.simplifyPath(path)
+        self.setIsFollowingPath(True)
 
     def __heuristic(self, node):
         return self.__euclidDistanceToEnd(node)
