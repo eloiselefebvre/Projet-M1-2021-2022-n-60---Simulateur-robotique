@@ -18,6 +18,10 @@ class Line(Shape):
         painter.drawLine(0,0,0,self._length) # ligne verticale
 
     def setLength(self,length):
+        """
+        This method is used to change the length of a line
+        :param length: length of the line [px]
+        """
         self._length=length
 
     @staticmethod

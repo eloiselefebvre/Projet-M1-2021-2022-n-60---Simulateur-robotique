@@ -9,16 +9,17 @@ class Polygon(Shape):
     POINT_SIZE = 5
 
     def __init__(self,points,color=None,opacity=255):
+        """
+        This method is used to create a Polygon
+        :param points: points that determine the shape of the polygon
+        :param color: color of the shape
+        :param opacity: opacity of the shape
+        """
         super().__init__(color,opacity)
         self._points=[QPoint(point[0],point[1]) for point in points]
 
     def paint(self, painter):
         super().paint(painter)
-        # painter.setPen(QPen(QColor("#f00"), 4, Qt.SolidLine))
-        # painter.drawLine(QLineF(350.0, 300.0, 250.0, 350.0))
-        # painter.drawLine(QLineF(300.0, 200.0, 300.0, 100.0))
-        # painter.drawLine(QLineF(300.0, 200.0, 309.0, 206.0))
-
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawPolygon(QPolygon(self._points))
 
@@ -60,7 +61,7 @@ class Polygon(Shape):
                 max_y=point.y()
         return Rectangle(max_x-min_x,max_y-min_y)
 
-    def offset(self,value): # sens horaire
+    def offset(self,value):
         points_offset=[]
         points_number=len(self._points)
         for curr in range(points_number):

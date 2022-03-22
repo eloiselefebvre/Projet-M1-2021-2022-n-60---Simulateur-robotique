@@ -44,10 +44,10 @@ class ReinforcementLearning:
 
     def printTable(self, tableName):
         table = self.__getattribute__(tableName)
-        print(f"----------{tableName}---------------")
+        # print(f"----------{tableName}---------------")
         for state in table:
             print(state, table[state])
-        print(f"------------------------------------")
+        # print(f"------------------------------------")
 
     def learn(self, reward):
         self._learn(reward)
@@ -55,7 +55,7 @@ class ReinforcementLearning:
     def _learnQLearning(self, reward):
 
         self._explorationRate *= self._explorationRateDecreaseFactor
-        print("exploration rate : ", self._explorationRate)
+        # print("exploration rate : ", self._explorationRate)
 
         nextState = self.getNextState(self._state, self._actionToExecuteIndex)
         maxValue = max(self._QTable[nextState])
@@ -67,7 +67,7 @@ class ReinforcementLearning:
     def _learnValueIteration(self,reward):
 
         self._explorationRate *= self._explorationRateDecreaseFactor
-        print("exploration rate : ", self._explorationRate)
+        # print("exploration rate : ", self._explorationRate)
 
         # reward update
         actionCount = self._actionCount[self._state][self._actionToExecuteIndex]

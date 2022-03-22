@@ -1,15 +1,17 @@
 from PyQt5.QtCore import QPoint
-
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Point, Circle
+from discoverySimulator.representation.shapes import Circle
 from discoverySimulator.sensors import Sensor
-
 
 class ColorSensor(Sensor):
 
     BACKGROUND_COLOR = "#f0f0f0"
 
     def __init__(self,color="#000"):
+        """
+        This method is used to create a new color sensor
+        :param color: color of the sensor
+        """
         self._color = color
         self._representation = Representation(Circle(1,"#000"))
         super().__init__(self._representation)
@@ -18,7 +20,6 @@ class ColorSensor(Sensor):
     def refresh(self):
         previousColor=self._colorDetected
         self._colorDetected=None
-
         sensorPose = self._frame.getAbsoluteCoordinates()
         colorSensorPoint = QPoint(sensorPose.getX(),sensorPose.getY())
         virtualObjects = sorted(self._env.getVirtualObjects(),key=lambda obj:obj.getZIndex())
@@ -32,6 +33,10 @@ class ColorSensor(Sensor):
             self.notifyObservers("stateChanged")
 
     def getValue(self):
+        """
+        This method allows to get the captured color by the sensor
+        :return: the captured color
+        """
         return self._colorDetected
 
     def getSpecifications(self):

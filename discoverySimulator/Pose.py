@@ -2,9 +2,9 @@ from discoverySimulator.representation.shapes import Point
 
 class Pose:
 
-    def __init__(self, x, y,orientation=0,rx=0,ry=0):
+    def __init__(self, x, y, orientation=0, rotationCenterX=0, rotationCenterY=0):
         self._pose = Point(x,y)
-        self.setRotationCenter(rx, ry)
+        self.setRotationCenter(rotationCenterX, rotationCenterY)
         self._orientation = orientation
 
     def getX(self):

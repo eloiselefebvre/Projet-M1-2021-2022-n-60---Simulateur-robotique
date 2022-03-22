@@ -10,6 +10,10 @@ class Telemeter(Sensor):
     INFINITE_LENGTH = 10000
 
     def __init__(self,color="#f00"):
+        """
+        This method is used to create a new telemeter
+        :param color: color of the telemeter
+        """
         self._color = color
         self._representation = Representation(Rectangle(16,8,self._color))
         super().__init__(self._representation)
@@ -24,14 +28,11 @@ class Telemeter(Sensor):
         intersections = []
         self._laserLine.setLength(self.INFINITE_LENGTH)
         self._distance = self.INFINITE_LENGTH
-
         telemeterPose=self._frame.getAbsoluteCoordinates()
         self._laser.setPose(telemeterPose)
-
         for obj in self._env.getObjects():
             if obj != self._parent and obj!=self:
                 intersections.extend(self._laser.getIntersectionsWith(obj))
-
         closest_point = None
         for point in intersections:
             di = ((self._laser.getPose().getX() - point.x()) ** 2 + (self._laser.getPose().getY() - point.y()) ** 2) ** 0.5
@@ -51,6 +52,10 @@ class Telemeter(Sensor):
         self._laserLine.setLength(int(self._distance))
 
     def getValue(self):
+        """
+        This method allows to get the value of the telemeter
+        :return: value of the telemeter
+        """
         return self._distance
 
     def getSpecifications(self):

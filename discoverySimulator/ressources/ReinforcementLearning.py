@@ -5,6 +5,10 @@ import time
 class ReinforcementLearning:
 
     def __init__(self,state):
+        """
+        This method allows to create a reinforcement learning
+        :param state: state of the robot who will learn
+        """
         self._QTable={}
         self._minimalSpeed = 0
         self._maximalSpeed = 600
@@ -20,7 +24,6 @@ class ReinforcementLearning:
         self._actions = [(self._step,0),(-self._step,0),(0,self._step),(0,-self._step),(0,0)]
         self._actionToExecuteIndex=4
 
-    # MSO : cadeau - sera utile pour Value Iteration
     def getReachableStates(self, state):
         actionIndices = self.getPossibleActions(state)
         reachableStates = []
@@ -42,6 +45,11 @@ class ReinforcementLearning:
         self._state = nextState
 
     def getPossibleActions(self, state = None):
+        """
+        This method allows to get the possible actions of the robot
+        :param state: state of the robot
+        :return: possible actions
+        """
         state = state if state is not None else self._state
         actions = []
         if state[0]+self._step<=self._maximalSpeed:

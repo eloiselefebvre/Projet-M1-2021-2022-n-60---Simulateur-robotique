@@ -7,11 +7,15 @@ from ..config import config
 
 
 class LIDAR(Telemeter):
-    # ANGULAR_RESOLUTION --> degrees
-    # ANGULAR_RANGE --> degrees
-    # SCAN_RATE --> rpm
 
     def __init__(self,color="#f00", scanRate=300, angularRange=360,angularResolution=6):
+        """
+        This method is used to create a LIDAR
+        :param color: color of the LIDAR
+        :param scanRate: scna rate of the LIDAR [rpm]
+        :param angularRange: angular range of the LIDAR [degrees]
+        :param angularResolution: angular resolution of the LIDAR [degrees]
+        """
         super().__init__(color)
         self._representation.setShape(Circle(6, "#1C1E32"))
         rep = Representation(Circle(2, self._color))
