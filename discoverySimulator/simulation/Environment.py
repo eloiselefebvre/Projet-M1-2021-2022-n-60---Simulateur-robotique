@@ -30,12 +30,24 @@ class Environment:
         self.__drawWalls()
 
     def getObjects(self) -> List[Object]:
+        """
+        This method is used to get all the objects of the environment
+        :return: all the objects of the environment
+        """
         return self.__objects
 
     def getVirtualObjects(self) -> List[Object]:
+        """
+        This method is used to get all the virtuals objects of the environment
+        :return: all the virtuals objects of the environment
+        """
         return self.__virtualObjects
 
     def getSensors(self) -> List[Sensor]:
+        """
+        This method is used to get all the sensors of the environment
+        :return: all the sensors of the environment
+        """
         return self.__sensors
 
     def getFrame(self) -> Frame:
@@ -45,9 +57,17 @@ class Environment:
         return self.__size
 
     def getWidth(self) -> int:
+        """
+        This method is used to get the width of the environment
+        :return: the width of the environment [px]
+        """
         return self.__size.width()
 
     def getHeight(self) -> int:
+        """
+        This method is used to get the height of the environment
+        :return: the height of the environment [px]
+        """
         return self.__size.height()
 
     def hasWalls(self) -> bool:
@@ -91,10 +111,18 @@ class Environment:
             self.__virtualObjects.append(virtualObject)
 
     def removeObject(self, object:Object):
+        """
+        This method is used to remove an object of the environment
+        :param object: object to remove
+        """
         if object in self.__objects:
             self.__objects.remove(object)
 
     def removeVirtualObject(self, virtualObject:Object):
+        """
+        This method is used to remove a virtual object of the environment
+        :param object: object to remove
+        """
         if virtualObject in self.__virtualObjects:
             self.__virtualObjects.remove(virtualObject)
 
