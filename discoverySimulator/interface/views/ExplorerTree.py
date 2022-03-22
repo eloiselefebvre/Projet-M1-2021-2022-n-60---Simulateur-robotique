@@ -76,7 +76,7 @@ class ExplorerTree(QTreeWidget):
         self._mainItemsAssociatedChildren.clear()
         self._visibilityButtons.clear()
 
-    def buildTree(self): # TODO : Voir si on peut faire plus simple et propre
+    def buildTree(self):
         for obj in self._environment.getObjects():
              if type(obj) != Object:
                 if issubclass(type(obj),tuple(self._itemsShown)) or (isinstance(obj,Robot) and (Actuator in self._itemsShown or Sensor in self._itemsShown)):
@@ -93,7 +93,6 @@ class ExplorerTree(QTreeWidget):
                         parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
                         self._visibilityButtons.append(VisibilityButton(obj.isVisible()))
                         self.setItemWidget(parent, 1, self._visibilityButtons[-1])
-
                     if parent is not None:
                         self._mainItems.append(parent)
                         self._mainObjects.append(obj)
@@ -115,11 +114,9 @@ class ExplorerTree(QTreeWidget):
                                     parent.addChild(child)
                                     classname = [item for item in self._itemsShown if isinstance(comp, item)][0].__name__
                                     child.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
-
         for button in self._visibilityButtons:
             if button is not None:
                 button.clicked.connect(self.toggleObjectVisibily)
-
         self.itemClicked.connect(self.clickedItem)
 
     def clickedItem(self):

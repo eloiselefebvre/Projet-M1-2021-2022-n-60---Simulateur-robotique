@@ -273,6 +273,6 @@ class PathFinding:
         theta = acos(dot_product/norm_v2)
         theta_delta = acos(dot_product_delta/norm_v2)
 
-        return degrees(theta) * (-1 if degrees(theta)-degrees(theta_delta)>0 else 1)
+        return degrees(theta) * (1 if degrees(theta)-degrees(theta_delta)>0 else -1)
 
 
