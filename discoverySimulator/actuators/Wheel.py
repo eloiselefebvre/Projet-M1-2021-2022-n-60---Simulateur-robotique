@@ -13,18 +13,18 @@ class Wheel(Actuator):
         :param radius: the radius of the wheel [px]
         :param width: the width of the wheel [px]
         """
-        shape = Rectangle(width,2*radius,"#1C1E32",self.DEFAULT_BORDER_RADIUS)
-        shape.addBorder(Border(self.DEFAULT_BORDER_WIDTH,'#f3f3f3'))
+        shape = Rectangle(width,2*radius,"#1C1E32",Wheel.DEFAULT_BORDER_RADIUS)
+        shape.addBorder(Border(Wheel.DEFAULT_BORDER_WIDTH,'#f0f0f0'))
         super().__init__(Representation(shape))
         self._speed=0
-        self._radius = radius
+        self._radius = int(radius)
 
     def setSpeed(self,speed:int):
         """
         This method allows to change the speed of a wheel
         :param speed: new speed of a wheel [rpm]
         """
-        self._speed = speed
+        self._speed = int(speed)
         self.notifyObservers("stateChanged")
 
     def getSpeed(self) -> int:

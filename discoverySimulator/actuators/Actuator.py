@@ -1,7 +1,10 @@
 from discoverySimulator import Component
+from discoverySimulator.representation.Representation import Representation
+
+
 class Actuator(Component):
 
-    def __init__(self,representation):
+    def __init__(self,representation:Representation):
         """
         This method is used to create a new actuator
         :param representation: representation of the actuator

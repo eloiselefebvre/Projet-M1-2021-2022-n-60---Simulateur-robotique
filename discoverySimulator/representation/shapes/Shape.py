@@ -25,9 +25,9 @@ class Shape(ABC):
         return self._pose
 
     def paint(self,painter):
-        painter.translate(self._pose.getX()+self._pose.getRotX(),self._pose.getY()+self._pose.getRotY())
+        painter.translate(self._pose.getX() + self._pose.getRotationCenterX(), self._pose.getY() + self._pose.getRotationCenterY())
         painter.rotate(self._pose.getOrientation())
-        painter.translate(-self._pose.getRotX(),-self._pose.getRotY())
+        painter.translate(-self._pose.getRotationCenterX(), -self._pose.getRotationCenterY())
         self._color.setAlpha(self._opacity)
         if self._border is not None:
             painter.setPen(QPen(self._border.getColor(),self._border.getWidth(), Qt.SolidLine))

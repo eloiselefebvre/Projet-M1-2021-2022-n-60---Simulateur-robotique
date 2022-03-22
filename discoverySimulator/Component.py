@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 from discoverySimulator.Object import Object
+from discoverySimulator.representation.Representation import Representation
+
 
 class Component(ABC,Object):
 
-    def __init__(self,representation):
+    def __init__(self,representation:Representation):
         """
         This method is used to create a component
         :param representation: representation of the component

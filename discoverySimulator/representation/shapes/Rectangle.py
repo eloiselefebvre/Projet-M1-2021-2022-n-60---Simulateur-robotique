@@ -60,8 +60,8 @@ class Rectangle(Shape):
         h = self._height / 2
         sign = [(-1, -1), (-1, 1), (1, 1), (1, -1)] # sens trigonométrique
         pts = []
-        xo = self._pose.getX() + self._pose.getRotX()
-        yo = self._pose.getY() + self._pose.getRotY()
+        xo = self._pose.getX() + self._pose.getRotationCenterX()
+        yo = self._pose.getY() + self._pose.getRotationCenterY()
         for i in range(4):
             x = self._pose.getX() + sign[i][0] * w
             y = self._pose.getY() + sign[i][1] * h

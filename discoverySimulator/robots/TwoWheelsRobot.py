@@ -41,7 +41,7 @@ class TwoWheelsRobot(Robot):
             # angular speed
             dPhi = degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels))
 
-            self.setRotationCenter() # TODO : Not each time
+            self.computeRotationCenter() # TODO : Not each time
             self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
             self._pose.rotate(dPhi)
 
@@ -57,9 +57,9 @@ class TwoWheelsRobot(Robot):
         averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
         return averageSpeedRobot
 
-    def setRotationCenter(self):
+    def computeRotationCenter(self):
         self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
-                                     (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
+                                         (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
 
     def setLeftWheelSpeed(self,speed):
         """

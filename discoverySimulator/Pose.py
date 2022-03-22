@@ -1,42 +1,42 @@
 class Pose:
 
-    def __init__(self, x, y,orientation=0,rx=0,ry=0):
+    def __init__(self, x:float, y:float,orientation:float=0,rx:float=0,ry:float=0):
         self._pose = [x,y]
         self.setRotationCenter(rx, ry)
         self._orientation = orientation
 
-    def setX(self,x):
+    def setX(self,x:float):
         self._pose[0]=x
 
-    def setY(self,y):
+    def setY(self,y:float):
         self._pose[1]=y
 
-    def getX(self):
-        return self._pose[0]
+    def setOrientation(self, orientation:float):
+        self._orientation=orientation
 
-    def getY(self):
-        return self._pose[1]
-
-    def getRotX(self):
-        return self._rotationCenter[0]
-
-    def getRotY(self):
-        return self._rotationCenter[1]
-
-    def getOrientation(self):
-        return self._orientation
-
-    def setOrientation(self,o):
-        self._orientation=o
-
-    def setRotationCenter(self, rx, ry):
+    def setRotationCenter(self, rx:float, ry:float):
         self._rotationCenter=(rx,ry)
 
-    def rotate(self, angle):
-        self._orientation = (self._orientation+angle)%360
+    def getX(self) -> float:
+        return self._pose[0]
 
-    def move(self,x,y):
+    def getY(self) -> float:
+        return self._pose[1]
+
+    def getRotationCenterX(self) -> float:
+        return self._rotationCenter[0]
+
+    def getRotationCenterY(self) -> float:
+        return self._rotationCenter[1]
+
+    def getOrientation(self) -> float:
+        return self._orientation
+
+    def move(self,x:float,y:float):
         self._pose=[x,y]
+
+    def rotate(self, angle:float):
+        self._orientation = (self._orientation+angle)%360
 
     def copy(self):
         return Pose(self._pose[0],self._pose[1],self._orientation,self._rotationCenter[0],self._rotationCenter[1])

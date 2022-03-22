@@ -24,6 +24,16 @@ class Simulation(Observable):
         self.__timeElapsed = 0.0
         self.__playState=True
 
+    def setAcceleration(self, acceleration:float): # TODO : Notify toolsbar
+        """
+        This method is used to change the acceleration of the simulation
+        :param acceleration: new acceleration of the simulation
+        """
+        self.__acceleration=acceleration
+
+    def setAppShown(self,shown:bool):
+        self.__appShown=shown
+
     def getAcceleration(self) -> float:
         """
         This method is used to get the acceleration of the simulation
@@ -37,16 +47,6 @@ class Simulation(Observable):
         :return: time elapsed [s]
         """
         return self.__timeElapsed
-
-    def setAcceleration(self, acceleration:float): # TODO : Notify toolsbar
-        """
-        This method is used to change the acceleration of the simulation
-        :param acceleration: new acceleration of the simulation
-        """
-        self.__acceleration=acceleration
-
-    def setAppShown(self,shown:bool):
-        self.__appShown=shown
 
     def run(self):
         """
