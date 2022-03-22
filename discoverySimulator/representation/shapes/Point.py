@@ -3,30 +3,12 @@ from PyQt5.QtGui import QPen
 from discoverySimulator.representation.shapes import Shape, Rectangle
 from math import radians, cos, sin
 
-class Point(Shape): # X,Y définisent la pose et translate de X,Y puis drawPoint(0,0)
+class Point(Shape):
 
     POINT_SIZE = 5
 
-    def __init__(self,x,y,color="#000",opacity=255):
+    def __init__(self,color="#000",opacity=255):
         super().__init__(color,opacity)
-        self._x = x
-        self._y = y
-
-    def getX(self):
-        return self._x
-
-    def getY(self):
-        return self._y
-
-    def setX(self,x):
-        self._x = x
-
-    def setY(self,y):
-        self._y = y
-        
-    def move(self,x,y):
-        self._x=x
-        self._y=y
 
     def getLineDecomposition(self):
         return []
@@ -34,7 +16,7 @@ class Point(Shape): # X,Y définisent la pose et translate de X,Y puis drawPoint
     def paint(self,painter):
         super().paint(painter)
         painter.setPen(QPen(self._color, self.POINT_SIZE, Qt.SolidLine))
-        painter.drawPoint(self._x,self._y)
+        painter.drawPoint(0,0)
 
     @staticmethod
     def computeTransformation(xo,yo,dx,dy,o):

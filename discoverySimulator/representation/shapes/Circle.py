@@ -78,7 +78,7 @@ class Circle(Shape):
                     intersections.append(QPointF(line.x1(),y2))
         return intersections
 
-    def getIntersectionWithCircle(self, circle):  # TODO : Rename
+    def getIntersectionWithCircle(self, circle):
         # https://fr.planetcalc.com/8098/
         intersections=[]
 

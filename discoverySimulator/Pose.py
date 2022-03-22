@@ -1,23 +1,21 @@
-from discoverySimulator.representation.shapes import Point
-
 class Pose:
 
     def __init__(self, x, y,orientation=0,rx=0,ry=0):
-        self._pose = Point(x,y)
+        self._pose = (x,y)
         self.setRotationCenter(rx, ry)
         self._orientation = orientation
 
     def getX(self):
-        return self._pose.getX()
+        return self._pose[0]
 
     def getY(self):
-        return self._pose.getY()
+        return self._pose[1]
 
     def getRotX(self):
-        return self._rotationCenter.getX()
+        return self._rotationCenter[0]
 
     def getRotY(self):
-        return self._rotationCenter.getY()
+        return self._rotationCenter[1]
 
     def getOrientation(self):
         return self._orientation
@@ -26,13 +24,13 @@ class Pose:
         self._orientation=o
 
     def setRotationCenter(self, rx, ry):
-        self._rotationCenter=Point(rx,ry)
+        self._rotationCenter=(rx,ry)
 
     def rotate(self, angle):
         self._orientation = (self._orientation+angle)%360
 
     def move(self,x,y):
-        self._pose.move(x,y)
+        self._pose=(x,y)
 
     def copy(self):
-        return Pose(self._pose.getX(),self._pose.getY(),self._orientation)
+        return Pose(self._pose[0],self._pose[1],self._orientation)
