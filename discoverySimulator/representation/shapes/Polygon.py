@@ -9,6 +9,12 @@ class Polygon(Shape):
     POINT_SIZE = 5
 
     def __init__(self,points,color=None,opacity=255):
+        """
+        This method is used to create a Polygon
+        :param points: points that determine the shape of the polygon
+        :param color: color of the shape
+        :param opacity: opacity of the shape
+        """
         super().__init__(color,opacity)
         self._points=[QPoint(point[0],point[1]) for point in points]
 

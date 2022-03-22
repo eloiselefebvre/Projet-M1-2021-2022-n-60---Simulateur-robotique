@@ -1,2 +1,4 @@
-from discoverySimulator.tests import aStar
-aStar()
+from discoverySimulator.tests import collisionAndTelemeter
+collisionAndTelemeter()
+
+

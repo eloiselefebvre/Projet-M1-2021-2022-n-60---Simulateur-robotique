@@ -31,6 +31,14 @@ class PathFinding:
     SECURITY_MARGIN = 20
 
     def __init__(self, environment, robot, displayEnabled=False ,displayDelay=0.01):
+        # TODO : regarder la nouvelle synthaxe de Python pour la documentation (bool)
+        """
+        This method is used to create a pathfinding
+        :param environment: environment where the pathfinding will take place
+        :param robot: robot who will follow the path
+        :param displayEnabled: the display of the pathfinding [bool]
+        :param displayDelay: the delay of the display [s]
+        """
         self._environment=environment
         self._robot=robot
         self._robot.setIsFollowingPath(False)

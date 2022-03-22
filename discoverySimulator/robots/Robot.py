@@ -8,6 +8,8 @@ from math import cos, sin, radians, degrees, atan
 from discoverySimulator.config import config
 from ..Pose import Pose
 
+# TODO : Changer système de coordonnées du robot ? pour l'instant orientation 0 -> x vers la droite, y vers le bas
+
 class Robot(ABC,Object):
 
     TRAJECTORY_COLOR = "#F9886A"
@@ -16,6 +18,10 @@ class Robot(ABC,Object):
     NUMBER_STEPS_BEFORE_REFRESH = 30
 
     def __init__(self,representation):
+        """
+        This method is used to create a new robot
+        :param representation: representation of the robot
+        """
         super().__init__(representation)
         self._components=[]
         self._sensors_counter=0
@@ -34,15 +40,22 @@ class Robot(ABC,Object):
         self._odometryDrawn=False
         self._odometryPose=None
 
-    def addComponent(self,comp,x=0,y=0,orientation=0):
-        if isinstance(comp,Component):
-            pose=Pose(-x,y,orientation)
-            comp.setPose(pose)
-            comp.setParent(self)
-            comp.getFrame().setBaseFrame(self._frame)
-            comp.getFrame().setCoordinates(pose)
-            self._components.append(comp)
-            self._representation.addSubRepresentation(comp.getRepresentation())
+    def addComponent(self, component, x=0, y=0, orientation=0):
+        """
+        This method is used to add a component of a robot
+        :param component: component to add to the robot
+        :param x: x coordinate of the component on the robot [px]
+        :param y: y coordinate of the component on the robot [px]
+        :param orientation: orientation of the component on the robot [degrees]
+        """
+        if isinstance(component, Component):
+            pose=Pose(x,y,orientation)
+            component.setPose(pose)
+            component.setParent(self)
+            component.getFrame().setBaseFrame(self._frame)
+            component.getFrame().setCoordinates(pose)
+            self._components.append(component)
+            self._representation.addSubRepresentation(component.getRepresentation())
 
     def move(self):
         self.updateTrajectory()
@@ -52,6 +65,10 @@ class Robot(ABC,Object):
             self._pathFinding.followSimplifyPath()
 
     def getComponents(self):
+        """
+        This method allows to get all components
+        :return: all components
+        """
         return self._components
 
     @abstractmethod
@@ -108,6 +125,7 @@ class Robot(ABC,Object):
 
         x=self._odometryPose.getX()
         y=self._odometryPose.getY()
+
         if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
             R = e * (vd + vg) / (vd - vg)
             # calcul des coordonnées du centre du cercle trajectoire

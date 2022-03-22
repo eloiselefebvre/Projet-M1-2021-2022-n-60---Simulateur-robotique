@@ -19,6 +19,10 @@ class LED(Actuator):
         self._color = color
 
     def setState(self,state):
+        """
+        This method allows to change the state of a LED
+        :param state: state of the LED
+        """
         if state!=self._state:
             self._state=state
             if self._state==LED.HIGH:
@@ -28,6 +32,10 @@ class LED(Actuator):
         self.notifyObservers("stateChanged")
 
     def getState(self):
+        """
+        This method is used to get the state of a LED
+        :return: the state of the LED
+        """
         return self._state
 
     def getSpecifications(self):

@@ -1,10 +1,6 @@
 import time
-
-from discoverySimulator import Obstacle, Object
-from discoverySimulator.actuators import LED, Buzzer
+from discoverySimulator.actuators import LED
 from discoverySimulator.obstacles.CircularObstacle import CircularObstacle
-from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Circle, Line, Polygon
 from discoverySimulator.robots import RectangularTwoWheelsRobot, FourWheelsRobot, CircularTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.sensors.ColorSensor import ColorSensor
@@ -40,11 +36,9 @@ def collisionAndTelemeter():
     colorSensor = ColorSensor("#999999")
     rob2.addComponent(colorSensor,0,0,0)
 
-    buzzer = Buzzer()
     telemeter = Telemeter("#0f0")
     telemeter.setID("Front Telemeter")
     rob3 = RectangularTwoWheelsRobot("#F97F51", 60, 80, 60)
-    rob3.addComponent(buzzer, 0, 0)
     rob3.addComponent(telemeter, 0, 32, 0)
 
     rob3.setLeftWheelSpeed(200)

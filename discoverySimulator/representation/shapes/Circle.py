@@ -9,12 +9,22 @@ class Circle(Shape):
     ORIENTATION_MARK_WIDTH = 2
     ORIENTATION_MARK_LIGHTER_FACTOR = 160 # TODO : Mettre dans shape ?
 
-    def __init__(self,radius,color=None,opacity=255):
+    def __init__(self,radius,color,opacity=255):
+        """
+        This method is used to create a circle
+        :param radius: radius of the circle [px]
+        :param color: color of the shape
+        :param opacity: opacity of the shape
+        """
         super().__init__(color,opacity)
         self._radius=radius
         self._orientationMark=False
 
     def getRadius(self):
+        """
+        This method allows to get the radius of a circle
+        :return: the radius of a circle [px]
+        """
         return self._radius
 
     def addOrientationMark(self):

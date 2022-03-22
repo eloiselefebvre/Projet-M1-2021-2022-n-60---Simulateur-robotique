@@ -1,10 +1,7 @@
 import time
-
 from PyQt5.QtCore import QPointF
-
 from discoverySimulator import Obstacle
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Circle
 from discoverySimulator.representation.shapes.Polygon import Polygon
 from discoverySimulator.ressources.PathFinding import PathFinding
 from discoverySimulator.robots.CircularTwoWheelsRobot import CircularTwoWheelsRobot

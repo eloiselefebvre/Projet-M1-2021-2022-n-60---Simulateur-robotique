@@ -1,11 +1,9 @@
 import time
 from math import sqrt
-
 from discoverySimulator import Pose
 from discoverySimulator.ressources.ReinforcementLearningMSO import ReinforcementLearning
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
-
 
 def reinforcementLearningTest():
 
@@ -60,7 +58,7 @@ def reinforcementLearningTest():
             # reward = distance / (1 + (endOrientation-startOrientation)**2)     # incite à aller tout droit
             reward = (endOrientation-startOrientation)/(distance+1)             # inclite à tourner sur soi-même
 
-            print(currentState, action, distance, startOrientation, endOrientation, reward)
+            # print(currentState, action, distance, startOrientation, endOrientation, reward)
 
             reinforcementLearning.learn(reward)
 

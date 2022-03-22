@@ -15,14 +15,26 @@ class Wheel(Actuator):
         self._speed=0
         self._radius = radius
 
-    def setSpeed(self,speed): # En tour/min
+    def setSpeed(self,speed):
+        """
+        This method allows to change the speed of a wheel
+        :param speed: new speed of a wheel [rpm]
+        """
         self._speed = speed
         self.notifyObservers("stateChanged")
 
     def getSpeed(self):
+        """
+        This method is used to get the speed of a wheel
+        :return: the speed of the wheel [rpm]
+        """
         return self._speed
 
     def getRadius(self):
+        """
+        This method allows to get the radius of a wheel
+        :return: the radius of a wheel [px]
+        """
         return self._radius
 
     def getSpecifications(self):

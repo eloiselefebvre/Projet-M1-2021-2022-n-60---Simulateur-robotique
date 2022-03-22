@@ -9,6 +9,14 @@ class Rectangle(Shape):
     ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
     def __init__(self,width,height,color=None,borderRadius=0,opacity=255):
+        """
+        This method allows to create a Rectangle
+        :param width: width of the rectangle [px]
+        :param height: height of the rectangle [px]
+        :param color: color of the shape
+        :param borderRadius: borderRadius of the rectangle [px]
+        :param opacity: opacity of the shape
+        """
         super().__init__(color,opacity)
         self._width=width
         self._height=height
@@ -17,9 +25,17 @@ class Rectangle(Shape):
         self._rect=QRect(-int(self._width / 2), -int(self._height / 2), int(self._width), int(self._height))
 
     def getWidth(self):
+        """
+        This method is used to get the width of a rectangle
+        :return: width of the rectangle [px]
+        """
         return self._width
 
     def getHeight(self):
+        """
+        This method is used to get the height of a rectangle
+        :return: height of the rectangle [px]
+        """
         return self._height
 
     def addOrientationMark(self):

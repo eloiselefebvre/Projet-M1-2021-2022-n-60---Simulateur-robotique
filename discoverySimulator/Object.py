@@ -2,28 +2,26 @@ from discoverySimulator.Frame import Frame
 from discoverySimulator.Observable import Observable
 from discoverySimulator.representation.shapes.Border import Border
 
-
 class Object(Observable):
 
     SELECTED_COLOR = "#25CCF7"
     number_of_instances = {}
 
     def __init__(self,representation):
+        """
+        This method allows to create a new object
+        :param representation: representation of the object
+        """
         super().__init__()
         self._pose = None
         self._representation = representation
         self._env= None
         self._isCollided = False
         self._isSelected = False
-
         self._acceleration = 1  # TODO : Revoir le changement lorsque l'accelaration est initialement définie et meilleure façon de partager des variables à plusieurs entités
-
         self._visibilityLocked = False
-
         self._z_index = 1
-
         self._frame=Frame()
-
         self.setNumberOfInstances(type(self).__name__)
         self._id = type(self).__name__
         self.completeID()
@@ -42,12 +40,20 @@ class Object(Observable):
         return self._z_index
 
     def setNumberOfInstances(self,name):
+        """
+        This method is used to count the number of instances of an object
+        :param name: name of the object
+        """
         if name in self.number_of_instances:
             Object.number_of_instances[name]+=1
         else:
             Object.number_of_instances[name]=1
 
     def getRepresentation(self):
+        """
+        This method is used to get the representation of an object
+        :return: the representation of the object
+        """
         return self._representation
 
     def paint(self, painter):
@@ -61,6 +67,10 @@ class Object(Observable):
         return self._pose
 
     def getID(self):
+        """
+        This method is used to get the ID of an object
+        :return: the ID of the object
+        """
         return self._id
 
     def isVisible(self):
@@ -89,6 +99,10 @@ class Object(Observable):
         return self._visibilityLocked
 
     def setID(self,id):
+        """
+        This method is used to change the ID of an object
+        :param id: new id of the object
+        """
         self._id=id
         Object.number_of_instances[type(self).__name__] -= 1
         self.setNumberOfInstances(self._id)

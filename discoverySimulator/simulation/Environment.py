@@ -13,6 +13,11 @@ class Environment:
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
     def __init__(self,width,height):
+        """
+        This method is used to create an environment
+        :param width: width of the environment [px]
+        :param height: height of the environment [px]
+        """
         self._objects=[]
         self._virtualObjects=[]
         self._hasWalls=False

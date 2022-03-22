@@ -2,6 +2,10 @@ from .shapes import Shape
 
 class Representation:
     def __init__(self,shape):
+        """
+        This method allows to add a representation of an object
+        :param shape: shape of the object
+        """
         self._shape=None
         self.setShape(shape)
         self._subRepresentations=[]
