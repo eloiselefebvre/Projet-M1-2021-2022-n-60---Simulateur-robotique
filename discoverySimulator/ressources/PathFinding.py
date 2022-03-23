@@ -26,8 +26,11 @@ class PathFinding:
         "end_node": "#E8221E",
         "simplified_path":"#F9886A"
     }
-    FORWARD_SPEED = 200
-    TURN_SPEED = 100
+
+    FORWARD_SPEED = 600
+    TURN_SPEED_FACTOR = 5
+    DISTANCE_FOR_NEXT_POINT = 5
+
     CELL_SIZE = 15
     OFFSET = CELL_SIZE/2
 
@@ -181,22 +184,14 @@ class PathFinding:
         if self._robot.isFollowingPath():
             distance = sqrt((self._pathSimplified[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._pathSimplified[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(self._pathSimplified[self._nextPointIndex])
-            if (angularDistance>1 or angularDistance<-1) and self._modifyOrientation: # TODO : Attention aux déviations sur les longues distances ! -> Algo de suivi de ligne ?
-                if angularDistance < 0:
-                    self._robot.setRightWheelSpeed(-self.TURN_SPEED)
-                    self._robot.setLeftWheelSpeed(self.TURN_SPEED)
-                else:
-                    self._robot.setRightWheelSpeed(self.TURN_SPEED)
-                    self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
-            else:
-                self._modifyOrientation=False
-            if distance > 10 and not self._modifyOrientation:
-                self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
-                self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
-            else:
-                if not self._modifyOrientation:
-                    self._nextPointIndex+=1
-                self._modifyOrientation=True
+
+            f=abs(angularDistance)/PathFinding.TURN_SPEED_FACTOR+1
+            self._robot.setRightWheelSpeed(PathFinding.FORWARD_SPEED/f+PathFinding.TURN_SPEED_FACTOR*angularDistance)
+            self._robot.setLeftWheelSpeed(PathFinding.FORWARD_SPEED/f-PathFinding.TURN_SPEED_FACTOR*angularDistance)
+
+            if distance<PathFinding.DISTANCE_FOR_NEXT_POINT:
+                self._nextPointIndex+=1
+
             if self._nextPointIndex==len(self._pathSimplified):
                 self._robot.setRightWheelSpeed(0)
                 self._robot.setLeftWheelSpeed(0)

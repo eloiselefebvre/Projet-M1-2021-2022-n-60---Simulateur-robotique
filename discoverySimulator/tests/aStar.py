@@ -19,8 +19,8 @@ def aStar():
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    pathFinding = PathFinding(env,robot,True)
-    pathFinding.setEndPoint(QPointF(500,500))
+    pathFinding = PathFinding(env,robot,True,0)
+    pathFinding.setEndPoint(QPointF(1000,1000))
 
     while True:
         pathFinding.followSimplifyPath()
