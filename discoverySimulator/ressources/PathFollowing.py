@@ -1,9 +1,6 @@
 from math import sqrt, sin, radians, cos, degrees, acos
-
 from PyQt5.QtCore import QPointF
-
-from discoverySimulator.ressources.PathFinding import PathFinding
-from discoverySimulator.robots import TwoWheelsRobot
+from discoverySimulator.robots.TwoWheelsRobot import TwoWheelsRobot
 
 
 class PathFollowing():
@@ -18,7 +15,6 @@ class PathFollowing():
         self._path.setEndPoint(QPointF(500,500))
         self._nextPointIndex = 0
         self._modifyOrientation = True
-
 
     def angularDistance(self,pathPoint):
         # https://fr.wikihow.com/calculer-l%E2%80%99angle-entre-deux-vecteurs
@@ -47,21 +43,45 @@ class PathFollowing():
             angularDistance = self.angularDistance(self._path.getSimplifiedPath()[self._nextPointIndex])
             if (angularDistance > 1 or angularDistance < -1) and self._modifyOrientation:  # TODO : Attention aux déviations sur les longues distances ! -> Algo de suivi de ligne ?
                 if angularDistance < 0:
-                    self._robot.setRightWheelSpeed(-self.TURN_SPEED)
-                    self._robot.setLeftWheelSpeed(self.TURN_SPEED)
+                    if isinstance(self._robot, TwoWheelsRobot):
+                        self._robot.setRightWheelSpeed(-self.TURN_SPEED)
+                        self._robot.setLeftWheelSpeed(self.TURN_SPEED)
+                    else:
+                        self._robot.setRightFrontWheelSpeed(-self.TURN_SPEED)
+                        self._robot.setRightBackWheelSpeed(-self.TURN_SPEED)
+                        self._robot.setLeftFronttWheelSpeed(self.TURN_SPEED)
+                        self._robot.setLeftBackWheelSpeed(self.TURN_SPEED)
                 else:
-                    self._robot.setRightWheelSpeed(self.TURN_SPEED)
-                    self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
+                    if isinstance(self._robot,TwoWheelsRobot):
+                        self._robot.setRightWheelSpeed(self.TURN_SPEED)
+                        self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
+                    else :
+                        self._robot.setRightFrontWheelSpeed(self.TURN_SPEED)
+                        self._robot.setRightBackWheelSpeed(self.TURN_SPEED)
+                        self._robot.setLeftFronttWheelSpeed(-self.TURN_SPEED)
+                        self._robot.setLeftBackWheelSpeed(-self.TURN_SPEED)
             else:
                 self._modifyOrientation = False
             if distance > 10 and not self._modifyOrientation:
-                self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
-                self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
+                if isinstance(self._robot,TwoWheelsRobot):
+                    self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
+                    self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
+                else :
+                    self._robot.setRightFrontWheelSpeed(self.FORWARD_SPEED)
+                    self._robot.setRightBackWheelSpeed(self.FORWARD_SPEED)
+                    self._robot.setLeftFronttWheelSpeed(self.FORWARD_SPEED)
+                    self._robot.setLeftBackWheelSpeed(self.FORWARD_SPEED)
             else:
                 if not self._modifyOrientation:
                     self._nextPointIndex += 1
                 self._modifyOrientation = True
             if self._nextPointIndex == len(self._path.getSimplifiedPath()):
-                self._robot.setRightWheelSpeed(0)
-                self._robot.setLeftWheelSpeed(0)
+                if isinstance(self._robot,TwoWheelsRobot):
+                    self._robot.setRightWheelSpeed(0)
+                    self._robot.setLeftWheelSpeed(0)
+                else:
+                    self._robot.setRightFrontWheelSpeed(0)
+                    self._robot.setRightBackWheelSpeed(0)
+                    self._robot.setLeftFronttWheelSpeed(0)
+                    self._robot.setLeftBackWheelSpeed(0)
                 self._robot.setIsFollowingPath(False)

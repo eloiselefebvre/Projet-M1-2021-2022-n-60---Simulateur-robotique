@@ -55,8 +55,6 @@ class PathFinding:
 
         self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth() / 2 + PathFinding.SECURITY_MARGIN) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
 
-        self._robot.setLeftWheelSpeed(0)
-        self._robot.setRightWheelSpeed(0)
         self.__ROWS_NUMBER = (self._environment.getWidth())/PathFinding.CELL_SIZE
         self.__COLS_NUMBER = (self._environment.getHeight())/PathFinding.CELL_SIZE
         self._nodes = {}
