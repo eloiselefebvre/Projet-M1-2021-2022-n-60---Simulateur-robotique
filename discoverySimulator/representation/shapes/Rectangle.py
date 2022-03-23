@@ -72,9 +72,6 @@ class Rectangle(Shape):
                 return False
         return True
 
-    def addOrientationMark(self):
-        self._orientationMark=True
-
     def offset(self,value:float):
         rectangle = Rectangle(self._width+value,self._height+value,self._color)
         rectangle.setPose(self._pose)
@@ -88,7 +85,7 @@ class Rectangle(Shape):
             self.paintOrientationMark(painter)
 
     def paintOrientationMark(self,painter):
-        painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
-        widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
+        painter.setPen(QPen(self._color.lighter(Shape.ORIENTATION_MARK_LIGHTER_FACTOR),Shape.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
+        widthToCompensate = Shape.ORIENTATION_MARK_WIDTH if self._border is None else max(Shape.ORIENTATION_MARK_WIDTH,self._border.getWidth())
         ypos = int(self._height / 2  * 8/10)
         painter.drawLine(widthToCompensate - int(self._width / 2), ypos, int(self._width / 2) - widthToCompensate, ypos)

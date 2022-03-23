@@ -100,8 +100,6 @@ class Scene(QWidget,Observable):
                 self.__selectedObj.deleteOdometry()
                 self.__selectedObj.setOdometryPose(pose.copy())
 
-            self.__selectedObj.notifyObservers("poseChanged") # TODO : notify directement dans une méthode move de l'objet
-
         if self.__dragScene:
             current=event.pos()
             self.__zoomController.setOffset(self.__zoomController.getOffset() + (current - self.__dragSceneOrigin))

@@ -8,9 +8,6 @@ from .Line import Line
 
 class Circle(Shape):
 
-    ORIENTATION_MARK_WIDTH = 2
-    ORIENTATION_MARK_LIGHTER_FACTOR = 160 # TODO : Mettre dans shape ?
-
     def __init__(self,radius:float,color:str,opacity:int=255):
         """
         This method is used to create a circle
@@ -20,7 +17,6 @@ class Circle(Shape):
         """
         super().__init__(color,opacity)
         self._radius=radius
-        self._orientationMark=False
 
     # GETTERS
     def getRadius(self):
@@ -103,9 +99,6 @@ class Circle(Shape):
         intersections.append(QPointF(p3.x()-hd*dy,p3.y()+hd*dx))
         return intersections
 
-    def addOrientationMark(self):
-        self._orientationMark = True
-
     def offset(self,value:float):
         circle = Circle(self._radius+value,self._color)
         circle.setPose(self._pose)
@@ -119,7 +112,7 @@ class Circle(Shape):
             self.paintOrientationMark(painter)
 
     def paintOrientationMark(self,painter:QPainter):
-        painter.setPen(QPen(self._color.lighter(self.ORIENTATION_MARK_LIGHTER_FACTOR),self.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
-        widthToCompensate = self.ORIENTATION_MARK_WIDTH if self._border is None else max(self.ORIENTATION_MARK_WIDTH,self._border.getWidth())
+        painter.setPen(QPen(self._color.lighter(Shape.ORIENTATION_MARK_LIGHTER_FACTOR),Shape.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
+        widthToCompensate = Shape.ORIENTATION_MARK_WIDTH if self._border is None else max(Shape.ORIENTATION_MARK_WIDTH,self._border.getWidth())
         ypos = int(self._radius * 8/10)
         painter.drawLine(widthToCompensate - int(self._radius / 2), ypos, int(self._radius / 2) - widthToCompensate, ypos)

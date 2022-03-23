@@ -7,11 +7,17 @@ from ...Pose import Pose
 
 
 class Shape(ABC):
-    def __init__(self,color,opacity):
+
+    ORIENTATION_MARK_WIDTH = 2
+    ORIENTATION_MARK_LIGHTER_FACTOR = 160
+
+    def __init__(self,color:str,opacity:int):
         self._color = QColor(color)
         self._opacity=opacity
         self._border=None
         self._pose=None
+
+        self._orientationMark=False
 
     def addBorder(self,bord):
         if isinstance(bord,Border):
@@ -96,5 +102,12 @@ class Shape(ABC):
     def contains(self, point):
         pass
 
+    @abstractmethod
     def offset(self,value:float):
+        pass
+
+    def addOrientationMark(self):
+        self._orientationMark = True
+
+    def paintOrientationMark(self, painter):
         pass
