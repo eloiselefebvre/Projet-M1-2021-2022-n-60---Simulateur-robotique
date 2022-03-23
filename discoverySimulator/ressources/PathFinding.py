@@ -1,7 +1,7 @@
 import threading
 import time
 from math import sqrt, atan, degrees, cos, radians, sin, acos
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QPoint, QLineF
 
 from discoverySimulator.Pose import Pose
 from discoverySimulator.Object import Object
@@ -46,7 +46,7 @@ class PathFinding:
         self._displayEnabled = displayEnabled
         self._displayDelay = displayDelay
 
-        self._obstaclesWithOffset=[obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth()/2+PathFinding.SECURITY_MARGIN) for obj in self._environment.getObjects() if not isinstance(obj,Robot)]
+        self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(self._robot.getRepresentation().getShape().getBoundingBox().getWidth() / 2 + PathFinding.SECURITY_MARGIN) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
 
         self._robot.setLeftWheelSpeed(0)
         self._robot.setRightWheelSpeed(0)
@@ -88,11 +88,12 @@ class PathFinding:
         self._nodes[node].setColor(color)
 
     def __getNodeValue(self, node):
-        for obj in self._obstaclesWithOffset: # TODO : Replace with two line intersection
-            if obj.contains(QPoint(node[0]*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
-               obj.contains(QPoint(node[0]*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)) or\
-               obj.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
-               obj.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)):
+        for shape in self._obstaclesShapeWithOffset: # TODO : Replace with two line intersection
+            line1 = Line()
+            if shape.contains(QPoint(node[0]*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
+               shape.contains(QPoint(node[0]*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)) or\
+               shape.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
+               shape.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)):
                 return False
         return True
 
@@ -241,7 +242,7 @@ class PathFinding:
             else:
                 line.setPose(Pose(lastPoint[0]*self.CELL_SIZE+self.OFFSET,lastPoint[1]*self.CELL_SIZE+self.OFFSET,orientation))
 
-            for obj in self._obstaclesWithOffset:
+            for obj in self._obstaclesShapeWithOffset:
                 if obj.getIntersectionsWith(line.getRepresentation().getShape()):
                     lastPoint=path[i]
                     line=None
