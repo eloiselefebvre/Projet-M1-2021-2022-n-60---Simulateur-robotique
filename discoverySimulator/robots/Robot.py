@@ -56,8 +56,8 @@ class Robot(ABC,Object):
         self.updateTrajectory()
         self.updateOdometry()
         self.notifyObservers("stateChanged")
-        if self._isFollowingPath:
-            self._pathFinding.followSimplifyPath()
+        # if self._isFollowingPath:
+        #     self._pathFinding.followSimplifyPath()
 
     def getComponents(self):
         """
