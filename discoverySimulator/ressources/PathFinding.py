@@ -56,7 +56,6 @@ class PathFinding:
         self.__setBeginNode((int(self._robot.getPose().getX()/PathFinding.CELL_SIZE),int(self._robot.getPose().getY()/PathFinding.CELL_SIZE)))
 
         self._pathSimplified=[]
-        self._modifyOrientation = True
         self._nextPointIndex = 0
 
 

@@ -1,13 +1,12 @@
 from math import sqrt, sin, radians, cos, degrees, acos
 from PyQt5.QtCore import QPointF
-from discoverySimulator.robots.TwoWheelsRobot import TwoWheelsRobot
-
 
 class PathFollowing():
 
-    FORWARD_SPEED = 200
-    TURN_SPEED = 100
-    TURN_SPEED_FACTOR = 5
+    MAX_FORWARD_SPEED = 500
+    MIN_FORWARD_FACTOR = 0.5
+    MIN_DISTANCE_FOR_MAX_FORWARD_SPEED = 100.0
+    TURN_SPEED_FACTOR = 8
     DISTANCE_FOR_NEXT_POINT = 5
 
     def __init__(self,environment,robot,path):
@@ -44,9 +43,12 @@ class PathFollowing():
             distance = sqrt((self._path.getSimplifiedPath()[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._path.getSimplifiedPath()[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(self._path.getSimplifiedPath()[self._nextPointIndex])
 
-            f=abs(angularDistance)/self.TURN_SPEED_FACTOR+1
-            self._robot.setRightWheelSpeed(self.FORWARD_SPEED/f+self.TURN_SPEED_FACTOR*angularDistance)
-            self._robot.setLeftWheelSpeed(self.FORWARD_SPEED/f-self.TURN_SPEED_FACTOR*angularDistance)
+            f = min(PathFollowing.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED,distance) / PathFollowing.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED
+            f /= abs(angularDistance) / PathFollowing.TURN_SPEED_FACTOR + 1
+
+            baseSpeed=PathFollowing.MAX_FORWARD_SPEED * max(f,PathFollowing.MIN_FORWARD_FACTOR)
+            self._robot.setRightWheelSpeed(baseSpeed + PathFollowing.TURN_SPEED_FACTOR * angularDistance)
+            self._robot.setLeftWheelSpeed(baseSpeed - PathFollowing.TURN_SPEED_FACTOR * angularDistance)
 
             if distance<self.DISTANCE_FOR_NEXT_POINT:
                 self._nextPointIndex+=1
