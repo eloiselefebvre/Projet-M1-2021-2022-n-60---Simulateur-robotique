@@ -152,6 +152,7 @@ class ExplorerTree(QTreeWidget):
             self.__selectedItem=None
             self.__selectedSubItem=None
 
+
     def changeTreeSelection(self,sender):
         if sender in self.__mainObjects:
             crawler = self.__mainItems[self.__mainObjects.index(sender)]

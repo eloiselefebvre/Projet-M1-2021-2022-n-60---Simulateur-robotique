@@ -143,6 +143,13 @@ class Object(Observable):
         if hasattr(self,'getComponents'):
             for comp in self.getComponents():
                 comp.setVisibilityLocked(not self.isVisible())
+            if not self.isVisible():
+                if self.getOdometryDrawn():
+                    self.hideOdometry()
+                    self.toggleOdometryDrawn()
+                if self.getTrajectoryDrawn():
+                    self.hideTrajectory()
+                    self.toggleTrajectoryDrawn()
         self.notifyObservers("visibilityChanged")
 
     def completeID(self):

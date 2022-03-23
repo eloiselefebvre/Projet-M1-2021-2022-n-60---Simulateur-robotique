@@ -61,6 +61,12 @@ class ExplorerInfo(QWidget):
             self.__oWidget.setText(f"{round(sender.getPose().getOrientation())}°")
         if isinstance(self.__selectedObject, Component):
             self.__specificationsWidget.setText(self.__selectedObject.getSpecifications())
+        self.refreshVisibility()
+
+    def refreshVisibility(self):
+        if not self.__selectedObject.isVisible():
+            self.__odometryButton.setState(False)
+            self.__trajectoryButton.setState(False)
 
     def positionInformations(self):
         positionInformationsWidget=QWidget()
