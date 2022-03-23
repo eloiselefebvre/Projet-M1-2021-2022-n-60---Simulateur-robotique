@@ -51,23 +51,21 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         This method is used to set the speed of the left front wheel
         :param speed: speed of the wheel [rpm]
         """
-        if not self._isFollowingPath:
-            self._leftWheel.setSpeed(speed)
+        self.setLeftWheelSpeed(speed)
 
     def setRightFrontWheelSpeed(self,speed:int):
         """
         This method is used to set the speed of the right front wheel
         :param speed: speed of the wheel [rpm]
         """
-        if not self._isFollowingPath:
-            self._rightWheel.setSpeed(speed)
+        self.setRightWheelSpeed(speed)
 
     def setLeftBackWheelSpeed(self,speed:int):
         """
         This method is used to set the speed of the left back wheel
         :param speed: speed of the wheel [rpm]
         """
-        if not self._isFollowingPath:
+        if not self._isSpeedLocked:
             self._backLeftWheel.setSpeed(speed)
 
     def setRightBackWheelSpeed(self,speed:int):
@@ -75,7 +73,7 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         This method is used to set the speed of the right back wheel
         :param speed: speed of the wheel [rpm]
         """
-        if not self._isFollowingPath:
+        if not self._isSpeedLocked:
             self._backRightWheel.setSpeed(speed)
 
     def setBackWheelY(self,y:int):

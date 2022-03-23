@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt, QPoint
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import colors
 from discoverySimulator.ressources.PathFinding import PathFinding
+from discoverySimulator.ressources.PathFollowing import PathFollowing
 from discoverySimulator.robots.Robot import Robot
 
 import time
@@ -28,7 +29,8 @@ class Scene(QWidget,Observable):
         self.__selectedObj = None
         self.__objectMoved=True
         self.__selectedObjCollidedState=False
-        self.__pathFinding=None
+
+        self.__pathFollowing=None
         self.setStyleSheet("background-color:"+colors['sceneBackground']+";")
         self._convertedMousePose=QPoint(0, 0)
 
@@ -54,6 +56,7 @@ class Scene(QWidget,Observable):
         self.update()
 
     def mousePressEvent(self, event):
+        self.setCursor(Qt.ClosedHandCursor)
         self._convertedMousePose = (event.pos() - self.__zoomController.getOffset()) / self.__zoomController.getZoom()
 
         if event.button()==Qt.LeftButton:
@@ -64,12 +67,10 @@ class Scene(QWidget,Observable):
             self.__dragScene = True
             self.__dragSceneOrigin = event.pos()
 
-        if self.__pathFinding is not None:
-            self.setCursor(Qt.CrossCursor)
-            self.__pathFinding.setEndPoint(self._convertedMousePose)
-            self.__pathFinding = None
-        else:
-            self.setCursor(Qt.ClosedHandCursor)
+        if self.__pathFollowing is not None:
+            pathFinding=PathFinding(self.__environment,self.__pathFollowing.getRobot().getBoundingWidth() / 2+ PathFinding.SECURITY_MARGIN_OFFSET)
+            pathFinding.findPath((self.__pathFollowing.getRobot().getPose().getX(),self.__pathFollowing.getRobot().getPose().getY()),(self._convertedMousePose.x(),self._convertedMousePose.y()),self.__pathFollowing.startFollowing)
+            self.__pathFollowing = None
 
     def mouseReleaseEvent(self,event):
         self.setCursor(Qt.OpenHandCursor)
@@ -132,8 +133,7 @@ class Scene(QWidget,Observable):
 
     def followPathSelected(self,sender):
         self.setCursor(Qt.CrossCursor)
-        robot=sender.getRobotSelected()
-        self.__pathFinding=PathFinding(self.__environment, robot)
+        self.__pathFollowing=PathFollowing(sender.getRobotSelected())
 
     def __objectGrabbed(self):
         for obj in self.__environment.getObjects():

@@ -1,21 +1,27 @@
 from math import sqrt, sin, radians, cos, degrees, acos
-from PyQt5.QtCore import QPointF
 
 class PathFollowing():
 
     MAX_FORWARD_SPEED = 500
-    MIN_FORWARD_FACTOR = 0.5
-    MIN_DISTANCE_FOR_MAX_FORWARD_SPEED = 100.0
-    TURN_SPEED_FACTOR = 8
-    DISTANCE_FOR_NEXT_POINT = 5
+    MIN_FORWARD_SPEED = 300
+    MIN_DISTANCE_FOR_MAX_FORWARD_SPEED = 60.0
+    TURN_SPEED_FACTOR = 10
 
-    def __init__(self,environment,robot,path):
+    DISTANCE_FOR_NEXT_POINT = 30
+    DISTANCE_FOR_END_POINT = 5
+
+    def __init__(self,robot):
         self._robot = robot
-        self._environment=environment
-        self._path = path
-        self._path.setEndPoint(QPointF(500,500))
+        self._robot.setRightWheelSpeed(0)
+        self._robot.setLeftWheelSpeed(0)
+        self._robot.setSpeedLock(True)
+
+        self._path = None
         self._nextPointIndex = 0
         self._modifyOrientation = True
+
+    def getRobot(self):
+        return self._robot
 
     def angularDistance(self,pathPoint):
         # https://fr.wikihow.com/calculer-l%E2%80%99angle-entre-deux-vecteurs
@@ -38,22 +44,31 @@ class PathFollowing():
 
         return degrees(theta) * (1 if degrees(theta)-degrees(theta_delta)>0 else -1)
 
-    def followSimplifyPath(self):
-        if self._robot.isFollowingPath():
-            distance = sqrt((self._path.getSimplifiedPath()[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._path.getSimplifiedPath()[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
-            angularDistance = self.angularDistance(self._path.getSimplifiedPath()[self._nextPointIndex])
+    def startFollowing(self,path):
+        if path is not None:
+            self._path=path
+            self._robot.setPathFollowing(self)
+
+    def followPath(self):
+        if self._path is not None:
+            distance = sqrt((self._path[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._path[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
+            angularDistance = self.angularDistance(self._path[self._nextPointIndex])
+            if (0<angularDistance<2 or 0>angularDistance>-2) and self._modifyOrientation:
+                self._modifyOrientation=False
 
             f = min(PathFollowing.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED,distance) / PathFollowing.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED
-            f /= abs(angularDistance) / PathFollowing.TURN_SPEED_FACTOR + 1
-
-            baseSpeed=PathFollowing.MAX_FORWARD_SPEED * max(f,PathFollowing.MIN_FORWARD_FACTOR)
+            baseSpeed=max(PathFollowing.MAX_FORWARD_SPEED*f,PathFollowing.MIN_FORWARD_SPEED)/(abs(angularDistance)/(PathFollowing.TURN_SPEED_FACTOR if not self._modifyOrientation else 1)+1)
+            self._robot.setSpeedLock(False)
             self._robot.setRightWheelSpeed(baseSpeed + PathFollowing.TURN_SPEED_FACTOR * angularDistance)
             self._robot.setLeftWheelSpeed(baseSpeed - PathFollowing.TURN_SPEED_FACTOR * angularDistance)
+            self._robot.setSpeedLock(True)
 
-            if distance<self.DISTANCE_FOR_NEXT_POINT:
+            if (distance<PathFollowing.DISTANCE_FOR_NEXT_POINT and self._nextPointIndex<len(self._path)-1) \
+                or (distance<PathFollowing.DISTANCE_FOR_END_POINT and self._nextPointIndex==len(self._path)-1):
                 self._nextPointIndex+=1
 
-            if self._nextPointIndex==len(self._path.getSimplifiedPath()):
+            if self._nextPointIndex==len(self._path):
+                self._robot.setSpeedLock(False)
                 self._robot.setRightWheelSpeed(0)
                 self._robot.setLeftWheelSpeed(0)
-                self._robot.setIsFollowingPath(False)
+                self._robot.setPathFollowing(None)

@@ -21,9 +21,6 @@ class Robot(ABC,Object):
         self._components=[]
         self._sensors_counter=0
         self._actuators_counter=0
-        self._isFollowingPath=False
-        self._pathFinding=None
-        self._pathFollowing=None
 
         # TRAJECTORY ATTRIBUTES
         self._trajectory = []
@@ -35,6 +32,9 @@ class Robot(ABC,Object):
         self._odometryCounter=0
         self._odometryDrawn=False
         self._odometryPose=None
+
+        self._pathFollowing=None
+        self._isSpeedLocked=False
 
     def addComponent(self, component, x=0, y=0, orientation=0):
         """
@@ -57,9 +57,9 @@ class Robot(ABC,Object):
         self.updateTrajectory()
         self.updateOdometry()
         self.notifyObservers("stateChanged")
-        # if self._isFollowingPath:
-        #     self._pathFollowing(self._environnement,self,self._pathFinding).followSimplifyPath()
-        # TODO : modifier avec path following
+
+        if self._pathFollowing is not None:
+            self._pathFollowing.followPath()
 
     def getComponents(self):
         """
@@ -177,11 +177,14 @@ class Robot(ABC,Object):
     def getOdometryPose(self):
         return self._odometryPose
 
-    def setIsFollowingPath(self,state):
-        self._isFollowingPath=state
+    def setPathFollowing(self,pathFollowing):
+        self._pathFollowing=pathFollowing
 
-    def setPathFinding(self,pathFinding):
-        self._pathFinding=pathFinding
+    def setSpeedLock(self,state:bool):
+        self._isSpeedLocked=state
 
-    def isFollowingPath(self):
-        return self._isFollowingPath
+    def getBoundingWidth(self):
+        return self.getRepresentation().getShape().getBoundingBox().getWidth()
+
+    def getBoundingHeight(self):
+        return self.getRepresentation().getShape().getBoundingBox().getHeigt()

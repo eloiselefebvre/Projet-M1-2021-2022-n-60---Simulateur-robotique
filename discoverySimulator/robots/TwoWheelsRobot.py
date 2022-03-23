@@ -66,14 +66,16 @@ class TwoWheelsRobot(Robot):
         This method allows to change the speed of the left wheel
         :param speed: new speed of the robot [rpm]
         """
-        self._leftWheel.setSpeed(speed)
+        if not self._isSpeedLocked:
+            self._leftWheel.setSpeed(speed)
 
     def setRightWheelSpeed(self,speed):
         """
         This method allows to change the speed of the right wheel
         :param speed: new speed of the robot [rpm]
         """
-        self._rightWheel.setSpeed(speed)
+        if not self._isSpeedLocked:
+            self._rightWheel.setSpeed(speed)
 
     def getRightWheel(self):
         """
