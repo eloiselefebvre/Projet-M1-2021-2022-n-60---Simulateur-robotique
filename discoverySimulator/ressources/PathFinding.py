@@ -1,6 +1,8 @@
 import threading
 import time
 from math import sqrt, atan, degrees, cos, radians, sin, acos
+from typing import Tuple
+
 from PyQt5.QtCore import QPoint, QLineF
 
 from discoverySimulator.Pose import Pose
@@ -87,13 +89,13 @@ class PathFinding:
     def __setNodeColor(self, node, color):
         self._nodes[node].setColor(color)
 
-    def __getNodeValue(self, node):
-        for shape in self._obstaclesShapeWithOffset: # TODO : Replace with two line intersection
-            line1 = Line()
-            if shape.contains(QPoint(node[0]*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
-               shape.contains(QPoint(node[0]*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)) or\
-               shape.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE)) or\
-               shape.contains(QPoint((node[0]+1)*PathFinding.CELL_SIZE,(node[1]+1)*PathFinding.CELL_SIZE)):
+    def __getNodeValue(self, node:Tuple[int,int]=(0,0)):
+        for shape in self._obstaclesShapeWithOffset:
+            line1 = Line(PathFinding.CELL_SIZE*2**0.5,1)
+            line2 = Line(PathFinding.CELL_SIZE * 2 ** 0.5, 1)
+            line1.setPose(Pose(node[0]*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE,-45))
+            line2.setPose(Pose((node[0]+1) * PathFinding.CELL_SIZE, node[1] * PathFinding.CELL_SIZE, 45))
+            if len(line1.getIntersectionsWith(shape))!=0 or len(line2.getIntersectionsWith(shape))!=0:
                 return False
         return True
 
@@ -103,7 +105,7 @@ class PathFinding:
             i = node[0] + mv[0]
             j = node[1] + mv[1]
             n_node = (i, j)
-            if self.__isValidNode(n_node):
+            if self.__isValidNode(n_node) and self.__getNodeValue(n_node):
                 nodes.append(n_node)
         return nodes
 
@@ -125,13 +127,8 @@ class PathFinding:
                 time.sleep(self._displayDelay)
             neighbors = self.__getNodeNeighbors(current)
             for n in neighbors:
-                weight = 0
-                for ne in self.__getNodeNeighbors(n):
-                    if not self.__getNodeValue(ne):
-                        weight = 1
-                        break
-                if not n in closed_nodes and self.__getNodeValue(n):
-                    distanceFromBeginNode = closed_nodes[current] + weight + ((n[0]-current[0])**2+(n[1]-current[1])**2)**0.5
+                if not n in closed_nodes:
+                    distanceFromBeginNode = closed_nodes[current] + ((n[0]-current[0])**2+(n[1]-current[1])**2)**0.5
                     if n in opened_nodes:
                         if distanceFromBeginNode < opened_nodes[n]:
                             opened_nodes[n] = distanceFromBeginNode

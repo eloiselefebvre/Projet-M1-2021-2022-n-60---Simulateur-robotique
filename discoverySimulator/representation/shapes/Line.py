@@ -8,7 +8,7 @@ from .Point import Point
 
 class Line(Shape):
 
-    def __init__(self,length:float,width:float,color:str,opacity:int=255):
+    def __init__(self,length:float,width:float,color:str=None,opacity:int=255):
         super().__init__(color,opacity)
         self._length=length
         self._width=width
@@ -54,4 +54,4 @@ class Line(Shape):
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setPen(QPen(self._color, self._width, Qt.SolidLine))
-        painter.drawLine(0,0,0,self._length) # vertical line
+        painter.drawLine(0,0,0,round(self._length)) # vertical line
