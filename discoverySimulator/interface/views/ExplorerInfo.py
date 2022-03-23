@@ -3,7 +3,7 @@ from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 from discoverySimulator import Component
 from discoverySimulator.obstacles.Obstacle import Obstacle
-from discoverySimulator.config import config
+from discoverySimulator.config import config, colors
 from discoverySimulator.interface.components.Button import VisibilityButton
 from discoverySimulator.robots.Robot import Robot
 from discoverySimulator.sensors.Sensor import Sensor
@@ -14,7 +14,7 @@ class ExplorerInfo(QWidget):
         super().__init__()
         self.__evironnement=environment
         self.__selectedObject = selectedObject
-        self.setStyleSheet("background-color: #21212F;color:#f9f9f9")
+        self.setStyleSheet("background-color:"+colors['explorerInfoBackground']+";color:"+colors['font']+";")
 
         self.__layout=QVBoxLayout(self)
         self.__layout.setContentsMargins(0, 0, 0, 0)
@@ -46,7 +46,7 @@ class ExplorerInfo(QWidget):
 
         trajectoryLabel = QLabel("Trajectory")
         trajectoryLabel.setFont(QFont("Sanserif",12))
-        trajectoryLabel.setStyleSheet("color:#f9f9f9")
+        trajectoryLabel.setStyleSheet("color:"+colors['font']+";")
         layoutTrajectory.addWidget(trajectoryLabel,90)
 
         self.__trajectoryButton=VisibilityButton(self.__selectedObject.getTrajectoryDrawn())
@@ -114,7 +114,7 @@ class ExplorerInfo(QWidget):
         positionInformationsLayout.addWidget(orientationWidgetContainer,40)
 
         if not isinstance(self.__selectedObject, Obstacle):
-            positionInformationsWidget.setStyleSheet("border-bottom:2px solid #444; margin-bottom:8px; padding-bottom:12px;")
+            positionInformationsWidget.setStyleSheet(f"border-bottom:2px solid {colors['widgetBorder']}; margin-bottom:8px; padding-bottom:12px;")
 
         return positionInformationsWidget
 
@@ -154,7 +154,7 @@ class ExplorerInfo(QWidget):
 
         odometryLabel = QLabel("Odometry")
         odometryLabel.setFont(QFont("Sanserif", 12))
-        odometryLabel.setStyleSheet("color:#f9f9f9")
+        odometryLabel.setStyleSheet("color:"+colors['font']+";")
         layoutOdometry.addWidget(odometryLabel, 90)
 
         self.__odometryButton = VisibilityButton(self.__selectedObject.getOdometryDrawn())

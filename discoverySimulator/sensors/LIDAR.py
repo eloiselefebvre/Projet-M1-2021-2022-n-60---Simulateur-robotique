@@ -3,12 +3,12 @@ from ..Object import Object
 from ..Pose import Pose
 from ..representation import Representation
 from ..representation.shapes import Circle, Point
-from ..config import config
+from ..config import config, colors
 
 
 class LIDAR(Telemeter):
 
-    def __init__(self,color:str="#f00", scanRate:int=300, angularRange:int=360,angularResolution:int=6):
+    def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6):
         """
         This method is used to create a LIDAR
         :param color: color of the LIDAR
@@ -19,7 +19,7 @@ class LIDAR(Telemeter):
         super().__init__(color)
         self._laser.getRepresentation().setVisible(False)
 
-        self._representation.setShape(Circle(6, "#1C1E32"))
+        self._representation.setShape(Circle(6, colors['LIDAR']))
         rep = Representation(Circle(2, self._color))
         rep.setPose(Pose(0, 0))
         self._representation.addSubRepresentation(rep)

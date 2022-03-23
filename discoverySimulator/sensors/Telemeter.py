@@ -1,12 +1,13 @@
 from discoverySimulator.Object import Object
 from discoverySimulator.Pose import Pose
+from discoverySimulator.config import colors
 from discoverySimulator.sensors import Sensor
 from discoverySimulator.representation.Representation import Representation
 from discoverySimulator.representation.shapes import Rectangle, Line
 
 class Telemeter(Sensor):
 
-    def __init__(self,color:str="#f00",maximumMeasurableDistance:int=10000):
+    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=10000):
         """
         This method is used to create a new telemeter
         :param color: color of the telemeter

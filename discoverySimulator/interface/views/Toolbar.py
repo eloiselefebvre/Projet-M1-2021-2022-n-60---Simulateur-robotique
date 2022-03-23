@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, QWidgetAction
 from discoverySimulator.Observable import Observable
-from discoverySimulator.config import config
+from discoverySimulator.config import config, colors
 from discoverySimulator.interface.components.Button import Button, PlayButton
 from discoverySimulator.interface.views.PopUp import PopUp
 from discoverySimulator.robots import Robot
@@ -69,7 +69,7 @@ class Toolbar(QToolBar,Observable):
         label=QLabel(name+":")
         fnt=QFont("Sanserif",12)
         label.setFont(fnt)
-        label.setStyleSheet("color:#fff; border-left:1px solid #4D4D6D;")
+        label.setStyleSheet("color:"+colors['white']+"; border-left:1px solid"+colors['titleBorder']+";")
         label.setContentsMargins(8,0,0,0)
         labelWidget.setDefaultWidget(label)
         return labelWidget

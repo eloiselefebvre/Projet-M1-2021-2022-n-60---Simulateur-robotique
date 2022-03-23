@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QGridLayout, QWidget
 from PyQt5.QtCore import Qt
+
+from discoverySimulator.config import colors
 from discoverySimulator.interface.views.ExplorerToolbar import ExplorerToolsbar
 from discoverySimulator.interface.views.ExplorerInfo import ExplorerInfo
 from discoverySimulator.interface.views.ExplorerTree import ExplorerTree
@@ -13,9 +15,9 @@ class Explorer(QWidget):
         self.setFixedWidth(350)
         self.__explorerToolsbar = ExplorerToolsbar(self.__environment)
         self.setAttribute(Qt.WA_StyledBackground)
-        self.setStyleSheet("*{background-color: #151825; border:none}"
-                           "QPushButton:hover{background-color:#323247;}"
-                           "QPushButton:pressed{background-color:#4C4C68;}")
+        self.setStyleSheet("*{background-color: " + colors['explorerBackground']+ "; border:none}"
+                           "QPushButton:hover{background-color:" + colors['buttonOver']+";}"
+                           "QPushButton:pressed{background-color:"+colors['buttonPressed']+";}")
         self.__layout.addWidget(self.__explorerToolsbar, 0, 0)
         self.__explorerInfo=None
         self.__explorerTree=ExplorerTree(self.__environment, self)

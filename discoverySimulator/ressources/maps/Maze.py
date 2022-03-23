@@ -1,13 +1,13 @@
 import random
 
 from discoverySimulator import Object
+from discoverySimulator.config import colors
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Line
 
 
 class Maze:
 
-    DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
     DEFAULT_BORDER_SCREEN_WIDTH = 2
     INTERVAL_SIZE = 150
 
@@ -26,12 +26,12 @@ class Maze:
                 if random.randint(0,1):
                     if j!=0:
                         dh=self._height%self.INTERVAL_SIZE if i==self._nbLine else self.INTERVAL_SIZE
-                        self._mazeElements.append(Object(Representation(Line(dh, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))))
+                        self._mazeElements.append(Object(Representation(Line(dh, self.DEFAULT_BORDER_SCREEN_WIDTH,colors['borderScreen']))))
                         self._environment.addObject(self._mazeElements[-1],j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE)
                 else:
                     if i!=0:
                         dw=self._width%self.INTERVAL_SIZE if j==self._nbColumn else self.INTERVAL_SIZE
-                        self._mazeElements.append(Object(Representation(Line(dw, self.DEFAULT_BORDER_SCREEN_WIDTH, self.DEFAULT_BORDER_SCREEN_COLOR))))
+                        self._mazeElements.append(Object(Representation(Line(dw, self.DEFAULT_BORDER_SCREEN_WIDTH,colors['borderScreen']))))
                         self._environment.addObject(self._mazeElements[-1],j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE,-90)
 
     def deleteGrid(self):

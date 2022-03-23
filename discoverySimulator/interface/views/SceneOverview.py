@@ -2,6 +2,9 @@ from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QPainter, QPen, QColor
 from PyQt5.QtWidgets import QWidget
 
+from discoverySimulator.config import colors
+
+
 class SceneOverview(QWidget):
 
     def __init__(self,environment,zoomController): # TODO : Rafraichir l'affichage du drag même en pause
@@ -38,7 +41,7 @@ class SceneOverview(QWidget):
             obj.paint(painter)
             painter.restore()
 
-        painter.setPen(QPen(QColor("#675BB5"),8, Qt.SolidLine))
+        painter.setPen(QPen(QColor(colors['painter']),8, Qt.SolidLine))
 
         offset = -self.__zoomController.getOffset() / self.__zoomController.getZoom()
         ox=int(offset.x())

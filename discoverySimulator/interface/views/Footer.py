@@ -3,7 +3,8 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QMenuBar, QAction, QLabel, \
     QWidgetAction, QLineEdit, QVBoxLayout, QToolBar
 
-from discoverySimulator.config import config
+from discoverySimulator.config import config, colors
+
 
 class Footer(QToolBar):
 
@@ -14,8 +15,8 @@ class Footer(QToolBar):
         self.__zoomController=zoomController
         self.setContentsMargins(0,0,0,0)
         self.setFixedHeight(self.FOOTER_FIXED_HEIGHT)
-        self.setStyleSheet("*{background-color: #f9f9f9;color:#444;border:none;}"
-                           "#widget{border-right:1px solid #C4C4C4; margin-top:8px; margin-bottom:8px;}")
+        self.setStyleSheet("*{background-color:"+colors['font']+";color:"+colors['widgetBorder']+";border:none;}"
+                           "#widget{border-right:1px solid "+colors['widgetBorderFooter']+"; margin-top:8px; margin-bottom:8px;}")
         self.addWidget(self.__createZoomMenuWidget())
         self.addWidget(self.__createScaleWidget())
         self.addWidget(self.__createMousePoseWidget())
@@ -53,7 +54,7 @@ class Footer(QToolBar):
 
         zoomMenuBar=QMenuBar()
         zoomMenuBar.setContentsMargins(0,0,0,0)
-        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:#25CCF7;}")
+        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:"+colors['widgetBorder']+";}")
 
         self._zoomMenu=zoomMenuBar.addMenu("")
         self._zoomMenu.aboutToShow.connect(self.menuOpened)

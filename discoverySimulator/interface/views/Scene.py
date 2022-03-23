@@ -2,6 +2,7 @@ from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtCore import Qt, QPoint
 from discoverySimulator.Observable import Observable
+from discoverySimulator.config import colors
 from discoverySimulator.ressources.PathFinding import PathFinding
 from discoverySimulator.robots.Robot import Robot
 
@@ -28,7 +29,7 @@ class Scene(QWidget,Observable):
         self.__objectMoved=True
         self.__selectedObjCollidedState=False
         self.__pathFinding=None
-        self.setStyleSheet("background-color: #f0f0f0")
+        self.setStyleSheet("background-color:"+colors['sceneBackground']+";")
         self._convertedMousePose=QPoint(0, 0)
 
     def updateLockedScene(self,sender):

@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QGridLayout
 from discoverySimulator.ZoomController import ZoomController
+from discoverySimulator.config import colors
 from discoverySimulator.interface.views.Footer import Footer
 from discoverySimulator.interface.views.Scene import Scene
 from discoverySimulator.interface.views.Explorer import Explorer
@@ -24,9 +25,8 @@ class Interface(QMainWindow):
         miniSceneWindow = QWidget()
         layout = QVBoxLayout(miniSceneWindow)
         miniscene = SceneOverview(self.__environment, zoomController)
-
         layout.addWidget(miniscene)
-        miniSceneWindow.setStyleSheet("background-color: #f9f9f9; border: 2px solid #F9886A; border-radius: 8px;")
+        miniSceneWindow.setStyleSheet(f"background-color: {colors['font']} ; border: 2px solid "+colors['sceneOverviewBorder']+"; border-radius: 8px;")
         miniSceneWindow.setFixedSize(250,150) # TODO : Ajuster à la taille de la scène (ex 20 fois plus petit pour garder le ratio)
         zoomController.setMiniSceneSize(miniSceneWindow.size())
         zoomController.zoomToMiniFit()

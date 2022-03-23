@@ -1,11 +1,11 @@
 from PyQt5.QtCore import QPoint
+
+from discoverySimulator.config import colors
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle
 from discoverySimulator.sensors import Sensor
 
 class ColorSensor(Sensor):
-
-    BACKGROUND_COLOR = "#f0f0f0"
 
     def __init__(self,color:str=None):
         """
@@ -28,7 +28,7 @@ class ColorSensor(Sensor):
                 if obj.getRepresentation().contains(colorSensorPoint):
                     self._colorDetected = obj.getRepresentation().getShape().getColor().name()
         if self._colorDetected is None:
-            self._colorDetected = ColorSensor.BACKGROUND_COLOR
+            self._colorDetected = colors['sceneBackground']
         if self._colorDetected!=previousColor:
             self.notifyObservers("stateChanged")
 

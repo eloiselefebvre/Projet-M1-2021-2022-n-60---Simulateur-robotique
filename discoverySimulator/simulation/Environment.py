@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QSize
 from discoverySimulator import Object, Pose
 from discoverySimulator.Frame import Frame
+from discoverySimulator.config import colors
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Line
 from discoverySimulator.robots import Robot
@@ -10,7 +11,6 @@ from typing import List
 
 class Environment:
 
-    DEFAULT_BORDER_SCREEN_COLOR = "#717D95"
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
     def __init__(self,width:int,height:int):
@@ -132,8 +132,8 @@ class Environment:
 
     def __drawWalls(self):
         if not self.__hasWalls:
-            self.addObject(Object(Representation(Line(self.__size.height(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, Environment.DEFAULT_BORDER_SCREEN_COLOR))), 0, 0)
-            self.addObject(Object(Representation(Line(self.__size.height(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, Environment.DEFAULT_BORDER_SCREEN_COLOR))), self.__size.width(), 0)
-            self.addObject(Object(Representation(Line(self.__size.width(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, Environment.DEFAULT_BORDER_SCREEN_COLOR))), 0, 0, -90)
-            self.addObject(Object(Representation(Line(self.__size.width(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, Environment.DEFAULT_BORDER_SCREEN_COLOR))), 0, self.__size.height(), -90)
+            self.addObject(Object(Representation(Line(self.__size.height(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0)
+            self.addObject(Object(Representation(Line(self.__size.height(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), self.__size.width(), 0)
+            self.addObject(Object(Representation(Line(self.__size.width(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0, -90)
+            self.addObject(Object(Representation(Line(self.__size.width(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, self.__size.height(), -90)
             self.__hasWalls=True

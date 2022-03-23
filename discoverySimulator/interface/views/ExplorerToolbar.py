@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout
-from discoverySimulator.config import config
+from discoverySimulator.config import config, colors
 from discoverySimulator.Observable import Observable
 from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.actuators import Actuator
@@ -52,7 +52,7 @@ class ExplorerToolsbar(QWidget, Observable):
         filterWidget = QComboBox()
         filterWidget.setFont(fnt)
         filterWidget.setFixedSize(215,30)
-        filterWidget.setStyleSheet("background-color: #f0f0f0; border:none")
+        filterWidget.setStyleSheet("background-color:"+colors['font']+"; border:none")
         filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/allObjects.svg"),"All objects")
         for item in self.ITEMS:
             classname=item.__name__

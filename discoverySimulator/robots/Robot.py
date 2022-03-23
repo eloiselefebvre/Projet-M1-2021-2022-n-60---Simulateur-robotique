@@ -5,15 +5,12 @@ from ..Component import Component
 from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
 from math import cos, sin, radians, degrees, atan
-from discoverySimulator.config import config
+from discoverySimulator.config import config, colors
 from ..Pose import Pose
 
 # TODO : Changer système de coordonnées du robot ? pour l'instant orientation 0 -> x vers la droite, y vers le bas
 
 class Robot(ABC,Object):
-
-    TRAJECTORY_COLOR = "#F9886A"
-    ODOMETRY_COLOR = "#8B86AC"
 
     NUMBER_STEPS_BEFORE_REFRESH = 30
 
@@ -86,7 +83,7 @@ class Robot(ABC,Object):
     # TRAJECTORY METHODS
     def updateTrajectory(self):
         if self._trajectoryCounter==0:
-            point = Object(Representation(Point(self.TRAJECTORY_COLOR)))
+            point = Object(Representation(Point(colors['trajectory'])))
             self._trajectory.append(point)
             if self._trajectoryDrawn:
                 self._environnement.addVirtualObject(self._trajectory[-1], self._pose.getX(), self._pose.getY())
@@ -147,7 +144,7 @@ class Robot(ABC,Object):
             self._odometryPose.move(nx,ny)
 
         if self._odometryCounter == 0:
-            point = Object(Representation(Point(self.ODOMETRY_COLOR)))
+            point = Object(Representation(Point(colors['odometry'])))
             self._odometry.append(point)
             if self._odometryDrawn:
                 self._environnement.addVirtualObject(self._odometry[-1], self._odometryPose.getX(), self._odometryPose.getY())

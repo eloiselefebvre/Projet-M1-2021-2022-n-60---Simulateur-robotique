@@ -6,13 +6,13 @@ from PyQt5.QtGui import QPainter
 from discoverySimulator.Pose import Pose
 from discoverySimulator.Frame import Frame
 from discoverySimulator.Observable import Observable
+from discoverySimulator.config import colors
 from discoverySimulator.representation.Representation import Representation
 from discoverySimulator.representation.shapes.Border import Border
 
 
 class Object(Observable):
 
-    SELECTED_COLOR = "#25CCF7"
     number_of_instances = {}
 
     def __init__(self,representation):
@@ -78,7 +78,7 @@ class Object(Observable):
         if selected!=self._isSelected:
             self._isSelected=selected
             if self._isSelected:
-                self._representation.getShape().addBorder(Border(4, self.SELECTED_COLOR))
+                self._representation.getShape().addBorder(Border(4, colors['borderColor']))
             else:
                 self._representation.getShape().removeBorder()
             self.notifyObservers("selectionChanged")

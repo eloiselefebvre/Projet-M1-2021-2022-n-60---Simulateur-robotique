@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
-from discoverySimulator.config import config
+from discoverySimulator.config import config, colors
 from discoverySimulator.interface.components.Button import VisibilityButton
 from discoverySimulator.Object import Object
 from discoverySimulator.robots.Robot import Robot
@@ -10,10 +10,6 @@ from discoverySimulator.sensors.Sensor import Sensor
 from discoverySimulator.actuators.Actuator import Actuator
 
 class ExplorerTree(QTreeWidget):
-
-    ITEM_COLOR = "#63656D"
-    CRAWLER_COLOR = "#DFE0E5"
-    BORDER_COLOR = "#25CCF7"
 
     def __init__(self,environment,parent):
         super().__init__()
@@ -123,12 +119,12 @@ class ExplorerTree(QTreeWidget):
             selectedObject = self.__mainObjects[self.__mainItems.index(crawler)]
         else:
             selectedObject = self.__mainObjects[[i for i in range(len(self.__mainItems)) if crawler in self.__mainItemsAssociatedChildren[i]][0]]
-            crawler.setColor(self.CRAWLER_COLOR)
+            crawler.setColor(colors['crawlerColor'])
             self.__selectedSubItem=crawler
         selectedObject.setSelected(True)
 
     def setSelectedItem(self,item):
-        item.setColor(self.CRAWLER_COLOR)
+        item.setColor(colors['crawlerColor'])
         item.setExpanded(True)
         self.setCurrentItem(item)
         self.__selectedItem=item
@@ -140,10 +136,10 @@ class ExplorerTree(QTreeWidget):
     def removeSelectedItem(self):
         if self.__selectedItem is not None:
             self.clearSelection()
-            self.__selectedItem.setColor(self.ITEM_COLOR)
+            self.__selectedItem.setColor(colors['explorerTreeItem'])
 
             for subItem in self.__subItems:
-                subItem.setColor(self.ITEM_COLOR)
+                subItem.setColor(colors['explorerTreeItem'])
 
             if self.__selectedSubItem is not None:
                 self.__parent.hideExplorerInfo(self.__allObjects[1 + self.__mainItems.index(self.__selectedItem) + self.__subItems.index(self.__selectedSubItem)])
@@ -151,7 +147,6 @@ class ExplorerTree(QTreeWidget):
                 self.__parent.hideExplorerInfo(self.__mainObjects[self.__mainItems.index(self.__selectedItem)])
             self.__selectedItem=None
             self.__selectedSubItem=None
-
 
     def changeTreeSelection(self,sender):
         if sender in self.__mainObjects:
@@ -181,9 +176,9 @@ class ExplorerTree(QTreeWidget):
 
 class Item(QTreeWidgetItem):
 
-    def __init__(self,parent, txt='', fontSize=12, setBold=False, color="#63656D"):
+    def __init__(self,parent, txt='', fontSize=12, setBold=False, color=colors['explorerTreeItem']):
         super().__init__(parent)
-        fnt = QFont('Verdana', fontSize) # TODO : Changer la font family
+        fnt = QFont('Verdana', fontSize)
         fnt.setBold(setBold)
         self.setColor(color)
         self.setFont(0,fnt)
