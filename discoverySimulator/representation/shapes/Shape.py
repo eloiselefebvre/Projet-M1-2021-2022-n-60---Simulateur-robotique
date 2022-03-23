@@ -51,7 +51,7 @@ class Shape(ABC):
             painter.setPen(Qt.NoPen)
 
     def getColor(self):
-        return self._color  # TODO : return hex
+        return self._color.name()
 
     @abstractmethod
     def getLineDecomposition(self):

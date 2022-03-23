@@ -24,10 +24,5 @@ colors = {
     "odometry" : "#8B86AC",
     "LIDAR" : "#1C1E32",
     "sensor" : "#F00"
-
-
 }
 
-fonts = {
-}
-# TODO : Gérer toutes les couleurs et fonts ici
