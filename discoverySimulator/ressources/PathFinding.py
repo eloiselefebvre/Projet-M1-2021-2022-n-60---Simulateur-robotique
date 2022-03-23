@@ -27,8 +27,10 @@ class PathFinding:
         "simplified_path":"#F9886A"
     }
 
-    FORWARD_SPEED = 600
-    TURN_SPEED_FACTOR = 5
+    MAX_FORWARD_SPEED = 600
+    MIN_FORWARD_SPEED = 100
+    MIN_DISTANCE_FOR_MAX_FORWARD_SPEED = 100.0
+    TURN_SPEED_FACTOR = 6
     DISTANCE_FOR_NEXT_POINT = 5
 
     CELL_SIZE = 15
@@ -185,9 +187,10 @@ class PathFinding:
             distance = sqrt((self._pathSimplified[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._pathSimplified[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(self._pathSimplified[self._nextPointIndex])
 
-            f=abs(angularDistance)/PathFinding.TURN_SPEED_FACTOR+1
-            self._robot.setRightWheelSpeed(PathFinding.FORWARD_SPEED/f+PathFinding.TURN_SPEED_FACTOR*angularDistance)
-            self._robot.setLeftWheelSpeed(PathFinding.FORWARD_SPEED/f-PathFinding.TURN_SPEED_FACTOR*angularDistance)
+            f=min(PathFinding.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED,distance)/PathFinding.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED
+            f/=abs(angularDistance)/PathFinding.TURN_SPEED_FACTOR+1
+            self._robot.setRightWheelSpeed(PathFinding.MAX_FORWARD_SPEED*f+PathFinding.MIN_FORWARD_SPEED*(1-f)+PathFinding.TURN_SPEED_FACTOR*angularDistance)
+            self._robot.setLeftWheelSpeed(PathFinding.MAX_FORWARD_SPEED*f+PathFinding.MIN_FORWARD_SPEED*(1-f)-PathFinding.TURN_SPEED_FACTOR*angularDistance)
 
             if distance<PathFinding.DISTANCE_FOR_NEXT_POINT:
                 self._nextPointIndex+=1
