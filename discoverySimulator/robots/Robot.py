@@ -8,8 +8,6 @@ from math import cos, sin, radians, degrees, atan
 from discoverySimulator.config import config, colors
 from ..Pose import Pose
 
-# TODO : Changer système de coordonnées du robot ? pour l'instant orientation 0 -> x vers la droite, y vers le bas
-
 class Robot(ABC,Object):
 
     NUMBER_STEPS_BEFORE_REFRESH = 30
@@ -118,7 +116,7 @@ class Robot(ABC,Object):
 
         v = (vd + vg) / 2
         e = self.getDistanceBetweenWheels()
-        d = v * config["update_time_step"]*self._acceleration/60
+        d = v * config["real_update_time_step"]*self._acceleration/60
 
         x=self._odometryPose.getX()
         y=self._odometryPose.getY()
@@ -135,7 +133,7 @@ class Robot(ABC,Object):
             self._odometryPose.move(x0 + R * cos(radians(self._odometryPose.getOrientation())),
                                     y0 + R * sin(radians(self._odometryPose.getOrientation())))
         elif vd==-vg: # robot tourne sur place
-            dd=vd * config["update_time_step"]*self._acceleration/60
+            dd=vd * config["real_update_time_step"]*self._acceleration/60
             dTheta=atan(dd/e)
             self._odometryPose.rotate(degrees(dTheta))
         else: # robot en ligne droite

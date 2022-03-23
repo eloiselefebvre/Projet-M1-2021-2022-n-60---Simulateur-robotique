@@ -86,8 +86,8 @@ class Simulation(Observable):
 
                 # ROBOT UPDATE
                 if self.__playState:
-                    # self.__timeElapsed += config["update_time_step"] * self.__acceleration
-                    self.__timeElapsed += (current - start_update) * self.__acceleration # TODO :  config["update_time_step"] -> (current - start_update) partout
+                    config["real_update_time_step"]=current - start_update
+                    self.__timeElapsed += config["real_update_time_step"] * self.__acceleration
 
                     self.notifyObservers("timeChanged")
                     for obj in self.__environment.getObjects():

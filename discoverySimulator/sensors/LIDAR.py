@@ -33,7 +33,7 @@ class LIDAR(Telemeter):
         self.__stepPerSecond = int(self.__scanRate / 60 * 360 / self.__angularResolution)
 
     def refresh(self):
-        steps_number = int(self.__stepPerSecond * config["update_time_step"] * (self._acceleration if self._parent is None else self._parent.getAcceleration()))
+        steps_number = int(self.__stepPerSecond * config["real_update_time_step"] * (self._acceleration if self._parent is None else self._parent.getAcceleration()))
         for _ in range(steps_number):
             if self.getPose().getOrientation() < self.__angularRange / 2 or self.getPose().getOrientation() > 360 - self.__angularRange / 2:
                 if self.__intersectionsBuffer[self.__bufferIndex] is not None:

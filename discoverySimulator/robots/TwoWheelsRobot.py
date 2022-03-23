@@ -101,7 +101,7 @@ class TwoWheelsRobot(Robot):
         This method allows to get the elementary speed of the right wheel
         :return : elementary speed of the right wheel [rpm]
         """
-        return self._rightWheel.getRadius() * self._rightWheel.getSpeed()*config["update_time_step"] / 60 * self._acceleration
+        return self._rightWheel.getRadius() * self._rightWheel.getSpeed()*config["real_update_time_step"] / 60 * self._acceleration
 
     def getLeftLinearSpeed(self):
         """
@@ -115,15 +115,7 @@ class TwoWheelsRobot(Robot):
         This method allows to get the elementary speed of the left wheel
         :return : elementary speed of the left wheel [rpm]
         """
-        return self._leftWheel.getRadius() * self._leftWheel.getSpeed() * config["update_time_step"] / 60 * self._acceleration
-
-    def setWheelY(self,y):
-        """
-        This method allows to change the position of wheels on the robot
-        :param y: y coordinate of wheels on the robot
-        """
-        self._rightWheel.getRepresentation().getOrigin().setY(y)
-        self._leftWheel.getRepresentation().getOrigin().setY(y)
+        return self._leftWheel.getRadius() * self._leftWheel.getSpeed() * config["real_update_time_step"] / 60 * self._acceleration
 
     def getDistanceBetweenWheels(self):
         """
