@@ -7,6 +7,8 @@ class PathFollowing():
 
     FORWARD_SPEED = 200
     TURN_SPEED = 100
+    TURN_SPEED_FACTOR = 5
+    DISTANCE_FOR_NEXT_POINT = 5
 
     def __init__(self,environment,robot,path):
         self._robot = robot
@@ -39,49 +41,17 @@ class PathFollowing():
 
     def followSimplifyPath(self):
         if self._robot.isFollowingPath():
-            distance = sqrt((self._path.getSimplifiedPath()[self._nextPointIndex][0] - self._robot.getPose().getX()) ** 2 + (self._path.getSimplifiedPath()[self._nextPointIndex][1] - self._robot.getPose().getY()) ** 2)
+            distance = sqrt((self._path.getSimplifiedPath()[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._path.getSimplifiedPath()[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
             angularDistance = self.angularDistance(self._path.getSimplifiedPath()[self._nextPointIndex])
-            if (angularDistance > 1 or angularDistance < -1) and self._modifyOrientation:  # TODO : Attention aux déviations sur les longues distances ! -> Algo de suivi de ligne ?
-                if angularDistance < 0:
-                    if isinstance(self._robot, TwoWheelsRobot):
-                        self._robot.setRightWheelSpeed(-self.TURN_SPEED)
-                        self._robot.setLeftWheelSpeed(self.TURN_SPEED)
-                    else:
-                        self._robot.setRightFrontWheelSpeed(-self.TURN_SPEED)
-                        self._robot.setRightBackWheelSpeed(-self.TURN_SPEED)
-                        self._robot.setLeftFronttWheelSpeed(self.TURN_SPEED)
-                        self._robot.setLeftBackWheelSpeed(self.TURN_SPEED)
-                else:
-                    if isinstance(self._robot,TwoWheelsRobot):
-                        self._robot.setRightWheelSpeed(self.TURN_SPEED)
-                        self._robot.setLeftWheelSpeed(-self.TURN_SPEED)
-                    else :
-                        self._robot.setRightFrontWheelSpeed(self.TURN_SPEED)
-                        self._robot.setRightBackWheelSpeed(self.TURN_SPEED)
-                        self._robot.setLeftFronttWheelSpeed(-self.TURN_SPEED)
-                        self._robot.setLeftBackWheelSpeed(-self.TURN_SPEED)
-            else:
-                self._modifyOrientation = False
-            if distance > 10 and not self._modifyOrientation:
-                if isinstance(self._robot,TwoWheelsRobot):
-                    self._robot.setRightWheelSpeed(self.FORWARD_SPEED)
-                    self._robot.setLeftWheelSpeed(self.FORWARD_SPEED)
-                else :
-                    self._robot.setRightFrontWheelSpeed(self.FORWARD_SPEED)
-                    self._robot.setRightBackWheelSpeed(self.FORWARD_SPEED)
-                    self._robot.setLeftFronttWheelSpeed(self.FORWARD_SPEED)
-                    self._robot.setLeftBackWheelSpeed(self.FORWARD_SPEED)
-            else:
-                if not self._modifyOrientation:
-                    self._nextPointIndex += 1
-                self._modifyOrientation = True
-            if self._nextPointIndex == len(self._path.getSimplifiedPath()):
-                if isinstance(self._robot,TwoWheelsRobot):
-                    self._robot.setRightWheelSpeed(0)
-                    self._robot.setLeftWheelSpeed(0)
-                else:
-                    self._robot.setRightFrontWheelSpeed(0)
-                    self._robot.setRightBackWheelSpeed(0)
-                    self._robot.setLeftFronttWheelSpeed(0)
-                    self._robot.setLeftBackWheelSpeed(0)
+
+            f=abs(angularDistance)/self.TURN_SPEED_FACTOR+1
+            self._robot.setRightWheelSpeed(self.FORWARD_SPEED/f+self.TURN_SPEED_FACTOR*angularDistance)
+            self._robot.setLeftWheelSpeed(self.FORWARD_SPEED/f-self.TURN_SPEED_FACTOR*angularDistance)
+
+            if distance<self.DISTANCE_FOR_NEXT_POINT:
+                self._nextPointIndex+=1
+
+            if self._nextPointIndex==len(self._path.getSimplifiedPath()):
+                self._robot.setRightWheelSpeed(0)
+                self._robot.setLeftWheelSpeed(0)
                 self._robot.setIsFollowingPath(False)
