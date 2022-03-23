@@ -10,7 +10,7 @@ from discoverySimulator.Object import Object
 from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Rectangle, Line
-from discoverySimulator.robots import Robot, TwoWheelsRobot
+from discoverySimulator.robots import Robot
 
 
 class PathFinding:
@@ -26,6 +26,10 @@ class PathFinding:
         "end_node": "#E8221E",
         "simplified_path":"#F9886A"
     }
+
+    FORWARD_SPEED = 600
+    TURN_SPEED_FACTOR = 5
+    DISTANCE_FOR_NEXT_POINT = 5
 
     CELL_SIZE = 15
     OFFSET = CELL_SIZE/2
@@ -56,6 +60,8 @@ class PathFinding:
         self.__setBeginNode((int(self._robot.getPose().getX()/PathFinding.CELL_SIZE),int(self._robot.getPose().getY()/PathFinding.CELL_SIZE)))
 
         self._pathSimplified=[]
+        self._modifyOrientation = True
+        self._nextPointIndex = 0
 
 
     def setEndPoint(self,mousePose):
@@ -172,6 +178,23 @@ class PathFinding:
         else:
             self._nodes[node].setPose(Pose(node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET))
 
+    def followSimplifyPath(self):
+        if self._robot.isFollowingPath():
+            distance = sqrt((self._pathSimplified[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._pathSimplified[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
+            angularDistance = self.angularDistance(self._pathSimplified[self._nextPointIndex])
+
+            f=abs(angularDistance)/PathFinding.TURN_SPEED_FACTOR+1
+            self._robot.setRightWheelSpeed(PathFinding.FORWARD_SPEED/f+PathFinding.TURN_SPEED_FACTOR*angularDistance)
+            self._robot.setLeftWheelSpeed(PathFinding.FORWARD_SPEED/f-PathFinding.TURN_SPEED_FACTOR*angularDistance)
+
+            if distance<PathFinding.DISTANCE_FOR_NEXT_POINT:
+                self._nextPointIndex+=1
+
+            if self._nextPointIndex==len(self._pathSimplified):
+                self._robot.setRightWheelSpeed(0)
+                self._robot.setLeftWheelSpeed(0)
+                self._robot.setIsFollowingPath(False)
+
     def simplifyPath(self, path):
         counter=1
         lastPoint = path[0]
@@ -221,7 +244,25 @@ class PathFinding:
         points.append((path[-1][0]*self.CELL_SIZE+self.OFFSET,path[-1][1]*self.CELL_SIZE+self.OFFSET))
         return points
 
-    def getSimplifiedPath(self):
-        return self._pathSimplified
+    def angularDistance(self,pathPoint):
+        # https://fr.wikihow.com/calculer-l%E2%80%99angle-entre-deux-vecteurs
+
+        currentPosition=(self._robot.getPose().getX(),self._robot.getPose().getY())
+        dx = pathPoint[0]-currentPosition[0]
+        dy = pathPoint[1]-currentPosition[1]
+
+        delta_degrees=2 # turn right
+        v1 = (sin(-radians(self._robot.getPose().getOrientation())),cos(-radians(self._robot.getPose().getOrientation()))) # norm 1
+        v1_delta = (sin(-radians(self._robot.getPose().getOrientation()+delta_degrees)),cos(-radians(self._robot.getPose().getOrientation()+delta_degrees)))
+        v2=(dx,dy)
+
+        dot_product = v1[0]*v2[0]+v1[1]*v2[1]
+        dot_product_delta = v1_delta[0]*v2[0]+v1_delta[1]*v2[1]
+        norm_v2=(v2[0]**2+v2[1]**2)**0.5
+
+        theta = acos(dot_product/norm_v2)
+        theta_delta = acos(dot_product_delta/norm_v2)
+
+        return degrees(theta) * (1 if degrees(theta)-degrees(theta_delta)>0 else -1)
 
 
