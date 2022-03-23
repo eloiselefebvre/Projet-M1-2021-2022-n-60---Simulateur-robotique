@@ -26,7 +26,7 @@ class ColorSensor(Sensor):
         for obj in virtualObjects:
             if obj.getZIndex()<=self._parent.getZIndex():
                 if obj.getRepresentation().contains(colorSensorPoint):
-                    self._colorDetected = obj.getRepresentation().getShape().getColor().name()
+                    self._colorDetected = obj.getRepresentation().getShape().getColor()
         if self._colorDetected is None:
             self._colorDetected = colors['sceneBackground']
         if self._colorDetected!=previousColor:

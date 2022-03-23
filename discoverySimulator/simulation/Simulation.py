@@ -83,11 +83,11 @@ class Simulation(Observable):
         while True:
             current=time.time()
             if current - start_update > config["update_time_step"] / self.__acceleration:
-                start_update = current
 
                 # ROBOT UPDATE
                 if self.__playState:
-                    self.__timeElapsed += config["update_time_step"] * self.__acceleration
+                    # self.__timeElapsed += config["update_time_step"] * self.__acceleration
+                    self.__timeElapsed += (current - start_update) * self.__acceleration # TODO :  config["update_time_step"] -> (current - start_update) partout
 
                     self.notifyObservers("timeChanged")
                     for obj in self.__environment.getObjects():
@@ -98,6 +98,8 @@ class Simulation(Observable):
                 for sensor in self.__environment.getSensors():
                     if hasattr(sensor, "refresh"):
                         sensor.refresh()
+
+                start_update = current
             time.sleep(self.MINIMUM_TIME_STEP)
 
     def __startApplication(self):

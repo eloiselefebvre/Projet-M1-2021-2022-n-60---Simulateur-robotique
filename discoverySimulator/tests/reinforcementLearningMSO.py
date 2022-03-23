@@ -21,8 +21,6 @@ def reinforcementLearningTest():
     currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
     reinforcementLearning = ReinforcementLearning(currentState)
 
-
-    # MSO TODO : le temps simulé avec un facteur 1 parait plus lent que le temps réel  -> normal ?
     timeLearning = 5
     start=sim.time()
 
