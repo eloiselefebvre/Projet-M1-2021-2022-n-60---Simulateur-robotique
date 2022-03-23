@@ -23,6 +23,7 @@ class Robot(ABC,Object):
         self._actuators_counter=0
         self._isFollowingPath=False
         self._pathFinding=None
+        self._pathFollowing=None
 
         # TRAJECTORY ATTRIBUTES
         self._trajectory = []
@@ -57,7 +58,8 @@ class Robot(ABC,Object):
         self.updateOdometry()
         self.notifyObservers("stateChanged")
         # if self._isFollowingPath:
-        #     self._pathFinding.followSimplifyPath()
+        #     self._pathFollowing(self._environnement,self,self._pathFinding).followSimplifyPath()
+        # TODO : modifier avec path following
 
     def getComponents(self):
         """
