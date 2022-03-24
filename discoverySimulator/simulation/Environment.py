@@ -29,6 +29,7 @@ class Environment:
         self.__hasWalls=False
         self.__drawWalls()
 
+    # GETTERS
     def getObjects(self) -> List[Object]:
         """
         This method is used to get all the objects of the environment

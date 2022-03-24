@@ -1,5 +1,4 @@
 import time
-
 from discoverySimulator.robots import FourWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.simulation import Environment, Simulation

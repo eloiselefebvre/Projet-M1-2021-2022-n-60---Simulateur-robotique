@@ -19,17 +19,26 @@ class Circle(Shape):
         self._radius=radius
 
     # GETTERS
-    def getRadius(self):
+    def getRadius(self) -> float :
         """
         This method allows to get the radius of a circle
         :return: the radius of a circle [px]
         """
         return self._radius
 
-    def getBoundingBox(self):
+    def getBoundingBox(self) -> Rectangle:
+        """
+        This method is used to get the bounding box of a circle
+        :return: the bounding box of the circle
+        """
         return Rectangle(self._radius*2,self._radius*2)
 
-    def contains(self, point:QPointF):
+    def contains(self, point:QPointF) -> bool:
+        """
+        This method allows to know if a circle contains a point
+        :param point: point
+        :return: is the point is in the circle
+        """
         return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2
 
     def getLineDecomposition(self) -> List[QLineF]:

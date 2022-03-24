@@ -29,8 +29,7 @@ class Scene(QWidget,Observable):
         self.__selectedObj = None
         self.__objectMoved=True
         self.__selectedObjCollidedState=False
-
-        self.__pathFollowing=None
+        self.__pathFinding=None
         self.setStyleSheet("background-color:"+colors['sceneBackground']+";")
         self._convertedMousePose=QPoint(0, 0)
 

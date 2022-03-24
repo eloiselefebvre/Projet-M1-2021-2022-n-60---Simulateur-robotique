@@ -42,6 +42,10 @@ class Rectangle(Shape):
         return self._height
 
     def getBoundingBox(self):
+        """
+        This method is used to get the bounding box of a rectangle
+        :return: the bounding box of the rectangle
+        """
         return self
 
     def getLineDecomposition(self) -> List[QLineF]:

@@ -29,6 +29,10 @@ class Line(Shape):
         return a, b
 
     def getBoundingBox(self) -> Rectangle:
+        """
+        This method is used to get the bounding box of a rectangle
+        :return: the bounding box of the rectangle
+        """
         return Rectangle(self._width,self._length)
 
     def contains(self, point) -> bool:

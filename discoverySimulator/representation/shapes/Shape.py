@@ -19,25 +19,35 @@ class Shape(ABC):
 
         self._orientationMark=False
 
-    def addBorder(self,bord):
-        if isinstance(bord,Border):
-            self._border=bord
-
-    def removeBorder(self):
-        self._border=None
 
     # SETTERS
     def setPose(self,pose:Pose):
+        """
+        This method is used to change the position of a shape
+        :param pose: the new position
+        """
         self._pose=pose
 
     def setOpacity(self,opacity:int):
+        """
+        This method is used to change the opacity of a shape
+        :param opacity: the new opacity
+        """
         self._opacity=opacity
 
     def setColor(self,color:str):
+        """
+        This method is used to change the color of a shape
+        :param color: the new color
+        """
         self._color=QColor(color)
 
     # GETTERS
-    def getPose(self):
+    def getPose(self) -> Pose:
+        """
+        This method is used to get the position of a shape
+        :return: the position of the shape
+        """
         return self._pose
 
     def paint(self,painter:QPainter):
@@ -51,6 +61,10 @@ class Shape(ABC):
             painter.setPen(Qt.NoPen)
 
     def getColor(self):
+        """
+        This method is used to get the color of a shape
+        :return: the color of a shape
+        """
         return self._color.name()
 
     @abstractmethod
@@ -96,7 +110,25 @@ class Shape(ABC):
 
     @abstractmethod
     def getBoundingBox(self):
+        """
+        This method is used to get the bounding box of a shape
+        """
         pass
+
+    def addBorder(self, border:Border):
+        """
+        This method is used to add a border on a shape
+        :param border: the border to add
+        """
+        if isinstance(border, Border):
+            self._border=border
+
+    def removeBorder(self):
+        """
+        This method is used to remove a border on a shape
+        :param border: the border to remove
+        """
+        self._border=None
 
     @abstractmethod
     def contains(self, point):
