@@ -27,40 +27,7 @@ class TwoWheelsRobot(Robot):
         self._leftWheel.setID("LeftWheel")
         self._rightWheel.setID("RightWheel")
 
-
-    def move(self):
-        if not self._isCollided:
-            # average speed of the robot
-            averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
-
-            # speed along the x and y axes
-            Phi = radians(self._pose.getOrientation() + 90)
-            dx = averageSpeedRobot * cos(Phi)
-            dy = averageSpeedRobot * sin(Phi)
-
-            # angular speed
-            dPhi = degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels))
-
-            self.computeRotationCenter() # TODO : Not each time
-            self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
-            self._pose.rotate(dPhi)
-
-            self.isCollided()
-
-        super().move()
-
-    def getAverageSpeed(self):
-        """
-        This method is used to get the average speed of an object
-        :return: average speed of the object [rmp]
-        """
-        averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
-        return averageSpeedRobot
-
-    def computeRotationCenter(self):
-        self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
-                                         (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
-
+    # SETTERS
     def setLeftWheelSpeed(self,speed):
         """
         This method allows to change the speed of the left wheel
@@ -76,6 +43,15 @@ class TwoWheelsRobot(Robot):
         """
         if not self._isSpeedLocked:
             self._rightWheel.setSpeed(speed)
+
+    # GETTERS
+    def getAverageSpeed(self):
+        """
+        This method is used to get the average speed of an object
+        :return: average speed of the object [rmp]
+        """
+        averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
+        return averageSpeedRobot
 
     def getRightWheel(self):
         """
@@ -125,4 +101,31 @@ class TwoWheelsRobot(Robot):
         :return: distance between wheels [px]
         """
         return self._distanceBetweenWheels
+
+    def move(self):
+        if not self._isCollided:
+            # average speed of the robot
+            averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
+
+            # speed along the x and y axes
+            Phi = radians(self._pose.getOrientation() + 90)
+            dx = averageSpeedRobot * cos(Phi)
+            dy = averageSpeedRobot * sin(Phi)
+
+            # angular speed
+            dPhi = degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels))
+
+            self.computeRotationCenter() # TODO : Not each time
+            self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
+            self._pose.rotate(dPhi)
+
+            self.isCollided()
+
+        super().move()
+
+    def computeRotationCenter(self):
+        self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX()) / 2,
+                                         (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY()) / 2)
+
+
 

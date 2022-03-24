@@ -8,7 +8,15 @@ class Border:
 
     # GETTERS
     def getWidth(self) -> int:
+        """
+        This method allows to get the width of a border
+        :return:
+        """
         return self._width
 
     def getColor(self) -> str:
+        """
+        This method allows to get the color of a border
+        :return:
+        """
         return self._color

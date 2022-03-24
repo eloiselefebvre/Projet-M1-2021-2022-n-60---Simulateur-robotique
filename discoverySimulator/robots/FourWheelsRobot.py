@@ -1,6 +1,5 @@
 from . import RectangularTwoWheelsRobot
 from discoverySimulator.actuators.Wheel import Wheel
-
 from discoverySimulator.config import *
 
 class FourWheelsRobot(RectangularTwoWheelsRobot):
@@ -27,40 +26,22 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         self._leftWheel.setID("FrontLeftWheel")
         self._rightWheel.setID("FrontRightWheel")
 
-    def move(self):
-        super().move()
-
-    def computeRotationCenter(self):
-        self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX() + self._backRightWheel.getPose().getX() + self._backLeftWheel.getPose().getX()) / 4,
-                                         (self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY() + self._backRightWheel.getPose().getY() + self._backLeftWheel.getPose().getY()) / 4)
-
-    def getRightLinearSpeed(self) -> float:
-        return self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()
-
-    def getRightElementarySpeed(self) -> float:
-        return config["update_time_step"] / 60 * (self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()) * self._acceleration
-
-    def getLeftLinearSpeed(self) -> float:
-        return self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()
-
-    def getLeftElementarySpeed(self) -> float:
-        return config["update_time_step"] / 60 * (self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()) * self._acceleration
-
-    def setLeftFrontWheelSpeed(self,speed:int):
+    # SETTERS
+    def setLeftFrontWheelSpeed(self, speed: int):
         """
         This method is used to set the speed of the left front wheel
         :param speed: speed of the wheel [rpm]
         """
         self.setLeftWheelSpeed(speed)
 
-    def setRightFrontWheelSpeed(self,speed:int):
+    def setRightFrontWheelSpeed(self, speed: int):
         """
         This method is used to set the speed of the right front wheel
         :param speed: speed of the wheel [rpm]
         """
         self.setRightWheelSpeed(speed)
 
-    def setLeftBackWheelSpeed(self,speed:int):
+    def setLeftBackWheelSpeed(self, speed: int):
         """
         This method is used to set the speed of the left back wheel
         :param speed: speed of the wheel [rpm]
@@ -68,7 +49,7 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         if not self._isSpeedLocked:
             self._backLeftWheel.setSpeed(speed)
 
-    def setRightBackWheelSpeed(self,speed:int):
+    def setRightBackWheelSpeed(self, speed: int):
         """
         This method is used to set the speed of the right back wheel
         :param speed: speed of the wheel [rpm]
@@ -76,7 +57,50 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         if not self._isSpeedLocked:
             self._backRightWheel.setSpeed(speed)
 
-    def setBackWheelY(self,y:int):
+    def setBackWheelY(self, y: int):
+        """
+        This method allows to change the position of the two back wheels
+        :param y: the new position
+        """
         self._backRightWheel.getPose().setY(y)
         self._backLeftWheel.getPose().setY(y)
+
+    # GETTERS
+    def getRightLinearSpeed(self) -> float:
+        """
+        This method is used to get the right linear speed
+        :return: the right linear speed
+        """
+        return self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()
+
+    def getRightElementarySpeed(self) -> float:
+        """
+        This method is used to get the right elementary speed
+        :return: the right elementary speed
+        """
+        return config["update_time_step"] / 60 * (
+                    self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()) * self._acceleration
+
+    def getLeftLinearSpeed(self) -> float:
+        """
+        This method is used to get the elft linear speed
+        :return: the left linear speed
+        """
+        return self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()
+
+    def getLeftElementarySpeed(self) -> float:
+        """
+        This method is used to get the right elementary speed
+        :return: the right elementary speed
+        """
+        return config["update_time_step"] / 60 * (
+                    self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()) * self._acceleration
+
+    def move(self):
+        super().move()
+
+    def computeRotationCenter(self):
+        self._pose.setRotationCenter((self._rightWheel.getPose().getX() + self._leftWheel.getPose().getX() + self._backRightWheel.getPose().getX() + self._backLeftWheel.getPose().getX()) / 4,(self._rightWheel.getPose().getY() + self._leftWheel.getPose().getY() + self._backRightWheel.getPose().getY() + self._backLeftWheel.getPose().getY()) / 4)
+
+
 

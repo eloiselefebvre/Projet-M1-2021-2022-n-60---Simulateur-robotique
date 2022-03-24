@@ -1,10 +1,7 @@
 from typing import List, Tuple
-
 from PyQt5.QtCore import Qt, QLineF, QPoint, QPointF
-from PyQt5.QtGui import QPolygon, QBrush, QPen, QColor, QPainter
-
+from PyQt5.QtGui import QPolygon, QBrush, QPainter
 from discoverySimulator.representation.shapes import Shape, Rectangle
-
 
 class Polygon(Shape):
 
@@ -23,6 +20,10 @@ class Polygon(Shape):
 
     # GETTERS
     def getBoundingBox(self) -> Rectangle:
+        """
+        This method is used to get the bounding box of a polygon
+        :return: the bounding box of the polygon
+        """
         min_x=self.__points[0].x()
         min_y = self.__points[0].y()
         max_x=self.__points[0].x()

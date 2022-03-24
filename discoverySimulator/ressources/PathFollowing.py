@@ -1,32 +1,36 @@
 from math import sqrt, sin, radians, cos, degrees, acos
 
-from discoverySimulator.robots import FourWheelsRobot
-
-
 class PathFollowing():
 
     MAX_FORWARD_SPEED = 500
     MIN_FORWARD_SPEED = 300
     MIN_DISTANCE_FOR_MAX_FORWARD_SPEED = 60.0
     TURN_SPEED_FACTOR = 10
-
     DISTANCE_FOR_NEXT_POINT = 30
     DISTANCE_FOR_END_POINT = 5
 
     def __init__(self,robot):
+        """
+        This method is used to follow a path
+        :param robot: robot who will follow the path
+        """
         self._robot = robot
         for wheel in self._robot.getWheels():
             wheel.setSpeed(0)
         self._robot.setSpeedLock(True)
-
         self._path = None
         self._nextPointIndex = 0
         self._modifyOrientation = True
 
+    # GETTERS
     def getRobot(self):
+        """
+        This method is used to get the robot who follow the path
+        :return:
+        """
         return self._robot
 
-    def angularDistance(self,pathPoint):
+    def angularDistance(self,pathPoint) -> float:
         # https://fr.wikihow.com/calculer-l%E2%80%99angle-entre-deux-vecteurs
 
         currentPosition=(self._robot.getPose().getX(),self._robot.getPose().getY())

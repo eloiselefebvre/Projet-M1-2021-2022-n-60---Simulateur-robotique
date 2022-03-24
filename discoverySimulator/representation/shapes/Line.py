@@ -29,6 +29,10 @@ class Line(Shape):
         return a, b
 
     def getBoundingBox(self) -> Rectangle:
+        """
+        This method is used to get the bounding box of a rectangle
+        :return: the bounding box of the rectangle
+        """
         return Rectangle(self._width,self._length)
 
     def contains(self, point) -> bool:
@@ -54,4 +58,4 @@ class Line(Shape):
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setPen(QPen(self._color, self._width, Qt.SolidLine))
-        painter.drawLine(0,0,0,round(self._length)) # vertical line
+        painter.drawLine(0,0,0,round(self._length))

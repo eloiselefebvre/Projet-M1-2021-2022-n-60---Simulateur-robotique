@@ -26,6 +26,7 @@ class LED(Actuator):
         self._state=False
         self._color = color
 
+    # SETTERS
     def setState(self,state:bool):
         """
         This method allows to change the state of a LED
@@ -39,6 +40,7 @@ class LED(Actuator):
                 self._representation.getShape().setOpacity(LED.LOW_OPACITY)
         self.notifyObservers("stateChanged")
 
+    # GETTERS
     def getState(self) -> bool:
         """
         This method is used to get the state of a LED
@@ -47,6 +49,10 @@ class LED(Actuator):
         return self._state
 
     def getSpecifications(self) -> str:
+        """
+        This method allows to get specifications about a LED
+        :return: specifications
+        """
         return f"Current state : {'ON' if self._state else 'OFF'}"
 
 

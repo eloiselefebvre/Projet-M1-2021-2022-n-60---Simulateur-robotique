@@ -23,6 +23,7 @@ class Telemeter(Sensor):
         self._representation.addSubRepresentation(self._laser.getRepresentation())
         self._distance = self._maximumMesurableDistance
 
+    # GETTERS
     def getValue(self) -> float:
         """
         This method allows to get the value of the telemeter

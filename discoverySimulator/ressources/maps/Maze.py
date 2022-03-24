@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 from discoverySimulator import Object
 from discoverySimulator.config import colors
@@ -12,6 +13,10 @@ class Maze:
     INTERVAL_SIZE = 150
 
     def __init__(self,environment):
+        """
+        This method is used to create a maze
+        :param environment: environment where the maze will take place
+        """
         self._environment = environment
         self._width = self._environment.getSize().width()
         self._height = self._environment.getSize().height()
@@ -19,6 +24,14 @@ class Maze:
         self._nbLine = self._height//self.INTERVAL_SIZE
         self._mazeElements = []
         self.drawGrid()
+
+    # GETTERS
+    def getWalls(self) -> List[Line]:
+        """
+        This method allows to get all the elements of the maze
+        :return: all the elements
+        """
+        return self._mazeElements
 
     def drawGrid(self):
         for i in range(self._nbLine+1):
@@ -39,6 +52,5 @@ class Maze:
             self._environment.removeObject(item)
         self._mazeElements.clear()
 
-    def getWalls(self):
-        return self._mazeElements
+
 

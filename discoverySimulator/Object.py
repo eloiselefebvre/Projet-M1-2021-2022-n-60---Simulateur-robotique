@@ -40,6 +40,10 @@ class Object(Observable):
             self._frame=frame
 
     def setZIndex(self,index:int):
+        """
+        This method is used to change the Z index of an object
+        :param index: new Z index of the object
+        """
         self._zIndex=int(index)
 
     def setNumberOfInstances(self,name:str):
@@ -53,15 +57,27 @@ class Object(Observable):
             Object.number_of_instances[name]=1
 
     def setPose(self,pose:Pose):
+        """
+        This method is used to change the position and the orientation of an object
+        :param pose: new position and orientation of the object
+        """
         self._pose=pose
         self._representation.setPose(self._pose)
 
     def setVisible(self, visible:bool):
+        """
+        This method is used to change the visibility of an object
+        :param visible: if the object will be visible or not
+        """
         if not self._visibilityLocked:
             self._representation.setVisible(visible)
             self.visibylityChanged()
 
     def setVisibilityLocked(self,state:bool):
+        """
+        This method is used to change if the visibility of an object is locked or not
+        :param state: if the visibility is locked
+        """
         self._visibilityLocked=state
 
     def setID(self,id:str):
@@ -87,6 +103,10 @@ class Object(Observable):
         self._isCollided=state
 
     def setEnvironnement(self, environnement):
+        """
+        This method allows to set the environment of an object
+        :param environnement: the environment of the object
+        """
         self._environnement=environnement
 
     # GETTERS
@@ -94,9 +114,17 @@ class Object(Observable):
         return self._frame
 
     def getAcceleration(self) -> float:
+        """
+        This method is used to get the acceleration of an object
+        :return: the acceleration of the object
+        """
         return self._acceleration
 
     def getZIndex(self) -> int:
+        """
+        This method is used to get the Z index of an object
+        :return Z index of the object
+        """
         return self._zIndex
 
     def getRepresentation(self) -> Representation:
@@ -107,6 +135,10 @@ class Object(Observable):
         return self._representation
 
     def getPose(self) -> Pose:
+        """
+        This method is used to get the position and the orientation of an object
+        :return: the position and the orientation of an object
+        """
         return self._pose
 
     def getID(self) -> str:
@@ -117,9 +149,17 @@ class Object(Observable):
         return self._id
 
     def getVisibilityLocked(self) -> bool:
+        """
+        This method allows to know if the visibility of an object is locked
+        :return: if the visibility of an object is locked
+        """
         return self._visibilityLocked
 
     def getEnvironnement(self) :
+        """
+        This method is used to get the environment of an object
+        :return: the environment of the object
+        """
         return self._environnement
 
     def getCollidedState(self) -> bool:
@@ -132,6 +172,10 @@ class Object(Observable):
         self._representation.paint(painter)
 
     def isVisible(self) -> bool:
+        """
+        This method is used to know if an object is visible or not
+        :return: if the object is visible
+        """
         return self._representation.isVisible()
 
     def toggleVisible(self):
@@ -156,6 +200,10 @@ class Object(Observable):
         self._id+="_"+str(Object.number_of_instances[self._id])
 
     def isSelected(self) -> bool:
+        """
+        This method is used to know if an object is selected
+        :return: if the object is selected
+        """
         return self._isSelected
 
     def isCollided(self):

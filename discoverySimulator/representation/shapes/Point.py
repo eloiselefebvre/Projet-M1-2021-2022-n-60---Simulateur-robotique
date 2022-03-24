@@ -14,6 +14,10 @@ class Point(Shape):
 
     # GETTERS
     def getBoundingBox(self) -> Rectangle:
+        """
+        This method is used to get the bounding box of a point
+        :return: the bounding box of the point
+        """
         return Rectangle(self.POINT_SIZE, self.POINT_SIZE)
 
     def contains(self, point) -> bool:
@@ -24,8 +28,6 @@ class Point(Shape):
 
     @staticmethod
     def computeTransformation(xo: float, yo: float, dx: float, dy: float, o: float) -> Tuple[float, float]:
-        # xC = (xB - xO) * cos (β) + (yB - yO) * sin (β) + xO
-        # yC = - (xB - xO) * sin(β) + (yB - yO) * cos(β) + yO
         a = -radians(o)
         return dx * cos(a) + dy * sin(a) + xo, -dx * sin(a) + dy * cos(a) + yo
 
