@@ -48,6 +48,7 @@ class Toolbar(QToolBar,Observable):
     def getRobotSelected(self) -> Robot:
         return self.__robotSelected
 
+
     def updateTimeElapsed(self,sender):
         time=sender.time()
         hours=int(time//3600)
@@ -201,7 +202,6 @@ class Toolbar(QToolBar,Observable):
         self._playPause.setToolTip("Pause" if self.__playState else "Play")
         self._playPause.setState(self.__playState)
         self.notifyObservers("playChanged")
-
 
     def robotSelected(self,sender):
         if sender.isSelected():

@@ -29,7 +29,6 @@ class Scene(QWidget,Observable):
         self.__selectedObj = None
         self.__objectMoved=True
         self.__selectedObjCollidedState=False
-
         self.__pathFollowing=None
         self.setStyleSheet("background-color:"+colors['sceneBackground']+";")
         self._convertedMousePose=QPoint(0, 0)
@@ -60,6 +59,8 @@ class Scene(QWidget,Observable):
         self._convertedMousePose = (event.pos() - self.__zoomController.getOffset()) / self.__zoomController.getZoom()
 
         if event.button()==Qt.LeftButton:
+            self.__objectGrabbed()
+            self.__dragObject = True
             if self.__pathFollowing is not None:
                 pathFinding = PathFinding(self.__environment,
                                           self.__pathFollowing.getRobot().getBoundingWidth())
@@ -68,9 +69,7 @@ class Scene(QWidget,Observable):
                                      (self._convertedMousePose.x(), self._convertedMousePose.y()),
                                      self.__pathFollowing.startFollowing)
                 self.__pathFollowing = None
-            else:
-                self.__objectGrabbed()
-                self.__dragObject = True
+
 
         if event.button() == Qt.MiddleButton:
             self.__dragScene = True
@@ -142,23 +141,24 @@ class Scene(QWidget,Observable):
         self.setCursor(Qt.CrossCursor)
         self.__pathFollowing=PathFollowing(sender.getRobotSelected())
 
+
     def __objectGrabbed(self):
         for obj in self.__environment.getObjects():
             obj.setSelected(False)
 
-        objects = sorted(self.__environment.getObjects(), key=lambda obj:obj.getZIndex())
-        objects.reverse()
-        for obj in objects:
-            if obj.getRepresentation().contains(self._convertedMousePose) and obj.isVisible():
-                obj.setSelected(True)
-                pose = obj.getPose()
-                dx = self._convertedMousePose.x() - pose.getX()
-                dy = self._convertedMousePose.y() - pose.getY()
-                self.__selectionOffset = (dx, dy)
-                if not self.__isSceneLocked:
-                    self.__selectedObj = obj
-                    self.__selectedObjCollidedState=self.__selectedObj.getCollidedState()
-                    self.__objectMoved=False
-                    self.__selectedObj.setCollidedState(True)
-                break
-
+        if self.__pathFollowing is None:
+            objects = sorted(self.__environment.getObjects(), key=lambda obj:obj.getZIndex())
+            objects.reverse()
+            for obj in objects:
+                if obj.getRepresentation().contains(self._convertedMousePose) and obj.isVisible():
+                    obj.setSelected(True)
+                    pose = obj.getPose()
+                    dx = self._convertedMousePose.x() - pose.getX()
+                    dy = self._convertedMousePose.y() - pose.getY()
+                    self.__selectionOffset = (dx, dy)
+                    if not self.__isSceneLocked:
+                        self.__selectedObj = obj
+                        self.__selectedObjCollidedState=self.__selectedObj.getCollidedState()
+                        self.__objectMoved=False
+                        self.__selectedObj.setCollidedState(True)
+                    break
