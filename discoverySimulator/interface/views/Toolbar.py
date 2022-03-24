@@ -48,6 +48,7 @@ class Toolbar(QToolBar,Observable):
     def getRobotSelected(self) -> Robot:
         return self.__robotSelected
 
+
     def updateTimeElapsed(self,sender):
         time=sender.time()
         hours=int(time//3600)
