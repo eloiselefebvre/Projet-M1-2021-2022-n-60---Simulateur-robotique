@@ -1,4 +1,5 @@
 from abc import ABC,abstractmethod
+from typing import List
 
 from .. import Object
 from ..Component import Component
@@ -38,6 +39,71 @@ class Robot(ABC,Object):
         self._pathFollowing=None
         self._isSpeedLocked=False
 
+
+    # SETTERS
+    def setOdometryPose(self, pose:Pose):
+        self._odometryPose = pose
+
+    def setPathFollowing(self, pathFollowing):
+        self._pathFollowing = pathFollowing
+
+    def setSpeedLock(self, state: bool):
+        self._isSpeedLocked = state
+
+    # GETTERS
+    def getComponents(self):
+        """
+        This method allows to get all components
+        :return: all components
+        """
+        return self._components
+
+    @abstractmethod
+    def getLeftLinearSpeed(self):
+        """
+        This method is used to get the left linear speed
+        :return: the right linear speed
+        """
+        pass
+
+    @abstractmethod
+    def getRightLinearSpeed(self):
+        """
+        This method is used to get the right linear speed
+        :return: the right linear speed
+        """
+        pass
+
+    @abstractmethod
+    def getDistanceBetweenWheels(self):
+        """
+        This method is used to get distance between wheels
+        :return: the distance between wheels
+        """
+        pass
+
+    def getTrajectoryDrawn(self):
+        return self._trajectoryDrawn
+
+    def getOdometryDrawn(self):
+        return self._odometryDrawn
+
+    def getOdometryPose(self):
+        return self._odometryPose
+
+    def getWheels(self) -> List[Wheel]:
+        """
+        This method is used to get all the wheels of a robot
+        :return: all the wheels of the robot
+        """
+        return self._wheels
+
+    def getBoundingWidth(self):
+        return self.getRepresentation().getShape().getBoundingBox().getWidth()
+
+    def getBoundingHeight(self):
+        return self.getRepresentation().getShape().getBoundingBox().getHeigt()
+
     def addComponent(self, component, x=0, y=0, orientation=0):
         """
         This method is used to add a component of a robot
@@ -66,25 +132,6 @@ class Robot(ABC,Object):
         if self._pathFollowing is not None:
             self._pathFollowing.followPath()
 
-    def getComponents(self):
-        """
-        This method allows to get all components
-        :return: all components
-        """
-        return self._components
-
-    @abstractmethod
-    def getLeftLinearSpeed(self):
-        pass
-
-    @abstractmethod
-    def getRightLinearSpeed(self):
-        pass
-
-    @abstractmethod
-    def getDistanceBetweenWheels(self):
-        pass
-
     # TRAJECTORY METHODS
     def updateTrajectory(self):
         if self._trajectoryCounter==0:
@@ -97,11 +144,17 @@ class Robot(ABC,Object):
         self._trajectoryCounter=(self._trajectoryCounter+1)%self.NUMBER_STEPS_BEFORE_REFRESH
 
     def showTrajectory(self):
+        """
+        This method is used to show the trajectory of a robot
+        """
         for point in self._trajectory:
             point_pose=point.getPose()
             self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideTrajectory(self):
+        """
+        This method is used to hide the trajectory of a robot
+        """
         for point in self._trajectory:
             self._environnement.removeVirtualObject(point)
         self._drawTrajectory=False
@@ -109,9 +162,6 @@ class Robot(ABC,Object):
     def deleteTrajectory(self):
         self.hideTrajectory()
         self._trajectory.clear()
-
-    def getTrajectoryDrawn(self):
-        return self._trajectoryDrawn
 
     def toggleTrajectoryDrawn(self):
         self._trajectoryDrawn = not self._trajectoryDrawn
@@ -158,11 +208,17 @@ class Robot(ABC,Object):
         self._odometryCounter = (self._odometryCounter + 1) % self.NUMBER_STEPS_BEFORE_REFRESH
 
     def showOdometry(self):
+        """
+        This method is used to show the odometry of a robot
+        """
         for point in self._odometry:
             point_pose = point.getPose()
             self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideOdometry(self):
+        """
+        This method is used to hide the odometry of a robot
+        """
         for point in self._odometry:
             self._environnement.removeVirtualObject(point)
 
@@ -173,26 +229,9 @@ class Robot(ABC,Object):
     def toggleOdometryDrawn(self):
         self._odometryDrawn=not self._odometryDrawn
 
-    def getOdometryDrawn(self):
-        return self._odometryDrawn
 
-    def setOdometryPose(self,pose):
-        self._odometryPose=pose
 
-    def getOdometryPose(self):
-        return self._odometryPose
 
-    def setPathFollowing(self,pathFollowing):
-        self._pathFollowing=pathFollowing
 
-    def setSpeedLock(self,state:bool):
-        self._isSpeedLocked=state
 
-    def getWheels(self):
-        return self._wheels
 
-    def getBoundingWidth(self):
-        return self.getRepresentation().getShape().getBoundingBox().getWidth()
-
-    def getBoundingHeight(self):
-        return self.getRepresentation().getShape().getBoundingBox().getHeigt()

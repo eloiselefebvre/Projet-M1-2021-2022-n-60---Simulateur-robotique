@@ -1,10 +1,10 @@
 import random
-from math import sqrt, atan, degrees
+from typing import List
 
 from discoverySimulator import Object
 from discoverySimulator.config import colors
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Point, Rectangle, Circle
+from discoverySimulator.representation.shapes import Circle
 
 
 class CirclePath:
@@ -12,15 +12,26 @@ class CirclePath:
     DEFAULT_WIDTH=20
 
     def  __init__(self, environment, color=colors['widgetBorder']):
+        """
+        This method is used to create a circle path
+        :param environment: the environment where the circle path will take place
+        :param color: color of the circle path
+        """
         self._environment = environment
         self._color = color
         self._pathElements = []
         self.drawPath()
 
+    # GETTERS
+    def getElements(self) -> List[Circle]:
+        """
+        This method allows to get all the elements of the path
+        :return: all the elements
+        """
+        return self._pathElements
+
     def drawPath(self):
-
         numberOfCircle=random.randint(1,2)
-
         if numberOfCircle==1:
             radius=random.randint(int(self._environment.getWidth()/8),int(self._environment.getWidth()/2))
             circle1 = Object(Representation(Circle(radius,self._color)))
@@ -51,8 +62,7 @@ class CirclePath:
             self._environment.removeVirtualObject(item)
         self._pathElements.clear()
 
-    def getElements(self):
-        return self._pathElements
+
 
 
 

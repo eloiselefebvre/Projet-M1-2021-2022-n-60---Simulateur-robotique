@@ -1,7 +1,7 @@
 import threading
 import time
 from math import sqrt, atan, degrees, cos, radians, sin, acos
-from typing import Tuple
+from typing import Tuple, List
 
 from PyQt5.QtCore import QPoint, QLineF
 
@@ -28,7 +28,6 @@ class PathFinding:
 
     CELL_SIZE = 15
     OFFSET = CELL_SIZE/2
-
     SECURITY_MARGIN_OFFSET=30
 
     def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.01):
@@ -48,19 +47,11 @@ class PathFinding:
         self._nodes = {}
         self.__endNode=None
         self.__beginNode=None
-
         self._pathSimplified=[]
         self._nextPointIndex = 0
 
-    def findPath(self,begin,end,callback=None):
-        if self.__setBeginNode((int(begin[0]/PathFinding.CELL_SIZE),int(begin[1]/PathFinding.CELL_SIZE))) and self.__setEndNode((int(end[0]/PathFinding.CELL_SIZE),int(end[1]/PathFinding.CELL_SIZE))):
-            th = threading.Thread(target=self.__astar,args=[callback]) # self.__findPath -> self._findMethod (cf Reinforcement Learning)
-            th.start()
-        else:
-            if callback is not None:
-                callback(None)
-
-    def __setBeginNode(self, node):
+    # SETTERS
+    def __setBeginNode(self, node: tuple) -> bool :
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__createNode(node)
             self.__beginNode = node
@@ -69,21 +60,23 @@ class PathFinding:
             return True
         return False
 
-    def __setEndNode(self, node):
-        # print(self.__getNodeValue(node))
+    def __setEndNode(self, node:tuple) -> bool :
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__createNode(node)
             self.__endNode = node
             if self._displayEnabled:
                 self.__setNodeColor(self.__endNode, self.COLORS['end_node'])
             return True
-
         return False
 
-    def __setNodeColor(self, node, color):
+    def __setNodeColor(self, node:tuple, color:str):
         self._nodes[node].setColor(color)
 
-    def __getNodeValue(self, node:Tuple[int,int]=(0,0)):
+    # GETTERS
+    def getSimplifiedPath(self):
+        return self._pathSimplified
+
+    def __getNodeValue(self, node:Tuple[int,int]=(0,0)) -> bool:
         for shape in self._obstaclesShapeWithOffset:
             line1 = Line(PathFinding.CELL_SIZE*2**0.5,1)
             line2 = Line(PathFinding.CELL_SIZE * 2 ** 0.5, 1)
@@ -94,7 +87,7 @@ class PathFinding:
                 return False
         return True
 
-    def __getNodeNeighbors(self, node):
+    def __getNodeNeighbors(self, node:tuple) -> List[tuple]:
         nodes = []
         for mv in self.MOVES:
             i = node[0] + mv[0]
@@ -104,7 +97,15 @@ class PathFinding:
                 nodes.append(n_node)
         return nodes
 
-    def __isValidNode(self, node):
+    def findPath(self,begin:tuple,end,callback=None):
+        if self.__setBeginNode((int(begin[0]/PathFinding.CELL_SIZE),int(begin[1]/PathFinding.CELL_SIZE))) and self.__setEndNode((int(end[0]/PathFinding.CELL_SIZE),int(end[1]/PathFinding.CELL_SIZE))):
+            th = threading.Thread(target=self.__astar,args=[callback]) # self.__findPath -> self._findMethod (cf Reinforcement Learning)
+            th.start()
+        else:
+            if callback is not None:
+                callback(None)
+
+    def __isValidNode(self, node:tuple) -> bool:
         return node[0] >= 0 and node[0] < self.__ROWS_NUMBER and node[1] >= 0 and node[1] < self.__COLS_NUMBER
 
     def __astar(self,callback=None):
@@ -161,24 +162,23 @@ class PathFinding:
         if callback is not None:
             callback(self._pathSimplified)
 
-    def __heuristic(self, node):
+    def __heuristic(self, node:tuple) -> int:
         return self.__manhattanDistance(node,self.__endNode)
 
-    def __manhattanDistance(self, node1,node2):
+    def __manhattanDistance(self, node1:tuple,node2:tuple) -> int:
         return abs(node2[0] - node1[0]) + abs(node2[1] - node1[1])
 
-    def __euclidDistance(self, node1,node2):
+    def __euclidDistance(self, node1:tuple,node2:tuple) -> int:
         return ((node2[0] - node1[0]) ** 2 + (node2[1] - node1[1]) ** 2) ** 0.5
 
-    def __createNode(self, node):
+    def __createNode(self, node:tuple):
         self._nodes[node]=Rectangle(15, 15)
         if self._displayEnabled:
             self._environment.addVirtualObject(Object(Representation(self._nodes[node])),node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET)
         else:
             self._nodes[node].setPose(Pose(node[0]*self.CELL_SIZE+self.OFFSET,node[1]*self.CELL_SIZE+self.OFFSET))
 
-
-    def simplifyPath(self, path):
+    def simplifyPath(self, path:List[tuple]) -> List[tuple]:
         counter=1
         lastPoint = path[0]
         current=0
@@ -227,7 +227,6 @@ class PathFinding:
         points.append((path[-1][0],path[-1][1]))
         return [(x*self.CELL_SIZE+self.OFFSET,y*self.CELL_SIZE+self.OFFSET) for x,y in points]
 
-    def getSimplifiedPath(self):
-        return self._pathSimplified
+
 
 
