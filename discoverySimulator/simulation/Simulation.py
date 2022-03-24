@@ -24,6 +24,7 @@ class Simulation(Observable):
         self.__timeElapsed = 0.0
         self.__playState=True
 
+    # SETTERS
     def setAcceleration(self, acceleration:float): # TODO : Notify toolsbar
         """
         This method is used to change the acceleration of the simulation
@@ -34,6 +35,7 @@ class Simulation(Observable):
     def setAppShown(self,shown:bool):
         self.__appShown=shown
 
+    # GETTERS
     def getAcceleration(self) -> float:
         """
         This method is used to get the acceleration of the simulation

@@ -17,6 +17,21 @@ class ColorSensor(Sensor):
         super().__init__(self._representation)
         self._colorDetected = None
 
+    # GETTERS
+    def getValue(self) -> str:
+        """
+        This method allows to get the captured color by the sensor
+        :return: the captured color
+        """
+        return self._colorDetected
+
+    def getSpecifications(self):
+        """
+        This method is used to get specifications about the color sensor
+        :return: specifications about the color sensor
+        """
+        return "Current detected color : " + self._colorDetected
+
     def refresh(self):
         previousColor=self._colorDetected
         self._colorDetected=None
@@ -32,15 +47,7 @@ class ColorSensor(Sensor):
         if self._colorDetected!=previousColor:
             self.notifyObservers("stateChanged")
 
-    def getValue(self) -> str:
-        """
-        This method allows to get the captured color by the sensor
-        :return: the captured color
-        """
-        return self._colorDetected
 
-    def getSpecifications(self):
-        return "Current detected color : " + self._colorDetected
 
 
 

@@ -13,9 +13,11 @@ class Component(ABC,Object):
         super().__init__(representation)
         self._parent = None
 
+    # SETTERS
     def setParent(self,parent):
         self._parent = parent
 
+    # GETTERS
     @abstractmethod
     def getSpecifications(self): # TODO : Styliser avec HTML
         pass

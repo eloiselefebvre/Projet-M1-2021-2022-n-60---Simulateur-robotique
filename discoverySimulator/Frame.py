@@ -9,6 +9,7 @@ class Frame:
         self.setCoordinates(coordinates)
         self.setBaseFrame(baseFrame)
 
+    # SETTERS
     def setCoordinates(self,coordinates):
         if isinstance(coordinates,Pose):
             self.__coordinates=coordinates
@@ -17,6 +18,7 @@ class Frame:
         if isinstance(baseFrame,Frame):
             self.__baseFrame = baseFrame
 
+    # GETTERS
     def getBaseFrame(self):
         return self.__baseFrame
 

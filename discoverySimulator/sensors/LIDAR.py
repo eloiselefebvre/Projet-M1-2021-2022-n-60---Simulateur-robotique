@@ -32,6 +32,19 @@ class LIDAR(Telemeter):
         self.__bufferIndex = 0
         self.__stepPerSecond = int(self.__scanRate / 60 * 360 / self.__angularResolution)
 
+    # GETTERS
+    def getSpecifications(self) -> str:
+        """
+        This method is used to get specifications about the LIDAR
+        :return: specifications about the LIDAR
+        """
+        specifications = "---<br>"
+        specifications += f"Angular Resolution : {self.__angularResolution}°<br>"
+        specifications += f"Angular Range : {self.__angularRange}°<br>"
+        specifications += f"Scan Rate : {self.__scanRate}rpm<br>"
+        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
+        return specifications
+
     def refresh(self):
         steps_number = int(self.__stepPerSecond * config["real_update_time_step"] * (self._acceleration if self._parent is None else self._parent.getAcceleration()))
         for _ in range(steps_number):
@@ -50,10 +63,4 @@ class LIDAR(Telemeter):
                 self.__bufferIndex = (self.__bufferIndex + 1) % self.__angularSteps
             self.getPose().rotate(self.__angularResolution)
 
-    def getSpecifications(self) -> str:
-        specifications = "---<br>"
-        specifications += f"Angular Resolution : {self.__angularResolution}°<br>"
-        specifications += f"Angular Range : {self.__angularRange}°<br>"
-        specifications += f"Scan Rate : {self.__scanRate}rpm<br>"
-        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
-        return specifications
+
