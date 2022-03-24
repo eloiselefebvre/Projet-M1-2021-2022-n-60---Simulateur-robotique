@@ -85,16 +85,16 @@ class Shape(ABC):
         total_intersections=[]
         shape1_lines = self.getLineDecomposition()
         shape2_lines = shape.getLineDecomposition()
-        # intersection cercle/cercle
+        # intersection circle/circle
         if not shape1_lines and not shape2_lines:
             total_intersections.extend(self.getIntersectionWithCircle(shape))
-        # intersection ligne/cercle
+        # intersection line/circle
         elif shape1_lines and not shape2_lines:
             for line in shape1_lines:
                 intersections=shape.getIntersectionWithLine(line)
                 if intersections:
                     total_intersections.extend(intersections)
-        # intersection cercle/ligne
+        # intersection circle/line
         elif not shape1_lines and shape2_lines:
             for line in shape2_lines:
                 intersections = self.getIntersectionWithLine(line)

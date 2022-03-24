@@ -28,8 +28,6 @@ class Point(Shape):
 
     @staticmethod
     def computeTransformation(xo: float, yo: float, dx: float, dy: float, o: float) -> Tuple[float, float]:
-        # xC = (xB - xO) * cos (β) + (yB - yO) * sin (β) + xO
-        # yC = - (xB - xO) * sin(β) + (yB - yO) * cos(β) + yO
         a = -radians(o)
         return dx * cos(a) + dy * sin(a) + xo, -dx * sin(a) + dy * cos(a) + yo
 

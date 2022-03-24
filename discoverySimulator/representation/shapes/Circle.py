@@ -116,7 +116,7 @@ class Circle(Shape):
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # dessiné à partir du center
+        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # draw from the center
         if self._orientationMark:
             self.paintOrientationMark(painter)
 

@@ -58,4 +58,4 @@ class Line(Shape):
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setPen(QPen(self._color, self._width, Qt.SolidLine))
-        painter.drawLine(0,0,0,round(self._length)) # vertical line
+        painter.drawLine(0,0,0,round(self._length))

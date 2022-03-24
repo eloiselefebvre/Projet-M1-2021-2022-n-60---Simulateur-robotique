@@ -60,12 +60,9 @@ class Scene(QWidget,Observable):
 
         if event.button()==Qt.LeftButton:
             if self.__pathFollowing is not None:
-                pathFinding = PathFinding(self.__environment,
-                                          self.__pathFollowing.getRobot().getBoundingWidth() / 2 + PathFinding.SECURITY_MARGIN_OFFSET)
-                pathFinding.findPath((self.__pathFollowing.getRobot().getPose().getX(),
-                                      self.__pathFollowing.getRobot().getPose().getY()),
-                                     (self._convertedMousePose.x(), self._convertedMousePose.y()),
-                                     self.__pathFollowing.startFollowing)
+                print("ok")
+                pathFinding = PathFinding(self.__environment,self.__pathFollowing.getRobot().getBoundingWidth() / 2 + PathFinding.SECURITY_MARGIN_OFFSET)
+                pathFinding.findPath((self.__pathFollowing.getRobot().getPose().getX(),self.__pathFollowing.getRobot().getPose().getY()),(self._convertedMousePose.x(), self._convertedMousePose.y()),self.__pathFollowing.startFollowing)
                 self.__pathFollowing = None
             else:
                 self.__objectGrabbed()
@@ -123,9 +120,8 @@ class Scene(QWidget,Observable):
             self.__zoomController.zoomIn() if dir > 0 else self.__zoomController.zoomOut()
 
             s = ((self.__size - self.__size * self.__zoomController.getZoom()) / 2)
-            offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
+            offset = QPoint(s.width(), s.height()) # to center the window
             pos2 = (event.pos() - offset) / self.__zoomController.getZoom()
-            # pos1 doit devenir pos1 transformée dans le nouveau zoom
             getEqualCoordinatesOffset = (pos1-pos2)*self.__zoomController.getZoom()
             self.__zoomController.setOffset(offset - getEqualCoordinatesOffset)
 

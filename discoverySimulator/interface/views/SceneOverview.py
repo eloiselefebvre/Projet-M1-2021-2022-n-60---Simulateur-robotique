@@ -20,7 +20,7 @@ class SceneOverview(QWidget):
         mouseRescale = mouse/self.__zoomController.getMiniZoom()
         offset = self.__zoomController.getOffset()
         sceneSize=self.__zoomController.getSceneSize()
-        bx=-offset.x()/self.__zoomController.getZoom() # begin x
+        bx=-offset.x()/self.__zoomController.getZoom()
         by=-offset.y()/self.__zoomController.getZoom()
         ex = bx+sceneSize.width()
         ey = by+sceneSize.height()
