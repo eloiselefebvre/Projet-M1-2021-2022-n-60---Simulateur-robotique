@@ -1,3 +1,4 @@
+import random
 from abc import ABC,abstractmethod
 from typing import List
 
@@ -13,6 +14,7 @@ from ..Pose import Pose
 class Robot(ABC,Object):
 
     NUMBER_STEPS_BEFORE_REFRESH = 30
+    ODODMETRY_NOISE_STRENGH = 0.05
 
     def __init__(self,representation):
         """
@@ -38,6 +40,7 @@ class Robot(ABC,Object):
 
         self._pathFollowing=None
         self._isSpeedLocked=False
+        self._odometryNoised=True
 
 
     # SETTERS
@@ -49,6 +52,13 @@ class Robot(ABC,Object):
 
     def setSpeedLock(self, state: bool):
         self._isSpeedLocked = state
+
+    def setOdometryNoised(self,state:bool):
+        """
+        This method is used to set if the odometry is noised or not
+        :param state: if the odometry is noised or not
+        """
+        self._odometryNoised=state
 
     # GETTERS
     def getComponents(self):
@@ -103,6 +113,13 @@ class Robot(ABC,Object):
 
     def getBoundingHeight(self):
         return self.getRepresentation().getShape().getBoundingBox().getHeigt()
+
+    def getOdometryNoised(self):
+        """
+        This method allows to know if the odometry is noised or not
+        :return: if the odometry is noised or not
+        """
+        return self._odometryNoised
 
     def addComponent(self, component, x=0, y=0, orientation=0):
         """
@@ -170,6 +187,10 @@ class Robot(ABC,Object):
     def updateOdometry(self):
         vd = self.getRightLinearSpeed()
         vg = self.getLeftLinearSpeed()
+
+        if self._odometryNoised:
+            vd+=random.uniform(-Robot.ODODMETRY_NOISE_STRENGH*vd,Robot.ODODMETRY_NOISE_STRENGH*vd)
+            vg+=random.uniform(-Robot.ODODMETRY_NOISE_STRENGH*vg,Robot.ODODMETRY_NOISE_STRENGH*vg)
 
         v = (vd + vg) / 2
         e = self.getDistanceBetweenWheels()
