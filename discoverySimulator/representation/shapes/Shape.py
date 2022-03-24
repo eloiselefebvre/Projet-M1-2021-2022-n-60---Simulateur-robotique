@@ -135,7 +135,7 @@ class Shape(ABC):
         pass
 
     @abstractmethod
-    def offset(self,value:float):
+    def offset(self,value:float,truncated:bool=False):
         pass
 
     def addOrientationMark(self):

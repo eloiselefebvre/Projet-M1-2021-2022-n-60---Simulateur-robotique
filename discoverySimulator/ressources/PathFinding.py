@@ -42,7 +42,7 @@ class PathFinding:
         self._displayEnabled = displayEnabled
         self._displayDelay = displayDelay
 
-        self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(securityMargin) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
+        self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(securityMargin,True) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
         # for obs in self._obstaclesShapeWithOffset:
         #     self._environment.addVirtualObject(Object(Representation(obs)),obs.getPose().getX(),obs.getPose().getY(),obs.getPose().getOrientation())
 
@@ -52,7 +52,6 @@ class PathFinding:
         self.__endNode=None
         self.__beginNode=None
 
-        self._pathSimplified=[]
         self._nextPointIndex = 0
 
     def findPath(self,begin,end,callback=None):
@@ -159,9 +158,8 @@ class PathFinding:
             for p in path:
                 if p != self.__beginNode and p != self.__endNode:
                     self.__setNodeColor(p, self.COLORS["path_node"])
-        self._pathSimplified=self.simplifyPath(path)
         if callback is not None:
-            callback(self._pathSimplified)
+            callback(self.simplifyPath(path))
 
     def __heuristic(self, node):
         return self.__manhattanDistance(node,self.__endNode)
@@ -228,8 +226,4 @@ class PathFinding:
             counter+=1
         points.append((path[-1][0],path[-1][1]))
         return [(x*self.CELL_SIZE+self.OFFSET,y*self.CELL_SIZE+self.OFFSET) for x,y in points]
-
-    def getSimplifiedPath(self):
-        return self._pathSimplified
-
 

@@ -11,10 +11,10 @@ def aStar():
     env=Environment(1500,1500)
     robot = CircularTwoWheelsRobot()
     # robot = FourWheelsRobot()
-    pol=Polygon([(200,200),(300,200),(400,300),(300,350),(250,300)],"#f0f")
-    # pol=Polygon([(200,200),(400,400),(200,400)],"#f0f")
+    # pol=Polygon([(200,200),(300,200),(400,300),(300,350),(250,300)],"#f0f")
+    pol=Polygon([(200,200),(250,350),(400,400),(200,400)],"#f0f")
     obs=Obstacle(Representation(pol))
-    env.addObject(robot,100,100,90)
+    env.addObject(robot,300,100,90)
     env.addObject(obs)
 
     sim = Simulation(env)
@@ -23,5 +23,5 @@ def aStar():
     pathFinding = PathFinding(env,robot.getBoundingWidth(),True,0)
     pathFollowing=PathFollowing(robot)
 
-    pathFinding.findPath((robot.getPose().getX(),robot.getPose().getY()),(600,500),pathFollowing.startFollowing)
+    pathFinding.findPath((robot.getPose().getX(),robot.getPose().getY()),(200,500),pathFollowing.startFollowing)
 

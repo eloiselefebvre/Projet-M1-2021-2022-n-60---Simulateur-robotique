@@ -36,7 +36,7 @@ class Point(Shape):
         painter.setPen(QPen(self._color, self.POINT_SIZE, Qt.SolidLine))
         painter.drawPoint(0, 0)
 
-    def offset(self, value: float) -> Rectangle:
+    def offset(self, value: float,truncated:bool=False) -> Rectangle:
         rec = Rectangle(self.POINT_SIZE + 2*value, self.POINT_SIZE + 2*value)
         rec.setPose(self._pose.copy())
         return rec

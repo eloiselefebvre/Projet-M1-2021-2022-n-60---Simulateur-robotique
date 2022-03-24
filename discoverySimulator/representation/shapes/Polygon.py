@@ -1,12 +1,14 @@
 from math import cos, radians, acos, degrees
 from typing import List, Tuple
 from PyQt5.QtCore import Qt, QLineF, QPoint, QPointF
-from PyQt5.QtGui import QPolygon, QBrush, QPainter
+from PyQt5.QtGui import QPolygon, QBrush, QPainter, QPen, QColor
 from discoverySimulator.representation.shapes import Shape, Rectangle
 
 class Polygon(Shape):
 
     POINT_SIZE = 5
+
+    # TODO : Revoir pose as mid of points
 
     def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):
         """
@@ -62,10 +64,12 @@ class Polygon(Shape):
             lines.append(QLineF(self.__points[i - 1] + pose, self.__points[i if i < points_number else 0] + pose))
         return lines
 
-    def offset(self,value:float):
+    def offset(self,value:float,truncated:bool=False):
         # https://stackoverflow.com/questions/54033808/how-to-offset-polygon-edges
         points_offset=[]
+        truncated_points_offset=[]
         points_number=len(self.__points)
+        truncLines=[]
         for curr in range(points_number):
             prev = (curr + points_number - 1) % points_number
             next = (curr + 1) % points_number
@@ -85,11 +89,36 @@ class Polygon(Shape):
             length_bis = (bis.x()**2+bis.y()**2)**0.5
             bis/=length_bis
 
-            l=2**0.5*(1 if self.__clockwise else -1)*value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
-            p_prime = self.__points[curr] + l * bis
+            l=(1 if self.__clockwise else -1)*value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
+
+            p_prime = self.__points[curr] + 2**0.5 * l * bis
             points_offset.append((p_prime.x(),p_prime.y()))
 
-        pol=Polygon(points_offset)
+            if truncated:
+                if l>value:
+                    t=self.__points[curr] + value * bis
+                    truncLines.append(QLineF(t.x(),t.y(),self.__points[curr].x(),self.__points[curr].y()).normalVector())
+                else:
+                    truncLines.append(None)
+
+        if truncated:
+            for curr in range(points_number):
+                if truncLines[curr] is not None:
+                    prev = (curr + points_number - 1) % points_number
+                    next = (curr + 1) % points_number
+
+                    lines=[QLineF(points_offset[prev][0],points_offset[prev][1],points_offset[curr][0],points_offset[curr][1]),
+                           QLineF(points_offset[curr][0], points_offset[curr][1], points_offset[next][0],points_offset[next][1])]
+
+                    for line in lines:
+                        intersection = QPointF()
+                        if line.intersect(truncLines[curr],intersection)==QLineF.UnboundedIntersection or line.intersect(truncLines[curr],intersection)==QLineF.BoundedIntersection:
+                            truncated_points_offset.append((intersection.x(),intersection.y()))
+                else:
+                    truncated_points_offset.append(points_offset[curr])
+            pol=Polygon(truncated_points_offset)
+        else:
+            pol=Polygon(points_offset)
         pol.setPose(self._pose.copy())
         return pol
 
@@ -97,5 +126,6 @@ class Polygon(Shape):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawPolygon(QPolygon(self.__points))
+
 
 

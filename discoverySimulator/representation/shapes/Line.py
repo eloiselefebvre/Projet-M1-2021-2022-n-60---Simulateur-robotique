@@ -47,7 +47,7 @@ class Line(Shape):
 
         return [QLineF(x1,y1,x2,y2)]
 
-    def offset(self,value:float) -> Rectangle:
+    def offset(self,value:float,truncated:bool=False) -> Rectangle:
         rec = Rectangle(self._width+2*value,self._length+2*value)
         pose=self._pose.copy()
         dx,dy=Point.computeTransformation(pose.getX(),pose.getY(),0,self._length/2,pose.getOrientation())

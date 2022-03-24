@@ -108,7 +108,7 @@ class Circle(Shape):
         intersections.append(QPointF(p3.x()-hd*dy,p3.y()+hd*dx))
         return intersections
 
-    def offset(self,value:float):
+    def offset(self,value:float,truncated:bool=False):
         circle = Circle(self._radius+value,self._color)
         circle.setPose(self._pose)
         return circle

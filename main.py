@@ -2,5 +2,5 @@
 # parkingDemo()
 
 from discoverySimulator.tests import aStar,collisionAndTelemeter
-# aStar()
-collisionAndTelemeter()
+aStar()
+# collisionAndTelemeter()
