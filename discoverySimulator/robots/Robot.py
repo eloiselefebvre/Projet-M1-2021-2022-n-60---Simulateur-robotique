@@ -2,6 +2,7 @@ from abc import ABC,abstractmethod
 
 from .. import Object
 from ..Component import Component
+from ..actuators import Wheel
 from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
 from math import cos, sin, radians, degrees, atan
@@ -21,6 +22,7 @@ class Robot(ABC,Object):
         self._components=[]
         self._sensors_counter=0
         self._actuators_counter=0
+        self._wheels=[]
 
         # TRAJECTORY ATTRIBUTES
         self._trajectory = []
@@ -50,7 +52,10 @@ class Robot(ABC,Object):
             component.setParent(self)
             component.getFrame().setBaseFrame(self._frame)
             component.getFrame().setCoordinates(pose)
+
             self._components.append(component)
+            if isinstance(component,Wheel):
+                self._wheels.append(component)
             self._representation.addSubRepresentation(component.getRepresentation())
 
     def move(self):
@@ -182,6 +187,9 @@ class Robot(ABC,Object):
 
     def setSpeedLock(self,state:bool):
         self._isSpeedLocked=state
+
+    def getWheels(self):
+        return self._wheels
 
     def getBoundingWidth(self):
         return self.getRepresentation().getShape().getBoundingBox().getWidth()

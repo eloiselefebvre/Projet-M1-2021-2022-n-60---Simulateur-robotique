@@ -1,5 +1,8 @@
 from math import sqrt, sin, radians, cos, degrees, acos
 
+from discoverySimulator.robots import FourWheelsRobot
+
+
 class PathFollowing():
 
     MAX_FORWARD_SPEED = 500
@@ -12,8 +15,8 @@ class PathFollowing():
 
     def __init__(self,robot):
         self._robot = robot
-        self._robot.setRightWheelSpeed(0)
-        self._robot.setLeftWheelSpeed(0)
+        for wheel in self._robot.getWheels():
+            wheel.setSpeed(0)
         self._robot.setSpeedLock(True)
 
         self._path = None

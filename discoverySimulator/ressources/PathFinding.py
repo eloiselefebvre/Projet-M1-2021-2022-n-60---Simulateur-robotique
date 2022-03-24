@@ -43,7 +43,6 @@ class PathFinding:
         self._displayDelay = displayDelay
 
         self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(securityMargin) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
-
         self.__ROWS_NUMBER = (self._environment.getWidth())/PathFinding.CELL_SIZE
         self.__COLS_NUMBER = (self._environment.getHeight())/PathFinding.CELL_SIZE
         self._nodes = {}
@@ -57,6 +56,9 @@ class PathFinding:
         if self.__setBeginNode((int(begin[0]/PathFinding.CELL_SIZE),int(begin[1]/PathFinding.CELL_SIZE))) and self.__setEndNode((int(end[0]/PathFinding.CELL_SIZE),int(end[1]/PathFinding.CELL_SIZE))):
             th = threading.Thread(target=self.__astar,args=[callback]) # self.__findPath -> self._findMethod (cf Reinforcement Learning)
             th.start()
+        else:
+            if callback is not None:
+                callback(None)
 
     def __setBeginNode(self, node):
         if self.__getNodeValue(node) and self.__isValidNode(node):
@@ -68,12 +70,14 @@ class PathFinding:
         return False
 
     def __setEndNode(self, node):
+        # print(self.__getNodeValue(node))
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__createNode(node)
             self.__endNode = node
             if self._displayEnabled:
                 self.__setNodeColor(self.__endNode, self.COLORS['end_node'])
             return True
+
         return False
 
     def __setNodeColor(self, node, color):
@@ -85,6 +89,7 @@ class PathFinding:
             line2 = Line(PathFinding.CELL_SIZE * 2 ** 0.5, 1)
             line1.setPose(Pose(node[0]*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE,-45))
             line2.setPose(Pose((node[0]+1) * PathFinding.CELL_SIZE, node[1] * PathFinding.CELL_SIZE, 45))
+            # self._environment.addVirtualObject(Object(Representation(shape)),shape.getPose().getX(),shape.getPose().getY(),shape.getPose().getOrientation())
             if len(line1.getIntersectionsWith(shape))!=0 or len(line2.getIntersectionsWith(shape))!=0:
                 return False
         return True
@@ -157,13 +162,13 @@ class PathFinding:
             callback(self._pathSimplified)
 
     def __heuristic(self, node):
-        return self.__euclidDistanceToEnd(node)
+        return self.__manhattanDistance(node,self.__endNode)
 
-    def __manhattanDistanceToEnd(self, node):
-        return abs(self.__endNode[0] - node[0]) + abs(self.__endNode[1] - node[1])
+    def __manhattanDistance(self, node1,node2):
+        return abs(node2[0] - node1[0]) + abs(node2[1] - node1[1])
 
-    def __euclidDistanceToEnd(self, node):
-        return ((self.__endNode[0] - node[0]) ** 2 + (self.__endNode[1] - node[1]) ** 2) ** 0.5
+    def __euclidDistance(self, node1,node2):
+        return ((node2[0] - node1[0]) ** 2 + (node2[1] - node1[1]) ** 2) ** 0.5
 
     def __createNode(self, node):
         self._nodes[node]=Rectangle(15, 15)

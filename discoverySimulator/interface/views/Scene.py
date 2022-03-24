@@ -60,20 +60,27 @@ class Scene(QWidget,Observable):
         self._convertedMousePose = (event.pos() - self.__zoomController.getOffset()) / self.__zoomController.getZoom()
 
         if event.button()==Qt.LeftButton:
-            self.__objectGrabbed()
-            self.__dragObject=True
+            if self.__pathFollowing is not None:
+                pathFinding = PathFinding(self.__environment,
+                                          self.__pathFollowing.getRobot().getBoundingWidth() / 2 + PathFinding.SECURITY_MARGIN_OFFSET)
+                pathFinding.findPath((self.__pathFollowing.getRobot().getPose().getX(),
+                                      self.__pathFollowing.getRobot().getPose().getY()),
+                                     (self._convertedMousePose.x(), self._convertedMousePose.y()),
+                                     self.__pathFollowing.startFollowing)
+                self.__pathFollowing = None
+            else:
+                self.__objectGrabbed()
+                self.__dragObject = True
 
         if event.button() == Qt.MiddleButton:
             self.__dragScene = True
             self.__dragSceneOrigin = event.pos()
 
-        if self.__pathFollowing is not None:
-            pathFinding=PathFinding(self.__environment,self.__pathFollowing.getRobot().getBoundingWidth() / 2+ PathFinding.SECURITY_MARGIN_OFFSET)
-            pathFinding.findPath((self.__pathFollowing.getRobot().getPose().getX(),self.__pathFollowing.getRobot().getPose().getY()),(self._convertedMousePose.x(),self._convertedMousePose.y()),self.__pathFollowing.startFollowing)
-            self.__pathFollowing = None
-
     def mouseReleaseEvent(self,event):
-        self.setCursor(Qt.OpenHandCursor)
+        if self.__pathFollowing is not None:
+            self.setCursor(Qt.CrossCursor)
+        else:
+            self.setCursor(Qt.OpenHandCursor)
         self.__dragObject=False
         self.__dragScene=False
         if self.__selectedObj is not None:
