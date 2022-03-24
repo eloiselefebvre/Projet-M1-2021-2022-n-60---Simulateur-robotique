@@ -73,7 +73,7 @@ class Rectangle(Shape):
         return True
 
     def offset(self,value:float):
-        rectangle = Rectangle(self._width+value,self._height+value,self._color)
+        rectangle = Rectangle(self._width+2*value,self._height+2*value,self._color)
         rectangle.setPose(self._pose)
         return rectangle
 

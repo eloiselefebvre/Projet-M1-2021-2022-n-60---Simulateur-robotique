@@ -10,7 +10,7 @@ class Polygon(Shape):
 
     POINT_SIZE = 5
 
-    def __init__(self,points:List[Tuple],color:str=None,clockwise:bool=True,opacity:int=255):
+    def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):
         """
         This method is used to create a Polygon
         :param points: points that determine the shape of the polygon
@@ -18,7 +18,7 @@ class Polygon(Shape):
         :param opacity: opacity of the shape
         """
         super().__init__(color,opacity)
-        self.__points=[QPoint(point[0], point[1]) for point in points]
+        self.__points=[QPoint(round(point[0]),round(point[1])) for point in points]
         self.__clockwise=clockwise
 
     # GETTERS
@@ -84,9 +84,8 @@ class Polygon(Shape):
             bis/=length_bis
 
             l=(1 if self.__clockwise else -1)*value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
-
             p_prime = self.__points[curr] + l * bis
-            points_offset.append((round(p_prime.x()),round(p_prime.y())))
+            points_offset.append((p_prime.x(),p_prime.y()))
 
         pol=Polygon(points_offset)
         pol.setPose(self._pose.copy())

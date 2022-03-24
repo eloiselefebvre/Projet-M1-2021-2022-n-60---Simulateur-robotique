@@ -1,6 +1,6 @@
 import threading
 import time
-from math import sqrt, atan, degrees, cos, radians, sin, acos
+from math import sqrt, atan, degrees, cos, radians, sin, acos, ceil
 from typing import Tuple
 
 from PyQt5.QtCore import QPoint, QLineF
@@ -13,6 +13,8 @@ from discoverySimulator.robots import Robot
 
 
 class PathFinding:
+
+    # TODO : Pause sur pathfinding ??
 
     MOVES = [(-1, 0),(-1,1), (0, 1),(1,1), (1, 0),(1,-1), (0,-1),(-1,-1)]
     DISPLAY_DELAY = 0
@@ -29,8 +31,6 @@ class PathFinding:
     CELL_SIZE = 15
     OFFSET = CELL_SIZE/2
 
-    SECURITY_MARGIN_OFFSET=30
-
     def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.01):
         """
         This method is used to create a pathfinding
@@ -43,8 +43,11 @@ class PathFinding:
         self._displayDelay = displayDelay
 
         self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(securityMargin) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
-        self.__ROWS_NUMBER = (self._environment.getWidth())/PathFinding.CELL_SIZE
-        self.__COLS_NUMBER = (self._environment.getHeight())/PathFinding.CELL_SIZE
+        for obs in self._obstaclesShapeWithOffset:
+            self._environment.addVirtualObject(Object(Representation(obs)),obs.getPose().getX(),obs.getPose().getY(),obs.getPose().getOrientation())
+
+        self.__ROWS_NUMBER = ceil(self._environment.getWidth()/PathFinding.CELL_SIZE)
+        self.__COLS_NUMBER = ceil(self._environment.getHeight()/PathFinding.CELL_SIZE)
         self._nodes = {}
         self.__endNode=None
         self.__beginNode=None
@@ -54,7 +57,7 @@ class PathFinding:
 
     def findPath(self,begin,end,callback=None):
         if self.__setBeginNode((int(begin[0]/PathFinding.CELL_SIZE),int(begin[1]/PathFinding.CELL_SIZE))) and self.__setEndNode((int(end[0]/PathFinding.CELL_SIZE),int(end[1]/PathFinding.CELL_SIZE))):
-            th = threading.Thread(target=self.__astar,args=[callback]) # self.__findPath -> self._findMethod (cf Reinforcement Learning)
+            th = threading.Thread(target=self.__astar,args=[callback]) # TODO : self.__findPath -> self._findMethod (cf Reinforcement Learning) ??
             th.start()
         else:
             if callback is not None:
@@ -70,14 +73,12 @@ class PathFinding:
         return False
 
     def __setEndNode(self, node):
-        # print(self.__getNodeValue(node))
         if self.__getNodeValue(node) and self.__isValidNode(node):
             self.__createNode(node)
             self.__endNode = node
             if self._displayEnabled:
                 self.__setNodeColor(self.__endNode, self.COLORS['end_node'])
             return True
-
         return False
 
     def __setNodeColor(self, node, color):
@@ -85,12 +86,13 @@ class PathFinding:
 
     def __getNodeValue(self, node:Tuple[int,int]=(0,0)):
         for shape in self._obstaclesShapeWithOffset:
-            line1 = Line(PathFinding.CELL_SIZE*2**0.5,1)
-            line2 = Line(PathFinding.CELL_SIZE * 2 ** 0.5, 1)
-            line1.setPose(Pose(node[0]*PathFinding.CELL_SIZE,node[1]*PathFinding.CELL_SIZE,-45))
-            line2.setPose(Pose((node[0]+1) * PathFinding.CELL_SIZE, node[1] * PathFinding.CELL_SIZE, 45))
-            # self._environment.addVirtualObject(Object(Representation(shape)),shape.getPose().getX(),shape.getPose().getY(),shape.getPose().getOrientation())
-            if len(line1.getIntersectionsWith(shape))!=0 or len(line2.getIntersectionsWith(shape))!=0:
+            if shape.contains(QPoint(node[0] * PathFinding.CELL_SIZE, node[1] * PathFinding.CELL_SIZE)) or \
+                    shape.contains(
+                        QPoint(node[0] * PathFinding.CELL_SIZE, (node[1] + 1) * PathFinding.CELL_SIZE)) or \
+                    shape.contains(
+                        QPoint((node[0] + 1) * PathFinding.CELL_SIZE, node[1] * PathFinding.CELL_SIZE)) or \
+                    shape.contains(
+                        QPoint((node[0] + 1) * PathFinding.CELL_SIZE, (node[1] + 1) * PathFinding.CELL_SIZE)):
                 return False
         return True
 

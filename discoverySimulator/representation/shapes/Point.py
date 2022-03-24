@@ -35,6 +35,6 @@ class Point(Shape):
         painter.drawPoint(0, 0)
 
     def offset(self, value: float) -> Rectangle:
-        rec = Rectangle(self.POINT_SIZE + value, self.POINT_SIZE + value)
+        rec = Rectangle(self.POINT_SIZE + 2*value, self.POINT_SIZE + 2*value)
         rec.setPose(self._pose.copy())
         return rec

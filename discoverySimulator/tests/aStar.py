@@ -19,8 +19,8 @@ def aStar():
     sim = Simulation(env)
     sim.run()
     sim.showInterface()
-    pathFinding = PathFinding(env,robot.getBoundingWidth() / 2 + PathFinding.SECURITY_MARGIN_OFFSET,True,0)
+    pathFinding = PathFinding(env,robot.getBoundingWidth(),True,0)
     pathFollowing=PathFollowing(robot)
 
-    pathFinding.findPath((robot.getPose().getX(),robot.getPose().getY()),(500,500),pathFollowing.startFollowing)
+    pathFinding.findPath((robot.getPose().getX(),robot.getPose().getY()),(600,500),pathFollowing.startFollowing)
 

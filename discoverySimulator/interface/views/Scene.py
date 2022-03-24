@@ -62,7 +62,7 @@ class Scene(QWidget,Observable):
         if event.button()==Qt.LeftButton:
             if self.__pathFollowing is not None:
                 pathFinding = PathFinding(self.__environment,
-                                          self.__pathFollowing.getRobot().getBoundingWidth() / 2 + PathFinding.SECURITY_MARGIN_OFFSET)
+                                          self.__pathFollowing.getRobot().getBoundingWidth())
                 pathFinding.findPath((self.__pathFollowing.getRobot().getPose().getX(),
                                       self.__pathFollowing.getRobot().getPose().getY()),
                                      (self._convertedMousePose.x(), self._convertedMousePose.y()),
