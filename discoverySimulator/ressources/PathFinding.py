@@ -43,8 +43,8 @@ class PathFinding:
         self._displayDelay = displayDelay
 
         self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(securityMargin) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
-        for obs in self._obstaclesShapeWithOffset:
-            self._environment.addVirtualObject(Object(Representation(obs)),obs.getPose().getX(),obs.getPose().getY(),obs.getPose().getOrientation())
+        # for obs in self._obstaclesShapeWithOffset:
+        #     self._environment.addVirtualObject(Object(Representation(obs)),obs.getPose().getX(),obs.getPose().getY(),obs.getPose().getOrientation())
 
         self.__ROWS_NUMBER = ceil(self._environment.getWidth()/PathFinding.CELL_SIZE)
         self.__COLS_NUMBER = ceil(self._environment.getHeight()/PathFinding.CELL_SIZE)

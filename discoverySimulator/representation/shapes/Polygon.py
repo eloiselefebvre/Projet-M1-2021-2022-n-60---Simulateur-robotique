@@ -1,3 +1,4 @@
+from math import cos, radians, acos, degrees
 from typing import List, Tuple
 from PyQt5.QtCore import Qt, QLineF, QPoint, QPointF
 from PyQt5.QtGui import QPolygon, QBrush, QPainter
@@ -84,7 +85,7 @@ class Polygon(Shape):
             length_bis = (bis.x()**2+bis.y()**2)**0.5
             bis/=length_bis
 
-            l=(1 if self.__clockwise else -1)*value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
+            l=2**0.5*(1 if self.__clockwise else -1)*value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
             p_prime = self.__points[curr] + l * bis
             points_offset.append((p_prime.x(),p_prime.y()))
 

@@ -12,6 +12,7 @@ def aStar():
     robot = CircularTwoWheelsRobot()
     # robot = FourWheelsRobot()
     pol=Polygon([(200,200),(300,200),(400,300),(300,350),(250,300)],"#f0f")
+    # pol=Polygon([(200,200),(400,400),(200,400)],"#f0f")
     obs=Obstacle(Representation(pol))
     env.addObject(robot,100,100,90)
     env.addObject(obs)
