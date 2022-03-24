@@ -138,8 +138,12 @@ class Scene(QWidget,Observable):
             self.__zoomController.setSceneSize(self.__size)
 
     def followPathSelected(self,sender):
-        self.setCursor(Qt.CrossCursor)
-        self.__pathFollowing=PathFollowing(sender.getRobotSelected())
+        if self.__pathFollowing is None:
+            self.setCursor(Qt.CrossCursor)
+            self.__pathFollowing=PathFollowing(sender.getRobotSelected())
+        else:
+            self.setCursor(Qt.OpenHandCursor)
+            self.__pathFollowing=None
 
 
     def __objectGrabbed(self):

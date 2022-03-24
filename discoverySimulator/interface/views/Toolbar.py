@@ -206,6 +206,7 @@ class Toolbar(QToolBar,Observable):
     def robotSelected(self,sender):
         if sender.isSelected():
             self.__robotSelected=sender
+            self.__pathFollowingButtonState = False
             self.addAction(self.__robotTitleWidget)
             self.addAction(self.__pathFollowingWidget)
         else:
@@ -222,7 +223,8 @@ class Toolbar(QToolBar,Observable):
         return widget
 
     def __clickedFollowPath(self):
-        self.__pathFollowingButton.setDown(True) # TODO : Si reclique : arrêter le mode choix destination
+        self.__pathFollowingButtonState = not self.__pathFollowingButtonState
+        self.__pathFollowingButton.setDown(self.__pathFollowingButtonState)
         self.notifyObservers('followPathSelected')
 
 
