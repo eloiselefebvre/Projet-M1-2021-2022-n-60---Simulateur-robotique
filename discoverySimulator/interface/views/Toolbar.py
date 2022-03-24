@@ -203,7 +203,6 @@ class Toolbar(QToolBar,Observable):
         self._playPause.setState(self.__playState)
         self.notifyObservers("playChanged")
 
-
     def robotSelected(self,sender):
         if sender.isSelected():
             self.__robotSelected=sender
