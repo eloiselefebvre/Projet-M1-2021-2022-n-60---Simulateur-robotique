@@ -4,23 +4,39 @@ from typing import List
 
 class ReinforcementLearning:
 
+    DEFAULT_LEARNING_FACTOR = 0.1
+    DEFAULT_DISCOUNT_FACTOR = 0.5
+    DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR = 0.995
+
     # Available algorithm : QLearning, ValueIteration
-    def __init__(self,state:tuple,algorithm:str="ValueIteration"):
+    def __init__(self, state:tuple, factors=None, algorithm:str= "ValueIteration"):
+        # TODO : Rendre plus modulable et revoir e-greedy exploration
         """
         This method allows to create a reinforcement learning
         :param state: state of the robot who will learn
         """
+
         self._learn = self.__getattribute__(f"_learn{algorithm}")
-        self._minimalSpeed = -300
-        self._maximalSpeed = 300
+
+        if factors is None:
+            factors = {}
+        self._factors={
+            'learning':ReinforcementLearning.DEFAULT_LEARNING_FACTOR,
+            'discount':ReinforcementLearning.DEFAULT_DISCOUNT_FACTOR,
+            'explorationRateDecrease':ReinforcementLearning.DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR
+        }
+        self._factors.update(factors)
+
+        self._explorationRate = 1
+
+
+        self._minimalSpeed = 0
+        self._maximalSpeed = 600
         self._numberOfInterval = 2
         self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval)
-        self._learningFactor = 0.1
-        self._discountFactor = 0.5
+
         self._state = state
         self._initialState = state
-        self._explorationRate = 1
-        self._explorationRateDecreaseFactor = 0.999
         self._actions = [(self._step,0),(-self._step,0),(0,self._step),(0,-self._step),(0,0)]
 
         self._QTable={}
@@ -92,6 +108,18 @@ class ReinforcementLearning:
             for j in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
                 table[(i, j)] = [initValue] * len(self._actions)
 
+    def printTable(self,tableName:str):
+        table=self.__getattribute__(tableName)
+        print(f"----------{tableName}----------")
+        for state in table:
+            print(state,table[state])
+        print("--------------------------------")
+
+    def learn(self,reward:float):
+        self._explorationRate *= self._factors["explorationRateDecrease"]
+        self._learn(reward)
+        self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
+
     def _learnQLearning(self,reward:float):
         """
         This method is used to execute the action chosen and to learn (QLearning)
@@ -99,7 +127,7 @@ class ReinforcementLearning:
         """
         nextState=self.getNextState(self._state,self._actionToExecuteIndex)
         maxValue = max(self._QTable[nextState])
-        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward+self._discountFactor*maxValue)
+        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._factors["learning"]) * self._QTable[self._state][self._actionToExecuteIndex] + self._factors["learning"] * (reward+self._factors["discount"]*maxValue)
         self._state = nextState
 
     def _learnValueIteration(self,reward:float):
@@ -118,21 +146,9 @@ class ReinforcementLearning:
                 newState = self.getNextState(state,actionIndex)
                 maxValue = max(self._QTable[newState])
                 reward = self._RTable[state][actionIndex]
-                self._QTable[state][actionIndex]=reward+self._discountFactor*maxValue
+                self._QTable[state][actionIndex]=reward+self._factors["discount"]*maxValue
         self._state = self.getNextState(self._state,self._actionToExecuteIndex)
         self._actionCountTable[self._state][self._actionToExecuteIndex] += 1
 
     def reset(self):
         self._state=self._initialState
-
-    def learn(self,reward:float):
-        self._explorationRate *= self._explorationRateDecreaseFactor
-        self._learn(reward)
-        self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
-
-    def printTable(self,tableName:str):
-        table=self.__getattribute__(tableName)
-        print(f"----------{tableName}----------")
-        for state in table:
-            print(state,table[state])
-        print("--------------------------------")
