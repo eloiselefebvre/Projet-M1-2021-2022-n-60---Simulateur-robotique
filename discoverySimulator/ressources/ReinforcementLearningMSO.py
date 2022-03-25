@@ -52,10 +52,8 @@ class ReinforcementLearning:
         self._learn(reward)
 
     def _learnQLearning(self, reward):
-
         self._explorationRate *= self._explorationRateDecreaseFactor
         # print("exploration rate : ", self._explorationRate)
-
         nextState = self.getNextState(self._state, self._actionToExecuteIndex)
         maxValue = max(self._QTable[nextState])
         self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward + self._discountFactor * maxValue)

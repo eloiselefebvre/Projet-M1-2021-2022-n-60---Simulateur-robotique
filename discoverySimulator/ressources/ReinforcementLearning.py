@@ -1,9 +1,11 @@
 import random
+from typing import List
+
 
 class ReinforcementLearning:
 
     # Available algorithm : QLearning, ValueIteration
-    def __init__(self,state,algorithm="QLearning"):
+    def __init__(self,state:tuple,algorithm:str="QLearning"):
         """
         This method allows to create a reinforcement learning
         :param state: state of the robot who will learn
@@ -26,17 +28,17 @@ class ReinforcementLearning:
         self.fillTable("_actionCountTable")
 
     # GETTERS
-    def getReachableStates(self, state):
+    def getReachableStates(self, state:tuple) -> List[tuple]:
         actionIndices = self.getPossibleActions(state)
         reachableStates = []
         for actionIndex in actionIndices:
             reachableStates.append(self.getNextState(state, actionIndex))
         return reachableStates
 
-    def getNextState(self, state, actionIndex):
+    def getNextState(self, state:tuple, actionIndex:int) -> tuple:
         return (self._actions[actionIndex][0]+state[0],self._actions[actionIndex][1]+state[1])
 
-    def getPossibleActions(self, state = None):
+    def getPossibleActions(self, state:tuple = None) -> List[int]:
         """
         This method allows to get the possible actions of the robot
         :param state: state of the robot
@@ -55,7 +57,7 @@ class ReinforcementLearning:
         actions.append(4)
         return actions
 
-    def getActionToExecute(self):
+    def getActionToExecute(self) -> tuple:
         """
         This method allows to get the best action to execute
         :return: the action to execute
@@ -75,21 +77,21 @@ class ReinforcementLearning:
 
         return self._actions[self._actionToExecuteIndex]
 
-    def computeActionWeights(self,state,possibleActionIndexes):
+    def computeActionWeights(self,state:tuple,possibleActionIndexes:List[int]) -> List[float]:
         penalisationFactor = 10
         possibleActionCounts = [(penalisationFactor*self._actionCountTable[state][i]+1) for i in possibleActionIndexes]
         total = sum(possibleActionCounts)
         return [(total-actionCount) / total for actionCount in possibleActionCounts]
 
-    def fillTable(self,tableName,initValue=0):
+    def fillTable(self,tableName:str,initValue=0):
         table = self.__getattribute__(tableName)
         for i in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
             for j in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
                 table[(i, j)] = [initValue] * len(self._actions)
 
-    def _learnQLearning(self,reward):
+    def _learnQLearning(self,reward:float):
         """
-        This method is used to execute to action chosen
+        This method is used to execute the action chosen and to learn (QLearning)
         :param reward: the reward of the action
         """
         nextState=self.getNextState(self._state,self._actionToExecuteIndex)
@@ -98,14 +100,20 @@ class ReinforcementLearning:
         self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
         self._state = nextState
 
+    def _learnValueIteration(self,reward:float):
+        """
+        This method is used to execute the action chosen and to learn (ValueIteration)
+        :param reward: the reward of the action
+        """
+
     def reset(self):
         self._state=self._initialState
 
-    def learn(self,reward):
+    def learn(self,reward:float):
         self._explorationRate *= self._explorationRateDecreaseFactor
         self._learn(reward)
 
-    def printTable(self,tableName):
+    def printTable(self,tableName:str):
         table=self.__getattribute__(tableName)
         print(f"----------{tableName}----------")
         for state in table:
