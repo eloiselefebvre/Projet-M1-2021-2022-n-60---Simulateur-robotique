@@ -1,29 +1,31 @@
 import random
-import time
-
 
 class ReinforcementLearning:
 
-    def __init__(self,state):
+    # Available algorithm : QLearning, ValueIteration
+    def __init__(self,state,algorithm="QLearning"):
         """
         This method allows to create a reinforcement learning
         :param state: state of the robot who will learn
         """
+        self._learn = self.__getattribute__(f"_learn{algorithm}")
         self._QTable={}
         self._minimalSpeed = 0
         self._maximalSpeed = 600
         self._numberOfInterval = 2
         self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval)
-        self.fillQTable()
         self._learningFactor = 0.1
-        self._discountFactor = 0.9
+        self._discountFactor = 0.5
         self._state = state
         self._initialState = state
-        self._explorationRate=0.01
-        self._tab=[0,0,0,0,0]
+        self._explorationRate = 1
+        self._explorationRateDecreaseFactor = 0.999
+        self._actionCountTable = {}
         self._actions = [(self._step,0),(-self._step,0),(0,self._step),(0,-self._step),(0,0)]
-        self._actionToExecuteIndex=4
+        self.fillTable("_QTable")
+        self.fillTable("_actionCountTable")
 
+    # GETTERS
     def getReachableStates(self, state):
         actionIndices = self.getPossibleActions(state)
         reachableStates = []
@@ -33,16 +35,6 @@ class ReinforcementLearning:
 
     def getNextState(self, state, actionIndex):
         return (self._actions[actionIndex][0]+state[0],self._actions[actionIndex][1]+state[1])
-
-    def fillQTable(self):
-        for i in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
-            for j in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
-                self._QTable[(i, j)] = [0, 0, 0, 0, 0]      # MSO TODO : revoir ces valeurs en dur, à générer automatiquement
-
-    def executedActionFeedback(self,reward):
-        nextState=self.getNextState(self._state,self._actionToExecuteIndex)
-        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward+self._discountFactor*max([self._QTable[nextState][index] for index in self.getPossibleActions(nextState)]))
-        self._state = nextState
 
     def getPossibleActions(self, state = None):
         """
@@ -64,14 +56,14 @@ class ReinforcementLearning:
         return actions
 
     def getActionToExecute(self):
+        """
+        This method allows to get the best action to execute
+        :return: the action to execute
+        """
         possibleActionsIndexes=self.getPossibleActions()
         if random.random() < self._explorationRate:
-            minValue=self._tab[possibleActionsIndexes[0]]
-            self._actionToExecuteIndex=possibleActionsIndexes[0]
-            for index in possibleActionsIndexes:
-                if self._tab[index]<minValue:
-                    self._actionToExecuteIndex=index
-                    minValue = self._tab[index]
+            actionWeights = self.computeActionWeights(self._state,possibleActionsIndexes)
+            self._actionToExecuteIndex=random.choices(population=possibleActionsIndexes,weights=actionWeights,k=1)[0]
         else:
             maxIndex=possibleActionsIndexes[0]
             max=self._QTable[self._state][maxIndex]
@@ -80,8 +72,42 @@ class ReinforcementLearning:
                     max = self._QTable[self._state][index]
                     maxIndex=index
             self._actionToExecuteIndex = maxIndex
-        self._tab[self._actionToExecuteIndex]+=1
+
         return self._actions[self._actionToExecuteIndex]
+
+    def computeActionWeights(self,state,possibleActionIndexes):
+        penalisationFactor = 10
+        possibleActionCounts = [(penalisationFactor*self._actionCountTable[state][i]+1) for i in possibleActionIndexes]
+        total = sum(possibleActionCounts)
+        return [(total-actionCount) / total for actionCount in possibleActionCounts]
+
+    def fillTable(self,tableName,initValue=0):
+        table = self.__getattribute__(tableName)
+        for i in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
+            for j in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
+                table[(i, j)] = [initValue] * len(self._actions)
+
+    def _learnQLearning(self,reward):
+        """
+        This method is used to execute to action chosen
+        :param reward: the reward of the action
+        """
+        nextState=self.getNextState(self._state,self._actionToExecuteIndex)
+        maxValue = max(self._QTable[nextState])
+        self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward+self._discountFactor*maxValue)
+        self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
+        self._state = nextState
 
     def reset(self):
         self._state=self._initialState
+
+    def learn(self,reward):
+        self._explorationRate *= self._explorationRateDecreaseFactor
+        self._learn(reward)
+
+    def printTable(self,tableName):
+        table=self.__getattribute__(tableName)
+        print(f"----------{tableName}----------")
+        for state in table:
+            print(state,table[state])
+        print("--------------------------------")

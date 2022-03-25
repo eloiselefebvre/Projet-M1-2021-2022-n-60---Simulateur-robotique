@@ -1,6 +1,3 @@
-# from discoverySimulator.demonstrations import parkingDemo
-# parkingDemo()
+from discoverySimulator.tests import reinforcementLearningTest
 
-from discoverySimulator.tests import aStar,collisionAndTelemeter
-# aStar()
-collisionAndTelemeter()
+reinforcementLearningTest()

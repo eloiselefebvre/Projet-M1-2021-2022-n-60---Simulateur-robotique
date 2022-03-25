@@ -1,5 +1,3 @@
-import time
-
 from discoverySimulator.ressources.AntsColony import AntsColony
 from discoverySimulator.robots.CircularTwoWheelsRobot import CircularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation

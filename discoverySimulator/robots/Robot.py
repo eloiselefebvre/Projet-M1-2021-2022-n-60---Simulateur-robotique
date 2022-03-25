@@ -44,6 +44,10 @@ class Robot(ABC,Object):
 
 
     # SETTERS
+    def setPose(self,pose):
+        super().setPose(pose)
+        self.setOdometryPose(pose.copy())
+
     def setOdometryPose(self, pose:Pose):
         self._odometryPose = pose
 
