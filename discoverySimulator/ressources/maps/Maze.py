@@ -13,9 +13,8 @@ class Maze:
     INTERVAL_SIZE = 150
 
     def __init__(self,environment):
-        """
-        This method is used to create a maze
-        :param environment: environment where the maze will take place
+        """ This method is used to create a maze
+        @param environment  Environment where the maze will take place
         """
         self._environment = environment
         self._width = self._environment.getSize().width()
@@ -27,9 +26,8 @@ class Maze:
 
     # GETTERS
     def getWalls(self) -> List[Line]:
-        """
-        This method allows to get all the elements of the maze
-        :return: all the elements
+        """ This method allows to get all the elements of the maze
+        @return  All the elements
         """
         return self._mazeElements
 

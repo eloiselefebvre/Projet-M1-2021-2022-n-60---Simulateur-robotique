@@ -1,5 +1,8 @@
 from math import sqrt, sin, radians, cos, degrees, acos
 
+from discoverySimulator.robots import Robot
+
+
 class PathFollowing():
 
     MAX_FORWARD_SPEED = 500
@@ -10,9 +13,8 @@ class PathFollowing():
     DISTANCE_FOR_END_POINT = 5
 
     def __init__(self,robot):
-        """
-        This method is used to follow a path
-        :param robot: robot who will follow the path
+        """ This method is used to follow a path
+        @param robot  Robot who will follow the path
         """
         self._robot = robot
         for wheel in self._robot.getWheels():
@@ -23,10 +25,9 @@ class PathFollowing():
         self._modifyOrientation = True
 
     # GETTERS
-    def getRobot(self):
-        """
-        This method is used to get the robot who follow the path
-        :return:
+    def getRobot(self) -> Robot:
+        """ This method is used to get the robot who follow the path
+        @return  Returns robot
         """
         return self._robot
 

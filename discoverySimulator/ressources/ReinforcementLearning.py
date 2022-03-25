@@ -11,9 +11,8 @@ class ReinforcementLearning:
     # Available algorithm : QLearning, ValueIteration
     def __init__(self, state:tuple, factors=None, algorithm:str= "ValueIteration"):
         # TODO : Rendre plus modulable et revoir e-greedy exploration
-        """
-        This method allows to create a reinforcement learning
-        :param state: state of the robot who will learn
+        """ This method allows to create a reinforcement learning
+        @param state  State of the robot who will learn
         """
 
         self._learn = self.__getattribute__(f"_learn{algorithm}")
@@ -58,10 +57,9 @@ class ReinforcementLearning:
         return (self._actions[actionIndex][0]+state[0],self._actions[actionIndex][1]+state[1])
 
     def getPossibleActions(self, state:tuple = None) -> List[int]:
-        """
-        This method allows to get the possible actions of the robot
-        :param state: state of the robot
-        :return: possible actions
+        """ This method allows to get the possible actions of the robot
+        @param state  State of the robot
+        @return  Possible actions
         """
         state = state if state is not None else self._state
         actions = []
@@ -77,9 +75,8 @@ class ReinforcementLearning:
         return actions
 
     def getActionToExecute(self) -> tuple:
-        """
-        This method allows to get the best action to execute
-        :return: the action to execute
+        """ This method allows to get the best action to execute
+        @return  The action to execute
         """
         possibleActionsIndexes=self.getPossibleActions()
         if random.random() < self._explorationRate:
@@ -121,9 +118,8 @@ class ReinforcementLearning:
         self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
 
     def _learnQLearning(self,reward:float):
-        """
-        This method is used to execute the action chosen and to learn (QLearning)
-        :param reward: the reward of the action
+        """ This method is used to execute the action chosen and to learn (QLearning)
+        @param reward  The reward of the action
         """
         nextState=self.getNextState(self._state,self._actionToExecuteIndex)
         maxValue = max(self._QTable[nextState])
@@ -131,9 +127,8 @@ class ReinforcementLearning:
         self._state = nextState
 
     def _learnValueIteration(self,reward:float):
-        """
-        This method is used to execute the action chosen and to learn (ValueIteration)
-        :param reward: the reward of the action
+        """ This method is used to execute the action chosen and to learn (ValueIteration)
+        @param reward  The reward of the action
         """
         # reward update
         actionCount = self._actionCountTable[self._state][self._actionToExecuteIndex]

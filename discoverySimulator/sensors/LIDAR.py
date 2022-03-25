@@ -11,10 +11,10 @@ class LIDAR(Telemeter):
     def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6):
         """
         This method is used to create a LIDAR
-        :param color: color of the LIDAR
-        :param scanRate: scna rate of the LIDAR [rpm]
-        :param angularRange: angular range of the LIDAR [degrees]
-        :param angularResolution: angular resolution of the LIDAR [degrees]
+        @param color  Color of the LIDAR
+        @param scanRate  Scan rate of the LIDAR [rpm]
+        @param angularRange  Angular range of the LIDAR [degrees]
+        @param angularResolution  Angular resolution of the LIDAR [degrees]
         """
         super().__init__(color)
         self._laser.getRepresentation().setVisible(False)
@@ -34,9 +34,8 @@ class LIDAR(Telemeter):
 
     # GETTERS
     def getSpecifications(self) -> str:
-        """
-        This method is used to get specifications about the LIDAR
-        :return: specifications about the LIDAR
+        """ This method is used to get specifications about the LIDAR
+        @return  Specifications about the LIDAR
         """
         specifications = "---<br>"
         specifications += f"Angular Resolution : {self.__angularResolution}°<br>"

@@ -14,7 +14,7 @@ class CircularTwoWheelsRobot(TwoWheelsRobot):
         :param wheelsRadius: radius of the wheels [px]
         :param wheelYPosition: position of the wheels [px]
         """
-        self._color = random.choice(self.COLORS) if color is None else color
-        rep=Circle(robotRadius,self._color)
+        color = random.choice(TwoWheelsRobot.COLORS) if color is None else color
+        rep=Circle(robotRadius,color)
         rep.addOrientationMark()
-        super().__init__(Representation(rep), color, distanceBetweenWheels, wheelsRadius, wheelYPosition)
+        super().__init__(Representation(rep), distanceBetweenWheels, wheelsRadius, wheelYPosition)

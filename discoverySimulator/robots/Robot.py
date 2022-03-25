@@ -18,9 +18,8 @@ class Robot(ABC,Object):
     # TODO : Noise plus global, ajouter imperfection sur le modèle de la simulation
 
     def __init__(self,representation):
-        """
-        This method is used to create a new robot
-        :param representation: representation of the robot
+        """ This method is used to create a new robot
+        @param representation Representation of the robot
         """
         super().__init__(representation)
         self._components=[]
@@ -44,7 +43,7 @@ class Robot(ABC,Object):
 
 
     # SETTERS
-    def setPose(self,pose):
+    def setPose(self,pose:Pose):
         super().setPose(pose)
         self.setOdometryPose(pose.copy())
 
@@ -58,66 +57,60 @@ class Robot(ABC,Object):
         self._isSpeedLocked = state
 
     # GETTERS
-    def getComponents(self):
-        """
-        This method allows to get all components
-        :return: all components
+    def getComponents(self) -> List[Component]:
+        """ This method allows to get all components
+        @return All components of the robot
         """
         return self._components
 
     @abstractmethod
-    def getLeftLinearSpeed(self):
-        """
-        This method is used to get the left linear speed
-        :return: the right linear speed
-        """
-        pass
-
-    @abstractmethod
-    def getRightLinearSpeed(self):
-        """
-        This method is used to get the right linear speed
-        :return: the right linear speed
+    def getLeftLinearSpeed(self) -> float:
+        """ This method is used to get the left linear speed
+        @return  The left linear speed
         """
         pass
 
     @abstractmethod
-    def getDistanceBetweenWheels(self):
-        """
-        This method is used to get distance between wheels
-        :return: the distance between wheels
+    def getRightLinearSpeed(self) -> float:
+        """ This method is used to get the right linear speed
+        @return  The right linear speed
         """
         pass
 
-    def getTrajectoryDrawn(self):
+    @abstractmethod
+    def getDistanceBetweenWheels(self) -> float:
+        """ This method is used to get distance between wheels
+        @return  The distance between wheels
+        """
+        pass
+
+    def getTrajectoryDrawn(self) -> bool:
         return self._trajectoryDrawn
 
-    def getOdometryDrawn(self):
+    def getOdometryDrawn(self) -> bool:
         return self._odometryDrawn
 
-    def getOdometryPose(self):
+    def getOdometryPose(self) -> Pose:
         return self._odometryPose
 
     def getWheels(self) -> List[Wheel]:
-        """
-        This method is used to get all the wheels of a robot
-        :return: all the wheels of the robot
+        """ This method is used to get all the wheels of a robot
+        @return  All the wheels of the robot
         """
         return self._wheels
 
-    def getBoundingWidth(self):
+    def getBoundingWidth(self) -> float:
         return self.getRepresentation().getShape().getBoundingBox().getWidth()
 
-    def getBoundingHeight(self):
+    def getBoundingHeight(self) -> float:
         return self.getRepresentation().getShape().getBoundingBox().getHeigt()
 
-    def addComponent(self, component, x=0, y=0, orientation=0):
-        """
-        This method is used to add a component of a robot
-        :param component: component to add to the robot
-        :param x: x coordinate of the component on the robot [px]
-        :param y: y coordinate of the component on the robot [px]
-        :param orientation: orientation of the component on the robot [degrees]
+    def addComponent(self, component:Component, x:float=0, y:float=0, orientation:float=0):
+        """ This method is used to add a component of a robot.
+        @param component: component to add to the robot
+        @param x  x coordinate of the component on the robot [px]
+        @param y  y coordinate of the component on the robot [px]
+        @param orientation  orientation of the component on the robot [degrees]
         """
         if isinstance(component, Component):
             pose=Pose(x,y,orientation)
@@ -150,17 +143,16 @@ class Robot(ABC,Object):
                 self._trajectory[-1].setPose(Pose(self._pose.getX(),self._pose.getY()))
         self._trajectoryCounter=(self._trajectoryCounter+1)%self.NUMBER_STEPS_BEFORE_REFRESH
 
+    # TODO : Revoir le système et la bascule de drawTrajectory
     def showTrajectory(self):
-        """
-        This method is used to show the trajectory of a robot
+        """ This method is used to show the trajectory of a robot
         """
         for point in self._trajectory:
             point_pose=point.getPose()
             self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideTrajectory(self):
-        """
-        This method is used to hide the trajectory of a robot
+        """ This method is used to hide the trajectory of a robot
         """
         for point in self._trajectory:
             self._environnement.removeVirtualObject(point)
@@ -219,16 +211,14 @@ class Robot(ABC,Object):
         self._odometryCounter = (self._odometryCounter + 1) % self.NUMBER_STEPS_BEFORE_REFRESH
 
     def showOdometry(self):
-        """
-        This method is used to show the odometry of a robot
+        """ This method is used to show the odometry of a robot
         """
         for point in self._odometry:
             point_pose = point.getPose()
             self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideOdometry(self):
-        """
-        This method is used to hide the odometry of a robot
+        """ This method is used to hide the odometry of a robot
         """
         for point in self._odometry:
             self._environnement.removeVirtualObject(point)
@@ -239,10 +229,3 @@ class Robot(ABC,Object):
 
     def toggleOdometryDrawn(self):
         self._odometryDrawn=not self._odometryDrawn
-
-
-
-
-
-
-

@@ -34,9 +34,9 @@ class PathFinding:
     def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.01):
         """
         This method is used to create a pathfinding
-        :param environment: environment where the pathfinding will take place
-        :param displayEnabled: the display of the pathfinding [bool]
-        :param displayDelay: the delay of the display [s]
+        @param environment  Environment where the pathfinding will take place
+        @param displayEnabled  The display of the pathfinding [bool]
+        @param displayDelay  The delay of the display [s]
         """
         self._environment=environment
         self._displayEnabled = displayEnabled

@@ -1,4 +1,6 @@
+from __future__ import annotations
 from typing import List
+
 from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QBrush, QPen
 from PyQt5.QtGui import QPainter
@@ -9,35 +11,31 @@ from .Line import Line
 class Circle(Shape):
 
     def __init__(self,radius:float,color:str,opacity:int=255):
-        """
-        This method is used to create a circle
-        :param radius: radius of the circle [px]
-        :param color: color of the shape
-        :param opacity: opacity of the shape
+        """ This method is used to create a circle
+        @param radius  Radius of the circle [px]
+        @param color  Color of the shape
+        @param opacity  Opacity of the shape
         """
         super().__init__(color,opacity)
         self._radius=radius
 
     # GETTERS
     def getRadius(self) -> float :
-        """
-        This method allows to get the radius of a circle
-        :return: the radius of a circle [px]
+        """ This method allows to get the radius of a circle
+        @return  The radius of a circle [px]
         """
         return self._radius
 
     def getBoundingBox(self) -> Rectangle:
-        """
-        This method is used to get the bounding box of a circle
-        :return: the bounding box of the circle
+        """ This method is used to get the bounding box of a circle
+        @return  The bounding box of the circle
         """
         return Rectangle(self._radius*2,self._radius*2)
 
     def contains(self, point:QPointF) -> bool:
-        """
-        This method allows to know if a circle contains a point
-        :param point: point
-        :return: is the point is in the circle
+        """ This method allows to know if a circle contains a point
+        @param point  Point
+        @return  Is the point is in the circle
         """
         return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2
 
@@ -108,7 +106,7 @@ class Circle(Shape):
         intersections.append(QPointF(p3.x()-hd*dy,p3.y()+hd*dx))
         return intersections
 
-    def offset(self,value:float,truncated:bool=False):
+    def offset(self,value:float,truncated:bool=False) -> Circle:
         circle = Circle(self._radius+value,self._color)
         circle.setPose(self._pose)
         return circle

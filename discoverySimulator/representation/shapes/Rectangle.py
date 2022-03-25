@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import List
 
 from PyQt5.QtCore import QRect, Qt, QLineF
@@ -11,13 +12,12 @@ class Rectangle(Shape):
     ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
     def __init__(self,width:float,height:float,color:str=None,borderRadius:int=0,opacity:int=255):
-        """
-        This method allows to create a Rectangle
-        :param width: width of the rectangle [px]
-        :param height: height of the rectangle [px]
-        :param color: color of the shape
-        :param borderRadius: borderRadius of the rectangle [px]
-        :param opacity: opacity of the shape
+        """ This method allows to create a Rectangle
+        @param width  Width of the rectangle [px]
+        @param height  Height of the rectangle [px]
+        @param color  Color of the shape
+        @param borderRadius  BorderRadius of the rectangle [px]
+        @param opacity  Opacity of the shape
         """
         super().__init__(color,opacity)
         self._width=width
@@ -28,23 +28,20 @@ class Rectangle(Shape):
 
     # GETTERS
     def getWidth(self) -> float:
-        """
-        This method is used to get the width of a rectangle
-        :return: width of the rectangle [px]
+        """ This method is used to get the width of a rectangle
+        @return  Width of the rectangle [px]
         """
         return self._width
 
     def getHeight(self) -> float:
-        """
-        This method is used to get the height of a rectangle
-        :return: height of the rectangle [px]
+        """ This method is used to get the height of a rectangle
+        @return  Height of the rectangle [px]
         """
         return self._height
 
-    def getBoundingBox(self):
-        """
-        This method is used to get the bounding box of a rectangle
-        :return: the bounding box of the rectangle
+    def getBoundingBox(self) -> Rectangle:
+        """ This method is used to get the bounding box of a rectangle
+        @return  The bounding box of the rectangle
         """
         return self
 
@@ -76,7 +73,7 @@ class Rectangle(Shape):
                 return False
         return True
 
-    def offset(self,value:float,truncated:bool=False):
+    def offset(self,value:float,truncated:bool=False) -> Rectangle:
         rectangle = Rectangle(self._width+2*value,self._height+2*value,self._color)
         rectangle.setPose(self._pose)
         return rectangle

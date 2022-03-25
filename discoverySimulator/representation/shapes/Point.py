@@ -14,9 +14,8 @@ class Point(Shape):
 
     # GETTERS
     def getBoundingBox(self) -> Rectangle:
-        """
-        This method is used to get the bounding box of a point
-        :return: the bounding box of the point
+        """ This method is used to get the bounding box of a point
+        @return  The bounding box of the point
         """
         return Rectangle(self.POINT_SIZE, self.POINT_SIZE)
 

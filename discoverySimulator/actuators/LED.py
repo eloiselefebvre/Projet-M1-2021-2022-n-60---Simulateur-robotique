@@ -13,13 +13,12 @@ class LED(Actuator):
     LOW=False
     HIGH=True
 
-    LOW_OPACITY=40
-    HIGH_OPACITY=255
+    __LOW_OPACITY=40
+    __HIGH_OPACITY=255
 
     def __init__(self,color:str):
-        """
-        This method is used to create a new LED
-        :param color: color of the LED
+        """ This method is used to create a new LED
+        @param color  Color of the LED
         """
         self._representation = Representation(Circle(5,color,20))
         super().__init__(self._representation)
@@ -28,30 +27,27 @@ class LED(Actuator):
 
     # SETTERS
     def setState(self,state:bool):
-        """
-        This method allows to change the state of a LED
-        :param state: state of the LED
+        """ This method allows to change the state of a LED.
+        @param state  State of the LED.
         """
         if state!=self._state:
             self._state=state
             if self._state==LED.HIGH:
-                self._representation.getShape().setOpacity(LED.HIGH_OPACITY)
+                self._representation.getShape().setOpacity(LED.__HIGH_OPACITY)
             else:
-                self._representation.getShape().setOpacity(LED.LOW_OPACITY)
+                self._representation.getShape().setOpacity(LED.__LOW_OPACITY)
         self.notifyObservers("stateChanged")
 
     # GETTERS
     def getState(self) -> bool:
-        """
-        This method is used to get the state of a LED
-        :return: the state of the LED
+        """ This method is used to get the state of a LED.
+        @return  The state of the LED.
         """
         return self._state
 
     def getSpecifications(self) -> str:
-        """
-        This method allows to get specifications about a LED
-        :return: specifications
+        """ This method allows to get specifications about a LED.
+        @return  Specifications.
         """
         return f"Current state : {'ON' if self._state else 'OFF'}"
 

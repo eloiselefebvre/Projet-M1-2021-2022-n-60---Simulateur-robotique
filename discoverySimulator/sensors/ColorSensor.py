@@ -8,12 +8,10 @@ from discoverySimulator.sensors import Sensor
 class ColorSensor(Sensor):
 
     def __init__(self,color:str=None):
+        """ This method is used to create a new color sensor
+        @param color  Color of the sensor
         """
-        This method is used to create a new color sensor
-        :param color: color of the sensor
-        """
-        self._color = color
-        self._representation = Representation(Circle(1,"#000"))
+        self._representation = Representation(Circle(1,color))
         super().__init__(self._representation)
         self._colorDetected = None
 

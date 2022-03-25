@@ -1,4 +1,5 @@
 from math import cos,sin,radians,degrees
+
 from discoverySimulator.config import config
 from . import Robot
 from discoverySimulator.actuators.Wheel import Wheel
@@ -9,14 +10,12 @@ class TwoWheelsRobot(Robot):
     DEFAULT_BORDER_RADIUS = 3
     COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
-    def __init__(self, representation, color, distanceBetweenWheels, wheelsRadius, wheelYPosition):
-        """
-        This method allows to
-        :param representation: representation of the robot
-        :param color: color of the robot
-        :param distanceBetweenWheels: distance between wheels [px]
-        :param wheelsRadius: radius of wheels [px]
-        :param wheelYPosition: position of wheels on the robot [px]
+    def __init__(self, representation, distanceBetweenWheels:float, wheelsRadius:float, wheelYPosition:float):
+        """ This method allows to ...
+        @param representation  representation of the robot
+        @param distanceBetweenWheels: distance between wheels [px]
+        @param wheelsRadius  radius of wheels [px]
+        @param wheelYPosition  position of wheels on the robot [px]
         """
         super().__init__(representation)
         self._leftWheel = Wheel(wheelsRadius, self.DEFAULT_WHEEL_WIDTH)
@@ -29,76 +28,68 @@ class TwoWheelsRobot(Robot):
 
     # SETTERS
     def setLeftWheelSpeed(self,speed):
-        """
-        This method allows to change the speed of the left wheel
-        :param speed: new speed of the robot [rpm]
+        """ This method allows to change the speed of the left wheel
+        @param speed  New speed of the robot [rpm]
         """
         if not self._isSpeedLocked:
             self._leftWheel.setSpeed(speed)
 
     def setRightWheelSpeed(self,speed):
-        """
-        This method allows to change the speed of the right wheel
-        :param speed: new speed of the robot [rpm]
+        """ This method allows to change the speed of the right wheel
+        @param speed  New speed of the robot [rpm]
         """
         if not self._isSpeedLocked:
             self._rightWheel.setSpeed(speed)
 
     # GETTERS
     def getAverageSpeed(self):
-        """
-        This method is used to get the average speed of an object
-        :return: average speed of the object [rmp]
+        """ This method is used to get the average speed of an object
+        @return  Average speed of the object [rpm]
         """
         averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
         return averageSpeedRobot
 
-    def getRightWheel(self):
-        """
-        This method allows to get the speed of the right wheel
-        :return : speed of the robot [rpm]
+    def getRightWheel(self) -> Wheel:
+        """This method allows to get the speed of the right wheel
+        @return  speed of the robot [rpm]
         """
         return self._rightWheel
 
-    def getLeftWheel(self):
-        """
-        This method allows to get the speed of the left wheel
-        :return : speed of the robot [rpm]
+    def getLeftWheel(self) -> Wheel:
+        """This method allows to get the speed of the left wheel
+        @return  speed of the robot [rpm]
         """
         return self._leftWheel
 
-    def getRightLinearSpeed(self):
-        """
-        This method allows to get the linear speed of the right wheel
-        :return : linear speed of the right wheel [rpm]
+    # TODO : Revoir les noms des fonctions
+    def getRightLinearSpeed(self) -> float:
+        """This method allows to get the linear speed of the right wheel
+        @return  Linear speed of the right wheel
         """
         return self._rightWheel.getRadius() * self._rightWheel.getSpeed()
 
-    def getRightElementarySpeed(self):
-        """
-        This method allows to get the elementary speed of the right wheel
-        :return : elementary speed of the right wheel [rpm]
+    def getRightElementarySpeed(self) -> float:
+        """ This method allows to get the elementary speed of the right wheel
+        @return  elementary speed of the right wheel [rpm]
         """
         return self._rightWheel.getRadius() * self._rightWheel.getSpeed()*config["real_update_time_step"] / 60 * self._acceleration
 
-    def getLeftLinearSpeed(self):
-        """
-        This method allows to get the linear speed of the left wheel
-        :return : linear speed of the left wheel [rpm]
+    def getLeftLinearSpeed(self) -> float:
+        """ This method allows to get the linear speed of the left wheel
+        @return : linear speed of the left wheel
         """
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed()
 
-    def getLeftElementarySpeed(self):
+    def getLeftElementarySpeed(self) -> float:
         """
         This method allows to get the elementary speed of the left wheel
-        :return : elementary speed of the left wheel [rpm]
+        @return  elementary speed of the left wheel [rpm]
         """
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed() * config["real_update_time_step"] / 60 * self._acceleration
 
-    def getDistanceBetweenWheels(self):
-        """
-        This method is used to get the distance between wheels
-        :return: distance between wheels [px]
+    def getDistanceBetweenWheels(self) -> float:
+        """ This method is used to get the distance between wheels
+        @return  distance between wheels [px]
         """
         return self._distanceBetweenWheels
 

@@ -15,9 +15,8 @@ class Line(Shape):
 
     # SETTERS
     def setLength(self,length:float):
-        """
-        This method is used to change the length of a line
-        :param length: length of the line [px]
+        """ This method is used to change the length of a line
+        @param length  Length of the line [px]
         """
         self._length=length
 
@@ -29,9 +28,8 @@ class Line(Shape):
         return a, b
 
     def getBoundingBox(self) -> Rectangle:
-        """
-        This method is used to get the bounding box of a rectangle
-        :return: the bounding box of the rectangle
+        """ This method is used to get the bounding box of a rectangle
+        @return  The bounding box of the rectangle
         """
         return Rectangle(self._width,self._length)
 

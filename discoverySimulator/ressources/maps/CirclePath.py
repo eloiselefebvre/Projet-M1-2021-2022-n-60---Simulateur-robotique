@@ -12,10 +12,9 @@ class CirclePath:
     DEFAULT_WIDTH=20
 
     def  __init__(self, environment, color=colors['widgetBorder']):
-        """
-        This method is used to create a circle path
-        :param environment: the environment where the circle path will take place
-        :param color: color of the circle path
+        """ This method is used to create a circle path
+        @param environment  The environment where the circle path will take place
+        @param color  Color of the circle path
         """
         self._environment = environment
         self._color = color
@@ -24,9 +23,8 @@ class CirclePath:
 
     # GETTERS
     def getElements(self) -> List[Circle]:
-        """
-        This method allows to get all the elements of the path
-        :return: all the elements
+        """ This method allows to get all the elements of the path
+        @return  All the elements
         """
         return self._pathElements
 

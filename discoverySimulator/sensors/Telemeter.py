@@ -8,9 +8,8 @@ from discoverySimulator.representation.shapes import Rectangle, Line
 class Telemeter(Sensor):
 
     def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=10000):
-        """
-        This method is used to create a new telemeter
-        :param color: color of the telemeter
+        """ This method is used to create a new telemeter
+        @param color  Color of the telemeter
         """
         self._color = color
         self._representation = Representation(Rectangle(16,8,self._color))
@@ -25,9 +24,8 @@ class Telemeter(Sensor):
 
     # GETTERS
     def getValue(self) -> float:
-        """
-        This method allows to get the value of the telemeter
-        :return: value of the telemeter
+        """ This method allows to get the value of the telemeter
+        @return  Value of the telemeter
         """
         return self._distance
 

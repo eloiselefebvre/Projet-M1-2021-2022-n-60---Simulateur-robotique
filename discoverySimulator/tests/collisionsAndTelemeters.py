@@ -27,6 +27,7 @@ def collisionAndTelemeter():
     led3 = LED(LED.BLUE)
     led4 = LED(LED.YELLOW)
 
+
     rob1.addComponent(led, 0, -10)
     rob1.addComponent(led2, 0, 10)
 

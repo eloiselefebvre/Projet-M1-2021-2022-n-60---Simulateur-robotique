@@ -1,5 +1,6 @@
-from math import cos, radians, acos, degrees
+from __future__ import annotations
 from typing import List, Tuple
+
 from PyQt5.QtCore import Qt, QLineF, QPoint, QPointF
 from PyQt5.QtGui import QPolygon, QBrush, QPainter, QPen, QColor
 from discoverySimulator.representation.shapes import Shape, Rectangle
@@ -11,11 +12,10 @@ class Polygon(Shape):
     # TODO : Revoir pose as mid of points
 
     def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):
-        """
-        This method is used to create a Polygon
-        :param points: points that determine the shape of the polygon
-        :param color: color of the shape
-        :param opacity: opacity of the shape
+        """ This method is used to create a Polygon
+        @param points  Points that determine the shape of the polygon
+        @param color  Color of the shape
+        @param opacity  Opacity of the shape
         """
         super().__init__(color,opacity)
         self.__points=[QPoint(round(point[0]),round(point[1])) for point in points]
@@ -23,9 +23,8 @@ class Polygon(Shape):
 
     # GETTERS
     def getBoundingBox(self) -> Rectangle:
-        """
-        This method is used to get the bounding box of a polygon
-        :return: the bounding box of the polygon
+        """ This method is used to get the bounding box of a polygon
+        @return  The bounding box of the polygon
         """
         min_x=self.__points[0].x()
         min_y = self.__points[0].y()
@@ -64,7 +63,7 @@ class Polygon(Shape):
             lines.append(QLineF(self.__points[i - 1] + pose, self.__points[i if i < points_number else 0] + pose))
         return lines
 
-    def offset(self,value:float,truncated:bool=False):
+    def offset(self,value:float,truncated:bool=False) -> Polygon:
         # https://stackoverflow.com/questions/54033808/how-to-offset-polygon-edges
         points_offset=[]
         truncated_points_offset=[]
