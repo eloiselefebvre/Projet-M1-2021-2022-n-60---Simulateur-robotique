@@ -5,15 +5,14 @@ from typing import List
 class ReinforcementLearning:
 
     # Available algorithm : QLearning, ValueIteration
-    def __init__(self,state:tuple,algorithm:str="QLearning"):
+    def __init__(self,state:tuple,algorithm:str="ValueIteration"):
         """
         This method allows to create a reinforcement learning
         :param state: state of the robot who will learn
         """
         self._learn = self.__getattribute__(f"_learn{algorithm}")
-        self._QTable={}
-        self._minimalSpeed = 0
-        self._maximalSpeed = 600
+        self._minimalSpeed = -300
+        self._maximalSpeed = 300
         self._numberOfInterval = 2
         self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval)
         self._learningFactor = 0.1
@@ -22,9 +21,13 @@ class ReinforcementLearning:
         self._initialState = state
         self._explorationRate = 1
         self._explorationRateDecreaseFactor = 0.999
-        self._actionCountTable = {}
         self._actions = [(self._step,0),(-self._step,0),(0,self._step),(0,-self._step),(0,0)]
+
+        self._QTable={}
+        self._RTable={}
+        self._actionCountTable = {}
         self.fillTable("_QTable")
+        self.fillTable("_RTable")
         self.fillTable("_actionCountTable")
 
     # GETTERS
@@ -97,7 +100,6 @@ class ReinforcementLearning:
         nextState=self.getNextState(self._state,self._actionToExecuteIndex)
         maxValue = max(self._QTable[nextState])
         self._QTable[self._state][self._actionToExecuteIndex] = (1 - self._learningFactor) * self._QTable[self._state][self._actionToExecuteIndex] + self._learningFactor * (reward+self._discountFactor*maxValue)
-        self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
         self._state = nextState
 
     def _learnValueIteration(self,reward:float):
@@ -105,6 +107,20 @@ class ReinforcementLearning:
         This method is used to execute the action chosen and to learn (ValueIteration)
         :param reward: the reward of the action
         """
+        # reward update
+        actionCount = self._actionCountTable[self._state][self._actionToExecuteIndex]
+        oldReward = self._RTable[self._state][self._actionToExecuteIndex]
+        self._RTable[self._state][self._actionToExecuteIndex] = (reward+actionCount*oldReward)/(actionCount+1)
+
+        # value iteration
+        for state in self._QTable.keys():
+            for actionIndex in self.getPossibleActions(state):
+                newState = self.getNextState(state,actionIndex)
+                maxValue = max(self._QTable[newState])
+                reward = self._RTable[state][actionIndex]
+                self._QTable[state][actionIndex]=reward+self._discountFactor*maxValue
+        self._state = self.getNextState(self._state,self._actionToExecuteIndex)
+        self._actionCountTable[self._state][self._actionToExecuteIndex] += 1
 
     def reset(self):
         self._state=self._initialState
@@ -112,6 +128,7 @@ class ReinforcementLearning:
     def learn(self,reward:float):
         self._explorationRate *= self._explorationRateDecreaseFactor
         self._learn(reward)
+        self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
 
     def printTable(self,tableName:str):
         table=self.__getattribute__(tableName)

@@ -42,8 +42,8 @@ def reinforcementLearningTest():
 
             distance = sqrt((endPosition[0]-startPosition[0])**2+(endPosition[1]-startPosition[1])**2)
 
-            reward = distance/(1+(endOrientation-startOrientation)**2) # encourages to go straight
-            # reward = (endOrientation-startOrientation)/(distance+1) # encourages to turn
+            # reward = distance/(1+(endOrientation-startOrientation)**2) # encourages to go straight
+            reward = (endOrientation-startOrientation)/(distance+1) # encourages to turn
             reinforcementLearning.learn(reward)
 
         else:
