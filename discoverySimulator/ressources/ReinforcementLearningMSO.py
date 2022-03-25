@@ -5,7 +5,6 @@ class ReinforcementLearning:
 
     # Available algorithms = ValueIteration, QLearning
     def __init__(self,state, algorithm = "ValueIteration"):
-
         self._learn = self.__getattribute__(f"_learn{algorithm}")  # raises an error if not found
         self._minimalSpeed = 0
         self._maximalSpeed = 600
@@ -32,7 +31,6 @@ class ReinforcementLearning:
                 table[(i, j)] = [initValue]  * len(self._actions)
 
 
-
     def getNextState(self, state, actionIndex):
         return (self._actions[actionIndex][0]+state[0],self._actions[actionIndex][1]+state[1])
 
@@ -44,12 +42,13 @@ class ReinforcementLearning:
 
     def printTable(self, tableName):
         table = self.__getattribute__(tableName)
-        # print(f"----------{tableName}---------------")
+        print(f"----------{tableName}---------------")
         for state in table:
             print(state, table[state])
-        # print(f"------------------------------------")
+        print(f"------------------------------------")
 
     def learn(self, reward):
+
         self._learn(reward)
 
     def _learnQLearning(self, reward):

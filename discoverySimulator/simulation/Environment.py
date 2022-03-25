@@ -13,7 +13,10 @@ class Environment:
 
     DEFAULT_BORDER_SCREEN_WIDTH = 2
 
-    def __init__(self,width:int,height:int):
+    DEFAULT_NOISE_STRENGH = 0.05
+
+    # Available models : virtual (perfect), real (with noise)
+    def __init__(self,width:int,height:int,model:str='virtual'):
         """
         This method is used to create an environment
         :param width: width of the environment [px]
@@ -26,8 +29,12 @@ class Environment:
         self.__size = QSize(int(width),int(height))
         self.__frame=Frame(Pose(0, 0))
 
+        self.__model=model
+
         self.__hasWalls=False
         self.__drawWalls()
+
+        self._noiseStrengh = Environment.DEFAULT_NOISE_STRENGH
 
     # GETTERS
     def getObjects(self) -> List[Object]:
@@ -73,6 +80,15 @@ class Environment:
 
     def hasWalls(self) -> bool:
         return self.__hasWalls
+
+    def isReal(self):
+        return self.__model=="real"
+
+    def setNoiseStrengh(self,noise):
+        self._noiseStrengh=noise
+
+    def getNoiseStrengh(self):
+        return self._noiseStrengh
 
     def addObject(self, object:Object, x:float=0, y:float=0, orientation:float=0):
         """

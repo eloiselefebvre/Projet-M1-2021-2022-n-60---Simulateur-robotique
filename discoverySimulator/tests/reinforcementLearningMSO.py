@@ -29,7 +29,6 @@ def reinforcementLearningTest():
 
         current=sim.time()
         if current-start<timeLearning:
-            currentState = reinforcementLearning.getState()
             startPosition=(robot.getPose().getX(),robot.getPose().getY())
             startOrientation = robot.getPose().getOrientation()
 

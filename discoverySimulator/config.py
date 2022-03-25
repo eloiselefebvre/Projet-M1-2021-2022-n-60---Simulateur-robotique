@@ -26,4 +26,5 @@ colors = {
     "LIDAR" : "#1C1E32",
     "sensor" : "#F00"
 }
-
+# TODO : Revoir noms de couleurs et structure (ex : colors.view.... ou colors uniquement pour le dossier interface)
+# TODO : Gérer les fonts ici
