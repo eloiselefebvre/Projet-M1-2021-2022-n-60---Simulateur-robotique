@@ -13,7 +13,7 @@ class LED(Actuator):
     LOW=False
     HIGH=True
 
-    __LOW_OPACITY=40
+    __LOW_OPACITY=40 # TODO : Faire ça partout pour les attributs statiques privés
     __HIGH_OPACITY=255
 
     def __init__(self,color:str):

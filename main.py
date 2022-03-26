@@ -2,9 +2,10 @@
 # roadDemo()
 
 from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \
-    reinforcementLearningTest
+    reinforcementLearningTest, rl
 
 # aStar()
-collisionAndTelemeter()
+# collisionAndTelemeter()
 # usingLIDAR.LIDARTest()
 # reinforcementLearningTest()
+rl.reinforcementLearningTest()

@@ -9,13 +9,13 @@ class ReinforcementLearning:
     DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR = 0.995
 
     # Available algorithm : QLearning, ValueIteration
-    def __init__(self, state:tuple, factors=None, algorithm:str= "ValueIteration"):
+    def __init__(self, state:tuple, factors:dict=None, algorithm:str= "ValueIteration"):
         # TODO : Rendre plus modulable et revoir e-greedy exploration
         """ This method allows to create a reinforcement learning
         @param state  State of the robot who will learn
         """
 
-        self._learn = self.__getattribute__(f"_learn{algorithm}")
+        self._learn = self.__getattribute__(f"_learn{algorithm}") # raises an error if not found
 
         if factors is None:
             factors = {}
@@ -32,7 +32,7 @@ class ReinforcementLearning:
         self._minimalSpeed = 0
         self._maximalSpeed = 600
         self._numberOfInterval = 2
-        self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval)
+        self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval) # or Round ???
 
         self._state = state
         self._initialState = state
