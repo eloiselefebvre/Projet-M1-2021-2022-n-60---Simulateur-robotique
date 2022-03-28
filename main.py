@@ -9,3 +9,7 @@
 # usingLIDAR.LIDARTest()
 # reinforcementLearningTest()
 # rlAvoiding.reinforcementLearningTest()
+
+from discoverySimulator.tests import exem
+
+exem.mySimulation()

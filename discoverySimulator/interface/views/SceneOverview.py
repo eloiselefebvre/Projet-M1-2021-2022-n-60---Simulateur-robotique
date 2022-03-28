@@ -7,7 +7,7 @@ from discoverySimulator.config import colors
 
 class SceneOverview(QWidget):
 
-    def __init__(self,environment,zoomController): # TODO : Rafraichir l'affichage du drag même en pause
+    def __init__(self,environment,zoomController):
         super().__init__()
         self.__environment = environment
         self.__zoomController=zoomController
