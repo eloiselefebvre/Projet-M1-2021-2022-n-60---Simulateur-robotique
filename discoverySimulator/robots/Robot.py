@@ -118,7 +118,7 @@ class Robot(ABC,Object):
             component.setPose(pose)
             component.setParent(self)
             component.getFrame().setBaseFrame(self._frame)
-            component.getFrame().setCoordinates(pose) # TODO : Repenser orientation avec -orientation ?
+            component.getFrame().setCoordinates(pose)
 
             self._components.append(component)
             if isinstance(component,Wheel):

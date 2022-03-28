@@ -25,17 +25,18 @@ class ExplorerInfo(QWidget):
         widget.setLayout(self.__layoutInfo)
 
         self.__layoutInfo.addWidget(self.__createIDWidget())
-        if self.__selectedObject in self.__evironnement.getObjects(): # TODO : Revoir le système de construction et de rafraichissement
+        if self.__selectedObject in self.__evironnement.getObjects():
             self.__layoutInfo.addWidget(self.positionInformations())
 
         if isinstance(self.__selectedObject, Robot):
             self.__layoutInfo.addWidget(self.showTrajectory())
             self.__layoutInfo.addWidget(self.__showOdometry())
 
-        self.__specificationsWidget = QLabel()
-        self.__specificationsWidget.setTextFormat(Qt.RichText)
-        self.__specificationsWidget.setFont(QFont("Sanserif", 12))
+        self.__specificationsWidget = None
         if isinstance(self.__selectedObject, Component):
+            self.__specificationsWidget=QLabel()
+            self.__specificationsWidget.setTextFormat(Qt.RichText)
+            self.__specificationsWidget.setFont(QFont("Sanserif", 12))
             self.__specificationsWidget.setText(self.__selectedObject.getSpecifications())
             self.__layoutInfo.addWidget(self.__specificationsWidget)
 
@@ -59,7 +60,7 @@ class ExplorerInfo(QWidget):
         if self.__selectedObject in self.__evironnement.getObjects():
             self.__positionWidget.setText(f"({round(sender.getPose().getX())}, {round(sender.getPose().getY())})")
             self.__oWidget.setText(f"{round(sender.getPose().getOrientation())}°")
-        if isinstance(self.__selectedObject, Component):
+        if self.__specificationsWidget is not None:
             self.__specificationsWidget.setText(self.__selectedObject.getSpecifications())
         self.refreshVisibility()
 

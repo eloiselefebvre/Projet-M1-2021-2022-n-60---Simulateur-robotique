@@ -6,7 +6,7 @@ from discoverySimulator.actuators.Wheel import Wheel
 
 class TwoWheelsRobot(Robot):
 
-    __DEFAULT_WHEEL_WIDTH = 8
+    _DEFAULT_WHEEL_WIDTH = 8
     _COLORS = ["#fdcb6e", "#00cec9", "#55efc4", "#a29bfe"]
 
     def __init__(self, representation, distanceBetweenWheels:float, wheelsRadius:float, wheelYPosition:float):
@@ -17,10 +17,10 @@ class TwoWheelsRobot(Robot):
         @param wheelYPosition  position of wheels on the robot [px]
         """
         super().__init__(representation)
-        self._leftWheel = Wheel(wheelsRadius, self.__DEFAULT_WHEEL_WIDTH)
-        self._rightWheel = Wheel(wheelsRadius, self.__DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._leftWheel, (-distanceBetweenWheels + self.__DEFAULT_WHEEL_WIDTH) / 2, wheelYPosition)
-        self.addComponent(self._rightWheel, (distanceBetweenWheels - self.__DEFAULT_WHEEL_WIDTH) / 2, wheelYPosition)
+        self._leftWheel = Wheel(wheelsRadius, self._DEFAULT_WHEEL_WIDTH)
+        self._rightWheel = Wheel(wheelsRadius, self._DEFAULT_WHEEL_WIDTH)
+        self.addComponent(self._leftWheel, (-distanceBetweenWheels + self._DEFAULT_WHEEL_WIDTH) / 2, wheelYPosition)
+        self.addComponent(self._rightWheel, (distanceBetweenWheels - self._DEFAULT_WHEEL_WIDTH) / 2, wheelYPosition)
         self._distanceBetweenWheels = distanceBetweenWheels
         self._leftWheel.setID("LeftWheel")
         self._rightWheel.setID("RightWheel")

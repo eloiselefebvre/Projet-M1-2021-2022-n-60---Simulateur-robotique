@@ -15,10 +15,10 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         @param backWheelYPosition  Position of the two back wheels [px]
         """
         super().__init__(color, robotWidth, robotHeight, distanceBetweenWheels, wheelsRadius, frontWheelYPosition)
-        self._backLeftWheel = Wheel(wheelsRadius, self.__DEFAULT_WHEEL_WIDTH)
-        self._backRightWheel = Wheel(wheelsRadius, self.__DEFAULT_WHEEL_WIDTH)
-        self.addComponent(self._backLeftWheel, (-distanceBetweenWheels + RectangularTwoWheelsRobot.__DEFAULT_WHEEL_WIDTH) / 2, backWheelYPosition)
-        self.addComponent(self._backRightWheel, (distanceBetweenWheels - RectangularTwoWheelsRobot.__DEFAULT_WHEEL_WIDTH) / 2, backWheelYPosition)
+        self._backLeftWheel = Wheel(wheelsRadius, RectangularTwoWheelsRobot._DEFAULT_WHEEL_WIDTH)
+        self._backRightWheel = Wheel(wheelsRadius, RectangularTwoWheelsRobot._DEFAULT_WHEEL_WIDTH)
+        self.addComponent(self._backLeftWheel, (-distanceBetweenWheels + RectangularTwoWheelsRobot._DEFAULT_WHEEL_WIDTH) / 2, backWheelYPosition)
+        self.addComponent(self._backRightWheel, (distanceBetweenWheels - RectangularTwoWheelsRobot._DEFAULT_WHEEL_WIDTH) / 2, backWheelYPosition)
 
         self._backLeftWheel.setID("BackLeftWheel")
         self._backRightWheel.setID("BackRightWheel")
