@@ -8,13 +8,13 @@ from discoverySimulator.config import config, colors
 
 class Footer(QToolBar):
 
-    FOOTER_FIXED_HEIGHT = 48
+    __FOOTER_FIXED_HEIGHT = 48
 
     def __init__(self,zoomController):
         super().__init__()
         self.__zoomController=zoomController
         self.setContentsMargins(0,0,0,0)
-        self.setFixedHeight(self.FOOTER_FIXED_HEIGHT)
+        self.setFixedHeight(self.__FOOTER_FIXED_HEIGHT)
         self.setStyleSheet("*{background-color:"+colors['font']+";color:"+colors['widgetBorder']+";border:none;}"
                            "#widget{border-right:1px solid "+colors['widgetBorderFooter']+"; margin-top:8px; margin-bottom:8px;}")
         self.addWidget(self.__createZoomMenuWidget())

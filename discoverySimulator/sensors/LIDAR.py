@@ -39,11 +39,11 @@ class LIDAR(Telemeter):
         """ This method is used to get specifications about the LIDAR
         @return  Specifications about the LIDAR
         """
-        specifications = "---<br>"
+        specifications = "<pre>"
         specifications += f"Angular Resolution : {self.__angularResolution}°<br>"
         specifications += f"Angular Range : {self.__angularRange}°<br>"
         specifications += f"Scan Rate : {self.__scanRate}rpm<br>"
-        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
+        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px</pre>"
         return specifications
 
     def refresh(self):

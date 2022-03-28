@@ -10,10 +10,7 @@ class Rectangle(Shape):
 
     """ The Rectangle class provides ...."""
 
-    ORIENTATION_MARK_WIDTH = 2
-    ORIENTATION_MARK_LIGHTER_FACTOR = 160
-
-    def __init__(self,width:float,height:float,color:str=None,borderRadius:int=0,opacity:int=255):
+    def __init__(self,width:float,height:float,color:str=None,borderRadius:float=0,opacity:int=255):
         """ This method allows to create a Rectangle
         @param width  Width of the rectangle [px]
         @param height  Height of the rectangle [px]
@@ -22,24 +19,23 @@ class Rectangle(Shape):
         @param opacity  Opacity of the shape
         """
         super().__init__(color,opacity)
-        self._width=width
-        self._height=height
-        self._borderRadius=int(borderRadius)
-        self._orientationMark = False
-        self._rect=QRect(-int(self._width / 2), -int(self._height / 2), int(self._width), int(self._height))
+        self.__width=width
+        self.__height=height
+        self.__borderRadius=int(borderRadius)
+        self._rect=QRect(-int(self.__width / 2), -int(self.__height / 2), int(self.__width), int(self.__height))
 
     # GETTERS
     def getWidth(self) -> float:
         """ This method is used to get the width of a rectangle
         @return  Width of the rectangle [px]
         """
-        return self._width
+        return self.__width
 
     def getHeight(self) -> float:
         """ This method is used to get the height of a rectangle
         @return  Height of the rectangle [px]
         """
-        return self._height
+        return self.__height
 
     def getBoundingBox(self) -> Rectangle:
         """ This method is used to get the bounding box of a rectangle
@@ -49,8 +45,8 @@ class Rectangle(Shape):
 
     def getLineDecomposition(self) -> List[QLineF]:
         lines=[]
-        w = self._width / 2
-        h = self._height / 2
+        w = self.__width / 2
+        h = self.__height / 2
         sign = [(-1, -1), (-1, 1), (1, 1), (1, -1)] # counterclockwise
         pts = []
         xo = self._pose.getX() + self._pose.getRotationCenterX()
@@ -76,19 +72,19 @@ class Rectangle(Shape):
         return True
 
     def offset(self,value:float,truncated:bool=False) -> Rectangle:
-        rectangle = Rectangle(self._width+2*value,self._height+2*value,self._color)
+        rectangle = Rectangle(self.__width + 2 * value, self.__height + 2 * value, self._color)
         rectangle.setPose(self._pose)
         return rectangle
 
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawRoundedRect(self._rect,self._borderRadius,self._borderRadius) # draw from the center
+        painter.drawRoundedRect(self._rect, self.__borderRadius, self.__borderRadius) # draw from the center
         if self._orientationMark:
             self.paintOrientationMark(painter)
 
     def paintOrientationMark(self,painter):
-        painter.setPen(QPen(self._color.lighter(Shape.ORIENTATION_MARK_LIGHTER_FACTOR),Shape.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
-        widthToCompensate = Shape.ORIENTATION_MARK_WIDTH if self._border is None else max(Shape.ORIENTATION_MARK_WIDTH,self._border.getWidth())
-        ypos = int(self._height / 2  * 8/10)
-        painter.drawLine(widthToCompensate - int(self._width / 2), ypos, int(self._width / 2) - widthToCompensate, ypos)
+        painter.setPen(QPen(self._color.lighter(Shape._ORIENTATION_MARK_LIGHTER_FACTOR), Shape._ORIENTATION_MARK_WIDTH, Qt.SolidLine))
+        widthToCompensate = Shape._ORIENTATION_MARK_WIDTH if self._border is None else max(Shape._ORIENTATION_MARK_WIDTH, self._border.getWidth())
+        ypos = int(self.__height / 2 * 8 / 10)
+        painter.drawLine(widthToCompensate - int(self.__width / 2), ypos, int(self.__width / 2) - widthToCompensate, ypos)

@@ -10,7 +10,7 @@ class Simulation(Observable):
 
     """ The Simulation class provides ...."""
 
-    MINIMUM_TIME_STEP = 0.01
+    __MINIMUM_TIME_STEP = 0.01
 
     def __init__(self,environment=None):
         """ This method is used to create a new simulation
@@ -98,7 +98,7 @@ class Simulation(Observable):
                         sensor.refresh()
 
                 start_update = current
-            time.sleep(self.MINIMUM_TIME_STEP)
+            time.sleep(self.__MINIMUM_TIME_STEP)
 
     def __startApplication(self):
         self.__app = QApplication([sys.argv])

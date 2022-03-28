@@ -10,7 +10,7 @@ from discoverySimulator.interface.components.Button import VisibilityButton, Loc
 
 class ExplorerToolsbar(QWidget, Observable):
 
-    ITEMS = [Robot,Actuator,Sensor,Obstacle]
+    __ITEMS = [Robot, Actuator, Sensor, Obstacle]
 
     def __init__(self,environment):
         super().__init__()
@@ -19,7 +19,7 @@ class ExplorerToolsbar(QWidget, Observable):
         self.__sensors = []
         self.__obstacles = []
         self.__actuators = []
-        self.__itemsShown=self.ITEMS
+        self.__itemsShown=self.__ITEMS
         self.__isSceneLocked=False
         self.__areObjectVisible=True
         self.__filterWidget=self.__createFilterWidget()
@@ -54,7 +54,7 @@ class ExplorerToolsbar(QWidget, Observable):
         filterWidget.setFixedSize(215,30)
         filterWidget.setStyleSheet("background-color:"+colors['font']+"; border:none")
         filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/allObjects.svg"),"All objects")
-        for item in self.ITEMS:
+        for item in self.__ITEMS:
             classname=item.__name__
             filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"),classname+"s")
         filterWidget.currentIndexChanged.connect(self.__filterChanged)
@@ -77,9 +77,9 @@ class ExplorerToolsbar(QWidget, Observable):
         idx = self.__filterWidget.currentIndex()
         if idx!=0:
             self.__itemsShown =[]
-            self.__itemsShown.append(self.ITEMS[idx - 1])
+            self.__itemsShown.append(self.__ITEMS[idx - 1])
         else:
-            self.__itemsShown = self.ITEMS
+            self.__itemsShown = self.__ITEMS
         self.setObjectVisible(True)
         self.notifyObservers("filterChanged")
 

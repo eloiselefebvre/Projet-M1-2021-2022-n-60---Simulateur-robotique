@@ -13,9 +13,9 @@ class Environment:
 
     """ The Environment class provides ...."""
 
-    DEFAULT_BORDER_SCREEN_WIDTH = 2
+    __DEFAULT_BORDER_SCREEN_WIDTH = 2
 
-    DEFAULT_NOISE_STRENGH = 0.05
+    __DEFAULT_NOISE_STRENGH = 0.05
 
     # Available models : perfect, real (with noise)
     def __init__(self,width:int,height:int,model:str='perfect'):
@@ -35,7 +35,7 @@ class Environment:
         self.__hasWalls=False
         self.__drawWalls()
 
-        self._noiseStrengh = Environment.DEFAULT_NOISE_STRENGH
+        self._noiseStrengh = Environment.__DEFAULT_NOISE_STRENGH
 
     # GETTERS
     def getObjects(self) -> List[Object]:
@@ -141,8 +141,8 @@ class Environment:
 
     def __drawWalls(self):
         if not self.__hasWalls:
-            self.addObject(Object(Representation(Line(self.__size.height(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0)
-            self.addObject(Object(Representation(Line(self.__size.height(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), self.__size.width(), 0)
-            self.addObject(Object(Representation(Line(self.__size.width(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0, -90)
-            self.addObject(Object(Representation(Line(self.__size.width(), Environment.DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, self.__size.height(), -90)
+            self.addObject(Object(Representation(Line(self.__size.height(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0)
+            self.addObject(Object(Representation(Line(self.__size.height(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), self.__size.width(), 0)
+            self.addObject(Object(Representation(Line(self.__size.width(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0, -90)
+            self.addObject(Object(Representation(Line(self.__size.width(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, self.__size.height(), -90)
             self.__hasWalls=True

@@ -3,15 +3,20 @@ from typing import List
 
 class RL:
 
-    DEFAULT_LEARNING_FACTOR = 0.1
-    DEFAULT_DISCOUNT_FACTOR = 0.5
-    DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR = 0.995
+    __DEFAULT_LEARNING_FACTOR = 0.1
+    __DEFAULT_DISCOUNT_FACTOR = 0.5
+    __DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR = 0.995
 
-    # Available algorithm : QLearning
+    __ACTION_BLUIDER_REQUIRED_KEYS = ['getter', 'id', 'intervals', 'max', 'min', 'setter']
+    __SPACE_BLUIDER_REQUIRED_KEYS =  ['getter', 'id', 'intervals', 'max', 'min']
+
+    # Algorithm : QLearning
     def __init__(self, actionSpaceBuilders:List[dict]=None, stateSpaceBuilders:List[dict]=None, factors:dict=None, QTable:dict=None):
-        # TODO : Test validité des entrées & vérification possibilité d'utilisation ValueItération en fonction de si l'état est défini par les actions uniquement
         self.__actionSpaceBuilders=actionSpaceBuilders
         for actionBuilder in self.__actionSpaceBuilders:
+            for key in RL.__ACTION_BLUIDER_REQUIRED_KEYS:
+                if not key in actionBuilder:
+                    raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(RL.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
             actionBuilder["step"]=round((actionBuilder["max"]-actionBuilder["min"])/actionBuilder["intervals"])
 
         self.__actions=self.getActionsSpace()
@@ -19,8 +24,13 @@ class RL:
         self.__stateSpaceBuilders=stateSpaceBuilders
         for stateSpaceBuilders in self.__stateSpaceBuilders:
             for actionSpaceBuilders in self.__actionSpaceBuilders:
+                if not "id" in stateSpaceBuilders:
+                    raise ValueError(f"Missing key 'id' in stateSpaceBuilder item. Required keys are: {', '.join(RL.__SPACE_BLUIDER_REQUIRED_KEYS)}.")
                 if stateSpaceBuilders["id"]==actionSpaceBuilders["id"]:
                     stateSpaceBuilders.update(actionSpaceBuilders)
+            for key in RL.__SPACE_BLUIDER_REQUIRED_KEYS:
+                if not key in stateSpaceBuilders:
+                    raise ValueError(f"Missing key '{key}' in stateSpaceBuilder item. Required keys are: {', '.join(RL.__SPACE_BLUIDER_REQUIRED_KEYS)}.")
 
             if not "step" in stateSpaceBuilders:
                 stateSpaceBuilders["step"] = round((stateSpaceBuilders["max"] - stateSpaceBuilders["min"]) / stateSpaceBuilders["intervals"])
@@ -40,9 +50,9 @@ class RL:
         if factors is None:
             factors = {}
         self.__factors = {
-            'learning': RL.DEFAULT_LEARNING_FACTOR,
-            'discount': RL.DEFAULT_DISCOUNT_FACTOR,
-            'explorationRateDecrease': RL.DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR
+            'learning': RL.__DEFAULT_LEARNING_FACTOR,
+            'discount': RL.__DEFAULT_DISCOUNT_FACTOR,
+            'explorationRateDecrease': RL.__DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR
         }
         self.__factors.update(factors)
 

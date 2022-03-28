@@ -7,7 +7,7 @@ class RectangularObstacle(Obstacle):
 
     """ The RectangularObstacle class provides ...."""
 
-    def __init__(self,width,height,color=None,borderRadius=0,opacity=255):
+    def __init__(self,width:float,height:float,color:str=None,borderRadius:float=0,opacity:int=255):
         """
         This method is used to create an obstacle
         @param width  Width of the obstacle

@@ -19,27 +19,27 @@ class Circle(Shape):
         @param opacity  Opacity of the shape
         """
         super().__init__(color,opacity)
-        self._radius=radius
+        self.__radius=radius
 
     # GETTERS
     def getRadius(self) -> float :
         """
         @return  The radius of the circle [px]
         """
-        return self._radius
+        return self.__radius
 
     def getBoundingBox(self) -> Rectangle:
         """ This method is used to get the bounding box of a circle
         @return  The bounding box of the circle
         """
-        return Rectangle(self._radius*2,self._radius*2)
+        return Rectangle(self.__radius * 2, self.__radius * 2)
 
     def contains(self, point:QPointF) -> bool:
         """ This method allows to know if a circle contains a point
         @param point  Point
         @return  Is the point is in the circle
         """
-        return (point.x()-self._pose.getX())**2 + (point.y()-self._pose.getY())**2 <= self._radius**2
+        return (point.x()-self._pose.getX()) ** 2 + (point.y()-self._pose.getY()) ** 2 <= self.__radius ** 2
 
     def getLineDecomposition(self) -> List[QLineF]:
         return []
@@ -51,7 +51,7 @@ class Circle(Shape):
 
             A = 1+a_line**2
             B = -2*self._pose.getX()+2*a_line*(b_line-self._pose.getY())
-            C = self._pose.getX()**2 + (b_line-self._pose.getY())**2 - self._radius**2
+            C = self._pose.getX() ** 2 + (b_line-self._pose.getY()) ** 2 - self.__radius ** 2
 
             delta = B**2-4*A*C
             if delta>=0:
@@ -71,7 +71,7 @@ class Circle(Shape):
         else: # vertical line
             A=1
             B=-2*self.getPose().getY()
-            C=self.getPose().getY()**2+(line.x1()-self.getPose().getX())**2-self._radius**2
+            C= self.getPose().getY() ** 2 + (line.x1()-self.getPose().getX()) ** 2 - self.__radius ** 2
 
             delta = B**2-4*A*C
             if delta>=0:
@@ -91,11 +91,11 @@ class Circle(Shape):
         intersections=[]
 
         d=((self._pose.getX()-circle.getPose().getX())**2 + (self._pose.getY()-circle.getPose().getY())**2)**0.5
-        if d>self._radius+circle.getRadius() or d<abs(self._radius-circle.getRadius()) or d==0:
+        if d>self.__radius+circle.getRadius() or d<abs(self.__radius - circle.getRadius()) or d==0:
             return intersections
 
-        a=(self._radius**2-circle.getRadius()**2+d**2)/(2*d)
-        h=(self._radius**2-a**2)**0.5
+        a= (self.__radius ** 2 - circle.getRadius() ** 2 + d ** 2) / (2 * d)
+        h= (self.__radius ** 2 - a ** 2) ** 0.5
         p1=QPointF(self._pose.getX(),self._pose.getY())
         p2=QPointF(circle.getPose().getX(),circle.getPose().getY())
         p3=p1+a/d*(p2-p1)
@@ -109,19 +109,19 @@ class Circle(Shape):
         return intersections
 
     def offset(self,value:float,truncated:bool=False) -> Circle:
-        circle = Circle(self._radius+value,self._color)
+        circle = Circle(self.__radius + value, self._color)
         circle.setPose(self._pose)
         return circle
 
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawEllipse(-self._radius,-self._radius,self._radius*2,self._radius*2) # draw from the center
+        painter.drawEllipse(-self.__radius, -self.__radius, self.__radius * 2, self.__radius * 2) # draw from the center
         if self._orientationMark:
             self.paintOrientationMark(painter)
 
     def paintOrientationMark(self,painter:QPainter):
-        painter.setPen(QPen(self._color.lighter(Shape.ORIENTATION_MARK_LIGHTER_FACTOR),Shape.ORIENTATION_MARK_WIDTH, Qt.SolidLine))
-        widthToCompensate = Shape.ORIENTATION_MARK_WIDTH if self._border is None else max(Shape.ORIENTATION_MARK_WIDTH,self._border.getWidth())
-        ypos = int(self._radius * 8/10)
-        painter.drawLine(widthToCompensate - int(self._radius / 2), ypos, int(self._radius / 2) - widthToCompensate, ypos)
+        painter.setPen(QPen(self._color.lighter(Shape._ORIENTATION_MARK_LIGHTER_FACTOR), Shape._ORIENTATION_MARK_WIDTH, Qt.SolidLine))
+        widthToCompensate = Shape._ORIENTATION_MARK_WIDTH if self._border is None else max(Shape._ORIENTATION_MARK_WIDTH, self._border.getWidth())
+        ypos = int(self.__radius * 8 / 10)
+        painter.drawLine(widthToCompensate - int(self.__radius / 2), ypos, int(self.__radius / 2) - widthToCompensate, ypos)

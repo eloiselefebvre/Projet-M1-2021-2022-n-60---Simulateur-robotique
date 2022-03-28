@@ -5,6 +5,8 @@ import random
 
 class RectangularTwoWheelsRobot(TwoWheelsRobot):
 
+    __DEFAULT_BORDER_RADIUS = 3
+
     def __init__(self, color=None, robotWidth:float=50, robotHeight:float=60, distanceBetweenWheels:float=50, wheelsRadius:float=10, wheelYPosition:float=0):
         """ This method allows to create a rectangle two wheels robot
         @param color  color of the robot
@@ -14,7 +16,7 @@ class RectangularTwoWheelsRobot(TwoWheelsRobot):
         @param wheelsRadius  radius of wheels [px]
         @param wheelYPosition  position of the two wheels on the robot [px]
         """
-        color = random.choice(TwoWheelsRobot.COLORS) if color is None else color
-        rep=Rectangle(robotWidth,robotHeight,color,self.DEFAULT_BORDER_RADIUS)
+        color = random.choice(TwoWheelsRobot._COLORS) if color is None else color
+        rep=Rectangle(robotWidth, robotHeight, color, RectangularTwoWheelsRobot.__DEFAULT_BORDER_RADIUS)
         rep.addOrientationMark()
         super().__init__(Representation(rep), distanceBetweenWheels, wheelsRadius, wheelYPosition)

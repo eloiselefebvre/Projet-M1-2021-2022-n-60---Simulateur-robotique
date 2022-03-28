@@ -10,71 +10,71 @@ class Pose:
         @param rx  The rotation center x coordinate in the environment
         @param ry  The rotation center y coordinate in the environment
         """
-        self._pose = [x,y]
+        self.__pose = [x, y]
         self.setRotationCenter(rx, ry)
-        self._orientation = orientation
+        self.__orientation = orientation
 
     # SETTERS
     def setX(self,x:float):
         """ This method is used to set the x coordinate of an object in the environment
         @param x  new x coordinate
         """
-        self._pose[0]=x
+        self.__pose[0]=x
 
     def setY(self,y:float):
         """ This method is used to set the y coordinate of an object in the environment
         @param y  New y coordinate
         """
-        self._pose[1]=y
+        self.__pose[1]=y
 
     def setOrientation(self, orientation:float):
         """ This method is used to set the orientation of an object in the environment
         @param orientation  New orientation
         """
-        self._orientation=orientation
+        self.__orientation=orientation
 
     def setRotationCenter(self, rx:float, ry:float):
         """ This method is used to set the x rotation center coordinate of an object in the environment
         @param rx  New x rotation center coordinate
         """
-        self._rotationCenter=(rx,ry)
+        self.__rotationCenter=(rx, ry)
 
     # GETTERS
     def getX(self) -> float:
         """ This method is used to get the x coordinate of an object in the environment
         @return  The x coordinate of the environment
         """
-        return self._pose[0]
+        return self.__pose[0]
 
     def getY(self) -> float:
         """ This method is used to get the y coordinate of an object in the environment
         @return  The y coordinate of the environment
         """
-        return self._pose[1]
+        return self.__pose[1]
 
     def getRotationCenterX(self) -> float:
         """ This method is used to get the x rotation center coordinate of an object in the environment
         @return  The x rotation center coordinate of the environment
         """
-        return self._rotationCenter[0]
+        return self.__rotationCenter[0]
 
     def getRotationCenterY(self) -> float:
         """ This method is used to get the y rotation center coordinate of an object in the environment
         @return  The y rotation center coordinate of the environment
         """
-        return self._rotationCenter[1]
+        return self.__rotationCenter[1]
 
     def getOrientation(self) -> float:
         """ This method is used to get the orientation of an object in the environment
         @return  The orientation of the environment
         """
-        return self._orientation
+        return self.__orientation
 
     def move(self,x:float,y:float):
-        self._pose=[x,y]
+        self.__pose=[x, y]
 
     def rotate(self, angle:float):
-        self._orientation = (self._orientation+angle)%360
+        self.__orientation = (self.__orientation + angle) % 360
 
     def copy(self):
-        return Pose(self._pose[0],self._pose[1],self._orientation,self._rotationCenter[0],self._rotationCenter[1])
+        return Pose(self.__pose[0], self.__pose[1], self.__orientation, self.__rotationCenter[0], self.__rotationCenter[1])

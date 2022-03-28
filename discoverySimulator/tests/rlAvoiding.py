@@ -54,7 +54,7 @@ def reinforcementLearningTest():
             "getter": telemeter1.getValue,
             "min":0,
             "max":telemeter1.getMaximumMesurableDistance(),
-            "intervals": 1
+            "intervals":1
         },
         {
             "id": telemeter2.getID(),

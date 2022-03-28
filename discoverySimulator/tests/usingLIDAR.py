@@ -33,7 +33,6 @@ def LIDARTest():
     env.addObject(RectangularObstacle(400, 100, "#ff8fff"), 250, 850, 25)
     pol=Polygon([(500,500),(600,400),(800,400),(600,500),(800,700)],"#ff8fff")
     env.addObject(Obstacle(Representation(pol)))
-    env.addObject(Obstacle(Representation(pol.offset(-20))))
 
     sim = Simulation(env)
     sim.run()

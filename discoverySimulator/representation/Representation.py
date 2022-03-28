@@ -11,11 +11,11 @@ class Representation:
         This method allows to add a representation of an object
         :param shape: shape of the object
         """
-        self._shape=None
+        self.__shape=None
         self.setShape(shape)
-        self._subRepresentations=[]
-        self._pose=None
-        self._visible = True
+        self.__subRepresentations=[]
+        self.__pose=None
+        self.__visible = True
 
     # SETTERS
     def setPose(self,pose:Pose):
@@ -23,8 +23,8 @@ class Representation:
         This method is used to change the position of a representation
         :param pose: new position of the representation
         """
-        self._pose=pose
-        self._shape.setPose(self._pose)
+        self.__pose=pose
+        self.__shape.setPose(self.__pose)
 
     def setShape(self,shape:Shape):
         """
@@ -32,14 +32,14 @@ class Representation:
         :param shape: shape of the object
         """
         if isinstance(shape,Shape):
-            self._shape=shape
+            self.__shape=shape
 
     def setVisible(self,visible:bool):
         """
         This method is used to set the visibility of the representation
         :param visible: if the object is visible
         """
-        self._visible = visible
+        self.__visible = visible
 
     # GETTERS
     def getShape(self) -> Shape:
@@ -47,7 +47,7 @@ class Representation:
         This method allows to get the shape of a representation
         :return: the shape of the representation
         """
-        return self._shape
+        return self.__shape
 
     def addSubRepresentation(self, representation):
         """
@@ -55,25 +55,25 @@ class Representation:
         :param representation: the sub representation to add
         """
         if isinstance(representation, Representation):
-            self._subRepresentations.append(representation)
+            self.__subRepresentations.append(representation)
 
     def toggleVisible(self):
         """
         This method is used to reverse the visibility of a representation
         """
-        self._visible=not self._visible
+        self.__visible=not self.__visible
 
     def isVisible(self) -> bool:
         """
         This method is used to know if a representation is visible
         :return: return if the representation is visible
         """
-        return self._visible
+        return self.__visible
 
     def paint(self,painter):
-        if self._visible:
-            self._shape.paint(painter)
-            for rep in self._subRepresentations:
+        if self.__visible:
+            self.__shape.paint(painter)
+            for rep in self.__subRepresentations:
                 painter.save() # save the state of the painter
                 rep.paint(painter)
                 painter.restore() # restore the state of the painter
@@ -84,4 +84,4 @@ class Representation:
         :param point: point in the environment
         :return: if the point is in the representation
         """
-        return self._shape.contains(point)
+        return self.__shape.contains(point)

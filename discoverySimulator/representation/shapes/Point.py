@@ -10,7 +10,7 @@ class Point(Shape):
 
     """ The Point class provides ...."""
 
-    POINT_SIZE = 5
+    __POINT_SIZE = 5
 
     def __init__(self, color: str = "#000", opacity: int = 255):
         super().__init__(color, opacity)
@@ -20,7 +20,7 @@ class Point(Shape):
         """ This method is used to get the bounding box of a point
         @return  The bounding box of the point
         """
-        return Rectangle(self.POINT_SIZE, self.POINT_SIZE)
+        return Rectangle(self.__POINT_SIZE, self.__POINT_SIZE)
 
     def contains(self, point) -> bool:
         return False
@@ -35,10 +35,10 @@ class Point(Shape):
 
     def paint(self, painter: QPainter):
         super().paint(painter)
-        painter.setPen(QPen(self._color, self.POINT_SIZE, Qt.SolidLine))
+        painter.setPen(QPen(self._color, self.__POINT_SIZE, Qt.SolidLine))
         painter.drawPoint(0, 0)
 
     def offset(self, value: float,truncated:bool=False) -> Rectangle:
-        rec = Rectangle(self.POINT_SIZE + 2*value, self.POINT_SIZE + 2*value)
+        rec = Rectangle(self.__POINT_SIZE + 2 * value, self.__POINT_SIZE + 2 * value)
         rec.setPose(self._pose.copy())
         return rec

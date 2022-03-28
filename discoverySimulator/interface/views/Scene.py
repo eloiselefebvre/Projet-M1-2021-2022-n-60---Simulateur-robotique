@@ -11,7 +11,7 @@ import time
 
 class Scene(QWidget,Observable):
 
-    MINIMUM_TIME_STEP = 1/60
+    __MINIMUM_TIME_STEP = 1 / 60
 
     def __init__(self,environment,zoomController):
         super().__init__()
@@ -51,7 +51,7 @@ class Scene(QWidget,Observable):
             obj.paint(painter)
             painter.restore()
 
-        time.sleep(Scene.MINIMUM_TIME_STEP)
+        time.sleep(Scene.__MINIMUM_TIME_STEP)
         self.update()
 
     def mousePressEvent(self, event):

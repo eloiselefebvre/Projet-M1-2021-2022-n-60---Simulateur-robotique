@@ -45,7 +45,7 @@ class Wheel(Actuator):
         """ This method allows to get specifications about a wheel
         @return  Specifications
         """
-        specifications=f"Current speed : {self._speed}rpm<br>---<br>"
-        specifications+=f"Radius : {self._radius}px"
+        specifications=f"Current speed : {self._speed}rpm<br><pre>"
+        specifications+=f"Radius : {self._radius}px</pre>"
         return specifications
 

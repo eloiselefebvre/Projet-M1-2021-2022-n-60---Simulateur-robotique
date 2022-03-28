@@ -15,7 +15,7 @@ class Object(Observable):
 
     """ The Object class provides ...."""
 
-    number_of_instances = {}
+    __number_of_instances = {}
 
     def __init__(self,representation):
         """ This method allows to create a new object
@@ -50,10 +50,10 @@ class Object(Observable):
         """ This method is used to count the number of instances of an object
         @param name  Name of the object
         """
-        if name in self.number_of_instances:
-            Object.number_of_instances[name]+=1
+        if name in self.__number_of_instances:
+            Object.__number_of_instances[name]+=1
         else:
-            Object.number_of_instances[name]=1
+            Object.__number_of_instances[name]=1
 
     def setPose(self,pose:Pose):
         """ This method is used to change the position and the orientation of an object
@@ -80,7 +80,7 @@ class Object(Observable):
         """ This method is used to change the ID of an object
         @param id  New id of the object
         """
-        Object.number_of_instances[self._id.split("_")[0]] -= 1
+        Object.__number_of_instances[self._id.split("_")[0]] -= 1
         self._id=id
         self.setNumberOfInstances(self._id)
         self.completeID()
@@ -183,7 +183,7 @@ class Object(Observable):
         self.notifyObservers("visibilityChanged")
 
     def completeID(self):
-        self._id+="_"+str(Object.number_of_instances[self._id])
+        self._id+="_"+str(Object.__number_of_instances[self._id])
 
     def isSelected(self) -> bool:
         """ This method is used to know if an object is selected

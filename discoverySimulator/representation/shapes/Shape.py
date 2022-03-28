@@ -10,8 +10,8 @@ class Shape(ABC):
 
     """ The Shape class provides ...."""
 
-    ORIENTATION_MARK_WIDTH = 2
-    ORIENTATION_MARK_LIGHTER_FACTOR = 160
+    _ORIENTATION_MARK_WIDTH = 2
+    _ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
     def __init__(self,color:str,opacity:int):
         self._color = QColor(color)

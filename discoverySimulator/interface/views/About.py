@@ -3,7 +3,7 @@ from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
 from discoverySimulator.config import config
 
-class PopUp(QDialog):
+class About(QDialog):
 
     def __init__(self):
         super().__init__()
