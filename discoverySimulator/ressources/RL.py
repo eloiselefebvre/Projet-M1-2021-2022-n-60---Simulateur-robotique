@@ -11,6 +11,9 @@ class RL:
     def __init__(self, actionSpaceBuilders:List[dict]=None, stateSpaceBuilders:List[dict]=None, factors:dict=None, QTable:dict=None):
         # TODO : Test validité des entrées & vérification possibilité d'utilisation ValueItération en fonction de si l'état est défini par les actions uniquement
         self.__actionSpaceBuilders=actionSpaceBuilders
+        for actionBuilder in self.__actionSpaceBuilders:
+            actionBuilder["step"]=round((actionBuilder["max"]-actionBuilder["min"])/actionBuilder["intervals"])
+
         self.__actions=self.getActionsSpace()
 
         self.__stateSpaceBuilders=stateSpaceBuilders
@@ -18,6 +21,9 @@ class RL:
             for actionSpaceBuilders in self.__actionSpaceBuilders:
                 if stateSpaceBuilders["id"]==actionSpaceBuilders["id"]:
                     stateSpaceBuilders.update(actionSpaceBuilders)
+
+            if not "step" in stateSpaceBuilders:
+                stateSpaceBuilders["step"] = round((stateSpaceBuilders["max"] - stateSpaceBuilders["min"]) / stateSpaceBuilders["intervals"])
 
         self.__state = self.getState()
 
@@ -30,15 +36,16 @@ class RL:
 
         self._actionCountTable={}
         self.fillTable("_actionCountTable")
+        print(self.__actions)
 
         if factors is None:
             factors = {}
-        self._factors = {
+        self.__factors = {
             'learning': RL.DEFAULT_LEARNING_FACTOR,
             'discount': RL.DEFAULT_DISCOUNT_FACTOR,
             'explorationRateDecrease': RL.DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR
         }
-        self._factors.update(factors)
+        self.__factors.update(factors)
 
 
     def isValidTable(self,tableName:str):
@@ -79,7 +86,6 @@ class RL:
     def getActionsSpace(self):
         actionSpace=[]
         for actionBuilder in self.__actionSpaceBuilders:
-            actionBuilder["step"]=round((actionBuilder["max"]-actionBuilder["min"])/actionBuilder["intervals"])
             actionSpace=self.__computeCombinations(actionSpace,[v for v in range(-actionBuilder["step"],2*actionBuilder["step"],actionBuilder["step"])])
         actionSpace = [tuple(action) for action in actionSpace]
         return actionSpace
@@ -87,7 +93,6 @@ class RL:
     def getStatesSpace(self):
         stateSpace=[]
         for stateBuilder in self.__stateSpaceBuilders:
-            stateBuilder["step"]=round((stateBuilder["max"]-stateBuilder["min"])/stateBuilder["intervals"])
             stateSpace=self.__computeCombinations(stateSpace,[v for v in range(stateBuilder["min"],stateBuilder["max"]+stateBuilder["step"],stateBuilder["step"])])
         stateSpace=[tuple(state) for state in stateSpace]
         return stateSpace
@@ -147,10 +152,10 @@ class RL:
         return [(total - actionCount) / total for actionCount in possibleActionCounts]
 
     def learn(self,reward):
-        self.__explorationRate *= self._factors["explorationRateDecrease"]
+        self.__explorationRate *= self.__factors["explorationRateDecrease"]
         self._learnQLearning(reward)
-        self.printTable("_QTable")
-        print("exp:",self.__explorationRate)
+        # self.printTable("_QTable")
+        # print("exp:",self.__explorationRate)
 
     def _learnQLearning(self, reward: float):
         """ This method is used to execute the action chosen and to learn (QLearning)
@@ -158,7 +163,7 @@ class RL:
         """
         nextState = self.getState()
         maxValue = max(self._QTable[nextState])
-        self._QTable[self.__state][self.__executedActionIndex] = (1 - self._factors["learning"]) * self._QTable[self.__state][self.__executedActionIndex] + self._factors["learning"] * (reward + self._factors["discount"] * maxValue)
+        self._QTable[self.__state][self.__executedActionIndex] = (1 - self.__factors["learning"]) * self._QTable[self.__state][self.__executedActionIndex] + self.__factors["learning"] * (reward + self.__factors["discount"] * maxValue)
         self.__state = nextState
 
     def reset(self):

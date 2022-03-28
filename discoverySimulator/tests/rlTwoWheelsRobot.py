@@ -4,13 +4,12 @@ from discoverySimulator.ressources.RL import RL
 from discoverySimulator.robots import CircularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 
-from discoverySimulator.ressources.pretrainedRLQTables import goForward
+from discoverySimulator.ressources.pretrainedRLQTables import goForwardTwoWheelsRobot
 
 def reinforcementLearningTest():
 
     env=Environment(1500,1500)
     robot=CircularTwoWheelsRobot()
-    robot.setRightWheelSpeed(0)
     env.addObject(robot,500,400,-90)
 
     actionBuilders = [
@@ -37,7 +36,7 @@ def reinforcementLearningTest():
         {"id":robot.getRightWheel().getID()}
     ]
 
-    rl = RL(actionBuilders,spaceBuilders,QTable=goForward)
+    rl = RL(actionBuilders,spaceBuilders,QTable=goForwardTwoWheelsRobot)
 
     sim = Simulation(env)
     sim.run()

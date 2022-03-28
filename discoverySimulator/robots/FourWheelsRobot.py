@@ -26,26 +26,26 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         self._rightWheel.setID("FrontRightWheel")
 
     # SETTERS
-    def setLeftFrontWheelSpeed(self, speed: int):
+    def setFrontLeftWheelSpeed(self, speed: int):
         """ This method is used to set the speed of the left front wheel
         @param speed  Speed of the wheel [rpm]
         """
         self.setLeftWheelSpeed(speed)
 
-    def setRightFrontWheelSpeed(self, speed: int):
+    def setFrontRightWheelSpeed(self, speed: int):
         """ This method is used to set the speed of the right front wheel
         @param speed  Speed of the wheel [rpm]
         """
         self.setRightWheelSpeed(speed)
 
-    def setLeftBackWheelSpeed(self, speed: int):
+    def setBackLeftWheelSpeed(self, speed: int):
         """ This method is used to set the speed of the left back wheel
         @param speed Speed of the wheel [rpm]
         """
         if not self._isSpeedLocked:
             self._backLeftWheel.setSpeed(speed)
 
-    def setRightBackWheelSpeed(self, speed: int):
+    def setBackRightWheelSpeed(self, speed: int):
         """ This method is used to set the speed of the right back wheel
         @param speed  Speed of the wheel [rpm]
         """
@@ -60,6 +60,18 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         self._backLeftWheel.getPose().setY(y)
 
     # GETTERS
+    def getFrontLeftWheel(self):
+        return self.getLeftWheel()
+
+    def getFrontRightWheel(self):
+        return self.getRightWheel()
+
+    def getBackLeftWheel(self):
+        return self._backLeftWheel
+
+    def getBackRightWheel(self):
+        return self._backRightWheel
+
     def getRightLinearSpeed(self) -> float:
         """ This method is used to get the right linear speed
         @return  The right linear speed
@@ -74,7 +86,7 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
                     self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()) * self._acceleration
 
     def getLeftLinearSpeed(self) -> float:
-        """ This method is used to get the elft linear speed
+        """ This method is used to get the left linear speed
         @return  The left linear speed
         """
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()

@@ -51,10 +51,10 @@ def collisionAndTelemeter():
 
     rob4 = FourWheelsRobot("#f00")
     rob4.addComponent(led4, 0, 0)
-    rob4.setRightBackWheelSpeed(300)
-    rob4.setRightFrontWheelSpeed(300)
-    rob4.setLeftBackWheelSpeed(500)
-    rob4.setLeftFrontWheelSpeed(-300)
+    rob4.setBackRightWheelSpeed(300)
+    rob4.setFrontRightWheelSpeed(300)
+    rob4.setBackLeftWheelSpeed(500)
+    rob4.setFrontLeftWheelSpeed(-300)
 
     rob5 = RectangularTwoWheelsRobot()
     rob5.setRightWheelSpeed(300)

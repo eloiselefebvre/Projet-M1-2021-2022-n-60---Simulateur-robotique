@@ -46,6 +46,7 @@ class Robot(ABC,Object):
     def setPose(self,pose:Pose):
         super().setPose(pose)
         self.setOdometryPose(pose.copy())
+        self._frame.setCoordinates(self._pose)
 
     def setOdometryPose(self, pose:Pose):
         self._odometryPose = pose
@@ -117,7 +118,7 @@ class Robot(ABC,Object):
             component.setPose(pose)
             component.setParent(self)
             component.getFrame().setBaseFrame(self._frame)
-            component.getFrame().setCoordinates(pose)
+            component.getFrame().setCoordinates(pose) # TODO : Repenser orientation avec -orientation ?
 
             self._components.append(component)
             if isinstance(component,Wheel):
