@@ -20,7 +20,7 @@ colors = {
     "painter" : "#675BB5",
     "white" : "#fff",
     "titleBorder" : "#4D4D6D",
-    "borderScreen" : "#717D95",
+    "borderScreen" : "#444",
     "trajectory" :"#F9886A",
     "odometry" : "#8B86AC",
     "LIDAR" : "#1C1E32",

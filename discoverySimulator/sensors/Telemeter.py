@@ -9,7 +9,7 @@ class Telemeter(Sensor):
 
     """ The Telemeter class provides ...."""
 
-    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=10000):
+    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=10000): # TODO : Au lieu de 10000 : Diagonale de l'environnement
         """ This method is used to create a new telemeter
         @param color  Color of the telemeter
         """
@@ -35,8 +35,8 @@ class Telemeter(Sensor):
         return self._maximumMesurableDistance
 
     def getSpecifications(self) -> str:
-        specifications=f"Current measured distance : {round(self._distance,1)}px<br>---<br>"
-        specifications+=f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
+        specifications=f"Current measured distance : {round(self._distance,1)}px<br><pre>"
+        specifications+=f"Measurement Range : 0px-{self._maximumMesurableDistance}px</pre>"
         return specifications
 
     def getClosestCollisitionPointAndComputeDistance(self):

@@ -7,6 +7,6 @@ class CircularObstacle(Obstacle):
 
     """ The CircularObstacle class provides ...."""
 
-    def __init__(self,radius,color,opacity=255):
+    def __init__(self,radius:float,color:str=None,opacity:int=255):
         rep=Representation(Circle(radius,color,opacity))
         super().__init__(rep)

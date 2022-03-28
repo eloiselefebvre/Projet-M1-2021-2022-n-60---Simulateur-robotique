@@ -9,8 +9,6 @@ class Polygon(Shape):
 
     """ The Polygon class provides ...."""
 
-    POINT_SIZE = 5
-
     # TODO : Revoir pose as mid of points
 
     def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):

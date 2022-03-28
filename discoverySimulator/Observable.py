@@ -1,24 +1,24 @@
 class Observable:
 
     def __init__(self):
-        self._observersCallbacks={}
+        self.__observersCallbacks={}
 
     def getTopics(self):
-        return self._observersCallbacks.keys()
+        return self.__observersCallbacks.keys()
 
     def addObserverCallback(self,observerCallback,topic:str='defaultTopic'):
-        if topic in self._observersCallbacks:
-            self._observersCallbacks[topic].append(observerCallback)
+        if topic in self.__observersCallbacks:
+            self.__observersCallbacks[topic].append(observerCallback)
         else:
-            self._observersCallbacks[topic]=[observerCallback]
+            self.__observersCallbacks[topic]=[observerCallback]
 
     def deleteObserverCallback(self,observerCallback,topic:str='defaultTopic'):
-        if topic in self._observersCallbacks and observerCallback in self._observersCallbacks[topic]:
-            self._observersCallbacks[topic].remove(observerCallback)
+        if topic in self.__observersCallbacks and observerCallback in self.__observersCallbacks[topic]:
+            self.__observersCallbacks[topic].remove(observerCallback)
 
     def notifyObservers(self,topic:str='defaultTopic'):
-        if topic in self._observersCallbacks:
-            for observerCallback in self._observersCallbacks[topic]:
+        if topic in self.__observersCallbacks:
+            for observerCallback in self.__observersCallbacks[topic]:
                 observerCallback(self)
 
 

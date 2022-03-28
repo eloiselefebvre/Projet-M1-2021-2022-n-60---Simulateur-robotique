@@ -5,8 +5,8 @@ class Border:
     """ The Border class provides ...."""
 
     def __init__(self,width:int=0,color:str=None):
-        self._width = int(width)
-        self._color = QColor(color)
+        self.__width = int(width)
+        self.__color = QColor(color)
 
     # GETTERS
     def getWidth(self) -> int:
@@ -14,11 +14,11 @@ class Border:
         This method allows to get the width of a border
         :return:
         """
-        return self._width
+        return self.__width
 
     def getColor(self) -> str:
         """
         This method allows to get the color of a border
         :return:
         """
-        return self._color
+        return self.__color

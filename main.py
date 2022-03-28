@@ -6,6 +6,6 @@ from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, r
 
 # aStar()
 # collisionAndTelemeter()
-# usingLIDAR.LIDARTest()
+usingLIDAR.LIDARTest()
 # reinforcementLearningTest()
-rlAvoiding.reinforcementLearningTest()
+# rlAvoiding.reinforcementLearningTest()

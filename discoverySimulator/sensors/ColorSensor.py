@@ -19,16 +19,14 @@ class ColorSensor(Sensor):
 
     # GETTERS
     def getValue(self) -> str:
-        """
-        This method allows to get the captured color by the sensor
-        :return: the captured color
+        """ This method allows to get the captured color by the sensor
+        @return  The captured color
         """
         return self._colorDetected
 
     def getSpecifications(self):
-        """
-        This method is used to get specifications about the color sensor
-        :return: specifications about the color sensor
+        """ This method is used to get specifications about the color sensor
+        @return  Specifications about the color sensor
         """
         return "Current detected color : " + self._colorDetected
 

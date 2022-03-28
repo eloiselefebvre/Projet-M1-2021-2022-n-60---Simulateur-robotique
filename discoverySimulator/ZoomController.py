@@ -4,9 +4,9 @@ from PyQt5.QtCore import QPoint, QSize
 
 class ZoomController(Observable):
 
-    ZOOM_STEP = 0.1
-    ZOOM_MIN = 0.1
-    ZOOM_MAX  = 3.0
+    __ZOOM_STEP = 0.1
+    __ZOOM_MIN = 0.1
+    __ZOOM_MAX  = 3.0
 
     def __init__(self,environnement):
         super().__init__()
@@ -20,12 +20,12 @@ class ZoomController(Observable):
         self.__offset=QPoint(0, 0)
 
     def setZoom(self, zoom:float):
-        if zoom >= ZoomController.ZOOM_MIN and zoom <= ZoomController.ZOOM_MAX:
+        if zoom >= ZoomController.__ZOOM_MIN and zoom <= ZoomController.__ZOOM_MAX:
             self.__zoom = zoom
             self.zoomChanged()
             return True
-        if zoom > self.ZOOM_MAX:
-            self.__zoom = ZoomController.ZOOM_MAX
+        if zoom > self.__ZOOM_MAX:
+            self.__zoom = ZoomController.__ZOOM_MAX
             self.zoomChanged()
             return True
         return False
@@ -52,13 +52,13 @@ class ZoomController(Observable):
         return self.__sceneSize
 
     def zoomIn(self):
-        self.__zoom+=ZoomController.ZOOM_STEP
-        self.__zoom = min(self.__zoom, ZoomController.ZOOM_MAX)
+        self.__zoom+=ZoomController.__ZOOM_STEP
+        self.__zoom = min(self.__zoom, ZoomController.__ZOOM_MAX)
         self.zoomChanged()
 
     def zoomOut(self):
-        self.__zoom-=ZoomController.ZOOM_STEP
-        self.__zoom = max(self.__zoom, ZoomController.ZOOM_MIN)
+        self.__zoom-=ZoomController.__ZOOM_STEP
+        self.__zoom = max(self.__zoom, ZoomController.__ZOOM_MIN)
         self.zoomChanged()
 
     def zoomToFit(self):

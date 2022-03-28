@@ -4,19 +4,19 @@ from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, Q
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import config, colors
 from discoverySimulator.interface.components.Button import Button, PlayButton
-from discoverySimulator.interface.views.PopUp import PopUp
+from discoverySimulator.interface.views.About import About
 from discoverySimulator.robots import Robot
 
 
 class Toolbar(QToolBar,Observable):
 
-    TOOLSBAR_FIXED_HEIGHT = 48
-    ACCELERATION_MIN = 0.1
-    ACCELERATION_MAX = 15.0
+    __TOOLSBAR_FIXED_HEIGHT = 48
+    __ACCELERATION_MIN = 0.1
+    __ACCELERATION_MAX = 15.0
 
     def __init__(self):
         super().__init__()
-        self.setFixedHeight(self.TOOLSBAR_FIXED_HEIGHT)
+        self.setFixedHeight(self.__TOOLSBAR_FIXED_HEIGHT)
         self.setStyleSheet("*{background-color: #21212f;color:#f0f0f0;border:none;}"
                            "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}"
                            "QPushButton:hover{background-color:#323247;}"
@@ -87,12 +87,12 @@ class Toolbar(QToolBar,Observable):
         about_button.clicked.connect(self.__openPopUp)
         about_button.setToolTip("About")
         about_layout.addWidget(about_button)
-        about.setFixedHeight(self.TOOLSBAR_FIXED_HEIGHT)
+        about.setFixedHeight(self.__TOOLSBAR_FIXED_HEIGHT)
 
         return about
 
     def __openPopUp(self):
-        PopUp()
+        About()
 
     def __createTimerWidget(self) -> QWidget:
         timer_icon=QLabel()
@@ -159,10 +159,10 @@ class Toolbar(QToolBar,Observable):
             text=text.strip('x')
         try:
             acc=float(text)
-            if acc >= self.ACCELERATION_MIN and acc <= self.ACCELERATION_MAX:
+            if acc >= self.__ACCELERATION_MIN and acc <= self.__ACCELERATION_MAX:
                 self.__acceleration=acc
-            if acc > self.ACCELERATION_MAX:
-                self.__acceleration= self.ACCELERATION_MAX
+            if acc > self.__ACCELERATION_MAX:
+                self.__acceleration= self.__ACCELERATION_MAX
         except ValueError:
             return
         finally:
@@ -176,12 +176,12 @@ class Toolbar(QToolBar,Observable):
 
     def __clickedDecreaseAcceleration(self):
         self.__acceleration-= 0.1 if self.__acceleration <= 1 else 1.0
-        self.__acceleration=max(self.__acceleration, self.ACCELERATION_MIN)
+        self.__acceleration=max(self.__acceleration, self.__ACCELERATION_MIN)
         self.__accelerationChanged()
 
     def __clickedIncreaseAcceleration(self):
         self.__acceleration += 0.1 if self.__acceleration < 1 else 1.0
-        self.__acceleration=min(self.__acceleration, self.ACCELERATION_MAX)
+        self.__acceleration=min(self.__acceleration, self.__ACCELERATION_MAX)
         self.__accelerationChanged()
 
     def __createPlayPauseWidget(self) -> QWidget:

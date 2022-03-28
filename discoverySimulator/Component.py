@@ -20,7 +20,7 @@ class Component(ABC,Object):
 
     # GETTERS
     @abstractmethod
-    def getSpecifications(self): # TODO : Styliser avec HTML
+    def getSpecifications(self):
         """ This method allows to get specifications about a wheel.
         @return  Specifications
         """
