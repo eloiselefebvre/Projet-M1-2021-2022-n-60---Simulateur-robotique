@@ -56,7 +56,7 @@ class PathFinding:
 
     def findPath(self,begin,end,callback=None):
         if self.__setBeginNode((int(begin[0]/PathFinding.CELL_SIZE),int(begin[1]/PathFinding.CELL_SIZE))) and self.__setEndNode((int(end[0]/PathFinding.CELL_SIZE),int(end[1]/PathFinding.CELL_SIZE))):
-            th = threading.Thread(target=self.__astar,args=[callback]) # TODO : self.__findPath -> self._findMethod (cf Reinforcement Learning) ??
+            th = threading.Thread(target=self.__astar,args=[callback])
             th.start()
         else:
             if callback is not None:
