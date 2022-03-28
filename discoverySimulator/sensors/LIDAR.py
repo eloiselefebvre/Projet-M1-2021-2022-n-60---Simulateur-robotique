@@ -8,6 +8,8 @@ from ..config import config, colors
 
 class LIDAR(Telemeter):
 
+    """ The LIDAR class provides ...."""
+
     def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6):
         """
         This method is used to create a LIDAR

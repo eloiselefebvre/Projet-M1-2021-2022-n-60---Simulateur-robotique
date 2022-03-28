@@ -8,6 +8,8 @@ from .Point import Point
 
 class Rectangle(Shape):
 
+    """ The Rectangle class provides ...."""
+
     ORIENTATION_MARK_WIDTH = 2
     ORIENTATION_MARK_LIGHTER_FACTOR = 160
 

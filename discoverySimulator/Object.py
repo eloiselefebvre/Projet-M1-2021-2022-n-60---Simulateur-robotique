@@ -13,6 +13,8 @@ from discoverySimulator.representation.shapes.Border import Border
 
 class Object(Observable):
 
+    """ The Object class provides ...."""
+
     number_of_instances = {}
 
     def __init__(self,representation):

@@ -10,8 +10,10 @@ from .Line import Line
 
 class Circle(Shape):
 
+    """ The Circle class provides ...."""
+
     def __init__(self,radius:float,color:str,opacity:int=255):
-        """ This method is used to create a circle
+        """ Constructs a circle shape
         @param radius  Radius of the circle [px]
         @param color  Color of the shape
         @param opacity  Opacity of the shape
@@ -21,8 +23,8 @@ class Circle(Shape):
 
     # GETTERS
     def getRadius(self) -> float :
-        """ This method allows to get the radius of a circle
-        @return  The radius of a circle [px]
+        """
+        @return  The radius of the circle [px]
         """
         return self._radius
 

@@ -7,6 +7,8 @@ from discoverySimulator.sensors import Sensor
 
 class ColorSensor(Sensor):
 
+    """ The ColorSensor class provides ...."""
+
     def __init__(self,color:str=None):
         """ This method is used to create a new color sensor
         @param color  Color of the sensor

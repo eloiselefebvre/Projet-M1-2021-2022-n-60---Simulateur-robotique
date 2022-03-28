@@ -7,6 +7,8 @@ from discoverySimulator.representation.shapes import Shape, Rectangle
 
 class Polygon(Shape):
 
+    """ The Polygon class provides ...."""
+
     POINT_SIZE = 5
 
     # TODO : Revoir pose as mid of points

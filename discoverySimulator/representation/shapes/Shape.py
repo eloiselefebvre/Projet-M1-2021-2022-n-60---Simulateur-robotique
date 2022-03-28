@@ -8,6 +8,8 @@ from ...Pose import Pose
 
 class Shape(ABC):
 
+    """ The Shape class provides ...."""
+
     ORIENTATION_MARK_WIDTH = 2
     ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
