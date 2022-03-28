@@ -105,7 +105,6 @@ class TwoWheelsRobot(Robot):
             # angular speed
             dPhi = degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels))
 
-            self.computeRotationCenter() # TODO : Not each time
             self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
             self._pose.rotate(dPhi)
 

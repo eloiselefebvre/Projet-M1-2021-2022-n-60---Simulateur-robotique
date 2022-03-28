@@ -9,14 +9,16 @@ class Telemeter(Sensor):
 
     """ The Telemeter class provides ...."""
 
-    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=10000): # TODO : Au lieu de 10000 : Diagonale de l'environnement
+    __DEFAULT_MAXIMUM_MEASURABLE_DISTANCE = 20000
+
+    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=None):
         """ This method is used to create a new telemeter
         @param color  Color of the telemeter
         """
         self._color = color
         self._representation = Representation(Rectangle(16,8,self._color))
         super().__init__(self._representation)
-        self._maximumMesurableDistance=int(maximumMeasurableDistance)
+        self._maximumMesurableDistance=int(maximumMeasurableDistance) if maximumMeasurableDistance is not None else Telemeter.__DEFAULT_MAXIMUM_MEASURABLE_DISTANCE
         self.__laserLine = Line(self._maximumMesurableDistance, 2, self._color)
         laserRep = Representation(self.__laserLine)
         self._laser = Object(laserRep)

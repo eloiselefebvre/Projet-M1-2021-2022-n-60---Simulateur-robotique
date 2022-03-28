@@ -18,14 +18,14 @@ class LED(Actuator):
     __LOW_OPACITY=40
     __HIGH_OPACITY=255
 
-    def __init__(self,color:str):
+    def __init__(self,color:str=None):
         """ This method is used to create a new LED
         @param color  Color of the LED
         """
         self._representation = Representation(Circle(5,color,20))
         super().__init__(self._representation)
         self._state=False
-        self._color = color
+        self._color = LED.RED if color is None else color
 
     # SETTERS
     def setState(self,state:bool):

@@ -47,6 +47,7 @@ class Robot(ABC,Object):
         super().setPose(pose)
         self.setOdometryPose(pose.copy())
         self._frame.setCoordinates(self._pose)
+        self.computeRotationCenter()
 
     def setOdometryPose(self, pose:Pose):
         self.__odometryPose = pose
@@ -230,3 +231,7 @@ class Robot(ABC,Object):
 
     def toggleOdometryDrawn(self):
         self.__odometryDrawn=not self.__odometryDrawn
+
+    @abstractmethod
+    def computeRotationCenter(self):
+        pass
