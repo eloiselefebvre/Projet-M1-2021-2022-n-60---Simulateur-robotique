@@ -36,7 +36,6 @@ class RL:
 
         self._actionCountTable={}
         self.fillTable("_actionCountTable")
-        print(self.__actions)
 
         if factors is None:
             factors = {}
@@ -154,8 +153,8 @@ class RL:
     def learn(self,reward):
         self.__explorationRate *= self.__factors["explorationRateDecrease"]
         self._learnQLearning(reward)
-        # self.printTable("_QTable")
-        # print("exp:",self.__explorationRate)
+        self.printTable("_QTable")
+        print("exp:",self.__explorationRate)
 
     def _learnQLearning(self, reward: float):
         """ This method is used to execute the action chosen and to learn (QLearning)

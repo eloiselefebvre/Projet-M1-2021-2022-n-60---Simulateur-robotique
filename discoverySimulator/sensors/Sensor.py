@@ -4,9 +4,9 @@ from discoverySimulator.representation.Representation import Representation
 
 
 class Sensor(Component):
-    """
-    This method is used to create a new sensor
-    """
+
+    """ The Sensor class provides ...."""
+
     def __init__(self,representation:Representation):
        super().__init__(representation)
 

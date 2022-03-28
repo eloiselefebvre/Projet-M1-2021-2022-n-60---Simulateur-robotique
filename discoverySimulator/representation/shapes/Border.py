@@ -2,6 +2,8 @@ from PyQt5.QtGui import QColor
 
 class Border:
 
+    """ The Border class provides ...."""
+
     def __init__(self,width:int=0,color:str=None):
         self._width = int(width)
         self._color = QColor(color)

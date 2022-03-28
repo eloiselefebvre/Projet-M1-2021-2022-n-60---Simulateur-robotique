@@ -7,6 +7,9 @@ from math import radians, cos, sin
 
 
 class Point(Shape):
+
+    """ The Point class provides ...."""
+
     POINT_SIZE = 5
 
     def __init__(self, color: str = "#000", opacity: int = 255):

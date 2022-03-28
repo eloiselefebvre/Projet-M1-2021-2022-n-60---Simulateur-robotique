@@ -1,5 +1,7 @@
 class Pose:
 
+    """ The Pose class provides ...."""
+
     def __init__(self, x:float, y:float,orientation:float=0,rx:float=0,ry:float=0):
         """ This method is used to create a pose for an object
         @param x  x coordinate in the environment

@@ -3,6 +3,9 @@ from .. import Pose
 
 
 class Representation:
+
+    """ The Representation class provides ...."""
+
     def __init__(self,shape):
         """
         This method allows to add a representation of an object

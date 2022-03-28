@@ -114,7 +114,7 @@ def reinforcementLearningTest():
                 reward=distance/(1+(endOrientation-startOrientation)**2)
 
             # reward += (robot.getLeftLinearSpeed() + robot.getRightLinearSpeed()) / abs(robot.getLeftLinearSpeed() + robot.getRightLinearSpeed()+1) * distance/(1+(endOrientation-startOrientation)**2) * 0.6
-            print(reward)
+            # print(reward)
             rl.learn(reward)
         else:
             robot.setPose(initialPose.copy())

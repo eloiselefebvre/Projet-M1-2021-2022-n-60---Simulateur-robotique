@@ -7,6 +7,8 @@ from discoverySimulator.representation.shapes import Rectangle, Line
 
 class Telemeter(Sensor):
 
+    """ The Telemeter class provides ...."""
+
     def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=10000):
         """ This method is used to create a new telemeter
         @param color  Color of the telemeter

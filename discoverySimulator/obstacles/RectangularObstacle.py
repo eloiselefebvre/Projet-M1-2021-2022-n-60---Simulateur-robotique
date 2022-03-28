@@ -5,6 +5,8 @@ from discoverySimulator.representation.shapes.Rectangle import Rectangle
 
 class RectangularObstacle(Obstacle):
 
+    """ The RectangularObstacle class provides ...."""
+
     def __init__(self,width,height,color=None,borderRadius=0,opacity=255):
         """
         This method is used to create an obstacle

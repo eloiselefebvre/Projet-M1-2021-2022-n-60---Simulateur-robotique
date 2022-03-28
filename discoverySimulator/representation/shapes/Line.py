@@ -8,6 +8,8 @@ from .Point import Point
 
 class Line(Shape):
 
+    """ The Line class provides ...."""
+
     def __init__(self,length:float,width:float,color:str=None,opacity:int=255):
         super().__init__(color,opacity)
         self._length=length

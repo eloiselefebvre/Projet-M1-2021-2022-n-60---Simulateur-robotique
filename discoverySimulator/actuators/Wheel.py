@@ -4,6 +4,8 @@ from discoverySimulator.representation import Representation
 
 class Wheel(Actuator):
 
+    """ The Wheel class provides ...."""
+
     DEFAULT_BORDER_RADIUS = 3
     DEFAULT_BORDER_WIDTH = 2
 

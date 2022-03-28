@@ -10,7 +10,6 @@ class ReinforcementLearning:
 
     # Available algorithm : QLearning, ValueIteration
     def __init__(self, state:tuple, factors:dict=None, algorithm:str= "ValueIteration"):
-        # TODO : Rendre plus modulable et revoir e-greedy exploration
         """ This method allows to create a reinforcement learning
         @param state  State of the robot who will learn
         """
