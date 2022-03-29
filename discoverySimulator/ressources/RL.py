@@ -14,6 +14,7 @@ class RL:
     def __init__(self, actionSpaceBuilders:List[dict]=None, stateSpaceBuilders:List[dict]=None, factors:dict=None, QTable:dict=None):
         self.__actionSpaceBuilders=actionSpaceBuilders
         for actionBuilder in self.__actionSpaceBuilders:
+            # use if all(key in rod for key in ("R","G","B"))
             for key in RL.__ACTION_BLUIDER_REQUIRED_KEYS:
                 if not key in actionBuilder:
                     raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(RL.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
@@ -160,19 +161,19 @@ class RL:
         total = sum(possibleActionCounts)
         return [(total - actionCount) / total for actionCount in possibleActionCounts]
 
-    def learn(self,reward):
+    def learn(self,reward:float,learnFromFuture:bool=True):
         self.__explorationRate *= self.__factors["explorationRateDecrease"]
-        self._learnQLearning(reward)
+        self._learnQLearning(reward,learnFromFuture)
         self.printTable("_QTable")
         print("exp:",self.__explorationRate)
 
-    def _learnQLearning(self, reward: float):
+    def _learnQLearning(self, reward:float,learnFromFuture:bool):
         """ This method is used to execute the action chosen and to learn (QLearning)
         @param reward  The reward of the action
         """
         nextState = self.getState()
         maxValue = max(self._QTable[nextState])
-        self._QTable[self.__state][self.__executedActionIndex] = (1 - self.__factors["learning"]) * self._QTable[self.__state][self.__executedActionIndex] + self.__factors["learning"] * (reward + self.__factors["discount"] * maxValue)
+        self._QTable[self.__state][self.__executedActionIndex] = (1 - self.__factors["learning"]) * self._QTable[self.__state][self.__executedActionIndex] + self.__factors["learning"] * (reward + ((self.__factors["discount"] * maxValue) if learnFromFuture else 0))
         self.__state = nextState
 
     def reset(self):
