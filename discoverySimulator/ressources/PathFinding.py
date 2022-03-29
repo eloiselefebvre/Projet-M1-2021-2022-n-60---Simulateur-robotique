@@ -147,6 +147,8 @@ class PathFinding:
             if current != self.__beginNode and current != self.__endNode and self._displayEnabled:
                 self.__setNodeColor(current, self.__COLORS["computed_node"])
 
+            time.sleep(0.01)
+
         path = []
         current = self.__endNode
         while current is not None:

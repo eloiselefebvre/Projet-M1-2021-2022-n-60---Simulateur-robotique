@@ -45,7 +45,7 @@ class TwoWheelsRobot(Robot):
         """ This method is used to get the average speed of an object
         @return  Average speed of the object [rpm]
         """
-        averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
+        averageSpeedRobot = (self.getRightElementaryLinearSpeed() + self.getLeftElementaryLinearSpeed()) / 2
         return averageSpeedRobot
 
     def getRightWheel(self) -> Wheel:
@@ -60,31 +60,30 @@ class TwoWheelsRobot(Robot):
         """
         return self._leftWheel
 
-    # TODO : Revoir les noms des fonctions
     def getRightLinearSpeed(self) -> float:
         """This method allows to get the linear speed of the right wheel
-        @return  Linear speed of the right wheel
+        @return  Linear speed of the right wheel [px/min]
         """
         return self._rightWheel.getRadius() * self._rightWheel.getSpeed()
 
-    def getRightElementarySpeed(self) -> float:
+    def getRightElementaryLinearSpeed(self) -> float:
         """ This method allows to get the elementary speed of the right wheel
-        @return  elementary speed of the right wheel [rpm]
+        @return  elementary speed of the right wheel [px/timestep]
         """
-        return self._rightWheel.getRadius() * self._rightWheel.getSpeed()*config["real_update_time_step"] / 60 * self._acceleration
+        return self.getRightLinearSpeed()*config["real_update_time_step"] / 60 * self._acceleration
 
     def getLeftLinearSpeed(self) -> float:
         """ This method allows to get the linear speed of the left wheel
-        @return : linear speed of the left wheel
+        @return : linear speed of the left wheel [px/min]
         """
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed()
 
-    def getLeftElementarySpeed(self) -> float:
+    def getLeftElementaryLinearSpeed(self) -> float:
         """
         This method allows to get the elementary speed of the left wheel
-        @return  elementary speed of the left wheel [rpm]
+        @return  elementary speed of the left wheel [px/timestep]
         """
-        return self._leftWheel.getRadius() * self._leftWheel.getSpeed() * config["real_update_time_step"] / 60 * self._acceleration
+        return self.getLeftLinearSpeed() * config["real_update_time_step"] / 60 * self._acceleration
 
     def getDistanceBetweenWheels(self) -> float:
         """ This method is used to get the distance between wheels
@@ -95,7 +94,7 @@ class TwoWheelsRobot(Robot):
     def move(self):
         if not self._isCollided:
             # average speed of the robot
-            averageSpeedRobot = (self.getRightElementarySpeed() + self.getLeftElementarySpeed()) / 2
+            averageSpeedRobot = (self.getRightElementaryLinearSpeed() + self.getLeftElementaryLinearSpeed()) / 2
 
             # speed along the x and y axes
             Phi = radians(self._pose.getOrientation() + 90)
@@ -103,7 +102,7 @@ class TwoWheelsRobot(Robot):
             dy = averageSpeedRobot * sin(Phi)
 
             # angular speed
-            dPhi = degrees((self.getRightElementarySpeed() - self.getLeftElementarySpeed())/(2*self._distanceBetweenWheels))
+            dPhi = degrees((self.getRightElementaryLinearSpeed() - self.getLeftElementaryLinearSpeed()) / (2 * self._distanceBetweenWheels))
 
             self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
             self._pose.rotate(dPhi)

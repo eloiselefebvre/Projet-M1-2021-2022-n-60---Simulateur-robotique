@@ -11,8 +11,8 @@ def reinforcementLearningTest():
 
     env=Environment(900,900)
     robot=CircularTwoWheelsRobot()
-    telemeter1 = Telemeter(maximumMeasurableDistance=50)
-    telemeter2 = Telemeter(maximumMeasurableDistance=50)
+    telemeter1 = Telemeter(maximumMeasurableDistance=40)
+    telemeter2 = Telemeter(maximumMeasurableDistance=40)
     robot.addComponent(telemeter1,0,20,20)
     robot.addComponent(telemeter2,0,20,-20)
     env.addObject(robot,500,400,-90)
@@ -32,43 +32,43 @@ def reinforcementLearningTest():
             "id":robot.getLeftWheel().getID(),
             "getter": robot.getLeftWheel().getSpeed,
             "setter": robot.getLeftWheel().setSpeed,
-            "min": 0,
+            "min": -100,
             "max": 300,
-            "intervals":2
+            "intervals":4
         },
         {
             "id":robot.getRightWheel().getID(),
             "getter": robot.getRightWheel().getSpeed,
             "setter": robot.getRightWheel().setSpeed,
-            "min": 0,
+            "min": -100,
             "max": 300,
-            "intervals":2
+            "intervals":4
         }
     ]
 
     spaceBuilders = [
-        {"id":robot.getLeftWheel().getID()},
-        {"id":robot.getRightWheel().getID()},
+        # {"id":robot.getLeftWheel().getID()},
+        # {"id":robot.getRightWheel().getID()},
         {
             "id":telemeter1.getID(),
             "getter": telemeter1.getValue,
             "min":0,
             "max":telemeter1.getMaximumMesurableDistance(),
-            "intervals":1
+            "intervals":2
         },
         {
             "id": telemeter2.getID(),
             "getter": telemeter2.getValue,
             "min": 0,
             "max": telemeter2.getMaximumMesurableDistance(),
-            "intervals": 1
+            "intervals": 2
         }
     ]
 
     rl = RL(actionBuilders,spaceBuilders,{
         "explorationRateDecrease":0.999,
-        "discount":0.7,
-        "learning":0.2
+        "discount":0.8,
+        "learning":0.5
     })
 
     sim = Simulation(env)
@@ -102,20 +102,22 @@ def reinforcementLearningTest():
             #
             # if robot.getCollidedState():
             #     reward=-1000
-            if after_closest_obstacle==telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance():
-                reward=1
-            elif after_closest_obstacle<telemeter1.getMaximumMesurableDistance() and before_closest_obstacle==telemeter1.getMaximumMesurableDistance():
-                reward=-1
-            elif after_closest_obstacle<telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance() and after_closest_obstacle<before_closest_obstacle:
-                reward=-1
-            elif after_closest_obstacle <telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance() and after_closest_obstacle >= before_closest_obstacle:
-                reward=0
-            else:
-                reward=distance/(1+(endOrientation-startOrientation)**2)
+            # if after_closest_obstacle==telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance():
+            #     reward=1
+            # elif after_closest_obstacle<telemeter1.getMaximumMesurableDistance() and before_closest_obstacle==telemeter1.getMaximumMesurableDistance():
+            #     reward=-1
+            # elif after_closest_obstacle<telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance() and after_closest_obstacle<before_closest_obstacle:
+            #     reward=-1
+            # elif after_closest_obstacle <telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance() and after_closest_obstacle >= before_closest_obstacle:
+            #     reward=0
+            # else:
 
+            if not robot.getCollidedState():
+                rl.learn((robot.getLeftLinearSpeed()+robot.getRightLinearSpeed())/abs(robot.getLeftLinearSpeed()+robot.getRightLinearSpeed()+1)*10)
+            else:
+                rl.learn(-100,False)
             # reward += (robot.getLeftLinearSpeed() + robot.getRightLinearSpeed()) / abs(robot.getLeftLinearSpeed() + robot.getRightLinearSpeed()+1) * distance/(1+(endOrientation-startOrientation)**2) * 0.6
             # print(reward)
-            rl.learn(reward)
         else:
             robot.setPose(initialPose.copy())
             robot.setLeftWheelSpeed(0)

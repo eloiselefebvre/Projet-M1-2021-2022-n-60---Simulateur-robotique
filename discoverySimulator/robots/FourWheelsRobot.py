@@ -78,7 +78,7 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         """
         return self._rightWheel.getRadius() * self._rightWheel.getSpeed() + self._backRightWheel.getRadius() * self._backRightWheel.getSpeed()
 
-    def getRightElementarySpeed(self) -> float:
+    def getRightElementaryLinearSpeed(self) -> float:
         """ This method is used to get the right elementary speed
         @return  The right elementary speed
         """
@@ -91,7 +91,7 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
         """
         return self._leftWheel.getRadius() * self._leftWheel.getSpeed() + self._backLeftWheel.getRadius() * self._backLeftWheel.getSpeed()
 
-    def getLeftElementarySpeed(self) -> float:
+    def getLeftElementaryLinearSpeed(self) -> float:
         """ This method is used to get the right elementary speed
         @return  The right elementary speed
         """
