@@ -14,10 +14,8 @@ class RL:
     def __init__(self, actionSpaceBuilders:List[dict]=None, stateSpaceBuilders:List[dict]=None, factors:dict=None, QTable:dict=None):
         self.__actionSpaceBuilders=actionSpaceBuilders
         for actionBuilder in self.__actionSpaceBuilders:
-            # use if all(key in rod for key in ("R","G","B"))
-            for key in RL.__ACTION_BLUIDER_REQUIRED_KEYS:
-                if not key in actionBuilder:
-                    raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(RL.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
+            if not all(key in actionBuilder for key in RL.__ACTION_BLUIDER_REQUIRED_KEYS):
+                raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(RL.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
             actionBuilder["step"]=round((actionBuilder["max"]-actionBuilder["min"])/actionBuilder["intervals"])
 
         self.__actions=self.getActionsSpace()
@@ -29,9 +27,8 @@ class RL:
                     raise ValueError(f"Missing key 'id' in stateSpaceBuilder item. Required keys are: {', '.join(RL.__SPACE_BLUIDER_REQUIRED_KEYS)}.")
                 if stateSpaceBuilders["id"]==actionSpaceBuilders["id"]:
                     stateSpaceBuilders.update(actionSpaceBuilders)
-            for key in RL.__SPACE_BLUIDER_REQUIRED_KEYS:
-                if not key in stateSpaceBuilders:
-                    raise ValueError(f"Missing key '{key}' in stateSpaceBuilder item. Required keys are: {', '.join(RL.__SPACE_BLUIDER_REQUIRED_KEYS)}.")
+            if not all(key in stateSpaceBuilders for key in RL.__SPACE_BLUIDER_REQUIRED_KEYS):
+                    raise ValueError(f"Missing key in stateSpaceBuilder item. Required keys are: {', '.join(RL.__SPACE_BLUIDER_REQUIRED_KEYS)}.")
 
             if not "step" in stateSpaceBuilders:
                 stateSpaceBuilders["step"] = round((stateSpaceBuilders["max"] - stateSpaceBuilders["min"]) / stateSpaceBuilders["intervals"])
