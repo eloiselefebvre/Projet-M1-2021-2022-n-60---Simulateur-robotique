@@ -15,8 +15,6 @@ class Environment:
 
     __DEFAULT_BORDER_SCREEN_WIDTH = 2
 
-    __DEFAULT_NOISE_STRENGH = 0.05
-
     # Available models : perfect, real (with noise)
     def __init__(self,width:int,height:int,model:str='perfect'):
         """ This method is used to create an environment
@@ -34,8 +32,6 @@ class Environment:
 
         self.__hasWalls=False
         self.__drawWalls()
-
-        self._noiseStrengh = Environment.__DEFAULT_NOISE_STRENGH
 
     # GETTERS
     def getObjects(self) -> List[Object]:
@@ -80,12 +76,6 @@ class Environment:
     def isReal(self):
         return self.__model=="real"
 
-    def setNoiseStrengh(self,noise):
-        self._noiseStrengh=noise
-
-    def getNoiseStrengh(self):
-        return self._noiseStrengh
-
     def addObject(self, object:Object, x:float=0, y:float=0, orientation:float=0):
         """ This method allows to add an object in the environment
         @param object  Object of the class Object or which inherits from Object
@@ -104,17 +94,17 @@ class Environment:
                 for comp in object.getComponents():
                     comp.setEnvironnement(self)
                     if isinstance(comp, Sensor):
-                        self.__addSensor(comp)
+                        self.addSensor(comp)
                 object.setOdometryPose(pose.copy())
             if isinstance(object, Sensor):
-                self.__addSensor(object)
+                self.addSensor(object)
 
     def addVirtualObject(self, virtualObject:Object, x:float=0, y:float=0, orientation:float=0):
         """ This method allows to add a virtual object in the environment
-       @param virtualObject  object of the class Object or which inherits from Object
-       @param x  x coordinate of the object in the environment [px]
-       @param y  y coordinate of the object in the environment [px]
-       @param orientation  orientation of the object in the environment [degrees]
+        @param virtualObject  object of the class Object or which inherits from Object
+        @param x  x coordinate of the object in the environment [px]
+        @param y  y coordinate of the object in the environment [px]
+        @param orientation  orientation of the object in the environment [degrees]
         """
         if isinstance(virtualObject, Object):
             virtualObject.setPose(Pose(x, y, orientation))
@@ -135,8 +125,8 @@ class Environment:
         if virtualObject in self.__virtualObjects:
             self.__virtualObjects.remove(virtualObject)
 
-    def __addSensor(self,sensor:Sensor):
-        if isinstance(sensor,Sensor):
+    def addSensor(self,sensor:Sensor):
+        if isinstance(sensor,Sensor) and not sensor in self.__sensors:
             self.__sensors.append(sensor)
 
     def __drawWalls(self):

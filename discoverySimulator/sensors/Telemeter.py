@@ -1,3 +1,5 @@
+import random
+
 from discoverySimulator.Object import Object
 from discoverySimulator.Pose import Pose
 from discoverySimulator.config import colors
@@ -11,7 +13,7 @@ class Telemeter(Sensor):
 
     __DEFAULT_MAXIMUM_MEASURABLE_DISTANCE = 20000
 
-    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=None):
+    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=None,accuracy:float=1):
         """ This method is used to create a new telemeter
         @param color  Color of the telemeter
         """
@@ -25,20 +27,27 @@ class Telemeter(Sensor):
         self._laser.setPose(Pose(0,0))
         self._representation.addSubRepresentation(self._laser.getRepresentation())
         self._distance = self._maximumMesurableDistance
+        self._mesuringNoise=1-(accuracy if 0<=accuracy<=1 else 1)
 
     # GETTERS
     def getValue(self) -> float:
         """ This method allows to get the value of the telemeter
         @return  Value of the telemeter
         """
-        return self._distance
+        dist=self._distance
+        if self._environment.isReal():
+            dist+=random.uniform(-self._distance*self._mesuringNoise,self._distance*self._mesuringNoise)
+        return dist
 
     def getMaximumMesurableDistance(self) -> int:
         return self._maximumMesurableDistance
 
     def getSpecifications(self) -> str:
-        specifications=f"Current measured distance : {round(self._distance,1)}px<br><pre>"
-        specifications+=f"Measurement Range : 0px-{self._maximumMesurableDistance}px</pre>"
+        specifications=f"Current measured distance : {round(self.getValue(),1)}px<br><pre>"
+        specifications+=f"Measurement Range : 0px-{self._maximumMesurableDistance}px<br>"
+        if self._environment.isReal():
+            specifications+=f"Accuracy : ±{round(self._mesuringNoise*100,1)}%"
+        specifications+="</pre>"
         return specifications
 
     def getClosestCollisitionPointAndComputeDistance(self):
@@ -47,7 +56,7 @@ class Telemeter(Sensor):
         self._distance = self._maximumMesurableDistance
         telemeterPose=self._frame.getAbsoluteCoordinates()
         self._laser.setPose(telemeterPose)
-        for obj in self._environnement.getObjects():
+        for obj in self._environment.getObjects():
             if obj != self._parent and obj!=self:
                 intersections.extend(self._laser.getIntersectionsWith(obj))
         closest_point = None

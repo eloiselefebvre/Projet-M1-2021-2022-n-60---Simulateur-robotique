@@ -24,7 +24,7 @@ class Object(Observable):
         super().__init__()
         self._pose = None
         self._representation = representation
-        self._environnement= None
+        self._environment= None
         self._isCollided = False
         self._isSelected = False
         self._acceleration = 1  # TODO : Revoir le changement lorsque l'accelaration est initialement définie et meilleure façon de partager des variables à plusieurs entités
@@ -101,7 +101,7 @@ class Object(Observable):
         """ This method allows to set the environment of an object
         @param environnement  The environment of the object
         """
-        self._environnement=environnement
+        self._environment=environnement
 
     # GETTERS
     def getFrame(self) -> Frame:
@@ -143,11 +143,11 @@ class Object(Observable):
         """
         return self._visibilityLocked
 
-    def getEnvironnement(self) :
+    def getEnvironment(self) :
         """ This method is used to get the environment of an object
         @return The environment of the object
         """
-        return self._environnement
+        return self._environment
 
     def getCollidedState(self) -> bool:
         return self._isCollided
@@ -193,7 +193,7 @@ class Object(Observable):
 
     def isCollided(self):
         if not self._isCollided:
-            for obj in self._environnement.getObjects():
+            for obj in self._environment.getObjects():
                 if self!=obj and self.isCollidedWith(obj):
                     self._isCollided=True
                     obj.setCollidedState(True)

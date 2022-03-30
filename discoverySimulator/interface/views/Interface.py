@@ -22,11 +22,13 @@ class Interface(QMainWindow):
         self.__sceneWidget=Scene(self.__environment, zoomController)
         self.__explorerWidget = Explorer(self.__environment)
         self.__footer = Footer(zoomController)
+
         miniSceneWindow = QWidget()
         layout = QVBoxLayout(miniSceneWindow)
         miniscene = SceneOverview(self.__environment, zoomController)
         layout.addWidget(miniscene)
-        miniSceneWindow.setStyleSheet(f"background-color: {colors['font']} ; border: 2px solid "+colors['sceneOverviewBorder']+"; border-radius: 8px;")
+        miniSceneWindow.setStyleSheet(f"background-color: {colors['font']} ; border: 2px solid "+colors['sceneOverviewBorder']+"; border-radius: 8px; margin:12px;")
+        miniSceneWindow.setContentsMargins(12,12,12,12)
         miniSceneWindow.setFixedSize(320,180) # ratio 16:9
         zoomController.setMiniSceneSize(miniSceneWindow.size())
         zoomController.zoomToMiniFit()

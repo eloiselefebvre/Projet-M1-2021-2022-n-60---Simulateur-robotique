@@ -10,6 +10,8 @@ from ..representation.shapes.Point import Point
 from math import cos, sin, radians, degrees, atan
 from discoverySimulator.config import config, colors
 from ..Pose import Pose
+from ..sensors import Sensor
+
 
 class Robot(ABC,Object):
 
@@ -33,10 +35,7 @@ class Robot(ABC,Object):
         self.__trajectoryDrawn = False
 
         # ODOMETRY ATTRIBUTES
-        self.__odometry = []
-        self.__odometryCounter=0
-        self.__odometryDrawn=False
-        self.__odometryPose=None
+        self.__odometryEnabled=False
 
         self._pathFollowing=None
         self._isSpeedLocked=False
@@ -120,6 +119,10 @@ class Robot(ABC,Object):
             component.setParent(self)
             component.getFrame().setBaseFrame(self._frame)
             component.getFrame().setCoordinates(pose)
+            if self._environment is not None:
+                component.setEnvironnement(self._environment)
+                if isinstance(component,Sensor):
+                    self._environment.addSensor(component)
 
             self._components.append(component)
             if isinstance(component,Wheel):
@@ -140,7 +143,7 @@ class Robot(ABC,Object):
             point = Object(Representation(Point(colors['trajectory'])))
             self.__trajectory.append(point)
             if self.__trajectoryDrawn:
-                self._environnement.addVirtualObject(self.__trajectory[-1], self._pose.getX(), self._pose.getY())
+                self._environment.addVirtualObject(self.__trajectory[-1], self._pose.getX(), self._pose.getY())
             else:
                 self.__trajectory[-1].setPose(Pose(self._pose.getX(), self._pose.getY()))
         self.__trajectoryCounter= (self.__trajectoryCounter + 1) % self.__NUMBER_CALLS_BEFORE_REFRESH
@@ -151,13 +154,13 @@ class Robot(ABC,Object):
         """
         for point in self.__trajectory:
             point_pose=point.getPose()
-            self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
+            self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideTrajectory(self):
         """ This method is used to hide the trajectory of a robot
         """
         for point in self.__trajectory:
-            self._environnement.removeVirtualObject(point)
+            self._environment.removeVirtualObject(point)
         self._drawTrajectory=False
 
     def deleteTrajectory(self):
@@ -168,62 +171,79 @@ class Robot(ABC,Object):
         self.__trajectoryDrawn = not self.__trajectoryDrawn
 
     # ODOMETRY METHODS
+    def isOdometryEnabled(self):
+        return self.__odometryEnabled
+
+    def enableOdometry(self,accuracy=1):
+        if not self.__odometryEnabled:
+            self.__odometryEnabled=True
+            self.__odometry = []
+            self.__odometryCounter = 0
+            self.__odometryDrawn = False
+            self.__odometryPose=None
+            self.__odometryNoise=1-(accuracy if 0<=accuracy<=1 else 1)
+            if self._pose is not None:
+                self.__odometryPose=self._pose.copy()
+
+    def disableOdometry(self):
+        if self.__odometryEnabled:
+            self.__odometryEnabled=False
+            self.__odometryPose=None
+            self.deleteOdometry()
+
     def updateOdometry(self):
-        vd = self.getRightLinearSpeed()
-        vg = self.getLeftLinearSpeed()
+        if self.__odometryEnabled:
+            vd = self.getRightLinearSpeed()
+            vg = self.getLeftLinearSpeed()
 
-        if self._environnement.isReal():
-            vd+=random.uniform(-self._environnement.getNoiseStrengh()*vd,self._environnement.getNoiseStrengh()*vd)
-            vg+=random.uniform(-self._environnement.getNoiseStrengh()*vg,self._environnement.getNoiseStrengh()*vg)
+            if self._environment.isReal():
+                vd+=random.uniform(-self.__odometryNoise*vd,self.__odometryNoise*vd)
+                vg+=random.uniform(-self.__odometryNoise*vg,self.__odometryNoise*vg)
 
-        v = (vd + vg) / 2
-        e = self.getDistanceBetweenWheels()
-        d = v * config["real_update_time_step"]*self._acceleration/60
+            v = (vd + vg) / 2
+            e = self.getDistanceBetweenWheels()
+            d = v * config["real_update_time_step"]*self._acceleration/60
 
-        x=self.__odometryPose.getX()
-        y=self.__odometryPose.getY()
+            x=self.__odometryPose.getX()
+            y=self.__odometryPose.getY()
 
-        if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
-            R = e * (vd + vg) / (vd - vg)
-            # calcul des coordonnées du centre du cercle trajectoire
-            x0 = x - R * cos(radians(self.__odometryPose.getOrientation()))
-            y0 = y - R * sin(radians(self.__odometryPose.getOrientation()))
+            if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
+                R = e * (vd + vg) / (vd - vg)
+                # calcul des coordonnées du centre du cercle trajectoire
+                x0 = x - R * cos(radians(self.__odometryPose.getOrientation()))
+                y0 = y - R * sin(radians(self.__odometryPose.getOrientation()))
 
-            # calcul position du robot
-            dTheta = d / R
-            self.__odometryPose.rotate(degrees(dTheta))
-            self.__odometryPose.move(x0 + R * cos(radians(self.__odometryPose.getOrientation())),
-                                     y0 + R * sin(radians(self.__odometryPose.getOrientation())))
-        elif vd==-vg: # robot tourne sur place
-            dd=vd * config["real_update_time_step"]*self._acceleration/60
-            dTheta=atan(dd/e)
-            self.__odometryPose.rotate(degrees(dTheta))
-        else: # robot en ligne droite
-            nx=x-d * sin(radians(self.__odometryPose.getOrientation()))
-            ny=y+d * cos(radians(self.__odometryPose.getOrientation()))
-            self.__odometryPose.move(nx, ny)
+                # calcul position du robot
+                dTheta = d / R
+                self.__odometryPose.rotate(degrees(dTheta))
+                self.__odometryPose.move(x0 + R * cos(radians(self.__odometryPose.getOrientation())),
+                                         y0 + R * sin(radians(self.__odometryPose.getOrientation())))
+            elif vd==-vg: # robot tourne sur place
+                dd=vd * config["real_update_time_step"]*self._acceleration/60
+                dTheta=atan(dd/e)
+                self.__odometryPose.rotate(degrees(dTheta))
+            else: # robot en ligne droite
+                nx=x-d * sin(radians(self.__odometryPose.getOrientation()))
+                ny=y+d * cos(radians(self.__odometryPose.getOrientation()))
+                self.__odometryPose.move(nx, ny)
 
-        if self.__odometryCounter == 0:
-            point = Object(Representation(Point(colors['odometry'])))
-            self.__odometry.append(point)
-            if self.__odometryDrawn:
-                self._environnement.addVirtualObject(self.__odometry[-1], self.__odometryPose.getX(), self.__odometryPose.getY())
-            else:
-                self.__odometry[-1].setPose(Pose(self.__odometryPose.getX(), self.__odometryPose.getY()))
-        self.__odometryCounter = (self.__odometryCounter + 1) % self.__NUMBER_CALLS_BEFORE_REFRESH
+            if self.__odometryCounter == 0:
+                point = Object(Representation(Point(colors['odometry'])))
+                self.__odometry.append(point)
+                if self.__odometryDrawn:
+                    self._environment.addVirtualObject(self.__odometry[-1], self.__odometryPose.getX(), self.__odometryPose.getY())
+                else:
+                    self.__odometry[-1].setPose(Pose(self.__odometryPose.getX(), self.__odometryPose.getY()))
+            self.__odometryCounter = (self.__odometryCounter + 1) % self.__NUMBER_CALLS_BEFORE_REFRESH
 
     def showOdometry(self):
-        """ This method is used to show the odometry of a robot
-        """
         for point in self.__odometry:
             point_pose = point.getPose()
-            self._environnement.addVirtualObject(point, point_pose.getX(), point_pose.getY())
+            self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideOdometry(self):
-        """ This method is used to hide the odometry of a robot
-        """
         for point in self.__odometry:
-            self._environnement.removeVirtualObject(point)
+            self._environment.removeVirtualObject(point)
 
     def deleteOdometry(self):
         self.hideOdometry()

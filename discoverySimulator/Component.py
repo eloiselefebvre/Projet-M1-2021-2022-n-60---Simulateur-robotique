@@ -7,7 +7,7 @@ class Component(ABC,Object):
 
     """ The Component class provides ...."""
 
-    def __init__(self,representation:Representation):
+    def __init__(self,representation):
         """ This method is used to create a component.
         @param representation  Representation of the component.
         """

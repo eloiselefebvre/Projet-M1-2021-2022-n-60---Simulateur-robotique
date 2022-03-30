@@ -5,8 +5,8 @@ from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, r
     reinforcementLearningTest, rlTwoWheelsRobot, rlAvoiding, rlFourWheelsRobot
 
 # aStar()
-# collisionAndTelemeter()
+collisionAndTelemeter()
 # usingLIDAR.LIDARTest()
 # reinforcementLearningTest()
 # rlTwoWheelsRobot.reinforcementLearningTest()
-rlAvoiding.reinforcementLearningTest()
+# rlAvoiding.reinforcementLearningTest()
