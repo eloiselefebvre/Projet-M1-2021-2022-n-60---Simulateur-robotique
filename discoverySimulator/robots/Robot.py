@@ -115,7 +115,7 @@ class Robot(ABC,Object):
         @param orientation  orientation of the component on the robot [degrees]
         """
         if isinstance(component, Component):
-            pose=Pose(x,y,orientation)
+            pose=Pose(-x,y,orientation)
             component.setPose(pose)
             component.setParent(self)
             component.getFrame().setBaseFrame(self._frame)
