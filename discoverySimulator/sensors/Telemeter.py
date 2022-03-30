@@ -76,4 +76,3 @@ class Telemeter(Sensor):
             self.notifyObservers("stateChanged")
         self._laser.setVisible(True)
         self.__laserLine.setLength(int(self._distance))
-

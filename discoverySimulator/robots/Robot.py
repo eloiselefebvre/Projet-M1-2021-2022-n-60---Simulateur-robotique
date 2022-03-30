@@ -17,8 +17,6 @@ class Robot(ABC,Object):
 
     __NUMBER_CALLS_BEFORE_REFRESH = 30
 
-    # TODO : Noise plus global, ajouter imperfection sur le modèle de la simulation
-
     def __init__(self,representation):
         """ This method is used to create a new robot
         @param representation Representation of the robot

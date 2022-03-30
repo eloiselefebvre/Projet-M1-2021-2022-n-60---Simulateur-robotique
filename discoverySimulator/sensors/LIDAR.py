@@ -11,8 +11,7 @@ class LIDAR(Telemeter):
     """ The LIDAR class provides ...."""
 
     def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6,maximumMeasurableDistance:int=None,accuracy:float=1):
-        """
-        This method is used to create a LIDAR
+        """ This method is used to create a LIDAR
         @param color  Color of the LIDAR
         @param scanRate  Scan rate of the LIDAR [rpm]
         @param angularRange  Angular range of the LIDAR [degrees]

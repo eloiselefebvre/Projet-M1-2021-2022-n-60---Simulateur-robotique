@@ -26,7 +26,7 @@ def LIDARTest():
     rob2.setLeftWheelSpeed(400)
 
     env = Environment(1500, 900)
-    env.addObject(rob, 400, 500)
+    # env.addObject(rob, 400, 500)
     env.addObject(rob2, 900, 500)
     env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
     env.addObject(RectangularObstacle(40, 200, "#ff8fff"), 650, 400)
