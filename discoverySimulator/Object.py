@@ -13,12 +13,12 @@ from discoverySimulator.representation.shapes.Border import Border
 
 class Object(Observable):
 
-    """ The Object class provides ...."""
+    """ The Object class provides an object"""
 
     __number_of_instances = {}
 
     def __init__(self,representation):
-        """ This method allows to create a new object
+        """ Constructs a new object
         @param representation  Representation of the object
         """
         super().__init__()
@@ -41,13 +41,13 @@ class Object(Observable):
             self._frame=frame
 
     def setZIndex(self,index:int):
-        """ This method is used to change the Z index of an object
+        """ Sets the Z index of an object
         @param index  New Z index of the object
         """
         self._zIndex=int(index)
 
     def setNumberOfInstances(self,name:str):
-        """ This method is used to count the number of instances of an object
+        """ Counts the number of instances of an object
         @param name  Name of the object
         """
         if name in self.__number_of_instances:
@@ -56,14 +56,14 @@ class Object(Observable):
             Object.__number_of_instances[name]=1
 
     def setPose(self,pose:Pose):
-        """ This method is used to change the position and the orientation of an object
+        """ Sets the position and the orientation of an object
         @param pose New position and orientation of the object
         """
         self._pose=pose
         self._representation.setPose(self._pose)
 
     def setVisible(self, visible:bool):
-        """ This method is used to change the visibility of an object
+        """ Sets the visibility of an object
         @param visible  If the object will be visible or not
         """
         if not self._visibilityLocked:
@@ -71,13 +71,13 @@ class Object(Observable):
             self.visibylityChanged()
 
     def setVisibilityLocked(self,state:bool):
-        """ This method is used to change if the visibility of an object is locked or not
+        """ Sets if the visibility of an object is locked or not
         @param state  If the visibility is locked
         """
         self._visibilityLocked=state
 
     def setID(self,id:str):
-        """ This method is used to change the ID of an object
+        """ Sets the ID of an object
         @param id  New id of the object
         """
         Object.__number_of_instances[self._id.split("_")[0]] -= 1
@@ -98,7 +98,7 @@ class Object(Observable):
         self._isCollided=state
 
     def setEnvironnement(self, environnement):
-        """ This method allows to set the environment of an object
+        """ Sets the environment of an object
         @param environnement  The environment of the object
         """
         self._environment=environnement
@@ -108,43 +108,43 @@ class Object(Observable):
         return self._frame
 
     def getAcceleration(self) -> float:
-        """ This method is used to get the acceleration of an object
+        """ Returns the acceleration of an object
         @return  The acceleration of the object
         """
         return self._acceleration
 
     def getZIndex(self) -> int:
-        """ This method is used to get the Z index of an object
+        """ Returns the Z index of an object
         @return  Z index of the object
         """
         return self._zIndex
 
     def getRepresentation(self) -> Representation:
-        """ This method is used to get the representation of an object
+        """ Returns the representation of an object
         @return  The representation of the object
         """
         return self._representation
 
     def getPose(self) -> Pose:
-        """ This method is used to get the position and the orientation of an object
+        """ Returns the position and the orientation of an object
         @return  The position and the orientation of an object
         """
         return self._pose
 
     def getID(self) -> str:
-        """ This method is used to get the ID of an object
+        """ Returns the ID of an object
         @return  The ID of the object
         """
         return self._id
 
     def getVisibilityLocked(self) -> bool:
-        """ This method allows to know if the visibility of an object is locked
+        """ Returns if the visibility of an object is locked
         @return  If the visibility of an object is locked
         """
         return self._visibilityLocked
 
     def getEnvironment(self) :
-        """ This method is used to get the environment of an object
+        """ Returns the environment of an object
         @return The environment of the object
         """
         return self._environment
@@ -159,7 +159,7 @@ class Object(Observable):
         self._representation.paint(painter)
 
     def isVisible(self) -> bool:
-        """ This method is used to know if an object is visible or not
+        """ Returns if an object is visible or not
         @return  If the object is visible
         """
         return self._representation.isVisible()
@@ -186,7 +186,7 @@ class Object(Observable):
         self._id+="_"+str(Object.__number_of_instances[self._id])
 
     def isSelected(self) -> bool:
-        """ This method is used to know if an object is selected
+        """ Returns if an object is selected
         @return  If the object is selected
         """
         return self._isSelected

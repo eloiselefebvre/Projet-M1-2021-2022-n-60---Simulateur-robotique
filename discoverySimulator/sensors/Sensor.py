@@ -4,9 +4,10 @@ from discoverySimulator import Component
 
 class Sensor(Component):
 
-    """ The Sensor class provides ...."""
+    """ The Sensor class provides a Sensor"""
 
     def __init__(self,representation):
+       """Constructs a sensor"""
        super().__init__(representation)
 
     @abstractmethod

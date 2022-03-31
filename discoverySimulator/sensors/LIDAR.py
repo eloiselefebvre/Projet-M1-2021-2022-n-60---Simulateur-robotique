@@ -8,10 +8,10 @@ from ..config import config, colors
 
 class LIDAR(Telemeter):
 
-    """ The LIDAR class provides ...."""
+    """ The LIDAR class provides a LIDAR"""
 
     def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6,maximumMeasurableDistance:int=None,accuracy:float=1):
-        """ This method is used to create a LIDAR
+        """ Constructs a LIDAR
         @param color  Color of the LIDAR
         @param scanRate  Scan rate of the LIDAR [rpm]
         @param angularRange  Angular range of the LIDAR [degrees]
@@ -36,7 +36,7 @@ class LIDAR(Telemeter):
 
     # GETTERS
     def getSpecifications(self) -> str:
-        """ This method is used to get specifications about the LIDAR
+        """ Returns specifications about the LIDAR
         @return  Specifications about the LIDAR
         """
         specifications = "<pre>"

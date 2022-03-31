@@ -4,10 +4,10 @@ from discoverySimulator.representation.Representation import Representation
 
 class Component(ABC,Object):
 
-    """ The Component class provides ...."""
+    """ The Component class provides a compoennt"""
 
     def __init__(self,representation):
-        """ This method is used to create a component.
+        """ Constructs a component.
         @param representation  Representation of the component.
         """
         super().__init__(representation)
@@ -20,7 +20,7 @@ class Component(ABC,Object):
     # GETTERS
     @abstractmethod
     def getSpecifications(self):
-        """ This method allows to get specifications about a wheel.
+        """ Returns specifications about a wheel.
         @return  Specifications
         """
         pass

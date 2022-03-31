@@ -7,10 +7,10 @@ from discoverySimulator.sensors import Sensor
 
 class ColorSensor(Sensor):
 
-    """ The ColorSensor class provides ...."""
+    """ The ColorSensor class provides a sensor"""
 
     def __init__(self,color:str=None):
-        """ This method is used to create a new color sensor
+        """ Constructs a new color sensor
         @param color  Color of the sensor
         """
         self._representation = Representation(Circle(1,color))
@@ -19,13 +19,13 @@ class ColorSensor(Sensor):
 
     # GETTERS
     def getValue(self) -> str:
-        """ This method allows to get the captured color by the sensor
+        """ Returns the captured color by the sensor
         @return  The captured color
         """
         return self._colorDetected
 
     def getSpecifications(self):
-        """ This method is used to get specifications about the color sensor
+        """ Returns specifications about the color sensor
         @return  Specifications about the color sensor
         """
         return "Current detected color : " + self._colorDetected

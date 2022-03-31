@@ -8,13 +8,13 @@ from discoverySimulator.config import *
 
 class Simulation(Observable):
 
-    """ The Simulation class provides ...."""
+    """ The Simulation class provides a simulation"""
 
     __MINIMUM_TIME_STEP = 0.01
 
     def __init__(self,environment=None):
-        """ This method is used to create a new simulation
-        :@param environment  environment where the simulation will take place
+        """ Constructs a new simulation
+        @param environment  environment where the simulation will take place
         """
         super().__init__()
         self.__environment=environment
@@ -27,7 +27,7 @@ class Simulation(Observable):
 
     # SETTERS
     def setAcceleration(self, acceleration:float): # TODO : Notify toolsbar
-        """ This method is used to change the acceleration of the simulation
+        """ Sets the acceleration of the simulation
         @param acceleration  New acceleration of the simulation
         """
         self.__acceleration=acceleration
@@ -37,25 +37,25 @@ class Simulation(Observable):
 
     # GETTERS
     def getAcceleration(self) -> float:
-        """ This method is used to get the acceleration of the simulation
+        """ Returns the acceleration of the simulation
         @return  The acceleration of the simulation
         """
         return self.__acceleration
 
     def time(self) -> float:
-        """ This method is used to get the time elasped since the beginning of the simulation
+        """ Returns the time elasped since the beginning of the simulation
         @return  time elapsed [s]
         """
         return self.__timeElapsed
 
     def run(self):
-        """ This method allows to run the simulation
+        """ Runs the simulation
         """
         th = threading.Thread(target=self.__run)
         th.start()
 
     def showInterface(self):
-        """ This method allows to show the interface where the simulation takes place
+        """ Shows the interface where the simulation takes place
         """
         if self.__environment is not None and not self.__appShown:
             th=threading.Thread(target=self.__startApplication)
