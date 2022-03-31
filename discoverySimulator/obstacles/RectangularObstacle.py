@@ -5,11 +5,11 @@ from discoverySimulator.representation.shapes.Rectangle import Rectangle
 
 class RectangularObstacle(Obstacle):
 
-    """ The RectangularObstacle class provides ...."""
+    """ The RectangularObstacle class provides a rectangular obstacle and his representation"""
 
     def __init__(self,width:float,height:float,color:str=None,borderRadius:float=0,opacity:int=255):
         """
-        This method is used to create an obstacle
+        Constructs an obstacle
         @param width  Width of the obstacle
         @param height  Height of the obstacle
         @param color  Color of the shape

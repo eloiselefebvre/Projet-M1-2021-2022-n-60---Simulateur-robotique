@@ -15,10 +15,12 @@ from ..sensors import Sensor
 
 class Robot(ABC,Object):
 
+    """ The Robot class provides a robot"""
+
     __NUMBER_CALLS_BEFORE_REFRESH = 30
 
     def __init__(self,representation):
-        """ This method is used to create a new robot
+        """ Constructs a new robot
         @param representation Representation of the robot
         """
         super().__init__(representation)
@@ -57,28 +59,28 @@ class Robot(ABC,Object):
 
     # GETTERS
     def getComponents(self) -> List[Component]:
-        """ This method allows to get all components
+        """ Returns all components
         @return All components of the robot
         """
         return self._components
 
     @abstractmethod
     def getLeftLinearSpeed(self) -> float:
-        """ This method is used to get the left linear speed
+        """ Returns the left linear speed
         @return  The left linear speed
         """
         pass
 
     @abstractmethod
     def getRightLinearSpeed(self) -> float:
-        """ This method is used to get the right linear speed
+        """ Returns the right linear speed
         @return  The right linear speed
         """
         pass
 
     @abstractmethod
     def getDistanceBetweenWheels(self) -> float:
-        """ This method is used to get distance between wheels
+        """ Returns distance between wheels
         @return  The distance between wheels
         """
         pass
@@ -93,7 +95,7 @@ class Robot(ABC,Object):
         return self.__odometryPose
 
     def getWheels(self) -> List[Wheel]:
-        """ This method is used to get all the wheels of a robot
+        """ Returns all the wheels of a robot
         @return  All the wheels of the robot
         """
         return self._wheels
@@ -105,7 +107,7 @@ class Robot(ABC,Object):
         return self.getRepresentation().getShape().getBoundingBox().getHeigt()
 
     def addComponent(self, component:Component, x:float=0, y:float=0, orientation:float=0):
-        """ This method is used to add a component of a robot.
+        """ Adds a component of a robot.
         @param component: component to add to the robot
         @param x  x coordinate of the component on the robot [px]
         @param y  y coordinate of the component on the robot [px]
@@ -148,14 +150,14 @@ class Robot(ABC,Object):
 
     # TODO : Revoir le système et la bascule de drawTrajectory
     def showTrajectory(self):
-        """ This method is used to show the trajectory of a robot
+        """ Shows the trajectory of a robot
         """
         for point in self.__trajectory:
             point_pose=point.getPose()
             self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideTrajectory(self):
-        """ This method is used to hide the trajectory of a robot
+        """ Hides the trajectory of a robot
         """
         for point in self.__trajectory:
             self._environment.removeVirtualObject(point)

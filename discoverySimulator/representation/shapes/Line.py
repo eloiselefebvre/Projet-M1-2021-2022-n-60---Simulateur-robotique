@@ -8,7 +8,7 @@ from .Point import Point
 
 class Line(Shape):
 
-    """ The Line class provides ...."""
+    """ The Line class provides a line"""
 
     def __init__(self,length:float,width:float,color:str=None,opacity:int=255):
         super().__init__(color,opacity)
@@ -17,7 +17,7 @@ class Line(Shape):
 
     # SETTERS
     def setLength(self,length:float):
-        """ This method is used to change the length of a line
+        """ Changes the length of a line
         @param length  Length of the line [px]
         """
         self.__length=length
@@ -30,7 +30,7 @@ class Line(Shape):
         return a, b
 
     def getBoundingBox(self) -> Rectangle:
-        """ This method is used to get the bounding box of a rectangle
+        """ Returns the bounding box of a rectangle
         @return  The bounding box of the rectangle
         """
         return Rectangle(self.__width, self.__length)

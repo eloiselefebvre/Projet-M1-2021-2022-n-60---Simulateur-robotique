@@ -8,10 +8,10 @@ from .Point import Point
 
 class Rectangle(Shape):
 
-    """ The Rectangle class provides ...."""
+    """ The Rectangle class provides a rectangle"""
 
     def __init__(self,width:float,height:float,color:str=None,borderRadius:float=0,opacity:int=255):
-        """ This method allows to create a Rectangle
+        """ Constructs a Rectangle
         @param width  Width of the rectangle [px]
         @param height  Height of the rectangle [px]
         @param color  Color of the shape
@@ -26,19 +26,19 @@ class Rectangle(Shape):
 
     # GETTERS
     def getWidth(self) -> float:
-        """ This method is used to get the width of a rectangle
+        """ Returns the width of a rectangle
         @return  Width of the rectangle [px]
         """
         return self.__width
 
     def getHeight(self) -> float:
-        """ This method is used to get the height of a rectangle
+        """ Returns the height of a rectangle
         @return  Height of the rectangle [px]
         """
         return self.__height
 
     def getBoundingBox(self) -> Rectangle:
-        """ This method is used to get the bounding box of a rectangle
+        """ Returns the bounding box of a rectangle
         @return  The bounding box of the rectangle
         """
         return self

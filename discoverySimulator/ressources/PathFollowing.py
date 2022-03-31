@@ -5,6 +5,8 @@ from discoverySimulator.robots import Robot
 
 class PathFollowing():
 
+    """ The PathFollowing class provides a path following for a robot"""
+
     MAX_FORWARD_SPEED = 500
     MIN_FORWARD_SPEED = 300
     MIN_DISTANCE_FOR_MAX_FORWARD_SPEED = 60.0
@@ -13,7 +15,7 @@ class PathFollowing():
     DISTANCE_FOR_END_POINT = 5
 
     def __init__(self,robot):
-        """ This method is used to follow a path
+        """ Constructs a following path
         @param robot  Robot who will follow the path
         """
         self._robot = robot
@@ -26,7 +28,7 @@ class PathFollowing():
 
     # GETTERS
     def getRobot(self) -> Robot:
-        """ This method is used to get the robot who follow the path
+        """ Returns the robot who follow the path
         @return  Returns robot
         """
         return self._robot

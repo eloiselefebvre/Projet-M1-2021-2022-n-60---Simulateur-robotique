@@ -14,6 +14,8 @@ from discoverySimulator.robots import Robot
 
 class PathFinding:
 
+    """The PathFinding class provides a path finding for a robot"""
+
     # TODO : Pause sur pathfinding ??
 
     __MOVES = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
@@ -32,7 +34,7 @@ class PathFinding:
 
     def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.01):
         """
-        This method is used to create a pathfinding
+        Constructs a pathfinding
         @param environment  Environment where the pathfinding will take place
         @param displayEnabled  The display of the pathfinding [bool]
         @param displayDelay  The delay of the display [s]

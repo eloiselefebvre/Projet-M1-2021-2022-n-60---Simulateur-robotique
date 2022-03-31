@@ -7,12 +7,12 @@ from discoverySimulator.representation.shapes import Shape, Rectangle
 
 class Polygon(Shape):
 
-    """ The Polygon class provides ...."""
+    """ The Polygon class provides a polygon"""
 
     # TODO : Revoir pose as mid of points
 
     def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):
-        """ This method is used to create a Polygon
+        """ Constructs a Polygon
         @param points  Points that determine the shape of the polygon
         @param color  Color of the shape
         @param opacity  Opacity of the shape
@@ -23,7 +23,7 @@ class Polygon(Shape):
 
     # GETTERS
     def getBoundingBox(self) -> Rectangle:
-        """ This method is used to get the bounding box of a polygon
+        """ Returns the bounding box of a polygon
         @return  The bounding box of the polygon
         """
         min_x=self.__points[0].x()

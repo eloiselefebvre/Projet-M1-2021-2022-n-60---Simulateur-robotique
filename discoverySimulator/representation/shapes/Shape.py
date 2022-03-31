@@ -8,7 +8,7 @@ from ...Pose import Pose
 
 class Shape(ABC):
 
-    """ The Shape class provides ...."""
+    """ The Shape class provides a Shape"""
 
     _ORIENTATION_MARK_WIDTH = 2
     _ORIENTATION_MARK_LIGHTER_FACTOR = 160
@@ -18,32 +18,31 @@ class Shape(ABC):
         self._opacity=opacity
         self._border=None
         self._pose=None
-
         self._orientationMark=False
 
 
     # SETTERS
     def setPose(self,pose:Pose):
-        """ This method is used to change the position of a shape
-        @param pose: the new position
+        """ Sets the position of a shape
+        @param pose  the new position
         """
         self._pose=pose
 
     def setOpacity(self,opacity:int):
-        """ This method is used to change the opacity of a shape
-        @param opacity: the new opacity
+        """ Sets the opacity of a shape
+        @param opacity  the new opacity
         """
         self._opacity=opacity
 
     def setColor(self,color:str):
-        """ This method is used to change the color of a shape
-        @param color: the new color
+        """ Sets the color of a shape
+        @param color  the new color
         """
         self._color=QColor(color)
 
     # GETTERS
     def getPose(self) -> Pose:
-        """ This method is used to get the position of a shape
+        """ Returns the position of a shape
         @return  The position of the shape
         """
         return self._pose
@@ -59,7 +58,7 @@ class Shape(ABC):
             painter.setPen(Qt.NoPen)
 
     def getColor(self):
-        """ This method is used to get the color of a shape
+        """ Returns the color of a shape
         @return  The color of a shape
         """
         return self._color.name()
@@ -70,10 +69,10 @@ class Shape(ABC):
 
     def getIntersectionsWith(self, shape):
         """
-        3 cas possibles du fait de la décomposition en lignes :
-        -> cercle vs cercle
-        -> ligne vs ligne
-        -> cercle vs ligne
+        3 possible cases due to the breakdown into lines:
+        -> circle vs circle
+        -> line vs line
+        -> circle vs line
         """
         from .Point import Point
         if isinstance(self,Point) or isinstance(shape,Point):
@@ -107,12 +106,12 @@ class Shape(ABC):
 
     @abstractmethod
     def getBoundingBox(self):
-        """ This method is used to get the bounding box of a shape
+        """ Returns the bounding box of a shape
         """
         pass
 
     def addBorder(self, border:Border):
-        """ This method is used to add a border on a shape
+        """ Adds a border on a shape
         @param border  The border to add
         """
         if isinstance(border, Border):
@@ -120,7 +119,7 @@ class Shape(ABC):
 
     def removeBorder(self):
         """
-        This method is used to remove a border on a shape
+        Removes a border on a shape
         @param border  The border to remove
         """
         self._border=None

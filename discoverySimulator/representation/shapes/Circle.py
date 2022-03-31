@@ -10,7 +10,7 @@ from .Line import Line
 
 class Circle(Shape):
 
-    """ The Circle class provides ...."""
+    """ The Circle class provides a circle"""
 
     def __init__(self,radius:float,color:str,opacity:int=255):
         """ Constructs a circle shape
@@ -24,18 +24,19 @@ class Circle(Shape):
     # GETTERS
     def getRadius(self) -> float :
         """
-        @return  The radius of the circle [px]
+        Returns the radius of the circle [px]
+        @return The radius of the circle [px]
         """
         return self.__radius
 
     def getBoundingBox(self) -> Rectangle:
-        """ This method is used to get the bounding box of a circle
+        """ Returns the bounding box of a circle
         @return  The bounding box of the circle
         """
         return Rectangle(self.__radius * 2, self.__radius * 2)
 
     def contains(self, point:QPointF) -> bool:
-        """ This method allows to know if a circle contains a point
+        """ Returns if a circle contains a point
         @param point  Point
         @return  Is the point is in the circle
         """

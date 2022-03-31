@@ -4,13 +4,15 @@ from typing import List
 
 class ReinforcementLearning:
 
+    """The ReinforcementLearning class provides a reinforcement learning for a robot"""
+
     DEFAULT_LEARNING_FACTOR = 0.1
     DEFAULT_DISCOUNT_FACTOR = 0.5
     DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR = 0.995
 
     # Available algorithm : QLearning, ValueIteration
     def __init__(self, state:tuple, factors:dict=None, algorithm:str= "ValueIteration"):
-        """ This method allows to create a reinforcement learning
+        """ Constructs a reinforcement learning
         @param state  State of the robot who will learn
         """
 
@@ -56,7 +58,7 @@ class ReinforcementLearning:
         return (self._actions[actionIndex][0]+state[0],self._actions[actionIndex][1]+state[1])
 
     def getPossibleActions(self, state:tuple = None) -> List[int]:
-        """ This method allows to get the possible actions of the robot
+        """ Returns the possible actions of the robot
         @param state  State of the robot
         @return  Possible actions
         """
@@ -74,7 +76,7 @@ class ReinforcementLearning:
         return actions
 
     def getActionToExecute(self) -> tuple:
-        """ This method allows to get the best action to execute
+        """ Returns the best action to execute
         @return  The action to execute
         """
         possibleActionsIndexes=self.getPossibleActions()
@@ -117,7 +119,7 @@ class ReinforcementLearning:
         self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
 
     def _learnQLearning(self,reward:float):
-        """ This method is used to execute the action chosen and to learn (QLearning)
+        """ Executes the action chosen and to learn (QLearning)
         @param reward  The reward of the action
         """
         nextState=self.getNextState(self._state,self._actionToExecuteIndex)
@@ -126,7 +128,7 @@ class ReinforcementLearning:
         self._state = nextState
 
     def _learnValueIteration(self,reward:float):
-        """ This method is used to execute the action chosen and to learn (ValueIteration)
+        """ Executes the action chosen and to learn (ValueIteration)
         @param reward  The reward of the action
         """
         # reward update

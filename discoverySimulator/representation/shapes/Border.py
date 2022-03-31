@@ -2,7 +2,7 @@ from PyQt5.QtGui import QColor
 
 class Border:
 
-    """ The Border class provides ...."""
+    """ The Border class provides a border"""
 
     def __init__(self,width:int=0,color:str=None):
         self.__width = int(width)
@@ -11,14 +11,14 @@ class Border:
     # GETTERS
     def getWidth(self) -> int:
         """
-        This method allows to get the width of a border
-        :return:
+        Returns the width of a border
+        @return  the width of the border
         """
         return self.__width
 
     def getColor(self) -> str:
         """
-        This method allows to get the color of a border
-        :return:
+        Returns the color of a border
+        @return  the color of the border
         """
         return self.__color

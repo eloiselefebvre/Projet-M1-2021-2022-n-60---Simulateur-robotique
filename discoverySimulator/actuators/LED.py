@@ -5,7 +5,7 @@ from discoverySimulator.representation.shapes import Circle
 
 class LED(Actuator):
 
-    """ The LED class provides ...."""
+    """ The LED class provides a LED and his representation"""
 
     RED = "#f00"
     GREEN = "#0f0"
@@ -19,7 +19,7 @@ class LED(Actuator):
     __HIGH_OPACITY=255
 
     def __init__(self,color:str=None):
-        """ This method is used to create a new LED
+        """ Constructs a new LED
         @param color  Color of the LED
         """
         self._representation = Representation(Circle(5,color,20))
@@ -29,7 +29,7 @@ class LED(Actuator):
 
     # SETTERS
     def setState(self,state:bool):
-        """ This method allows to change the state of a LED.
+        """" Sets the state of a LED.
         @param state  State of the LED.
         """
         if state!=self._state:
@@ -42,13 +42,13 @@ class LED(Actuator):
 
     # GETTERS
     def getState(self) -> bool:
-        """ This method is used to get the state of a LED.
+        """ Returns the state of a LED.
         @return  The state of the LED.
         """
         return self._state
 
     def getSpecifications(self) -> str:
-        """ This method allows to get specifications about a LED.
+        """ Returns specifications about a LED.
         @return  Specifications.
         """
         return f"Current state : {'ON' if self._state else 'OFF'}"

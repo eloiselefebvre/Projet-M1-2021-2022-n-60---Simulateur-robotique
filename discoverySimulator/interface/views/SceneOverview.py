@@ -1,7 +1,6 @@
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QPainter, QPen, QColor
 from PyQt5.QtWidgets import QWidget
-
 from discoverySimulator.config import colors
 
 
