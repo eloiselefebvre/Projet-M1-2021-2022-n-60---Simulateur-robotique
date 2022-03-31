@@ -95,6 +95,7 @@ class RL:
         for actionBuilder in self.__actionSpaceBuilders:
             actionSpace=self.__computeCombinations(actionSpace,[v for v in range(-actionBuilder["step"],2*actionBuilder["step"],actionBuilder["step"])])
         actionSpace = [tuple(action) for action in actionSpace]
+        print(actionSpace)
         return actionSpace
 
     def getStatesSpace(self):
@@ -158,19 +159,19 @@ class RL:
         total = sum(possibleActionCounts)
         return [(total - actionCount) / total for actionCount in possibleActionCounts]
 
-    def learn(self,reward:float,learnFromFuture:bool=True):
+    def learn(self,reward:float):
         self.__explorationRate *= self.__factors["explorationRateDecrease"]
-        self._learnQLearning(reward,learnFromFuture)
+        self._learnQLearning(reward)
         self.printTable("_QTable")
         print("exp:",self.__explorationRate)
 
-    def _learnQLearning(self, reward:float,learnFromFuture:bool):
+    def _learnQLearning(self, reward:float):
         """ This method is used to execute the action chosen and to learn (QLearning)
         @param reward  The reward of the action
         """
         nextState = self.getState()
         maxValue = max(self._QTable[nextState])
-        self._QTable[self.__state][self.__executedActionIndex] = (1 - self.__factors["learning"]) * self._QTable[self.__state][self.__executedActionIndex] + self.__factors["learning"] * (reward + ((self.__factors["discount"] * maxValue) if learnFromFuture else 0))
+        self._QTable[self.__state][self.__executedActionIndex] = (1 - self.__factors["learning"]) * self._QTable[self.__state][self.__executedActionIndex] + self.__factors["learning"] * (reward + self.__factors["discount"] * maxValue)
         self.__state = nextState
 
     def reset(self):

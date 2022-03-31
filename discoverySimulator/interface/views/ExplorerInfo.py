@@ -30,7 +30,8 @@ class ExplorerInfo(QWidget):
 
         if isinstance(self.__selectedObject, Robot):
             self.__layoutInfo.addWidget(self.showTrajectory())
-            self.__layoutInfo.addWidget(self.__showOdometry())
+            if self.__selectedObject.isOdometryEnabled():
+                self.__layoutInfo.addWidget(self.__showOdometry())
 
         self.__specificationsWidget = None
         if isinstance(self.__selectedObject, Component):

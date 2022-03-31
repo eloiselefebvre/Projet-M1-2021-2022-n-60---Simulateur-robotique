@@ -11,10 +11,14 @@ def reinforcementLearningTest():
 
     env=Environment(900,900)
     robot=CircularTwoWheelsRobot()
-    telemeter1 = Telemeter(maximumMeasurableDistance=40)
-    telemeter2 = Telemeter(maximumMeasurableDistance=40)
+    telemeter1 = Telemeter(maximumMeasurableDistance=30)
+    telemeter2 = Telemeter(maximumMeasurableDistance=30)
+    telemeter3 = Telemeter(maximumMeasurableDistance=30)
+    telemeter4 = Telemeter(maximumMeasurableDistance=30)
     robot.addComponent(telemeter1,0,20,20)
-    robot.addComponent(telemeter2,0,20,-20)
+    robot.addComponent(telemeter2,5,20,45)
+    robot.addComponent(telemeter3,0,20,-20)
+    robot.addComponent(telemeter4,-5,20,-45)
     env.addObject(robot,500,400,-90)
     env.addObject(CircularObstacle(40, "#ff8fff"), 600, 250)
     env.addObject(CircularObstacle(30, "#ff8fff"), 700, 200)
@@ -33,16 +37,16 @@ def reinforcementLearningTest():
             "getter": robot.getLeftWheel().getSpeed,
             "setter": robot.getLeftWheel().setSpeed,
             "min": -100,
-            "max": 300,
-            "intervals":4
+            "max": 100,
+            "intervals":2
         },
         {
             "id":robot.getRightWheel().getID(),
             "getter": robot.getRightWheel().getSpeed,
             "setter": robot.getRightWheel().setSpeed,
             "min": -100,
-            "max": 300,
-            "intervals":4
+            "max": 100,
+            "intervals":2
         }
     ]
 
@@ -54,19 +58,33 @@ def reinforcementLearningTest():
             "getter": telemeter1.getValue,
             "min":0,
             "max":telemeter1.getMaximumMesurableDistance(),
-            "intervals":2
+            "intervals":1
         },
         {
             "id": telemeter2.getID(),
             "getter": telemeter2.getValue,
             "min": 0,
             "max": telemeter2.getMaximumMesurableDistance(),
-            "intervals": 2
+            "intervals": 1
+        },
+        {
+            "id": telemeter3.getID(),
+            "getter": telemeter3.getValue,
+            "min": 0,
+            "max": telemeter3.getMaximumMesurableDistance(),
+            "intervals": 1
+        },
+        {
+            "id": telemeter4.getID(),
+            "getter": telemeter4.getValue,
+            "min": 0,
+            "max": telemeter4.getMaximumMesurableDistance(),
+            "intervals": 1
         }
     ]
 
     rl = RL(actionBuilders,spaceBuilders,{
-        "explorationRateDecrease":0.999,
+        "explorationRateDecrease":0.9999,
         "discount":0.8,
         "learning":0.5
     })
@@ -88,7 +106,7 @@ def reinforcementLearningTest():
             # action during 0.1 second to see the result of the action
             rl.execute()
 
-            time.sleep(0.1)
+            time.sleep(0.1/sim.getAcceleration())
 
             endPosition = (robot.getPose().getX(), robot.getPose().getY())
             endOrientation = robot.getPose().getOrientation()
@@ -111,11 +129,11 @@ def reinforcementLearningTest():
             # elif after_closest_obstacle <telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance() and after_closest_obstacle >= before_closest_obstacle:
             #     reward=0
             # else:
-
-            if not robot.getCollidedState():
-                rl.learn((robot.getLeftLinearSpeed()+robot.getRightLinearSpeed())/abs(robot.getLeftLinearSpeed()+robot.getRightLinearSpeed()+1)*10)
+            v=min([telemeter1.getValue(),telemeter2.getValue(),telemeter3.getValue(),telemeter4.getValue()])<telemeter1.getMaximumMesurableDistance()
+            if v<telemeter1.getMaximumMesurableDistance():
+                rl.learn(v)
             else:
-                rl.learn(-100,False)
+                rl.learn(robot.getLeftLinearSpeed() + robot.getRightLinearSpeed())
             # reward += (robot.getLeftLinearSpeed() + robot.getRightLinearSpeed()) / abs(robot.getLeftLinearSpeed() + robot.getRightLinearSpeed()+1) * distance/(1+(endOrientation-startOrientation)**2) * 0.6
             # print(reward)
         else:

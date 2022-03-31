@@ -10,15 +10,14 @@ class LIDAR(Telemeter):
 
     """ The LIDAR class provides ...."""
 
-    def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6):
-        """
-        This method is used to create a LIDAR
+    def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6,maximumMeasurableDistance:int=None,accuracy:float=1):
+        """ This method is used to create a LIDAR
         @param color  Color of the LIDAR
         @param scanRate  Scan rate of the LIDAR [rpm]
         @param angularRange  Angular range of the LIDAR [degrees]
         @param angularResolution  Angular resolution of the LIDAR [degrees]
         """
-        super().__init__(color)
+        super().__init__(color,maximumMeasurableDistance,accuracy)
         self._laser.getRepresentation().setVisible(False)
 
         self._representation.setShape(Circle(6, colors['LIDAR']))
@@ -31,6 +30,7 @@ class LIDAR(Telemeter):
         self.__angularResolution=int(angularResolution)
         self.__angularSteps = int(self.__angularRange / self.__angularResolution)
         self.__intersectionsBuffer = [None for _ in range(self.__angularSteps)]
+        self.__distances={}
         self.__bufferIndex = 0
         self.__stepPerSecond = int(self.__scanRate / 60 * 360 / self.__angularResolution)
 
@@ -43,7 +43,10 @@ class LIDAR(Telemeter):
         specifications += f"Angular Resolution : {self.__angularResolution}°<br>"
         specifications += f"Angular Range : {self.__angularRange}°<br>"
         specifications += f"Scan Rate : {self.__scanRate}rpm<br>"
-        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px</pre>"
+        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
+        if self._environment.isReal():
+            specifications+=f"Accuracy : ±{round(self._mesuringNoise*100,1)}%"
+        specifications += "</pre>"
         return specifications
 
     def refresh(self):
@@ -51,7 +54,7 @@ class LIDAR(Telemeter):
         for _ in range(steps_number):
             if self.getPose().getOrientation() < self.__angularRange / 2 or self.getPose().getOrientation() > 360 - self.__angularRange / 2:
                 if self.__intersectionsBuffer[self.__bufferIndex] is not None:
-                    self._environnement.removeVirtualObject(self.__intersectionsBuffer[self.__bufferIndex])
+                    self._environment.removeVirtualObject(self.__intersectionsBuffer[self.__bufferIndex])
 
                 intersection = self.getClosestCollisitionPointAndComputeDistance()
                 if intersection is not None:
@@ -59,9 +62,13 @@ class LIDAR(Telemeter):
                     point.setVisible(self.isVisible() and (self._parent.isVisible() if self._parent is not None else True))
                     self.__intersectionsBuffer[self.__bufferIndex] = point
                     point.setZIndex(2)
-                    self._environnement.addVirtualObject(point, intersection.x(), intersection.y())
+                    self._environment.addVirtualObject(point, intersection.x(), intersection.y())
+                    self.__distances[self.getPose().getOrientation()]=super().getValue()
 
-                self.__bufferIndex = (self.__bufferIndex + 1) % self.__angularSteps
+                self.__bufferIndex =(self.__bufferIndex + 1) % self.__angularSteps
             self.getPose().rotate(self.__angularResolution)
+
+    def getValue(self) -> dict:
+        return self.__distances
 
 

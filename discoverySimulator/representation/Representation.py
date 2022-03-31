@@ -6,13 +6,13 @@ class Representation:
 
     """ The Representation class provides ...."""
 
-    def __init__(self,shape):
+    def __init__(self,shape=None):
         """
         This method allows to add a representation of an object
         :param shape: shape of the object
         """
-        self.__shape=None
-        self.setShape(shape)
+        self.__shape=shape
+        self.setShape(self.__shape)
         self.__subRepresentations=[]
         self.__pose=None
         self.__visible = True

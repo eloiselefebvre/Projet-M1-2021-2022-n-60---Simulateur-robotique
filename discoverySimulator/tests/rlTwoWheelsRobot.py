@@ -42,11 +42,11 @@ def reinforcementLearningTest():
     sim.run()
     sim.showInterface()
 
-    initialPose = robot.getPose().copy()
-
-    learningTime = 6
-    start = sim.time()
-
+    # initialPose = robot.getPose().copy()
+    #
+    # learningTime = 6
+    # start = sim.time()
+    #
     # while True:
     #     current = sim.time()
     #     if current - start < learningTime:
