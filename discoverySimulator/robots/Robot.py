@@ -130,15 +130,15 @@ class Robot(ABC,Object):
             self._representation.addSubRepresentation(component.getRepresentation())
 
     def move(self):
-        self.updateTrajectory()
-        self.updateOdometry()
+        self.__updateTrajectory()
+        self.__updateOdometry()
         self.notifyObservers("stateChanged")
 
         if self._pathFollowing is not None:
             self._pathFollowing.followPath()
 
     # TRAJECTORY METHODS
-    def updateTrajectory(self):
+    def __updateTrajectory(self):
         if self.__trajectoryCounter==0:
             point = Object(Representation(Point(colors['trajectory'])))
             self.__trajectory.append(point)
@@ -148,25 +148,29 @@ class Robot(ABC,Object):
                 self.__trajectory[-1].setPose(Pose(self._pose.getX(), self._pose.getY()))
         self.__trajectoryCounter= (self.__trajectoryCounter + 1) % self.__NUMBER_CALLS_BEFORE_REFRESH
 
-    # TODO : Revoir le système et la bascule de drawTrajectory
-    def showTrajectory(self):
+    def __showTrajectory(self):
         # Shows the trajectory of a robot.
         for point in self.__trajectory:
             point_pose=point.getPose()
             self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
-    def hideTrajectory(self):
+    def __hideTrajectory(self):
         # Hides the trajectory of a robot.
         for point in self.__trajectory:
             self._environment.removeVirtualObject(point)
         self._drawTrajectory=False
 
     def deleteTrajectory(self):
-        self.hideTrajectory()
+        self.__hideTrajectory()
         self.__trajectory.clear()
+        self.__trajectoryCounter=0
 
     def toggleTrajectoryDrawn(self):
         self.__trajectoryDrawn = not self.__trajectoryDrawn
+        if self.__trajectoryDrawn:
+            self.__showTrajectory()
+            return
+        self.__hideTrajectory()
 
     # ODOMETRY METHODS
     def isOdometryEnabled(self):
@@ -189,7 +193,7 @@ class Robot(ABC,Object):
             self.__odometryPose=None
             self.deleteOdometry()
 
-    def updateOdometry(self):
+    def __updateOdometry(self):
         if self.__odometryEnabled:
             vd = self.getRightLinearSpeed()
             vg = self.getLeftLinearSpeed()
@@ -234,24 +238,29 @@ class Robot(ABC,Object):
                     self.__odometry[-1].setPose(Pose(self.__odometryPose.getX(), self.__odometryPose.getY()))
             self.__odometryCounter = (self.__odometryCounter + 1) % self.__NUMBER_CALLS_BEFORE_REFRESH
 
-    def showOdometry(self):
+    def __showOdometry(self):
         if self.__odometryEnabled:
             for point in self.__odometry:
                 point_pose = point.getPose()
                 self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
-    def hideOdometry(self):
+    def __hideOdometry(self):
         if self.__odometryEnabled:
             for point in self.__odometry:
                 self._environment.removeVirtualObject(point)
 
     def deleteOdometry(self):
         if self.__odometryEnabled:
-            self.hideOdometry()
+            self.__hideOdometry()
             self.__odometry.clear()
+            self.__odometryCounter=0
 
     def toggleOdometryDrawn(self):
         self.__odometryDrawn=not self.__odometryDrawn
+        if self.__odometryDrawn:
+            self.__showOdometry()
+            return
+        self.__hideOdometry()
 
     @abstractmethod
     def computeRotationCenter(self):

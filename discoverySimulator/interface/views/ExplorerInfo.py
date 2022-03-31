@@ -169,16 +169,8 @@ class ExplorerInfo(QWidget):
         if isinstance(self.__selectedObject, Robot):
             self.__selectedObject.toggleTrajectoryDrawn()
             self.__trajectoryButton.setState(self.__selectedObject.getTrajectoryDrawn())
-            if self.__selectedObject.getTrajectoryDrawn():
-                self.__selectedObject.showTrajectory()
-            else:
-                self.__selectedObject.hideTrajectory()
 
     def __clickedOdometryButton(self):
         if isinstance(self.__selectedObject, Robot):
             self.__selectedObject.toggleOdometryDrawn()
             self.__odometryButton.setState(self.__selectedObject.getOdometryDrawn())
-            if self.__selectedObject.getOdometryDrawn():
-                self.__selectedObject.showOdometry()
-            else:
-                self.__selectedObject.hideOdometry()
