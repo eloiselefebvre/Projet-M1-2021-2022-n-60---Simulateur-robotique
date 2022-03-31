@@ -5,12 +5,12 @@ import random
 
 class RectangularTwoWheelsRobot(TwoWheelsRobot):
 
-    """ The RectangleTwhoWheelsRobot class provides a rectangle two wheels robot"""
+    """ The RectangleTwhoWheelsRobot class provides a rectangular two wheels robot."""
 
     __DEFAULT_BORDER_RADIUS = 3
 
     def __init__(self, color=None, robotWidth:float=50, robotHeight:float=60, distanceBetweenWheels:float=50, wheelsRadius:float=10, wheelYPosition:float=0):
-        """ Constructs a rectangle two wheels robot
+        """ Constructs a rectangular two wheels robot.
         @param color  color of the robot
         @param robotWidth  width of the robot [px]
         @param robotHeight  height of the robot [px]

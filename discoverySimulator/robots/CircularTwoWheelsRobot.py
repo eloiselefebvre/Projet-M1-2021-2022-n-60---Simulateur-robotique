@@ -5,11 +5,10 @@ import random
 
 class CircularTwoWheelsRobot(TwoWheelsRobot):
 
-    """ The CircularTwoWheelsRobot class provides a circular two wheels robot"""
+    """ The CircularTwoWheelsRobot class provides a circular two wheels robot."""
 
     def __init__(self, color:str=None, robotRadius:int=28, distanceBetweenWheels:int=50, wheelsRadius:int=10, wheelYPosition:int=0):
-        """
-        Constructs a circle two wheels robot
+        """ Constructs a circle two wheels robot.
         @param color  color of the robot
         @param robotRadius  radius of the robot [px]
         @param distanceBetweenWheels  distance between wheels of the robot [px]

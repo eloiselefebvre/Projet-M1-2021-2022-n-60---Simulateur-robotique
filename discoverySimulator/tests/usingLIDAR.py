@@ -19,13 +19,13 @@ def LIDARTest():
     rob.setRightWheelSpeed(400)
     rob.setLeftWheelSpeed(400)
 
-    lidar2 = LIDAR()
+    lidar2 = LIDAR(accuracy=0.99)
     rob2 = RectangularTwoWheelsRobot()
     rob2.addComponent(lidar2)
     rob2.setRightWheelSpeed(200)
     rob2.setLeftWheelSpeed(400)
 
-    env = Environment(1500, 900)
+    env = Environment(1500, 900,'real')
     # env.addObject(rob, 400, 500)
     env.addObject(rob2, 900, 500)
     env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)

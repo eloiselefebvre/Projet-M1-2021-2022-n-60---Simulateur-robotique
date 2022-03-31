@@ -65,7 +65,7 @@ class Environment:
         return self.__size.width()
 
     def getHeight(self) -> int:
-        """ Return the height of the environment
+        """ Returns the height of the environment
         @return  The height of the environment [px]
         """
         return self.__size.height()

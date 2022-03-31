@@ -70,7 +70,6 @@ class Scene(QWidget,Observable):
                                      self.__pathFollowing.startFollowing)
                 self.__pathFollowing = None
 
-
         if event.button() == Qt.MiddleButton:
             self.__dragScene = True
             self.__dragSceneOrigin = event.pos()
@@ -87,7 +86,6 @@ class Scene(QWidget,Observable):
                 self.__selectedObj.setCollidedState(self.__selectedObjCollidedState)
             else:
                 self.__selectedObj.setCollidedState(False)
-            self.__selectedObj=None
 
     def mousePose(self):
         return self._convertedMousePose
@@ -107,7 +105,6 @@ class Scene(QWidget,Observable):
                 self.__selectedObj.deleteTrajectory()
                 self.__selectedObj.deleteOdometry()
                 self.__selectedObj.setOdometryPose(pose.copy())
-
         if self.__dragScene:
             current=event.pos()
             self.__zoomController.setOffset(self.__zoomController.getOffset() + (current - self.__dragSceneOrigin))
@@ -147,8 +144,9 @@ class Scene(QWidget,Observable):
 
 
     def __objectGrabbed(self):
-        for obj in self.__environment.getObjects():
-            obj.setSelected(False)
+        if self.__selectedObj is not None:
+            self.__selectedObj.setSelected(False)
+            self.__selectedObj=None
 
         if self.__pathFollowing is None:
             objects = sorted(self.__environment.getObjects(), key=lambda obj:obj.getZIndex())

@@ -8,7 +8,7 @@ from ..config import config, colors
 
 class LIDAR(Telemeter):
 
-    """ The LIDAR class provides a LIDAR"""
+    """ The LIDAR class provides a LIDAR."""
 
     def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6,maximumMeasurableDistance:int=None,accuracy:float=1):
         """ Constructs a LIDAR
@@ -36,16 +36,13 @@ class LIDAR(Telemeter):
 
     # GETTERS
     def getSpecifications(self) -> str:
-        """ Returns specifications about the LIDAR
-        @return  Specifications about the LIDAR
-        """
         specifications = "<pre>"
         specifications += f"Angular Resolution : {self.__angularResolution}°<br>"
         specifications += f"Angular Range : {self.__angularRange}°<br>"
         specifications += f"Scan Rate : {self.__scanRate}rpm<br>"
         specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
         if self._environment.isReal():
-            specifications+=f"Accuracy : ±{round(self._mesuringNoise*100,1)}%"
+            specifications+=f"<br>Accuracy : ±{round(self._mesuringNoise*100,1)}%"
         specifications += "</pre>"
         return specifications
 

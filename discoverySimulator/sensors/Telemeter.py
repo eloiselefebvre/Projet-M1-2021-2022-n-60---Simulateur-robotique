@@ -9,12 +9,12 @@ from discoverySimulator.representation.shapes import Rectangle, Line
 
 class Telemeter(Sensor):
 
-    """ The Telemeter class provides a telemeter"""
+    """ The Telemeter class provides a telemeter."""
 
     __DEFAULT_MAXIMUM_MEASURABLE_DISTANCE = 20000
 
     def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=None,accuracy:float=1):
-        """ Constructs a new telemeter
+        """ Constructs a new telemeter.
         @param color  Color of the telemeter
         """
         self._color = color
@@ -31,7 +31,7 @@ class Telemeter(Sensor):
 
     # GETTERS
     def getValue(self) -> float:
-        """ Returns the value of the telemeter
+        """ Returns the value of the telemeter.
         @return  Value of the telemeter
         """
         dist=self._distance
@@ -44,9 +44,9 @@ class Telemeter(Sensor):
 
     def getSpecifications(self) -> str:
         specifications=f"Current measured distance : {round(self.getValue(),1)}px<br><pre>"
-        specifications+=f"Measurement Range : 0px-{self._maximumMesurableDistance}px<br>"
+        specifications+=f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
         if self._environment.isReal():
-            specifications+=f"Accuracy : ±{round(self._mesuringNoise*100,1)}%"
+            specifications+=f"<br>Accuracy : ±{round(self._mesuringNoise*100,1)}%"
         specifications+="</pre>"
         return specifications
 

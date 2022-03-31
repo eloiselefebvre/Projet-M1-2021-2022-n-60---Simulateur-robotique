@@ -15,12 +15,12 @@ from ..sensors import Sensor
 
 class Robot(ABC,Object):
 
-    """ The Robot class provides a robot"""
+    """ The Robot class provides a robot."""
 
     __NUMBER_CALLS_BEFORE_REFRESH = 30
 
     def __init__(self,representation):
-        """ Constructs a new robot
+        """ Constructs a new robot.
         @param representation Representation of the robot
         """
         super().__init__(representation)
@@ -59,28 +59,28 @@ class Robot(ABC,Object):
 
     # GETTERS
     def getComponents(self) -> List[Component]:
-        """ Returns all components
+        """ Returns all components.
         @return All components of the robot
         """
         return self._components
 
     @abstractmethod
     def getLeftLinearSpeed(self) -> float:
-        """ Returns the left linear speed
+        """ Returns the left linear speed.
         @return  The left linear speed
         """
         pass
 
     @abstractmethod
     def getRightLinearSpeed(self) -> float:
-        """ Returns the right linear speed
+        """ Returns the right linear speed.
         @return  The right linear speed
         """
         pass
 
     @abstractmethod
     def getDistanceBetweenWheels(self) -> float:
-        """ Returns distance between wheels
+        """ Returns the distance between wheels.
         @return  The distance between wheels
         """
         pass
@@ -95,7 +95,7 @@ class Robot(ABC,Object):
         return self.__odometryPose
 
     def getWheels(self) -> List[Wheel]:
-        """ Returns all the wheels of a robot
+        """ Returns all the wheels of a robot.
         @return  All the wheels of the robot
         """
         return self._wheels
@@ -150,15 +150,13 @@ class Robot(ABC,Object):
 
     # TODO : Revoir le système et la bascule de drawTrajectory
     def showTrajectory(self):
-        """ Shows the trajectory of a robot
-        """
+        # Shows the trajectory of a robot.
         for point in self.__trajectory:
             point_pose=point.getPose()
             self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideTrajectory(self):
-        """ Hides the trajectory of a robot
-        """
+        # Hides the trajectory of a robot.
         for point in self.__trajectory:
             self._environment.removeVirtualObject(point)
         self._drawTrajectory=False
@@ -237,17 +235,20 @@ class Robot(ABC,Object):
             self.__odometryCounter = (self.__odometryCounter + 1) % self.__NUMBER_CALLS_BEFORE_REFRESH
 
     def showOdometry(self):
-        for point in self.__odometry:
-            point_pose = point.getPose()
-            self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
+        if self.__odometryEnabled:
+            for point in self.__odometry:
+                point_pose = point.getPose()
+                self._environment.addVirtualObject(point, point_pose.getX(), point_pose.getY())
 
     def hideOdometry(self):
-        for point in self.__odometry:
-            self._environment.removeVirtualObject(point)
+        if self.__odometryEnabled:
+            for point in self.__odometry:
+                self._environment.removeVirtualObject(point)
 
     def deleteOdometry(self):
-        self.hideOdometry()
-        self.__odometry.clear()
+        if self.__odometryEnabled:
+            self.hideOdometry()
+            self.__odometry.clear()
 
     def toggleOdometryDrawn(self):
         self.__odometryDrawn=not self.__odometryDrawn
