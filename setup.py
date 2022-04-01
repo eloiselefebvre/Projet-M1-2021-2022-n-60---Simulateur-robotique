@@ -5,15 +5,9 @@ setup(
     name="discoverysimulator",
     version="1.0",
     description="Description",
-    packages=find_packages(
-        where='discoverySimulator',
-        include=['*']
-    ),
-    package_dir={"": "discoverySimulator"},
-    install_requires=[
-        "PyQt5"
-    ],
-    keywords="robotic python",
+    packages=find_packages(),
+    install_requires=["PyQt5"],
+    keywords="robotic python students simulator",
     author="...",
     author_email="...",
     package_data={
