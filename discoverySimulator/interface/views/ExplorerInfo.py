@@ -3,7 +3,7 @@ from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 from discoverySimulator import Component
 from discoverySimulator.obstacles.Obstacle import Obstacle
-from discoverySimulator.config import config, colors
+from discoverySimulator.config import *
 from discoverySimulator.interface.components.Button import VisibilityButton
 from discoverySimulator.robots.Robot import Robot
 from discoverySimulator.sensors.Sensor import Sensor
@@ -84,7 +84,7 @@ class ExplorerInfo(QWidget):
         positionWidgetLayout = QHBoxLayout(positionWidgetContainer)
 
         positionIcon=QLabel()
-        icon=QPixmap(f"{config['ressourcesPath']}/infos/position.svg")
+        icon=QPixmap(os.path.join(config["ressourcesPath"],'infos','position.svg'))
         positionIcon.setPixmap(icon)
         positionIcon.setFixedWidth(48)
         positionIcon.setStyleSheet("border:none;")
@@ -101,7 +101,7 @@ class ExplorerInfo(QWidget):
         orientationWidgetLayout = QHBoxLayout(orientationWidgetContainer)
 
         orientationIcon = QLabel()
-        icon2 = QPixmap(f"{config['ressourcesPath']}/infos/orientation.svg")
+        icon2 = QPixmap(os.path.join(config["ressourcesPath"],'infos','orientation.svg'))
         orientationIcon.setPixmap(icon2)
         orientationIcon.setFixedWidth(42)
         orientationIcon.setStyleSheet("border:none;")
@@ -129,13 +129,13 @@ class ExplorerInfo(QWidget):
         labelIcon = QLabel()
 
         if isinstance(self.__selectedObject, Robot):
-            icon = QPixmap(f"{config['ressourcesPath']}/objects/robot.svg")
+            icon = QPixmap(os.path.join(config["ressourcesPath"],'objects','robot.svg'))
         elif isinstance(self.__selectedObject, Obstacle):
-            icon = QPixmap(f"{config['ressourcesPath']}/objects/obstacle.svg")
+            icon = QPixmap(os.path.join(config["ressourcesPath"],'objects','obstacle.svg'))
         elif isinstance(self.__selectedObject, Sensor):
-            icon = QPixmap(f"{config['ressourcesPath']}/objects/sensor.svg")
+            icon = QPixmap(os.path.join(config["ressourcesPath"],'objects','sensor.svg'))
         else: # actuator
-            icon = QPixmap(f"{config['ressourcesPath']}/objects/actuator.svg")
+            icon = QPixmap(os.path.join(config["ressourcesPath"],'objects','actuator.svg'))
 
         labelIcon.setPixmap(icon)
         labelIcon.setFixedWidth(24)

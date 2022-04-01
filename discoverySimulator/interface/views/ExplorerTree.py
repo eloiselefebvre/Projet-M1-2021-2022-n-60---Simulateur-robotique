@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QFont, QIcon
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
-from discoverySimulator.config import config, colors
+from discoverySimulator.config import *
 from discoverySimulator.interface.components.Button import VisibilityButton
 from discoverySimulator.Object import Object
 from discoverySimulator.robots.Robot import Robot
@@ -77,12 +77,12 @@ class ExplorerTree(QTreeWidget):
                         sensors = [comp  for comp in obj.getComponents() if isinstance(comp,Sensor)]
                         if (Sensor in self.__itemsShown and sensors) or (Actuator in self.__itemsShown and len(obj.getComponents()) - len(sensors) != 0):
                             parent = Item(self, obj.getID(), 12, setBold=True)
-                            parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/robotDisabled.svg"))
+                            parent.setIcon(0,QIcon(os.path.join(config["ressourcesPath"],'objects','robotDisabled.svg')))
                             self.__visibilityButtons.append(None)
                     else:
                         parent = Item(self, obj.getID(), 12, setBold=True)
                         classname = [item for item in self.__itemsShown if isinstance(obj, item)][0].__name__
-                        parent.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
+                        parent.setIcon(0,QIcon(os.path.join(config["ressourcesPath"],'objects',f'{classname.lower()}.svg')))
                         self.__visibilityButtons.append(VisibilityButton(obj.isVisible()))
                         self.setItemWidget(parent, 1, self.__visibilityButtons[-1])
                     if parent is not None:
@@ -105,7 +105,7 @@ class ExplorerTree(QTreeWidget):
                                     self.__allObjects.append(comp)
                                     parent.addChild(child)
                                     classname = [item for item in self.__itemsShown if isinstance(comp, item)][0].__name__
-                                    child.setIcon(0,QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"))
+                                    child.setIcon(0,QIcon(os.path.join(config["ressourcesPath"],'objects',f'{classname.lower()}.svg')))
         for button in self.__visibilityButtons:
             if button is not None:
                 button.clicked.connect(self.toggleObjectVisibily)
@@ -160,6 +160,7 @@ class ExplorerTree(QTreeWidget):
         if sender in self.__allObjects:
             button=self.__visibilityButtons[self.__allObjects.index(sender)]
             button.setState(sender.isVisible())
+
             if sender in self.__mainObjects:
                 children_buttons = self.__childrenButtons[self.__mainObjects.index(sender)]
                 if sender.isVisible():
@@ -173,6 +174,7 @@ class ExplorerTree(QTreeWidget):
         button = self.sender()
         obj = self.__allObjects[self.__visibilityButtons.index(button)]
         obj.toggleVisible()
+
 
 class Item(QTreeWidgetItem):
 

@@ -59,7 +59,7 @@ class Object(Observable):
     def setVisible(self, visible:bool):
         if not self._visibilityLocked:
             self._representation.setVisible(visible)
-            self.visibylityChanged()
+            self.visibilityChanged()
 
     def setVisibilityLocked(self,state:bool):
         self._visibilityLocked=state
@@ -136,9 +136,9 @@ class Object(Observable):
     def toggleVisible(self):
         if not self._visibilityLocked:
             self._representation.toggleVisible()
-            self.visibylityChanged()
+            self.visibilityChanged()
 
-    def visibylityChanged(self):
+    def visibilityChanged(self):
         self.notifyObservers("visibilityChanged")
 
     def completeID(self):

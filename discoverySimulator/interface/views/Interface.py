@@ -1,7 +1,8 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QGridLayout
 from discoverySimulator.ZoomController import ZoomController
-from discoverySimulator.config import colors
+from discoverySimulator.config import *
 from discoverySimulator.interface.views.Footer import Footer
 from discoverySimulator.interface.views.Scene import Scene
 from discoverySimulator.interface.views.Explorer import Explorer
@@ -15,6 +16,7 @@ class Interface(QMainWindow):
         self.__simulation = simulation
         self.__environment = environment
         self.setWindowTitle("Discovery Simulator")
+        self.setWindowIcon(QIcon(os.path.join(config["ressourcesPath"],'window.svg')))
         self.__toolbar = Toolbar()
         general_widget=QWidget()
         general_layout=QGridLayout(general_widget)

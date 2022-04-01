@@ -65,13 +65,13 @@ def collisionAndTelemeter():
     env = Environment(1500,900,'real')
     # env.addObject(rob1, 1000, 100, 30)
     env.addObject(rob2, 1050, 300, -45)
-    # env.addObject(rob3, 500, 500, 45)
-    # env.addObject(rob4, 700, 500, 90)
-    # env.addObject(rob5, 700, 180, 90)
-    # env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
+    env.addObject(rob3, 500, 500, 45)
+    env.addObject(rob4, 700, 500, 90)
+    env.addObject(rob5, 700, 180, 90)
+    env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
     # env.addObject(Telemeter(accuracy=0.9),500,4)
     # env.addObject(polygon,100,100)
-    # env.addVirtualObject(CircularObstacle(50,'#ff8f8f'),600,600)
+    env.addVirtualObject(CircularObstacle(50,'#ff8f8f'),600,600)
 
     sim = Simulation(env)
     ledState = 0

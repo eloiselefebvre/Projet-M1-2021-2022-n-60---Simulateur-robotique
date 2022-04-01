@@ -144,9 +144,9 @@ class Scene(QWidget,Observable):
 
 
     def __objectGrabbed(self):
-        if self.__selectedObj is not None:
-            self.__selectedObj.setSelected(False)
-            self.__selectedObj=None
+        self.__selectedObj = None
+        for obj in self.__environment.getObjects():
+            obj.setSelected(False)
         if self.__pathFollowing is None:
             objects = sorted(self.__environment.getObjects(), key=lambda obj:obj.getZIndex())
             objects.reverse()

@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QMenuBar, QAction, QLabel, \
     QWidgetAction, QLineEdit, QVBoxLayout, QToolBar
 
-from discoverySimulator.config import config, colors
+from discoverySimulator.config import *
 
 
 class Footer(QToolBar):
@@ -59,7 +59,7 @@ class Footer(QToolBar):
         self._zoomMenu=zoomMenuBar.addMenu("")
         self._zoomMenu.aboutToShow.connect(self.menuOpened)
 
-        self._zoomMenu.setIcon(QIcon(f"{config['ressourcesPath']}/footer/arrowUp.svg"))
+        self._zoomMenu.setIcon(QIcon(os.path.join(config["ressourcesPath"],'footer','arrowUp.svg')))
 
         # ACTIONS
         zoom_in = QAction("Zoom in", self)
@@ -103,7 +103,7 @@ class Footer(QToolBar):
         self._scale_text.setFont(fnt)
         self._scale_text.setAlignment(Qt.AlignCenter)
         scaleIcon = QLabel()
-        scaleIcon.setPixmap(QPixmap(f"{config['ressourcesPath']}/footer/scale.svg"))
+        scaleIcon.setPixmap(QPixmap(os.path.join(config["ressourcesPath"],'footer','scale.svg')))
         scaleIcon.setFixedSize(100, 12)
 
         scaleLayout.addWidget(self._scale_text)
@@ -127,7 +127,7 @@ class Footer(QToolBar):
         self._pose_text.setFont(fnt)
 
         poseIcon = QLabel()
-        poseIcon.setPixmap(QPixmap(f"{config['ressourcesPath']}/footer/mousePose.svg"))
+        poseIcon.setPixmap(QPixmap(os.path.join(config["ressourcesPath"],'footer','mousePose.svg')))
 
         poseLayout.addWidget(poseIcon)
         poseLayout.addWidget(self._pose_text)

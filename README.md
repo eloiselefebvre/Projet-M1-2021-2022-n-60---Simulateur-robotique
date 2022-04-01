@@ -4,7 +4,7 @@ discoverySimulator is a Python package where an environment can be simulate with
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install discoverySimulator.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install discoverySimulator:
 
 ```bash
 pip install discoverySimulator

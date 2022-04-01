@@ -125,7 +125,7 @@ class Robot(ABC,Object):
         if self._pathFollowing is not None:
             self._pathFollowing.followPath()
 
-    def visibylityChanged(self):
+    def visibilityChanged(self):
         for comp in self._components:
             comp.setVisibilityLocked(not self.isVisible())
         if not self.isVisible():
@@ -135,7 +135,7 @@ class Robot(ABC,Object):
             if self.__trajectoryDrawn:
                 self.__trajectoryDrawn=False
                 self.__hideTrajectory()
-        super().visibylityChanged()
+        super().visibilityChanged()
 
     # TRAJECTORY METHODS
     def __updateTrajectory(self):

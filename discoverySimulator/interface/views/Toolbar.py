@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, QWidgetAction
 from discoverySimulator.Observable import Observable
-from discoverySimulator.config import config, colors
+from discoverySimulator.config import *
 from discoverySimulator.interface.components.Button import Button, PlayButton
 from discoverySimulator.interface.views.About import About
 from discoverySimulator.robots import Robot
@@ -20,7 +20,7 @@ class Toolbar(QToolBar,Observable):
         self.setStyleSheet("*{background-color: #21212f;color:#f0f0f0;border:none;}"
                            "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}"
                            "QPushButton:hover{background-color:#323247;}"
-                           "QPushButton:pressed{background-color:#4C4C68;}")
+                           "QPushButton:pressed{background-color:#4C4C68;}") # TODO : Handle in Button class if possible
         self.__acceleration = 1.0
         self.__playState = True
         self.__robotTitleWidget=None
@@ -82,7 +82,7 @@ class Toolbar(QToolBar,Observable):
         about_layout.setSpacing(0)
         about.setContentsMargins(4, 0, 4, 0)
         about_button = Button()
-        about_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/info.svg"))
+        about_button.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','about.svg')))
         about_button.setIconSize(QSize(22, 22))
         about_button.clicked.connect(self.__openPopUp)
         about_button.setToolTip("About")
@@ -96,8 +96,8 @@ class Toolbar(QToolBar,Observable):
 
     def __createTimerWidget(self) -> QWidget:
         timer_icon=QLabel()
-        timer_icon.setStyleSheet(f"image: url({config['ressourcesPath']}/toolbar/timer.svg);"
-                                 f"image-repeat:no-repeat; image-position:center; image-size:contain;")
+        timer_icon.setStyleSheet("image: url("+os.path.join(config['ressourcesPath'],'toolbar','timer.svg').replace('\\','/')+");"
+                                 "image-repeat:no-repeat; image-position:center; image-size:contain;")
         timer_icon.setFixedWidth(16)
 
         timer = QWidget()
@@ -128,7 +128,7 @@ class Toolbar(QToolBar,Observable):
         acceleration.setContentsMargins(4,0,4,0)
 
         decrease_button = Button()
-        decrease_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/decreaseAcceleration.svg"))
+        decrease_button.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','decreaseAcceleration.svg')))
         decrease_button.setToolTip("Decrease Acceleration")
         decrease_button.clicked.connect(self.__clickedDecreaseAcceleration)
 
@@ -141,7 +141,7 @@ class Toolbar(QToolBar,Observable):
         self.__accelerationChanged()
 
         increase_button=Button()
-        increase_button.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/increaseAcceleration.svg"))
+        increase_button.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','increaseAcceleration.svg')))
         increase_button.setToolTip("Increase Acceleration")
         increase_button.clicked.connect(self.__clickedIncreaseAcceleration)
 
@@ -217,7 +217,7 @@ class Toolbar(QToolBar,Observable):
         widget=QWidgetAction(self)
         self.__pathFollowingButton = Button()
         widget.setDefaultWidget(self.__pathFollowingButton)
-        self.__pathFollowingButton.setIcon(QIcon(f"{config['ressourcesPath']}/toolbar/goTo.svg"))
+        self.__pathFollowingButton.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','goTo.svg')))
         self.__pathFollowingButton.setToolTip("Go To")
         self.__pathFollowingButton.clicked.connect(self.__clickedFollowPath)
         return widget
