@@ -63,7 +63,7 @@ def collisionAndTelemeter():
     polygon=Object(Representation(Polygon([(300,200),(400,200),(500,300),(400,350),(350,300)],"#f0f")))
 
     env = Environment(1500,900,'real')
-    # env.addObject(rob1, 1000, 100, 30)
+    env.addObject(rob1, 1000, 100, 30)
     env.addObject(rob2, 1050, 300, -45)
     env.addObject(rob3, 500, 500, 45)
     env.addObject(rob4, 700, 500, 90)

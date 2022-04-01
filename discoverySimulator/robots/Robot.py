@@ -35,6 +35,7 @@ class Robot(ABC,Object):
 
         # ODOMETRY ATTRIBUTES
         self.__odometryEnabled=False
+        self.__odometryDrawn = False
 
         self._pathFollowing=None
         self._isSpeedLocked=False
@@ -181,7 +182,6 @@ class Robot(ABC,Object):
             self.__odometryEnabled=True
             self.__odometry = []
             self.__odometryCounter = 0
-            self.__odometryDrawn = False
             self.__odometryPose=None
             self.__odometryNoise=1-(accuracy if 0<=accuracy<=1 else 1)
             if self._pose is not None:
@@ -190,6 +190,7 @@ class Robot(ABC,Object):
     def disableOdometry(self):
         if self.__odometryEnabled:
             self.__odometryEnabled=False
+            self.__odometryDrawn = False
             self.__odometryPose=None
             self.deleteOdometry()
 
