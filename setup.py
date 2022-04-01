@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     # ...
     name="discoverysimulator",
-    version="0.1",
+    version="1.0",
     description="Description",
     packages=find_packages(
         where='discoverySimulator',
