@@ -26,6 +26,7 @@ myRobot.setLeftWheelSpeed(200)
 environmentWidth = 1500
 environmentHeight = 1500
 myEnvironment = Environment(environmentWidth,environmentHeight)
+myEnvironment.addObject(myRobot,200,200,90)
 
 # create and run simulation 
 mySimulation = Simulation(myEnvironment)
@@ -33,7 +34,7 @@ mySimulation.run()
 mySimulation.showInterface()
 ```
 ### Output 
-
+![](output.png)
 
 
 ## Contributing
