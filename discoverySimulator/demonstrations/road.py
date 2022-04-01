@@ -73,5 +73,5 @@ def roadDemo():
             # print("Out of path !")
             robot.setLeftWheelSpeed(0)
             robot.setRightWheelSpeed(0)
-
-        time.sleep(.01)
+        print("ok")
+        sim.sync()

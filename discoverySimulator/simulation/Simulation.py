@@ -23,6 +23,7 @@ class Simulation(Observable):
         self.__acceleration = 1
         self.__timeElapsed = 0.0
         self.__playState=True
+        self.__hasBeenRefreshed=False
 
     # SETTERS
     def setAcceleration(self, acceleration:float): # TODO : Notify toolsbar
@@ -61,6 +62,16 @@ class Simulation(Observable):
             self.__interface.close()
         # TODO : fermer également l'application ?
 
+    def sleep(self,delay):
+        start = time.time()
+        while time.time()-start<delay/self.__acceleration:
+            time.sleep(0.001)
+
+    def sync(self):
+        while not self.__hasBeenRefreshed:
+            time.sleep(0.001)
+        self.__hasBeenRefreshed=False
+
     # NOTIFY METHOD
     def updateAcceleration(self,sender):
         self.__acceleration=sender.getAcceleration()
@@ -77,13 +88,15 @@ class Simulation(Observable):
 
                 # ROBOT UPDATE
                 if self.__playState:
-                    config["real_update_time_step"]=current - start_update
+                    config["real_update_time_step"]=current - start_update # TODO : Handle acceleration here -> remove to object
                     self.__timeElapsed += config["real_update_time_step"] * self.__acceleration
 
                     self.notifyObservers("timeChanged")
                     for obj in self.__environment.getObjects():
                         if hasattr(obj, "move"):
                             obj.move()
+
+                    self.__hasBeenRefreshed=True
 
                 # SENSOR UPDATE
                 for sensor in self.__environment.getSensors():

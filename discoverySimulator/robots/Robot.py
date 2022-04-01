@@ -1,14 +1,15 @@
 import random
 from abc import ABC,abstractmethod
 from typing import List
+from math import cos, sin, radians, degrees, atan
+
 
 from .. import Object
 from ..Component import Component
 from ..actuators import Wheel
 from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
-from math import cos, sin, radians, degrees, atan
-from discoverySimulator.config import config, colors
+from ..config import *
 from ..Pose import Pose
 from ..sensors import Sensor
 
@@ -21,7 +22,7 @@ class Robot(ABC,Object):
 
     def __init__(self,representation):
         """ Constructs a new robot.
-        @param representation Representation of the robot"""
+        @param representation  Representation of the robot"""
         super().__init__(representation)
         self._components=[]
         self._sensors_counter=0
@@ -97,11 +98,11 @@ class Robot(ABC,Object):
         return self.getRepresentation().getShape().getBoundingBox().getHeigt()
 
     def addComponent(self, component:Component, x:float=0, y:float=0, orientation:float=0):
-        """ Adds a component of a robot.
-        @param component: component to add to the robot
+        """ Adds a component to a robot.
+        @param component  Component to add to the robot
         @param x  x coordinate of the component on the robot [px]
         @param y  y coordinate of the component on the robot [px]
-        @param orientation  orientation of the component on the robot [degrees]"""
+        @param orientation  Orientation of the component on the robot [degrees]"""
         if isinstance(component, Component):
             pose=Pose(-x,y,orientation)
             component.setPose(pose)

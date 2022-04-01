@@ -54,7 +54,7 @@ class Footer(QToolBar):
 
         zoomMenuBar=QMenuBar()
         zoomMenuBar.setContentsMargins(0,0,0,0)
-        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:"+colors['widgetBorder']+";}")
+        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:"+colors['borderColor']+"; color:#fff;}")
 
         self._zoomMenu=zoomMenuBar.addMenu("")
         self._zoomMenu.aboutToShow.connect(self.menuOpened)

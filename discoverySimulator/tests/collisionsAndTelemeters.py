@@ -75,18 +75,15 @@ def collisionAndTelemeter():
 
     sim = Simulation(env)
     ledState = 0
-    start = sim.time()
     sim.run()
     sim.showInterface()
 
     while True:
-        current = sim.time()
-        if current-start>1:
-            start=current
-            ledState=not ledState
-            led.setState(ledState)
-            led2.setState(not ledState)
-            led3.setState(ledState)
-            led4.setState(ledState)
+        ledState=not ledState
+        led.setState(ledState)
+        led2.setState(not ledState)
+        led3.setState(ledState)
+        led4.setState(ledState)
+        sim.sleep(1)
 
-        time.sleep(.01)
+        sim.sync()
