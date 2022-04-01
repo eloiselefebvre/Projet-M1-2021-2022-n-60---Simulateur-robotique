@@ -137,6 +137,18 @@ class Robot(ABC,Object):
         if self._pathFollowing is not None:
             self._pathFollowing.followPath()
 
+    def visibylityChanged(self):
+        for comp in self._components:
+            comp.setVisibilityLocked(not self.isVisible())
+        if not self.isVisible():
+            if self.__odometryDrawn:
+                self.__odometryDrawn=False
+                self.__hideOdometry()
+            if self.__trajectoryDrawn:
+                self.__trajectoryDrawn=False
+                self.__hideTrajectory()
+        super().visibylityChanged()
+
     # TRAJECTORY METHODS
     def __updateTrajectory(self):
         if self.__trajectoryCounter==0:
@@ -212,17 +224,17 @@ class Robot(ABC,Object):
             if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
                 R = e * (vd + vg) / (vd - vg)
                 # calcul des coordonnées du centre du cercle trajectoire
-                x0 = x - R * cos(radians(self.__odometryPose.getOrientation()))
-                y0 = y - R * sin(radians(self.__odometryPose.getOrientation()))
+                x0 = x + R * cos(radians(self.__odometryPose.getOrientation()))
+                y0 = y + R * sin(radians(self.__odometryPose.getOrientation()))
 
                 # calcul position du robot
-                dTheta = d / R
+                dTheta =-d/R
                 self.__odometryPose.rotate(degrees(dTheta))
-                self.__odometryPose.move(x0 + R * cos(radians(self.__odometryPose.getOrientation())),
-                                         y0 + R * sin(radians(self.__odometryPose.getOrientation())))
+                self.__odometryPose.move(x0 - R * cos(radians(self.__odometryPose.getOrientation())),
+                                         y0 - R * sin(radians(self.__odometryPose.getOrientation())))
             elif vd==-vg: # robot tourne sur place
                 dd=vd * config["real_update_time_step"]*self._acceleration/60
-                dTheta=atan(dd/e)
+                dTheta=-atan(dd/e)
                 self.__odometryPose.rotate(degrees(dTheta))
             else: # robot en ligne droite
                 nx=x-d * sin(radians(self.__odometryPose.getOrientation()))

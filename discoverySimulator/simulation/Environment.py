@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QSize
-from discoverySimulator import Object, Pose
+from discoverySimulator.Object import Object
+from discoverySimulator.Pose import Pose
 from discoverySimulator.Frame import Frame
 from discoverySimulator.config import colors
 from discoverySimulator.representation import Representation

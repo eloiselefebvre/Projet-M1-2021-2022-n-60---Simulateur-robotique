@@ -15,6 +15,7 @@ def road():
     TURN_SPEED=100
 
     rob1 = RectangularTwoWheelsRobot()
+    rob1.enableOdometry()
 
     colorSensorRight=ColorSensor()
     colorSensorLeft=ColorSensor()
@@ -23,14 +24,16 @@ def road():
     rob1.addComponent(colorSensorLeft,-5,25)
 
     env=Environment(1200,800)
+    polygon=Polygon([(200,500),(300,450),(350,300),(450,250),(550,330),(800,150),(900,160),(950,220),(900,400),(860,430),(780,420),(720,450),
+                                           (640,560),(550,610),(400,560),(250,620),(200,580)],"#444")
+
+    env.addVirtualObject(Object(Representation(polygon)))
+    polygonOffset = polygon.offset(-30)
+    polygonOffset.setColor("#f0f0f0")
+    env.addVirtualObject(Object(Representation(polygonOffset)))
+
     env.addObject(rob1,250,250)
-    # polygon=Polygon([(200,500),(300,450),(350,300),(450,250),(550,330),(800,150),(900,160),(950,220),(900,400),(860,430),(780,420),(720,450),
-    #                                        (640,560),(550,610),(400,560),(250,620),(200,580)],"#444")
-    #
-    # env.addObject(Object(Representation(polygon)))
-    # polygonOffset = polygon.offset(-30)
-    # polygonOffset.setColor("#f0f0f0")
-    # env.addObject(Object(Representation(polygonOffset)))
+
 
     sim = Simulation(env)
     sim.run()
@@ -48,8 +51,8 @@ def road():
             rob1.setLeftWheelSpeed(TURN_SPEED)
             rob1.setRightWheelSpeed(-TURN_SPEED)
         else:
-            # print("Out of path !")
             rob1.setLeftWheelSpeed(0)
             rob1.setRightWheelSpeed(0)
+        print(rob1.getOdometryPose().getX(),rob1.getOdometryPose().getY(),rob1.getOdometryPose().getOrientation())
 
-        time.sleep(.01)
+        time.sleep(.01) # TODO : handle in sim

@@ -4,7 +4,7 @@ from discoverySimulator.representation.Representation import Representation
 
 class Component(ABC,Object):
 
-    """ The Component class provides a compoennt"""
+    """ The Component class provides a component"""
 
     def __init__(self,representation):
         """ Constructs a component.

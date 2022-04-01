@@ -149,7 +149,7 @@ class Object(Observable):
         """
         return self._environment
 
-    def getCollidedState(self) -> bool:
+    def isCollided(self) -> bool:
         return self._isCollided
 
     def getIntersectionsWith(self,obj) -> List[QPointF]:
@@ -170,16 +170,6 @@ class Object(Observable):
             self.visibylityChanged()
 
     def visibylityChanged(self):
-        if hasattr(self,'getComponents'):
-            for comp in self.getComponents():
-                comp.setVisibilityLocked(not self.isVisible())
-            if not self.isVisible():
-                if self.getOdometryDrawn():
-                    self.hideOdometry()
-                    self.toggleOdometryDrawn()
-                if self.getTrajectoryDrawn():
-                    self.hideTrajectory()
-                    self.toggleTrajectoryDrawn()
         self.notifyObservers("visibilityChanged")
 
     def completeID(self):
@@ -191,7 +181,7 @@ class Object(Observable):
         """
         return self._isSelected
 
-    def isCollided(self):
+    def computeCollisions(self):
         if not self._isCollided:
             for obj in self._environment.getObjects():
                 if self!=obj and self.isCollidedWith(obj):

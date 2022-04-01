@@ -29,9 +29,10 @@ class ExplorerInfo(QWidget):
             self.__layoutInfo.addWidget(self.positionInformations())
 
         if isinstance(self.__selectedObject, Robot):
-            self.__layoutInfo.addWidget(self.showTrajectory())
-            if self.__selectedObject.isOdometryEnabled():
-                self.__layoutInfo.addWidget(self.__showOdometry())
+            self.__layoutInfo.addWidget(self.__createTrajectoryWidget())
+            sh=self.__createOdometryWidget()
+            if sh is not None:
+                self.__layoutInfo.addWidget(sh)
 
         self.__specificationsWidget = None
         if isinstance(self.__selectedObject, Component):
@@ -41,7 +42,7 @@ class ExplorerInfo(QWidget):
             self.__specificationsWidget.setText(self.__selectedObject.getSpecifications())
             self.__layoutInfo.addWidget(self.__specificationsWidget)
 
-    def showTrajectory(self):
+    def __createTrajectoryWidget(self):
         widgetTrajectory = QWidget()
         layoutTrajectory = QHBoxLayout()
         widgetTrajectory.setLayout(layoutTrajectory)
@@ -67,8 +68,9 @@ class ExplorerInfo(QWidget):
 
     def refreshVisibility(self):
         if not self.__selectedObject.isVisible():
-            self.__odometryButton.setState(False)
             self.__trajectoryButton.setState(False)
+            if self.__odometryButton is not None:
+                self.__odometryButton.setState(False)
 
     def positionInformations(self):
         positionInformationsWidget=QWidget()
@@ -149,21 +151,24 @@ class ExplorerInfo(QWidget):
 
         return labelInformations
 
-    def __showOdometry(self):
-        widgetOdometry = QWidget()
-        layoutOdometry = QHBoxLayout()
-        widgetOdometry.setLayout(layoutOdometry)
+    def __createOdometryWidget(self):
+        if self.__selectedObject.isOdometryEnabled():
+            widgetOdometry = QWidget()
+            layoutOdometry = QHBoxLayout()
+            widgetOdometry.setLayout(layoutOdometry)
 
-        odometryLabel = QLabel("Odometry")
-        odometryLabel.setFont(QFont("Sanserif", 12))
-        odometryLabel.setStyleSheet("color:"+colors['font']+";")
-        layoutOdometry.addWidget(odometryLabel, 90)
+            odometryLabel = QLabel("Odometry")
+            odometryLabel.setFont(QFont("Sanserif", 12))
+            odometryLabel.setStyleSheet("color:"+colors['font']+";")
+            layoutOdometry.addWidget(odometryLabel, 90)
 
-        self.__odometryButton = VisibilityButton(self.__selectedObject.getOdometryDrawn())
-        self.__odometryButton.clicked.connect(self.__clickedOdometryButton)
-        layoutOdometry.addWidget(self.__odometryButton)
+            self.__odometryButton = VisibilityButton(self.__selectedObject.getOdometryDrawn())
+            self.__odometryButton.clicked.connect(self.__clickedOdometryButton)
+            layoutOdometry.addWidget(self.__odometryButton)
 
-        return widgetOdometry
+            return widgetOdometry
+        self.__odometryButton=None
+        return None
 
     def __clickedTrajectoryButton(self):
         if isinstance(self.__selectedObject, Robot):

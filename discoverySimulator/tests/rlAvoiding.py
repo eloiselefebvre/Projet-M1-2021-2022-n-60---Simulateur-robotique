@@ -96,7 +96,7 @@ def reinforcementLearningTest():
     initialPose = robot.getPose().copy()
 
     while True:
-        if not robot.getCollidedState():
+        if not robot.isCollided():
             startPosition = (robot.getPose().getX(), robot.getPose().getY())
             startOrientation = robot.getPose().getOrientation()
             startOrientation %= 360

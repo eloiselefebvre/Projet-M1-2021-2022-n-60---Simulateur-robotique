@@ -2,14 +2,11 @@ from setuptools import find_packages, setup
 
 setup(
     # ...
-    name="discoverysimulator",
-    version="0.1",
+    name="monpackage",
+    version="1.0",
     description="Description",
-    packages=find_packages(
-        where='discoverySimulator',
-        include=['*']
-    ),
-    package_dir={"": "discoverySimulator"},
+    long_description="This is the long description",
+    packages=find_packages(),
     install_requires=[
         "PyQt5"
     ],
@@ -18,9 +15,9 @@ setup(
     author_email="...",
     package_data={
          "ressources": ["icons/*"]
-     },
+    },
     include_package_data=True,
-    license="", # search MIT, BSD ?
+    # license="", # search MIT, BSD ?
     zip_safe=False
     # ...
 )

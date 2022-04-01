@@ -28,16 +28,16 @@ class TwoWheelsRobot(Robot):
         self._rightWheel.setID("RightWheel")
 
     # SETTERS
-    def setLeftWheelSpeed(self,speed):
+    def setLeftWheelSpeed(self,speed:int):
         """ Sets the speed of the left wheel
-        @param speed  New speed of the robot [rpm]
+        @param speed  Speed of the wheel [rpm]
         """
         if not self._isSpeedLocked:
             self._leftWheel.setSpeed(speed)
 
-    def setRightWheelSpeed(self,speed):
+    def setRightWheelSpeed(self,speed:int):
         """ Sets the speed of the right wheel
-        @param speed  New speed of the robot [rpm]
+        @param speed  Speed of the wheel [rpm]
         """
         if not self._isSpeedLocked:
             self._rightWheel.setSpeed(speed)
@@ -103,12 +103,12 @@ class TwoWheelsRobot(Robot):
             dy = averageSpeedRobot * sin(Phi)
 
             # angular speed
-            dPhi = degrees((self.getRightElementaryLinearSpeed() - self.getLeftElementaryLinearSpeed()) / (2 * self._distanceBetweenWheels))
+            dPhi = -degrees((self.getRightElementaryLinearSpeed() - self.getLeftElementaryLinearSpeed()) / (2 * self._distanceBetweenWheels)) # indirect benchmark so minus sign
 
             self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)
             self._pose.rotate(dPhi)
 
-            self.isCollided()
+            self.computeCollisions()
 
         super().move()
 

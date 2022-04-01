@@ -147,7 +147,6 @@ class Scene(QWidget,Observable):
         if self.__selectedObj is not None:
             self.__selectedObj.setSelected(False)
             self.__selectedObj=None
-
         if self.__pathFollowing is None:
             objects = sorted(self.__environment.getObjects(), key=lambda obj:obj.getZIndex())
             objects.reverse()
@@ -160,7 +159,7 @@ class Scene(QWidget,Observable):
                     self.__selectionOffset = (dx, dy)
                     if not self.__isSceneLocked:
                         self.__selectedObj = obj
-                        self.__selectedObjCollidedState=self.__selectedObj.getCollidedState()
+                        self.__selectedObjCollidedState=self.__selectedObj.isCollided()
                         self.__objectMoved=False
                         self.__selectedObj.setCollidedState(True)
                     break
