@@ -15,8 +15,7 @@ class Telemeter(Sensor):
 
     def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=None,accuracy:float=1):
         """ Constructs a new telemeter.
-        @param color  Color of the telemeter
-        """
+        @param color  Color of the telemeter"""
         self._color = color
         self._representation = Representation(Rectangle(16,8,self._color))
         super().__init__(self._representation)
@@ -31,9 +30,7 @@ class Telemeter(Sensor):
 
     # GETTERS
     def getValue(self) -> float:
-        """ Returns the value of the telemeter.
-        @return  Value of the telemeter
-        """
+        """ Returns the value of the telemeter."""
         dist=self._distance
         if self._environment.isReal():
             dist+=random.uniform(-self._distance*self._mesuringNoise,self._distance*self._mesuringNoise)

@@ -13,8 +13,7 @@ class CircularTwoWheelsRobot(TwoWheelsRobot):
         @param robotRadius  radius of the robot [px]
         @param distanceBetweenWheels  distance between wheels of the robot [px]
         @param wheelsRadius  radius of the wheels [px]
-        @param wheelYPosition  position of the wheels [px]
-        """
+        @param wheelYPosition  position of the wheels [px]"""
         color = random.choice(TwoWheelsRobot._COLORS) if color is None else color
         rep=Circle(robotRadius,color)
         rep.addOrientationMark()

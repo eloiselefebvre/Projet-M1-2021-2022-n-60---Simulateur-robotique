@@ -10,36 +10,26 @@ from .Line import Line
 
 class Circle(Shape):
 
-    """ The Circle class provides a circle"""
+    """ The Circle class provides a circle."""
 
     def __init__(self,radius:float,color:str,opacity:int=255):
-        """ Constructs a circle shape
+        """ Constructs a circle shape.
         @param radius  Radius of the circle [px]
         @param color  Color of the shape
-        @param opacity  Opacity of the shape
-        """
+        @param opacity  Opacity of the shape"""
         super().__init__(color,opacity)
         self.__radius=radius
 
     # GETTERS
     def getRadius(self) -> float :
-        """
-        Returns the radius of the circle [px]
-        @return The radius of the circle [px]
-        """
+        """Returns the radius of the circle [px]."""
         return self.__radius
 
     def getBoundingBox(self) -> Rectangle:
-        """ Returns the bounding box of a circle
-        @return  The bounding box of the circle
-        """
+        """ Returns the bounding box of a circle."""
         return Rectangle(self.__radius * 2, self.__radius * 2)
 
     def contains(self, point:QPointF) -> bool:
-        """ Returns if a circle contains a point
-        @param point  Point
-        @return  Is the point is in the circle
-        """
         return (point.x()-self._pose.getX()) ** 2 + (point.y()-self._pose.getY()) ** 2 <= self.__radius ** 2
 
     def getLineDecomposition(self) -> List[QLineF]:

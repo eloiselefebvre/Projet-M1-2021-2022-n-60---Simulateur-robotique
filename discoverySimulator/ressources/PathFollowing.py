@@ -5,7 +5,7 @@ from discoverySimulator.robots import Robot
 
 class PathFollowing():
 
-    """ The PathFollowing class provides a path following for a robot"""
+    """ The PathFollowing class provides a path following for a robot."""
 
     MAX_FORWARD_SPEED = 500
     MIN_FORWARD_SPEED = 300
@@ -15,7 +15,7 @@ class PathFollowing():
     DISTANCE_FOR_END_POINT = 5
 
     def __init__(self,robot):
-        """ Constructs a following path
+        """ Constructs a following path.
         @param robot  Robot who will follow the path
         """
         self._robot = robot
@@ -28,9 +28,7 @@ class PathFollowing():
 
     # GETTERS
     def getRobot(self) -> Robot:
-        """ Returns the robot who follow the path
-        @return  Returns robot
-        """
+        """ Returns the robot who follow the path."""
         return self._robot
 
     def angularDistance(self,pathPoint) -> float:

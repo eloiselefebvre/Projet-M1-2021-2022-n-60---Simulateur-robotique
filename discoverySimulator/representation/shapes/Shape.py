@@ -8,12 +8,13 @@ from ...Pose import Pose
 
 class Shape(ABC):
 
-    """ The Shape class provides a Shape"""
+    """ The Shape class provides a Shape."""
 
     _ORIENTATION_MARK_WIDTH = 2
     _ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
     def __init__(self,color:str,opacity:int):
+        """Constructs a Shape."""
         self._color = QColor(color)
         self._opacity=opacity
         self._border=None
@@ -23,28 +24,23 @@ class Shape(ABC):
 
     # SETTERS
     def setPose(self,pose:Pose):
-        """ Sets the position of a shape
-        @param pose  the new position
-        """
+        """ Sets the position of a shape.
+        @param pose  the new position"""
         self._pose=pose
 
     def setOpacity(self,opacity:int):
-        """ Sets the opacity of a shape
-        @param opacity  the new opacity
-        """
+        """ Sets the opacity of a shape.
+        @param opacity  the new opacity"""
         self._opacity=opacity
 
     def setColor(self,color:str):
-        """ Sets the color of a shape
-        @param color  the new color
-        """
+        """ Sets the color of a shape.
+        @param color  the new color"""
         self._color=QColor(color)
 
     # GETTERS
     def getPose(self) -> Pose:
-        """ Returns the position of a shape
-        @return  The position of the shape
-        """
+        """ Returns the position of a shape."""
         return self._pose
 
     def paint(self,painter:QPainter):
@@ -58,9 +54,7 @@ class Shape(ABC):
             painter.setPen(Qt.NoPen)
 
     def getColor(self):
-        """ Returns the color of a shape
-        @return  The color of a shape
-        """
+        """ Returns the color of a shape."""
         return self._color.name()
 
     @abstractmethod
@@ -106,22 +100,19 @@ class Shape(ABC):
 
     @abstractmethod
     def getBoundingBox(self):
-        """ Returns the bounding box of a shape
-        """
+        """ Returns the bounding box of a shape."""
         pass
 
     def addBorder(self, border:Border):
-        """ Adds a border on a shape
-        @param border  The border to add
-        """
+        """ Adds a border on a shape.
+        @param border  The border to add"""
         if isinstance(border, Border):
             self._border=border
 
     def removeBorder(self):
         """
-        Removes a border on a shape
-        @param border  The border to remove
-        """
+        Removes a border on a shape.
+        @param border  The border to remove"""
         self._border=None
 
     @abstractmethod

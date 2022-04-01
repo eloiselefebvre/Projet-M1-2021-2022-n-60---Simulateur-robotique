@@ -11,17 +11,14 @@ class ColorSensor(Sensor):
 
     def __init__(self,color:str=None):
         """ Constructs a new color sensor.
-        @param color  Color of the sensor
-        """
+        @param color  Color of the sensor"""
         self._representation = Representation(Circle(1,color))
         super().__init__(self._representation)
         self._colorDetected = None
 
     # GETTERS
     def getValue(self) -> str:
-        """ Returns the captured color by the sensor.
-        @return  The captured color
-        """
+        """ Returns the captured color by the sensor."""
         return self._colorDetected
 
     def getSpecifications(self):

@@ -16,8 +16,7 @@ class RectangularTwoWheelsRobot(TwoWheelsRobot):
         @param robotHeight  height of the robot [px]
         @param distanceBetweenWheels  distance between wheels [px]
         @param wheelsRadius  radius of wheels [px]
-        @param wheelYPosition  position of the two wheels on the robot [px]
-        """
+        @param wheelYPosition  position of the two wheels on the robot [px]"""
         color = random.choice(TwoWheelsRobot._COLORS) if color is None else color
         rep=Rectangle(robotWidth, robotHeight, color, RectangularTwoWheelsRobot.__DEFAULT_BORDER_RADIUS)
         rep.addOrientationMark()

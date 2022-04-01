@@ -8,7 +8,7 @@ from math import radians, cos, sin
 
 class Point(Shape):
 
-    """ The Point class provides a point"""
+    """ The Point class provides a point."""
 
     __POINT_SIZE = 5
 
@@ -17,9 +17,7 @@ class Point(Shape):
 
     # GETTERS
     def getBoundingBox(self) -> Rectangle:
-        """ Returns the bounding box of a point
-        @return  The bounding box of the point
-        """
+        """ Returns the bounding box of a point."""
         return Rectangle(self.__POINT_SIZE, self.__POINT_SIZE)
 
     def contains(self, point) -> bool:

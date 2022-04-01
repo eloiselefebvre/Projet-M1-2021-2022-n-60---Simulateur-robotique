@@ -4,7 +4,7 @@ from typing import List
 
 class ReinforcementLearning:
 
-    """The ReinforcementLearning class provides a reinforcement learning for a robot"""
+    """The ReinforcementLearning class provides a reinforcement learning for a robot."""
 
     DEFAULT_LEARNING_FACTOR = 0.1
     DEFAULT_DISCOUNT_FACTOR = 0.5
@@ -12,7 +12,7 @@ class ReinforcementLearning:
 
     # Available algorithm : QLearning, ValueIteration
     def __init__(self, state:tuple, factors:dict=None, algorithm:str= "ValueIteration"):
-        """ Constructs a reinforcement learning
+        """ Constructs a reinforcement learning.
         @param state  State of the robot who will learn
         """
 
@@ -58,10 +58,8 @@ class ReinforcementLearning:
         return (self._actions[actionIndex][0]+state[0],self._actions[actionIndex][1]+state[1])
 
     def getPossibleActions(self, state:tuple = None) -> List[int]:
-        """ Returns the possible actions of the robot
-        @param state  State of the robot
-        @return  Possible actions
-        """
+        """ Returns the possible actions of the robot.
+        @param state  State of the robot"""
         state = state if state is not None else self._state
         actions = []
         if state[0]+self._step<=self._maximalSpeed:
@@ -76,9 +74,7 @@ class ReinforcementLearning:
         return actions
 
     def getActionToExecute(self) -> tuple:
-        """ Returns the best action to execute
-        @return  The action to execute
-        """
+        """ Returns the best action to execute."""
         possibleActionsIndexes=self.getPossibleActions()
         if random.random() < self._explorationRate:
             actionWeights = self.computeActionWeights(self._state,possibleActionsIndexes)

@@ -21,8 +21,7 @@ class Robot(ABC,Object):
 
     def __init__(self,representation):
         """ Constructs a new robot.
-        @param representation Representation of the robot
-        """
+        @param representation Representation of the robot"""
         super().__init__(representation)
         self._components=[]
         self._sensors_counter=0
@@ -59,30 +58,22 @@ class Robot(ABC,Object):
 
     # GETTERS
     def getComponents(self) -> List[Component]:
-        """ Returns all components.
-        @return All components of the robot
-        """
+        """ Returns all components."""
         return self._components
 
     @abstractmethod
     def getLeftLinearSpeed(self) -> float:
-        """ Returns the left linear speed.
-        @return  The left linear speed
-        """
+        """ Returns the left linear speed."""
         pass
 
     @abstractmethod
     def getRightLinearSpeed(self) -> float:
-        """ Returns the right linear speed.
-        @return  The right linear speed
-        """
+        """ Returns the right linear speed."""
         pass
 
     @abstractmethod
     def getDistanceBetweenWheels(self) -> float:
-        """ Returns the distance between wheels.
-        @return  The distance between wheels
-        """
+        """ Returns the distance between wheels."""
         pass
 
     def getTrajectoryDrawn(self) -> bool:
@@ -95,9 +86,7 @@ class Robot(ABC,Object):
         return self.__odometryPose
 
     def getWheels(self) -> List[Wheel]:
-        """ Returns all the wheels of a robot.
-        @return  All the wheels of the robot
-        """
+        """ Returns all the wheels of a robot."""
         return self._wheels
 
     def getBoundingWidth(self) -> float:
@@ -111,8 +100,7 @@ class Robot(ABC,Object):
         @param component: component to add to the robot
         @param x  x coordinate of the component on the robot [px]
         @param y  y coordinate of the component on the robot [px]
-        @param orientation  orientation of the component on the robot [degrees]
-        """
+        @param orientation  orientation of the component on the robot [degrees]"""
         if isinstance(component, Component):
             pose=Pose(-x,y,orientation)
             component.setPose(pose)

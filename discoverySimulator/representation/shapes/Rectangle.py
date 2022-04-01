@@ -8,16 +8,15 @@ from .Point import Point
 
 class Rectangle(Shape):
 
-    """ The Rectangle class provides a rectangle"""
+    """ The Rectangle class provides a rectangle."""
 
     def __init__(self,width:float,height:float,color:str=None,borderRadius:float=0,opacity:int=255):
-        """ Constructs a Rectangle
+        """ Constructs a Rectangle.
         @param width  Width of the rectangle [px]
         @param height  Height of the rectangle [px]
         @param color  Color of the shape
         @param borderRadius  BorderRadius of the rectangle [px]
-        @param opacity  Opacity of the shape
-        """
+        @param opacity  Opacity of the shape"""
         super().__init__(color,opacity)
         self.__width=width
         self.__height=height
@@ -26,21 +25,15 @@ class Rectangle(Shape):
 
     # GETTERS
     def getWidth(self) -> float:
-        """ Returns the width of a rectangle
-        @return  Width of the rectangle [px]
-        """
+        """ Returns the width of a rectangle [px]."""
         return self.__width
 
     def getHeight(self) -> float:
-        """ Returns the height of a rectangle
-        @return  Height of the rectangle [px]
-        """
+        """ Returns the height of a rectangle [px]."""
         return self.__height
 
     def getBoundingBox(self) -> Rectangle:
-        """ Returns the bounding box of a rectangle
-        @return  The bounding box of the rectangle
-        """
+        """ Returns the bounding box of a rectangle."""
         return self
 
     def getLineDecomposition(self) -> List[QLineF]:

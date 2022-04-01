@@ -14,8 +14,7 @@ class Simulation(Observable):
 
     def __init__(self,environment=None):
         """ Constructs a new simulation.
-        @param environment  environment where the simulation will take place
-        """
+        @param environment  environment where the simulation will take place."""
         super().__init__()
         self.__environment=environment
         self.__app = None
@@ -28,8 +27,7 @@ class Simulation(Observable):
     # SETTERS
     def setAcceleration(self, acceleration:float): # TODO : Notify toolsbar
         """ Sets the acceleration of the simulation.
-        @param acceleration  New acceleration of the simulation
-        """
+        @param acceleration  New acceleration of the simulation"""
         self.__acceleration=acceleration
 
     def setAppShown(self,shown:bool):
@@ -37,34 +35,27 @@ class Simulation(Observable):
 
     # GETTERS
     def getAcceleration(self) -> float:
-        """ Returns the acceleration of the simulation.
-        @return  The acceleration of the simulation
-        """
+        """ Returns the acceleration of the simulation."""
         return self.__acceleration
 
     def time(self) -> float:
-        """ Returns the time elapsed since the beginning of the simulation.
-        @return  time elapsed [s]
-        """
+        """ Returns the time elapsed since the beginning of the simulation. [s]"""
         return self.__timeElapsed
 
     def run(self):
-        """ Runs the simulation.
-        """
+        """ Runs the simulation."""
         th = threading.Thread(target=self.__run)
         th.start()
 
     def showInterface(self):
-        """ Shows the interface where the simulation takes place.
-        """
+        """ Shows the interface where the simulation takes place."""
         if self.__environment is not None and not self.__appShown:
             th=threading.Thread(target=self.__startApplication)
             th.start()
             self.__appShown = True
 
     def closeInterface(self):
-        """ Closes the interface.
-        """
+        """ Closes the interface."""
         if self.__appShown:
             self.__appShown = False
             self.__interface.close()

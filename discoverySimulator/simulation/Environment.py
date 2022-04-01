@@ -12,7 +12,7 @@ from typing import List
 
 class Environment:
 
-    """ The Environment class provides ...."""
+    """ The Environment class provides an environment to simulate."""
 
     __DEFAULT_BORDER_SCREEN_WIDTH = 2
 
@@ -20,8 +20,7 @@ class Environment:
     def __init__(self,width:int,height:int,model:str='perfect'):
         """ Constructs an environment
         @param width  Width of the environment [px]
-        @param height  Height of the environment [px]
-        """
+        @param height  Height of the environment [px]"""
         self.__objects=[]
         self.__virtualObjects=[]
         self.__sensors=[]
@@ -36,21 +35,15 @@ class Environment:
 
     # GETTERS
     def getObjects(self) -> List[Object]:
-        """ Returns all the objects of the environment
-        @return  All the objects of the environment
-        """
+        """ Returns all the objects of the environment."""
         return self.__objects
 
     def getVirtualObjects(self) -> List[Object]:
-        """ Returns all the virtuals objects of the environment
-        @return  All the virtuals objects of the environment
-        """
+        """ Returns all the virtuals objects of the environment."""
         return self.__virtualObjects
 
     def getSensors(self) -> List[Sensor]:
-        """ Returns all the sensors of the environment
-        @return  All the sensors of the environment
-        """
+        """ Returns all the sensors of the environment."""
         return self.__sensors
 
     def getFrame(self) -> Frame:
@@ -60,15 +53,11 @@ class Environment:
         return self.__size
 
     def getWidth(self) -> int:
-        """ Returns the width of the environment
-        @return  The width of the environment [px]
-        """
+        """ Returns the width of the environment. [px]"""
         return self.__size.width()
 
     def getHeight(self) -> int:
-        """ Returns the height of the environment
-        @return  The height of the environment [px]
-        """
+        """ Returns the height of the environment. [px]"""
         return self.__size.height()
 
     def hasWalls(self) -> bool:
@@ -78,12 +67,11 @@ class Environment:
         return self.__model=="real"
 
     def addObject(self, object:Object, x:float=0, y:float=0, orientation:float=0):
-        """ Adds an object in the environment
+        """ Adds an object in the environment.
         @param object  Object of the class Object or which inherits from Object
         @param x  x coordinate of the object in the environment [px]
         @param y  y coordinate of the object in the environment [px]
-        @param orientation  orientation of the object in the environment [degrees]
-        """
+        @param orientation  orientation of the object in the environment [degrees]"""
         if isinstance(object, Object):
             pose=Pose(x,y,orientation)
             object.setPose(pose)
@@ -101,28 +89,25 @@ class Environment:
                 self.addSensor(object)
 
     def addVirtualObject(self, virtualObject:Object, x:float=0, y:float=0, orientation:float=0):
-        """ Adds a virtual object in the environment
+        """ Adds a virtual object in the environment.
         @param virtualObject  object of the class Object or which inherits from Object
         @param x  x coordinate of the object in the environment [px]
         @param y  y coordinate of the object in the environment [px]
-        @param orientation  orientation of the object in the environment [degrees]
-        """
+        @param orientation  orientation of the object in the environment [degrees]"""
         if isinstance(virtualObject, Object):
             virtualObject.setPose(Pose(x, y, orientation))
             virtualObject.setEnvironnement(self)
             self.__virtualObjects.append(virtualObject)
 
     def removeObject(self, object:Object):
-        """ Removes an object of the environment
-        @param object  object to remove
-        """
+        """ Removes an object of the environment.
+        @param object  object to remove"""
         if object in self.__objects:
             self.__objects.remove(object)
 
     def removeVirtualObject(self, virtualObject:Object):
-        """ Removes a virtual object of the environment
-        @param object  object to remove
-        """
+        """ Removes a virtual object of the environment.
+        @param object  object to remove"""
         if virtualObject in self.__virtualObjects:
             self.__virtualObjects.remove(virtualObject)
 

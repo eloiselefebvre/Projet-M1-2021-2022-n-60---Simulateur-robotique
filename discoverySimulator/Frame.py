@@ -3,7 +3,7 @@ from discoverySimulator.representation.shapes import Point
 
 class Frame:
 
-    """ The Frame class provides a Frame"""
+    """ The Frame class provides a Frame."""
 
     def __init__(self,coordinates=None,baseFrame=None):
         self.__coordinates=None
