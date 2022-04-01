@@ -10,7 +10,7 @@ class Simulation(Observable):
 
     """ The Simulation class provides a simulation."""
 
-    __MINIMUM_TIME_STEP = 0.01
+    __MINIMUM_TIME_STEP = 0.001
 
     def __init__(self,environment=None):
         """ Constructs a new simulation.
@@ -81,29 +81,26 @@ class Simulation(Observable):
         self.__playState=sender.getPlayState()
 
     def __run(self):
-        start_update = time.time()
+        start = time.time()
         while True:
-            current=time.time()
-            if current - start_update > config["update_time_step"] / self.__acceleration:
+            # ROBOT UPDATE
+            current = time.time()
+            if self.__playState:
+                config["real_update_time_step"]=(current - start)*self.__acceleration
+                self.__timeElapsed += config["real_update_time_step"]
+            start=time.time()
+            if self.__playState:
+                self.notifyObservers("timeChanged")
+                for obj in self.__environment.getObjects():
+                    if hasattr(obj, "move"):
+                        obj.move()
+                self.__hasBeenRefreshed=True
 
-                # ROBOT UPDATE
-                if self.__playState:
-                    config["real_update_time_step"]=current - start_update # TODO : Handle acceleration here -> remove to object
-                    self.__timeElapsed += config["real_update_time_step"] * self.__acceleration
+            # SENSOR UPDATE
+            for sensor in self.__environment.getSensors():
+                if hasattr(sensor, "refresh"):
+                    sensor.refresh()
 
-                    self.notifyObservers("timeChanged")
-                    for obj in self.__environment.getObjects():
-                        if hasattr(obj, "move"):
-                            obj.move()
-
-                    self.__hasBeenRefreshed=True
-
-                # SENSOR UPDATE
-                for sensor in self.__environment.getSensors():
-                    if hasattr(sensor, "refresh"):
-                        sensor.refresh()
-
-                start_update = current
             time.sleep(self.__MINIMUM_TIME_STEP)
 
     def __startApplication(self):

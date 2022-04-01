@@ -2,11 +2,7 @@ import os
 
 fullpath = os.path.realpath(__file__)
 path, filename = os.path.split(fullpath)
-config = {
-    "update_time_step": 0.04, # en s soit 40 ms
-    "ressourcesPath": os.path.join(path,'ressources','icons')
-}
-config["real_update_time_step"]=config["update_time_step"]
+config = {"ressourcesPath": os.path.join(path, 'ressources', 'icons'), "real_update_time_step": 0}
 
 colors = {
     "sceneBackground" : "#F0F0F0",

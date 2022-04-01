@@ -66,7 +66,6 @@ class Interface(QMainWindow):
             if hasattr(obj, "getComponents"):
                 for comp in obj.getComponents():
                     comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility, "visibilityChanged")
-            self.__toolbar.addObserverCallback(obj.accelerationChanged, "accelerationChanged")
             if isinstance(obj,Robot):
                 obj.addObserverCallback(self.__toolbar.robotSelected, 'selectionChanged')
         self.__toolbar.addObserverCallback(self.__sceneWidget.followPathSelected, 'followPathSelected')

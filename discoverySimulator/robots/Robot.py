@@ -206,7 +206,7 @@ class Robot(ABC,Object):
 
             v = (vd + vg) / 2
             e = self.getDistanceBetweenWheels()
-            d = v * config["real_update_time_step"]*self._acceleration/60
+            d = v * config["real_update_time_step"]/60
 
             x=self.__odometryPose.getX()
             y=self.__odometryPose.getY()
@@ -223,7 +223,7 @@ class Robot(ABC,Object):
                 self.__odometryPose.move(x0 - R * cos(radians(self.__odometryPose.getOrientation())),
                                          y0 - R * sin(radians(self.__odometryPose.getOrientation())))
             elif vd==-vg: # robot tourne sur place
-                dd=vd * config["real_update_time_step"]*self._acceleration/60
+                dd=vd * config["real_update_time_step"]/60
                 dTheta=-atan(dd/e)
                 self.__odometryPose.rotate(degrees(dTheta))
             else: # robot en ligne droite

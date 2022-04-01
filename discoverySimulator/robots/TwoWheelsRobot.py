@@ -59,7 +59,7 @@ class TwoWheelsRobot(Robot):
 
     def getRightElementaryLinearSpeed(self) -> float:
         """ Returns the elementary speed of the right wheel [px/timestep]."""
-        return self.getRightLinearSpeed()*config["real_update_time_step"] / 60 * self._acceleration
+        return self.getRightLinearSpeed()*config["real_update_time_step"] / 60
 
     def getLeftLinearSpeed(self) -> float:
         """ Returns the linear speed of the left wheel [px/min]."""
@@ -67,7 +67,7 @@ class TwoWheelsRobot(Robot):
 
     def getLeftElementaryLinearSpeed(self) -> float:
         """ Returns the elementary speed of the left wheel [px/timestep]."""
-        return self.getLeftLinearSpeed() * config["real_update_time_step"] / 60 * self._acceleration
+        return self.getLeftLinearSpeed() * config["real_update_time_step"] / 60
 
     def getDistanceBetweenWheels(self) -> float:
         """ Returns the distance between wheels [px]."""
