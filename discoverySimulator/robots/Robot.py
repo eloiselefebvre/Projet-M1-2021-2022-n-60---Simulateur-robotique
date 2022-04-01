@@ -19,6 +19,7 @@ class Robot(ABC,Object):
     """ The Robot class provides a robot."""
 
     __NUMBER_CALLS_BEFORE_REFRESH = 30
+    __MAX_POINTS_NUMBER_IN_ARRAY = 50
 
     def __init__(self,representation):
         """ Constructs a new robot.
@@ -144,6 +145,9 @@ class Robot(ABC,Object):
         if self.__trajectoryCounter==0:
             point = Object(Representation(Point(colors['trajectory'])))
             self.__trajectory.append(point)
+            if len(self.__trajectory)>=Robot.__MAX_POINTS_NUMBER_IN_ARRAY:
+                elt = self.__trajectory.pop(0)
+                self._environment.removeVirtualObject(elt)
             if self.__trajectoryDrawn:
                 self._environment.addVirtualObject(self.__trajectory[-1], self._pose.getX(), self._pose.getY())
             else:
@@ -234,6 +238,9 @@ class Robot(ABC,Object):
             if self.__odometryCounter == 0:
                 point = Object(Representation(Point(colors['odometry'])))
                 self.__odometry.append(point)
+                if len(self.__odometry) >= Robot.__MAX_POINTS_NUMBER_IN_ARRAY:
+                    elt = self.__odometry.pop(0)
+                    self._environment.removeVirtualObject(elt)
                 if self.__odometryDrawn:
                     self._environment.addVirtualObject(self.__odometry[-1], self.__odometryPose.getX(), self.__odometryPose.getY())
                 else:

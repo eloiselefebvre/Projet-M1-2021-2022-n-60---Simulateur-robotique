@@ -10,7 +10,7 @@ class Simulation(Observable):
 
     """ The Simulation class provides a simulation."""
 
-    __MINIMUM_TIME_STEP = 0.001
+    __MINIMUM_TIME_STEP = 1/60
 
     def __init__(self,environment=None):
         """ Constructs a new simulation.
@@ -88,9 +88,9 @@ class Simulation(Observable):
             if self.__playState:
                 config["real_update_time_step"]=(current - start)*self.__acceleration
                 self.__timeElapsed += config["real_update_time_step"]
+                self.notifyObservers("timeChanged")
             start=time.time()
             if self.__playState:
-                self.notifyObservers("timeChanged")
                 for obj in self.__environment.getObjects():
                     if hasattr(obj, "move"):
                         obj.move()

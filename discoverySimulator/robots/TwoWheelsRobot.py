@@ -90,7 +90,6 @@ class TwoWheelsRobot(Robot):
             self._pose.rotate(dPhi)
 
             self.computeCollisions()
-
         super().move()
 
     def computeRotationCenter(self):

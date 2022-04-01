@@ -33,7 +33,7 @@ def collisionAndTelemeter():
     rob2 = CircularTwoWheelsRobot()
     rob2.addComponent(led3, 0, 0)
     rob2.setRightWheelSpeed(100)
-    rob2.setLeftWheelSpeed(-100)
+    rob2.setLeftWheelSpeed(200)
 
     rob2.enableOdometry()
     # rob2.setID("2W")
