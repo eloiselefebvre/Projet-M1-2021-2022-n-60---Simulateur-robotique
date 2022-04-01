@@ -18,9 +18,7 @@ class Toolbar(QToolBar,Observable):
         super().__init__()
         self.setFixedHeight(self.__TOOLSBAR_FIXED_HEIGHT)
         self.setStyleSheet("*{background-color: #21212f;color:#f0f0f0;border:none;}"
-                           "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}"
-                           "QPushButton:hover{background-color:#323247;}"
-                           "QPushButton:pressed{background-color:#4C4C68;}") # TODO : Handle in Button class if possible
+                           "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}")
         self.__acceleration = 1.0
         self.__playState = True
         self.__robotTitleWidget=None
