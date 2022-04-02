@@ -75,7 +75,7 @@ class Object(Observable):
         if selected!=self._isSelected:
             self._isSelected=selected
             if self._isSelected:
-                self._representation.getShape().addBorder(Border(4, colors['borderColor']))
+                self._representation.getShape().addBorder(Border(4, "#31D5FF"))
             else:
                 self._representation.getShape().removeBorder()
             self.notifyObservers("selectionChanged")

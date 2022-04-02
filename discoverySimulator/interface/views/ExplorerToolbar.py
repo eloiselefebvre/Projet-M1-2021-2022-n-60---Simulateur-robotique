@@ -55,7 +55,7 @@ class ExplorerToolsbar(QWidget, Observable):
         filterWidget.setStyleSheet("*{background-color:"+colors['font']+"; border:none;}"
                                    "QListView{font-family:Verdana; font-size:15px;}"
                                    "QListView::item{height:32px;}"
-                                   "QListView::item:selected{background:#25CCF7; padding-left:12px;}")
+                                   "QListView::item:selected{background:#26BEE5; padding-left:12px;}")
         filterWidget.addItem(QIcon(os.path.join(config["ressourcesPath"],'objects','allObjects.svg')),"All objects")
         for item in self.__ITEMS:
             classname=item.__name__
