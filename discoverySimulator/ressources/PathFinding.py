@@ -32,7 +32,7 @@ class PathFinding:
     __CELL_SIZE = 15
     __CELL_OFFSET = __CELL_SIZE / 2
 
-    def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.01):
+    def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=True ,displayDelay:float=0.01):
         """
         Constructs a pathfinding.
         @param environment  Environment where the pathfinding will take place
