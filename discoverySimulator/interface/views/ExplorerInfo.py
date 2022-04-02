@@ -28,11 +28,13 @@ class ExplorerInfo(QWidget):
         if self.__selectedObject in self.__evironnement.getObjects():
             self.__layoutInfo.addWidget(self.positionInformations())
 
+        self.__trajectoryButton=None
+        self.__odometryButton=None
         if isinstance(self.__selectedObject, Robot):
             self.__layoutInfo.addWidget(self.__createTrajectoryWidget())
-            sh=self.__createOdometryWidget()
-            if sh is not None:
-                self.__layoutInfo.addWidget(sh)
+            odometryWidget = self.__createOdometryWidget()
+            if odometryWidget is not None:
+                self.__layoutInfo.addWidget(odometryWidget)
 
         self.__specificationsWidget = None
         if isinstance(self.__selectedObject, Component):
@@ -68,7 +70,8 @@ class ExplorerInfo(QWidget):
 
     def refreshVisibility(self):
         if not self.__selectedObject.isVisible():
-            self.__trajectoryButton.setState(False)
+            if self.__trajectoryButton is not None:
+                self.__trajectoryButton.setState(False)
             if self.__odometryButton is not None:
                 self.__odometryButton.setState(False)
 
