@@ -77,6 +77,7 @@ def collisionAndTelemeter():
     ledState = 0
     sim.run()
     sim.showInterface()
+    sim.setAcceleration(2)
 
     while True:
         ledState=not ledState

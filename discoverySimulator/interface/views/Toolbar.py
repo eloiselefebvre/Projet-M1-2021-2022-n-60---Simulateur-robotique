@@ -11,17 +11,15 @@ from discoverySimulator.robots import Robot
 class Toolbar(QToolBar,Observable):
 
     __TOOLSBAR_FIXED_HEIGHT = 48
-    __ACCELERATION_MIN = 0.1
-    __ACCELERATION_MAX = 15.0
 
-    def __init__(self):
+    def __init__(self,simulation):
         super().__init__()
         self.setFixedHeight(self.__TOOLSBAR_FIXED_HEIGHT)
         self.setStyleSheet("*{background-color: #21212f;color:#f0f0f0;border:none;}"
                            "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}")
 
-        self.__acceleration = 1.0
-        self.__playState = True
+        self.__simulation=simulation
+
         self.__robotTitleWidget=None
         self.__pathFollowingWidget=None
 
@@ -38,11 +36,6 @@ class Toolbar(QToolBar,Observable):
         self.__robotSelected=None
 
     # GETTERS
-    def getAcceleration(self) -> float:
-        return self.__acceleration
-
-    def getPlayState(self) -> bool:
-        return self.__playState
 
     def getRobotSelected(self) -> Robot:
         return self.__robotSelected
@@ -105,7 +98,7 @@ class Toolbar(QToolBar,Observable):
         timer_layout.setSpacing(0)
         timer.setContentsMargins(4,0,4,0)
 
-        self._timeElapsed=QLabel("0s")
+        self._timeElapsed=QLabel()
         self._timeElapsed.setStyleSheet("margin-left:8px;")
 
         timer_layout.addWidget(timer_icon)
@@ -115,91 +108,67 @@ class Toolbar(QToolBar,Observable):
 
         self._timeElapsed.setFont(fonts["normal"])
 
+        self.updateTimeElapsed(self.__simulation)
+
         return timer
 
     def __createAccelerationWidget(self) -> QWidget:
-        acceleration=QWidget()
-        acceleration.setObjectName("widget")
+        accelerationWidget=QWidget()
+        accelerationWidget.setObjectName("widget")
 
-        acceleration_layout=QHBoxLayout(acceleration)
-        acceleration_layout.setSpacing(0)
-        acceleration.setContentsMargins(4,0,4,0)
+        layout=QHBoxLayout(accelerationWidget)
+        layout.setSpacing(0)
+        accelerationWidget.setContentsMargins(4,0,4,0)
 
-        decrease_button = Button()
-        decrease_button.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','decreaseAcceleration.svg')))
-        decrease_button.setToolTip("Decrease Acceleration")
-        decrease_button.clicked.connect(self.__clickedDecreaseAcceleration)
+        decreaseButton = Button()
+        decreaseButton.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','decreaseAcceleration.svg')))
+        decreaseButton.setToolTip("Decrease Acceleration")
+        decreaseButton.clicked.connect(self.__simulation.decreaseAcceleration)
 
-        self._valueAcceleration = QLineEdit()
-        self._valueAcceleration.setMaxLength(5)
-        self._valueAcceleration.setFont(fonts["normal"])
-        self._valueAcceleration.setFixedWidth(42)
-        self._valueAcceleration.setAlignment(Qt.AlignCenter)
-        self._valueAcceleration.editingFinished.connect(self.__inputValueAcceleration)
-        self.__accelerationChanged()
+        self.__accelerationTextInput = QLineEdit(f"x{self.__simulation.getAcceleration()}")
+        self.__accelerationTextInput.setMaxLength(5)
+        self.__accelerationTextInput.setFont(fonts["normal"])
+        self.__accelerationTextInput.setAlignment(Qt.AlignCenter)
+        self.__accelerationTextInput.editingFinished.connect(self.__inputValueAcceleration)
 
-        increase_button=Button()
-        increase_button.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','increaseAcceleration.svg')))
-        increase_button.setToolTip("Increase Acceleration")
-        increase_button.clicked.connect(self.__clickedIncreaseAcceleration)
+        increaseButton=Button()
+        increaseButton.setIcon(QIcon(os.path.join(config['ressourcesPath'],'toolbar','increaseAcceleration.svg')))
+        increaseButton.setToolTip("Increase Acceleration")
+        increaseButton.clicked.connect(self.__simulation.increaseAcceleration)
 
-        acceleration_layout.addWidget(decrease_button)
-        acceleration_layout.addWidget(self._valueAcceleration)
-        acceleration_layout.addWidget(increase_button)
+        layout.addWidget(decreaseButton)
+        layout.addWidget(self.__accelerationTextInput)
+        layout.addWidget(increaseButton)
 
-        acceleration.setFixedWidth(132)
+        accelerationWidget.setFixedWidth(132)
 
-        return acceleration
+        return accelerationWidget
 
     def __inputValueAcceleration(self):
-        text = self._valueAcceleration.text()
-        if text[0]=='x':
-            text=text.strip('x')
-        try:
-            acc=float(text)
-            if acc >= self.__ACCELERATION_MIN and acc <= self.__ACCELERATION_MAX:
-                self.__acceleration=acc
-            if acc > self.__ACCELERATION_MAX:
-                self.__acceleration= self.__ACCELERATION_MAX
-        except ValueError:
-            return
-        finally:
-            self.__accelerationChanged()
+        self.__simulation.setAccelerationFromString(self.__accelerationTextInput.text())
 
-    def __accelerationChanged(self):
-        self.__acceleration=round(self.__acceleration, 1)
-        self._valueAcceleration.setText(f'x{self.__acceleration}')
-        self._valueAcceleration.clearFocus()
-        self.notifyObservers("accelerationChanged")
-
-    def __clickedDecreaseAcceleration(self):
-        self.__acceleration-= 0.1 if self.__acceleration <= 1 else 1.0
-        self.__acceleration=max(self.__acceleration, self.__ACCELERATION_MIN)
-        self.__accelerationChanged()
-
-    def __clickedIncreaseAcceleration(self):
-        self.__acceleration += 0.1 if self.__acceleration < 1 else 1.0
-        self.__acceleration=min(self.__acceleration, self.__ACCELERATION_MAX)
-        self.__accelerationChanged()
+    def updateAcceleration(self,sender):
+        self.__accelerationTextInput.setText(f'x{sender.getAcceleration()}')
+        self.__accelerationTextInput.clearFocus()
 
     def __createPlayPauseWidget(self) -> QWidget:
-        play = QWidget()
-        play_layout=QHBoxLayout(play)
+        playWidget = QWidget()
+        play_layout=QHBoxLayout(playWidget)
         play_layout.setSpacing(0)
-        play.setContentsMargins(4, 0, 4, 0)
+        playWidget.setContentsMargins(4, 0, 4, 0)
 
-        self._playPause = PlayButton(self.__playState)
-        self._playPause.setToolTip("Pause" if self.__playState else "Play")
-        self._playPause.clicked.connect(self.__togglePlayState)
+        playState=self.__simulation.getPlayState()
+        self._playPauseButton = PlayButton(playState)
+        self._playPauseButton.setToolTip("Pause" if playState else "Play")
+        self._playPauseButton.clicked.connect(self.__simulation.togglePlayState)
 
-        play_layout.addWidget(self._playPause)
-        return play
+        play_layout.addWidget(self._playPauseButton)
+        return playWidget
 
-    def __togglePlayState(self):
-        self.__playState=not self.__playState
-        self._playPause.setToolTip("Pause" if self.__playState else "Play")
-        self._playPause.setState(self.__playState)
-        self.notifyObservers("playChanged")
+    def updatePlayState(self,sender):
+        playState=sender.getPlayState()
+        self._playPauseButton.setToolTip("Pause" if playState else "Play")
+        self._playPauseButton.setState(playState)
 
     def robotSelected(self,sender):
         if sender.isSelected():

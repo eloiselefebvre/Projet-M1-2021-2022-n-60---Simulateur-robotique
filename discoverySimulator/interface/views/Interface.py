@@ -12,7 +12,7 @@ from discoverySimulator.interface.views.Toolbar import Toolbar
 class Interface(QMainWindow):
     def __init__(self,simulation,environment):
         super().__init__()
-        self.setWindowTitle("Discovery Simulator")
+        self.setWindowTitle(config["appname"])
         self.setWindowIcon(QIcon(os.path.join(config["ressourcesPath"],'window.svg')))
 
         self.__simulation = simulation
@@ -26,7 +26,7 @@ class Interface(QMainWindow):
 
         zoomController = ZoomController(self.__environment)
 
-        self.__toolbarWidget = Toolbar()
+        self.__toolbarWidget = Toolbar(self.__simulation)
         self.__sceneWidget=Scene(self.__environment, zoomController)
         sceneOverviewWidget = SceneOverview(self.__environment, zoomController)
         self.__explorerWidget = Explorer(self.__environment)
@@ -43,10 +43,11 @@ class Interface(QMainWindow):
 
         # NOTIFICATION CONNECTIONS
         zoomController.addObserverCallback(self.__footerWidget.updateZoom, "zoomChanged")
-        self.__simulation.addObserverCallback(self.__toolbarWidget.updateTimeElapsed, "timeChanged")
 
-        self.__toolbarWidget.addObserverCallback(self.__simulation.updateAcceleration, "accelerationChanged")
-        self.__toolbarWidget.addObserverCallback(self.__simulation.updatePlayState, "playChanged")
+        self.__simulation.addObserverCallback(self.__toolbarWidget.updateTimeElapsed, "timeChanged")
+        self.__simulation.addObserverCallback(self.__toolbarWidget.updateAcceleration,"accelerationChanged")
+        self.__simulation.addObserverCallback(self.__toolbarWidget.updatePlayState, "playStateChanged")
+
         self.__toolbarWidget.addObserverCallback(self.__sceneWidget.followPathSelected, 'followPathSelected')
 
         self.__sceneWidget.addObserverCallback(self.__footerWidget.updateMousePoseFromScene, "poseChanged")

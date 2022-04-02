@@ -4,7 +4,10 @@ from PyQt5.QtGui import QFont
 
 fullpath = os.path.realpath(__file__)
 path, filename = os.path.split(fullpath)
-config = {"ressourcesPath": os.path.join(path, 'ressources', 'icons'), "real_update_time_step": 0}
+config = {
+    "appname":"Discovery Simulator",
+    "ressourcesPath": os.path.join(path, 'ressources', 'icons'),
+    "real_update_time_step": 0}
 
 colors = {
     "sceneBackground" : "#F0F0F0",
