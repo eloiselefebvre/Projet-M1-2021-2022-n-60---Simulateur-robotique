@@ -38,7 +38,10 @@ class SceneOverviewContent(QWidget):
 
     def paintEvent(self, event):
         painter = QPainter(self)
+        offset = self.__zoomController.getOverviewOffset()
+        painter.translate(offset.x(), offset.y())
         painter.scale(self.__zoomController.getZoomOverview(), self.__zoomController.getZoomOverview())
+
         objects = self.__environment.getVirtualObjects().copy()
         objects.extend(self.__environment.getObjects())
         objects.sort(key=lambda obj: obj.getZIndex())
