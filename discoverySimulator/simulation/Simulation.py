@@ -28,6 +28,8 @@ class Simulation(Observable):
         self.__playState=True
         self.__hasBeenRefreshed=False
 
+        self.__runThread=None
+
     # SETTERS
     def setAcceleration(self, acceleration:float):
         """ Sets the acceleration of the simulation.
@@ -71,8 +73,14 @@ class Simulation(Observable):
 
     def run(self):
         """ Runs the simulation."""
-        th = threading.Thread(target=self.__run)
-        th.start()
+        self.stop()
+        self.__runThread = threading.Thread(target=self.__run)
+        self.__runThread.start()
+
+    def stop(self):
+        if self.__runThread is not None:
+            self.__runThread.do_run=False
+            self.__runThread.join()
 
     def showInterface(self):
         """ Shows the interface where the simulation takes place."""
@@ -84,7 +92,6 @@ class Simulation(Observable):
     def closeInterface(self):
         """ Closes the interface."""
         if self.__appShown:
-            self.__appShown = False
             self.__interface.close()
         # TODO : Fermer également l'application ?
 
@@ -100,7 +107,7 @@ class Simulation(Observable):
 
     def __run(self):
         start = time.time()
-        while True:
+        while getattr(self.__runThread, "do_run", True):
             # ROBOT UPDATE
             current = time.time()
             if self.__playState:

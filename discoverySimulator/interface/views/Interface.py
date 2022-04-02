@@ -69,4 +69,5 @@ class Interface(QMainWindow):
         self.__sceneWidget.maximized()
 
     def closeEvent(self, event):
+        print("ok")
         self.__simulation.setAppShown(False)
