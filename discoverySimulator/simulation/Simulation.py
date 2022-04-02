@@ -58,7 +58,7 @@ class Simulation(Observable):
     def setAppShown(self,shown:bool):
         self.__appShown=shown
         if not self.__appShown:
-            self.clearObserverCallback()
+            self.clearObserverCallbacks()
 
     # GETTERS
     def getAcceleration(self) -> float:

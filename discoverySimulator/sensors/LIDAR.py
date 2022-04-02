@@ -10,7 +10,7 @@ class LIDAR(Telemeter):
 
     """ The LIDAR class provides a LIDAR."""
 
-    def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=6,maximumMeasurableDistance:int=None,accuracy:float=1):
+    def __init__(self,color:str=colors['sensor'], scanRate:int=300, angularRange:int=360,angularResolution:int=7,maximumMeasurableDistance:int=None,accuracy:float=1):
         """ Constructs a LIDAR.
         @param color  Color of the LIDAR
         @param scanRate  Scan rate of the LIDAR [rpm]
@@ -29,7 +29,7 @@ class LIDAR(Telemeter):
         self.__angularResolution=int(angularResolution)
         self.__angularSteps = int(self.__angularRange / self.__angularResolution)
         self.__intersectionsBuffer = [None for _ in range(self.__angularSteps)]
-        self.__distances={}
+        self.__distances=[None for _ in range(self.__angularSteps)]
         self.__bufferIndex = 0
         self.__stepPerSecond = int(self.__scanRate / 60 * 360 / self.__angularResolution)
 
@@ -59,12 +59,12 @@ class LIDAR(Telemeter):
                     self.__intersectionsBuffer[self.__bufferIndex] = point
                     point.setZIndex(2)
                     self._environment.addVirtualObject(point, intersection.x(), intersection.y())
-                    self.__distances[self.getPose().getOrientation()]=super().getValue()
+                    self.__distances[self.__bufferIndex]=(self.getPose().getOrientation(),super().getValue())
 
                 self.__bufferIndex =(self.__bufferIndex + 1) % self.__angularSteps
             self.getPose().rotate(self.__angularResolution)
 
-    def getValue(self) -> dict:
+    def getValue(self) -> list:
         return self.__distances
 
 

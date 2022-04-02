@@ -1,8 +1,8 @@
 # from discoverySimulator.demonstrations import roadDemo
 # roadDemo()
 #
-# from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \
-#     reinforcementLearningTest, rlTwoWheelsRobot, rlAvoiding, rlFourWheelsRobot,road
+from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \
+    reinforcementLearningTest, rlTwoWheelsRobot, rlAvoiding, rlFourWheelsRobot,road
 #
 # aStar()
 # collisionAndTelemeter()
