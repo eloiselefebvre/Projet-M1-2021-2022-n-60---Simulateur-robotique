@@ -8,22 +8,27 @@ from discoverySimulator.interface.views.ExplorerTree import ExplorerTree
 
 class Explorer(QWidget):
 
+    __EXPLORER_WIDTH = 350
+
     def __init__(self,environment):
         super().__init__()
-        self.__environment=environment
-        self.__layout=QGridLayout(self)
-        self.setFixedWidth(350)
-        self.__explorerToolsbar = ExplorerToolsbar(self.__environment)
+        self.setFixedWidth(Explorer.__EXPLORER_WIDTH)
         self.setAttribute(Qt.WA_StyledBackground)
-        self.setStyleSheet("*{background-color: " + colors['explorerBackground']+ "; border:none}"
-                           "QPushButton:hover{background-color:" + colors['buttonOver']+";}"
-                           "QPushButton:pressed{background-color:"+colors['buttonPressed']+";}")
-        self.__layout.addWidget(self.__explorerToolsbar, 0, 0)
-        self.__explorerInfo=None
-        self.__explorerTree=ExplorerTree(self.__environment, self)
-        self.__layout.addWidget(self.__explorerTree, 1, 0)
+        self.setStyleSheet("*{background-color: " + colors['explorerBackground']+ "; border:none}")
+
+        self.__layout=QGridLayout(self)
         self.__layout.setContentsMargins(0, 0, 0, 0)
         self.__layout.setSpacing(0)
+
+        self.__environment=environment
+
+        self.__explorerToolsbar = ExplorerToolsbar(self.__environment)
+        self.__explorerTree=ExplorerTree(self.__environment, self)
+        self.__explorerInfo=None
+
+        self.__layout.addWidget(self.__explorerToolsbar, 0, 0)
+        self.__layout.addWidget(self.__explorerTree, 1, 0)
+
 
     # GETTERS
     def getExplorerTree(self):

@@ -1,5 +1,7 @@
 import os
 
+from PyQt5.QtGui import QFont
+
 fullpath = os.path.realpath(__file__)
 path, filename = os.path.split(fullpath)
 config = {"ressourcesPath": os.path.join(path, 'ressources', 'icons'), "real_update_time_step": 0}
@@ -26,5 +28,24 @@ colors = {
     "LIDAR" : "#1C1E32",
     "sensor" : "#F00"
 }
+
+# FONTS
+fontFamily = "Verdana" # Sanserif, Arial
+
+smallSize=10
+small = QFont(fontFamily,smallSize)
+smallBold = QFont(fontFamily,smallSize)
+smallBold.setBold(True)
+
+normalSize=12
+normal = QFont(fontFamily,normalSize)
+normalBold = QFont(fontFamily,normalSize)
+normalBold.setBold(True)
+
+fonts={
+    "small": small,
+    "small_bold": smallBold,
+    "normal":normal,
+    "normal_bold":normalBold
+}
 # TODO : Revoir noms de couleurs et structure (ex : colors.view.... ou colors uniquement pour le dossier interface)
-# TODO : Gérer les fonts ici

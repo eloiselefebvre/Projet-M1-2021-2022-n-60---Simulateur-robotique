@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout
 from discoverySimulator.config import *
 from discoverySimulator.Observable import Observable
@@ -48,9 +48,8 @@ class ExplorerToolsbar(QWidget, Observable):
 
     # Widgets
     def __createFilterWidget(self) -> QComboBox:
-        fnt=QFont("Verdana", 12)
         filterWidget = QComboBox()
-        filterWidget.setFont(fnt)
+        filterWidget.setFont(fonts["normal"])
         filterWidget.setFixedSize(215,30)
         filterWidget.setStyleSheet("background-color:"+colors['font']+"; border:none")
         filterWidget.addItem(QIcon(os.path.join(config["ressourcesPath"],'objects','allObjects.svg')),"All objects")

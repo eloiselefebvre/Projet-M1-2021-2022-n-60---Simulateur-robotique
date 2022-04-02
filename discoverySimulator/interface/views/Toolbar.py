@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QToolBar, QLabel, QHBoxLayout, QWidget, QLineEdit, QWidgetAction
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import *
@@ -19,6 +19,7 @@ class Toolbar(QToolBar,Observable):
         self.setFixedHeight(self.__TOOLSBAR_FIXED_HEIGHT)
         self.setStyleSheet("*{background-color: #21212f;color:#f0f0f0;border:none;}"
                            "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}")
+
         self.__acceleration = 1.0
         self.__playState = True
         self.__robotTitleWidget=None
@@ -66,8 +67,7 @@ class Toolbar(QToolBar,Observable):
     def __createSectionTitleWidget(self, name="") -> QWidgetAction:
         labelWidget = QWidgetAction(self)
         label=QLabel(name+":")
-        fnt=QFont("Sanserif",12)
-        label.setFont(fnt)
+        label.setFont(fonts["normal"])
         label.setStyleSheet("color:"+colors['white']+"; border-left:1px solid"+colors['titleBorder']+";")
         label.setContentsMargins(8,0,0,0)
         labelWidget.setDefaultWidget(label)
@@ -113,7 +113,7 @@ class Toolbar(QToolBar,Observable):
 
         timer_layout.setAlignment(Qt.AlignLeft)
 
-        self._timeElapsed.setFont(QFont("Sanserif", 12))
+        self._timeElapsed.setFont(fonts["normal"])
 
         return timer
 
@@ -132,7 +132,7 @@ class Toolbar(QToolBar,Observable):
 
         self._valueAcceleration = QLineEdit()
         self._valueAcceleration.setMaxLength(5)
-        self._valueAcceleration.setFont(QFont("Sanserif", 12))
+        self._valueAcceleration.setFont(fonts["normal"])
         self._valueAcceleration.setFixedWidth(42)
         self._valueAcceleration.setAlignment(Qt.AlignCenter)
         self._valueAcceleration.editingFinished.connect(self.__inputValueAcceleration)

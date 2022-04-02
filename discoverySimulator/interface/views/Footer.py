@@ -44,12 +44,9 @@ class Footer(QToolBar):
         zoomLayout=QHBoxLayout(zoomWidget)
         zoomLayout.setAlignment(Qt.AlignCenter)
 
-        fnt = QFont("Verdana", 12)
-        fnt.setBold(True)
-
         self._zoom_text = QLabel("100%")
         self._zoom_text.setAlignment(Qt.AlignRight)
-        self._zoom_text.setFont(fnt)
+        self._zoom_text.setFont(fonts["normal_bold"])
         self._zoom_text.setFixedWidth(56)
 
         zoomMenuBar=QMenuBar()
@@ -98,9 +95,8 @@ class Footer(QToolBar):
         scaleLayout = QVBoxLayout(scaleWidget)
         scaleLayout.setSpacing(0)
         self._scale_text = QLabel("100")
-        fnt = QFont("Verdana", 10)
-        fnt.setBold(True)
-        self._scale_text.setFont(fnt)
+
+        self._scale_text.setFont(fonts["small_bold"])
         self._scale_text.setAlignment(Qt.AlignCenter)
         scaleIcon = QLabel()
         scaleIcon.setPixmap(QPixmap(os.path.join(config["ressourcesPath"],'footer','scale.svg')))
@@ -120,11 +116,9 @@ class Footer(QToolBar):
         poseWidget.setLayout(poseLayout)
         poseWidget.setLayoutDirection(Qt.LayoutDirection(0))
 
-        fnt = QFont("Verdana", 12)
-        fnt.setBold(True)
         self._pose_text = QLabel("(0, 0)")
         self._pose_text.setStyleSheet("margin-left:8px;")
-        self._pose_text.setFont(fnt)
+        self._pose_text.setFont(fonts["normal_bold"])
 
         poseIcon = QLabel()
         poseIcon.setPixmap(QPixmap(os.path.join(config["ressourcesPath"],'footer','mousePose.svg')))

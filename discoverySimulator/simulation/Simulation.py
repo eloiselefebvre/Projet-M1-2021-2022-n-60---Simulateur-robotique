@@ -101,7 +101,7 @@ class Simulation(Observable):
                 if hasattr(sensor, "refresh"):
                     sensor.refresh()
 
-            time.sleep(self.__MINIMUM_TIME_STEP)
+            self.sleep(self.__MINIMUM_TIME_STEP)
 
     def __startApplication(self):
         self.__app = QApplication([sys.argv])

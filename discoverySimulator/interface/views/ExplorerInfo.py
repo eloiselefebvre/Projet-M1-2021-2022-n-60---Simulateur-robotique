@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout
 from discoverySimulator import Component
 from discoverySimulator.obstacles.Obstacle import Obstacle
@@ -38,7 +38,7 @@ class ExplorerInfo(QWidget):
         if isinstance(self.__selectedObject, Component):
             self.__specificationsWidget=QLabel()
             self.__specificationsWidget.setTextFormat(Qt.RichText)
-            self.__specificationsWidget.setFont(QFont("Sanserif", 12))
+            self.__specificationsWidget.setFont(fonts["normal"])
             self.__specificationsWidget.setText(self.__selectedObject.getSpecifications())
             self.__layoutInfo.addWidget(self.__specificationsWidget)
 
@@ -48,7 +48,7 @@ class ExplorerInfo(QWidget):
         widgetTrajectory.setLayout(layoutTrajectory)
 
         trajectoryLabel = QLabel("Trajectory")
-        trajectoryLabel.setFont(QFont("Sanserif",12))
+        trajectoryLabel.setFont(fonts["normal"])
         trajectoryLabel.setStyleSheet("color:"+colors['font']+";")
         layoutTrajectory.addWidget(trajectoryLabel,90)
 
@@ -90,7 +90,7 @@ class ExplorerInfo(QWidget):
         positionIcon.setStyleSheet("border:none;")
 
         self.__positionWidget=QLabel(f"({round(self.__selectedObject.getPose().getX())}, {round(self.__selectedObject.getPose().getY())})")
-        self.__positionWidget.setFont(QFont("Sanserif", 12))
+        self.__positionWidget.setFont(fonts["normal"])
         self.__positionWidget.setStyleSheet("border:none;")
 
         positionWidgetLayout.addWidget(positionIcon)
@@ -107,7 +107,7 @@ class ExplorerInfo(QWidget):
         orientationIcon.setStyleSheet("border:none;")
 
         self.__oWidget=QLabel(f"{round(self.__selectedObject.getPose().getOrientation())}°")
-        self.__oWidget.setFont(QFont("Sanserif", 12))
+        self.__oWidget.setFont(fonts["normal"])
         self.__oWidget.setStyleSheet("border:none;")
 
         orientationWidgetLayout.addWidget(orientationIcon)
@@ -142,9 +142,7 @@ class ExplorerInfo(QWidget):
 
         labelInformationsID=QLabel(self.__selectedObject.getID())
         labelInformations.setFixedHeight(50)
-        fnt=QFont("Sanserif",12)
-        fnt.setBold(True)
-        labelInformationsID.setFont(fnt)
+        labelInformationsID.setFont(fonts["normal_bold"])
 
         labelInformationsLayout.addWidget(labelIcon)
         labelInformationsLayout.addWidget(labelInformationsID)
@@ -158,7 +156,7 @@ class ExplorerInfo(QWidget):
             widgetOdometry.setLayout(layoutOdometry)
 
             odometryLabel = QLabel("Odometry")
-            odometryLabel.setFont(QFont("Sanserif", 12))
+            odometryLabel.setFont(fonts["normal"])
             odometryLabel.setStyleSheet("color:"+colors['font']+";")
             layoutOdometry.addWidget(odometryLabel, 90)
 

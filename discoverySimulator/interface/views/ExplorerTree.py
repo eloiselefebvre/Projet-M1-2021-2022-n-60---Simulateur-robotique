@@ -76,16 +76,19 @@ class ExplorerTree(QTreeWidget):
                     if not issubclass(type(obj), tuple(self.__itemsShown)) and isinstance(obj, Robot) and (Actuator in self.__itemsShown or Sensor in self.__itemsShown):
                         sensors = [comp  for comp in obj.getComponents() if isinstance(comp,Sensor)]
                         if (Sensor in self.__itemsShown and sensors) or (Actuator in self.__itemsShown and len(obj.getComponents()) - len(sensors) != 0):
-                            parent = Item(self, obj.getID(), 12, setBold=True)
+                            parent = Item(self, obj.getID())
                             parent.setIcon(0,QIcon(os.path.join(config["ressourcesPath"],'objects','robotDisabled.svg')))
                             self.__visibilityButtons.append(None)
                     else:
-                        parent = Item(self, obj.getID(), 12, setBold=True)
+                        parent = Item(self, obj.getID())
                         classname = [item for item in self.__itemsShown if isinstance(obj, item)][0].__name__
                         parent.setIcon(0,QIcon(os.path.join(config["ressourcesPath"],'objects',f'{classname.lower()}.svg')))
                         self.__visibilityButtons.append(VisibilityButton(obj.isVisible()))
                         self.setItemWidget(parent, 1, self.__visibilityButtons[-1])
+
                     if parent is not None:
+                        parent.setFont(fonts["normal_bold"])
+
                         self.__mainItems.append(parent)
                         self.__mainObjects.append(obj)
                         self.__allObjects.append(obj)
@@ -95,6 +98,7 @@ class ExplorerTree(QTreeWidget):
                             for comp in obj.getComponents():
                                 if issubclass(type(comp), tuple(self.__itemsShown)):
                                     child = Item(parent,comp.getID())
+
                                     self.__visibilityButtons.append(VisibilityButton(comp.isVisible()))
                                     if comp.getVisibilityLocked():
                                         self.__visibilityButtons[-1].lock()
@@ -178,13 +182,14 @@ class ExplorerTree(QTreeWidget):
 
 class Item(QTreeWidgetItem):
 
-    def __init__(self,parent, txt='', fontSize=12, setBold=False, color=colors['explorerTreeItem']):
+    def __init__(self,parent, txt='', color=colors['explorerTreeItem']):
         super().__init__(parent)
-        fnt = QFont('Verdana', fontSize)
-        fnt.setBold(setBold)
         self.setColor(color)
-        self.setFont(0,fnt)
         self.setText(0,txt)
+        self.setFont(fonts["normal"])
+
+    def setFont(self,fnt,col=0):
+        super().setFont(col,fnt)
 
     def setColor(self,color):
         self.setForeground(0,QColor(color))

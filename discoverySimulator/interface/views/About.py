@@ -8,15 +8,17 @@ class About(QDialog):
     def __init__(self):
         super().__init__()
         self.setModal(True)
-        layout=QVBoxLayout()
-        self.setLayout(layout)
-        layout.addWidget(self.__logo())
         self.setWindowTitle("About")
         self.setWindowIcon(QIcon(os.path.join(config["ressourcesPath"],'toolbar','about.svg')))
         self.setWindowFlags(self.windowFlags() and Qt.WindowCloseButtonHint)
+
+        layout=QVBoxLayout()
+        layout.addWidget(self.__createPanelWidget())
+        self.setLayout(layout)
+
         self.exec()
 
-    def __logo(self) -> QLabel:
+    def __createPanelWidget(self) -> QLabel:
         widget = QLabel()
         logo = QPixmap(os.path.join(config["ressourcesPath"],'infos','popUp.svg'))
         widget.setPixmap(logo)

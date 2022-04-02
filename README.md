@@ -1,5 +1,6 @@
-# discoverySimulator
+# Robotic simulator for Python
 
+## What's this
 discoverySimulator is a Python package where an environment can be simulate with some robots and sensors. This simulator aims to introduce robotics while taking your first steps in python. 
 
 ## Installation
@@ -10,14 +11,14 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install discove
 pip install discoverySimulator
 ```
 
-## Usage
+## Usage example
 
 ### Code
 ```python
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.simulation import Simulation, Environment
 
-# create robot and asign wheels speed
+# create robot and assign wheels speed
 myRobot = RectangularTwoWheelsRobot()
 myRobot.setRightWheelSpeed(500)
 myRobot.setLeftWheelSpeed(200)
@@ -34,7 +35,7 @@ mySimulation.run()
 mySimulation.showInterface()
 ```
 ### Output 
-![](output.png)
+![screenshot](output.png)
 
 
 ## License
