@@ -122,7 +122,7 @@ class Simulation(Observable):
             self.sleep(self.__MINIMUM_TIME_STEP)
 
     def __startApplication(self):
-        self.__app = QApplication([sys.argv])
+        self.__app = QApplication(sys.argv)
         self.__interface=Interface(self, self.__environment)
         sys.exit(self.__app.exec())
 

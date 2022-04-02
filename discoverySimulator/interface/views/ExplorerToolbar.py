@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout
+from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout, QListView
 from discoverySimulator.config import *
 from discoverySimulator.Observable import Observable
 from discoverySimulator.obstacles.Obstacle import Obstacle
@@ -49,9 +49,13 @@ class ExplorerToolsbar(QWidget, Observable):
     # Widgets
     def __createFilterWidget(self) -> QComboBox:
         filterWidget = QComboBox()
+        filterWidget.setView(QListView())
         filterWidget.setFont(fonts["normal"])
-        filterWidget.setFixedSize(215,30)
-        filterWidget.setStyleSheet("background-color:"+colors['font']+"; border:none")
+        filterWidget.setFixedSize(216,32)
+        filterWidget.setStyleSheet("*{background-color:"+colors['font']+"; border:none;}"
+                                   "QListView{font-family:Verdana; font-size:15px;}"
+                                   "QListView::item{height:32px;}"
+                                   "QListView::item:selected{background:#25CCF7; padding-left:12px;}")
         filterWidget.addItem(QIcon(os.path.join(config["ressourcesPath"],'objects','allObjects.svg')),"All objects")
         for item in self.__ITEMS:
             classname=item.__name__
