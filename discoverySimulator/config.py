@@ -51,4 +51,4 @@ fonts={
     "normal":normal,
     "normal_bold":normalBold
 }
-# TODO : Revoir noms de couleurs et structure (ex : colors.view.... ou colors uniquement pour le dossier interface)
+# TODO : Revoir le système de couleurs

@@ -54,7 +54,7 @@ class Toolbar(QToolBar,Observable):
             str+=f"{hours}h"
         if minutes>0 or hours>0:
             str+=f"{'0' if minutes<10 and hours>0 else ''}{minutes}min"
-        str+=f"{'0' if seconds<10 and (minutes>0 or hours>0) else ''}{round(seconds,1) if minutes==0 else int(seconds)}s"
+        str+=f"{'0' if seconds<10 and  (minutes>0 or hours>0) else ''}{round(seconds,1) if minutes==0 else int(seconds)}s"
         self._timeElapsed.setText(str)
 
     def __createSectionTitleWidget(self, name="") -> QWidgetAction:

@@ -38,7 +38,7 @@ class SceneOverviewContent(QWidget):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.scale(self.__zoomController.getMiniZoom(), self.__zoomController.getMiniZoom())
+        painter.scale(self.__zoomController.getZoomOverview(), self.__zoomController.getZoomOverview())
         objects = self.__environment.getVirtualObjects().copy()
         objects.extend(self.__environment.getObjects())
         objects.sort(key=lambda obj: obj.getZIndex())
@@ -71,13 +71,13 @@ class SceneOverviewContent(QWidget):
 
     def mouseMoveEvent(self,event):
         if self.__dragView:
-            current=event.pos()/self.__zoomController.getMiniZoom()
+            current=event.pos()/self.__zoomController.getZoomOverview()
             self.__zoomController.setOffset(self.__zoomController.getOffset() - (current - self.__dragViewOrigin) * self.__zoomController.getZoom())
             self.__dragViewOrigin = current
 
 
     def __viewGrabbed(self, mouse):
-        mouseRescale = mouse / self.__zoomController.getMiniZoom()
+        mouseRescale = mouse / self.__zoomController.getZoomOverview()
         offset = self.__zoomController.getOffset()
         sceneSize = self.__zoomController.getSceneSize()
         bx = -offset.x() / self.__zoomController.getZoom()

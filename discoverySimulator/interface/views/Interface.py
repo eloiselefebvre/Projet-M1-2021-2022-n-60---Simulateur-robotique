@@ -32,8 +32,8 @@ class Interface(QMainWindow):
         self.__explorerWidget = Explorer(self.__environment)
         self.__footerWidget = Footer(zoomController)
 
-        zoomController.setMiniSceneSize(sceneOverviewWidget.size())
-        zoomController.zoomToMiniFit()
+        zoomController.setSceneOverviewSize(sceneOverviewWidget.size())
+        zoomController.zoomOverviewToFit()
 
         general_layout.addWidget(self.__toolbarWidget, 0, 0, 1, 2)
         general_layout.addWidget(self.__sceneWidget, 1, 0)

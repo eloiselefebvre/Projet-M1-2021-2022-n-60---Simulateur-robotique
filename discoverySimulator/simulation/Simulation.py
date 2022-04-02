@@ -86,7 +86,7 @@ class Simulation(Observable):
         if self.__appShown:
             self.__appShown = False
             self.__interface.close()
-        # TODO : fermer également l'application ?
+        # TODO : Fermer également l'application ?
 
     def sleep(self,delay):
         start = time.time()
