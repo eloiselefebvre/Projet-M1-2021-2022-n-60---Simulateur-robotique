@@ -6,5 +6,4 @@ from .reinforcementLearning import reinforcementLearningTest
 from .factoryMap import factoryMap
 from .followLineWithColorSensor import followLineWithColorSensor
 from .aStar import aStar
-from .antsColony import antsColonyTest
 

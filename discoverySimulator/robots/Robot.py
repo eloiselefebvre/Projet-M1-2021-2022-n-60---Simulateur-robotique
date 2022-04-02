@@ -1,14 +1,15 @@
 import random
 from abc import ABC,abstractmethod
 from typing import List
+from math import cos, sin, radians, degrees, atan
+
 
 from .. import Object
 from ..Component import Component
 from ..actuators import Wheel
 from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
-from math import cos, sin, radians, degrees, atan
-from discoverySimulator.config import config, colors
+from ..config import *
 from ..Pose import Pose
 from ..sensors import Sensor
 
@@ -18,10 +19,11 @@ class Robot(ABC,Object):
     """ The Robot class provides a robot."""
 
     __NUMBER_CALLS_BEFORE_REFRESH = 30
+    __MAX_POINTS_NUMBER_IN_ARRAY = 50
 
     def __init__(self,representation):
         """ Constructs a new robot.
-        @param representation Representation of the robot"""
+        @param representation  Representation of the robot"""
         super().__init__(representation)
         self._components=[]
         self._sensors_counter=0
@@ -35,6 +37,7 @@ class Robot(ABC,Object):
 
         # ODOMETRY ATTRIBUTES
         self.__odometryEnabled=False
+        self.__odometryDrawn = False
 
         self._pathFollowing=None
         self._isSpeedLocked=False
@@ -96,11 +99,11 @@ class Robot(ABC,Object):
         return self.getRepresentation().getShape().getBoundingBox().getHeigt()
 
     def addComponent(self, component:Component, x:float=0, y:float=0, orientation:float=0):
-        """ Adds a component of a robot.
-        @param component: component to add to the robot
+        """ Adds a component to a robot.
+        @param component  Component to add to the robot
         @param x  x coordinate of the component on the robot [px]
         @param y  y coordinate of the component on the robot [px]
-        @param orientation  orientation of the component on the robot [degrees]"""
+        @param orientation  Orientation of the component on the robot [degrees]"""
         if isinstance(component, Component):
             pose=Pose(-x,y,orientation)
             component.setPose(pose)
@@ -125,7 +128,7 @@ class Robot(ABC,Object):
         if self._pathFollowing is not None:
             self._pathFollowing.followPath()
 
-    def visibylityChanged(self):
+    def visibilityChanged(self):
         for comp in self._components:
             comp.setVisibilityLocked(not self.isVisible())
         if not self.isVisible():
@@ -135,13 +138,16 @@ class Robot(ABC,Object):
             if self.__trajectoryDrawn:
                 self.__trajectoryDrawn=False
                 self.__hideTrajectory()
-        super().visibylityChanged()
+        super().visibilityChanged()
 
     # TRAJECTORY METHODS
     def __updateTrajectory(self):
         if self.__trajectoryCounter==0:
             point = Object(Representation(Point(colors['trajectory'])))
             self.__trajectory.append(point)
+            if len(self.__trajectory)>=Robot.__MAX_POINTS_NUMBER_IN_ARRAY:
+                elt = self.__trajectory.pop(0)
+                self._environment.removeVirtualObject(elt)
             if self.__trajectoryDrawn:
                 self._environment.addVirtualObject(self.__trajectory[-1], self._pose.getX(), self._pose.getY())
             else:
@@ -181,7 +187,6 @@ class Robot(ABC,Object):
             self.__odometryEnabled=True
             self.__odometry = []
             self.__odometryCounter = 0
-            self.__odometryDrawn = False
             self.__odometryPose=None
             self.__odometryNoise=1-(accuracy if 0<=accuracy<=1 else 1)
             if self._pose is not None:
@@ -190,6 +195,7 @@ class Robot(ABC,Object):
     def disableOdometry(self):
         if self.__odometryEnabled:
             self.__odometryEnabled=False
+            self.__odometryDrawn = False
             self.__odometryPose=None
             self.deleteOdometry()
 
@@ -204,7 +210,7 @@ class Robot(ABC,Object):
 
             v = (vd + vg) / 2
             e = self.getDistanceBetweenWheels()
-            d = v * config["real_update_time_step"]*self._acceleration/60
+            d = v * config["real_update_time_step"]/60
 
             x=self.__odometryPose.getX()
             y=self.__odometryPose.getY()
@@ -221,7 +227,7 @@ class Robot(ABC,Object):
                 self.__odometryPose.move(x0 - R * cos(radians(self.__odometryPose.getOrientation())),
                                          y0 - R * sin(radians(self.__odometryPose.getOrientation())))
             elif vd==-vg: # robot tourne sur place
-                dd=vd * config["real_update_time_step"]*self._acceleration/60
+                dd=vd * config["real_update_time_step"]/60
                 dTheta=-atan(dd/e)
                 self.__odometryPose.rotate(degrees(dTheta))
             else: # robot en ligne droite
@@ -232,6 +238,9 @@ class Robot(ABC,Object):
             if self.__odometryCounter == 0:
                 point = Object(Representation(Point(colors['odometry'])))
                 self.__odometry.append(point)
+                if len(self.__odometry) >= Robot.__MAX_POINTS_NUMBER_IN_ARRAY:
+                    elt = self.__odometry.pop(0)
+                    self._environment.removeVirtualObject(elt)
                 if self.__odometryDrawn:
                     self._environment.addVirtualObject(self.__odometry[-1], self.__odometryPose.getX(), self.__odometryPose.getY())
                 else:

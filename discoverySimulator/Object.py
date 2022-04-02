@@ -26,7 +26,6 @@ class Object(Observable):
         self._environment= None
         self._isCollided = False
         self._isSelected = False
-        self._acceleration = 1  # TODO : Revoir le changement lorsque l'accelaration est initialement définie et meilleure façon de partager des variables à plusieurs entités
         self._visibilityLocked = False
         self._zIndex = 1
         self._frame=Frame()
@@ -59,7 +58,7 @@ class Object(Observable):
     def setVisible(self, visible:bool):
         if not self._visibilityLocked:
             self._representation.setVisible(visible)
-            self.visibylityChanged()
+            self.visibilityChanged()
 
     def setVisibilityLocked(self,state:bool):
         self._visibilityLocked=state
@@ -92,10 +91,6 @@ class Object(Observable):
     # GETTERS
     def getFrame(self) -> Frame:
         return self._frame
-
-    def getAcceleration(self) -> float:
-        """ Returns the acceleration of an object."""
-        return self._acceleration
 
     def getZIndex(self) -> int:
         """ Returns the Z index of an object."""
@@ -136,9 +131,9 @@ class Object(Observable):
     def toggleVisible(self):
         if not self._visibilityLocked:
             self._representation.toggleVisible()
-            self.visibylityChanged()
+            self.visibilityChanged()
 
-    def visibylityChanged(self):
+    def visibilityChanged(self):
         self.notifyObservers("visibilityChanged")
 
     def completeID(self):
@@ -157,6 +152,3 @@ class Object(Observable):
 
     def isCollidedWith(self,obj) -> bool:
         return len(self.getIntersectionsWith(obj))!=0
-
-    def accelerationChanged(self,sender):
-        self._acceleration=sender.getAcceleration()

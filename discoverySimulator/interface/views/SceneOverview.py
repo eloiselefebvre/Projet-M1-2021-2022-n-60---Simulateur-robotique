@@ -1,36 +1,47 @@
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt, QPoint, QMargins
 from PyQt5.QtGui import QPainter, QPen, QColor
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from discoverySimulator.config import colors
 
 
 class SceneOverview(QWidget):
 
+    __SCENE_OVERVIEW_WIDTH  = 320
+    __SCENE_OVERVIEW_RATIO  = 16/9
+    __SCENE_OVERVIEW_CONTENT_MARGIN = 12
+
+    def __init__(self,environment,zoomController):
+        super().__init__()
+        self.setFixedSize(SceneOverview.__SCENE_OVERVIEW_WIDTH,round(SceneOverview.__SCENE_OVERVIEW_WIDTH/SceneOverview.__SCENE_OVERVIEW_RATIO))
+        self.setMouseTracking(True)
+        self.setCursor(Qt.OpenHandCursor)
+        self.setAttribute(Qt.WA_StyledBackground)
+        self.setContentsMargins(SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN)
+        self.setStyleSheet(f"background-color: {colors['font']} ; border: 2px solid "+colors['sceneOverviewBorder']+"; border-radius: 8px; margin:12px;")
+
+        layout=QHBoxLayout(self)
+        layout.addWidget(SceneOverviewContent(environment,zoomController))
+
+    def size(self):
+        return super().size().grownBy(-QMargins(SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN))
+
+
+class SceneOverviewContent(QWidget):
+
     def __init__(self,environment,zoomController):
         super().__init__()
         self.__environment = environment
         self.__zoomController=zoomController
-        self.__dragView=False
-        self.setMouseTracking(True)
-        self.setCursor(Qt.OpenHandCursor)
+
+        self.__dragView = False
         self.__dragViewOrigin = QPoint(0, 0)
-
-    def __viewGrabbed(self, mouse):
-        mouseRescale = mouse/self.__zoomController.getMiniZoom()
-        offset = self.__zoomController.getOffset()
-        sceneSize=self.__zoomController.getSceneSize()
-        bx=-offset.x()/self.__zoomController.getZoom()
-        by=-offset.y()/self.__zoomController.getZoom()
-        ex = bx+sceneSize.width()
-        ey = by+sceneSize.height()
-
-        if mouseRescale.x()>bx and mouseRescale.y()>by and mouseRescale.x()<ex and mouseRescale.y()<ey:
-            self.__dragView=True
-            self.__dragViewOrigin=mouseRescale
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.scale(self.__zoomController.getMiniZoom(), self.__zoomController.getMiniZoom())
+        offset = self.__zoomController.getOverviewOffset()
+        painter.translate(offset.x(), offset.y())
+        painter.scale(self.__zoomController.getZoomOverview(), self.__zoomController.getZoomOverview())
+
         objects = self.__environment.getVirtualObjects().copy()
         objects.extend(self.__environment.getObjects())
         objects.sort(key=lambda obj: obj.getZIndex())
@@ -63,7 +74,20 @@ class SceneOverview(QWidget):
 
     def mouseMoveEvent(self,event):
         if self.__dragView:
-            current=event.pos()/self.__zoomController.getMiniZoom()
+            current=event.pos()/self.__zoomController.getZoomOverview()
             self.__zoomController.setOffset(self.__zoomController.getOffset() - (current - self.__dragViewOrigin) * self.__zoomController.getZoom())
             self.__dragViewOrigin = current
 
+
+    def __viewGrabbed(self, mouse):
+        mouseRescale = mouse / self.__zoomController.getZoomOverview()
+        offset = self.__zoomController.getOffset()
+        sceneSize = self.__zoomController.getSceneSize()
+        bx = -offset.x() / self.__zoomController.getZoom()
+        by = -offset.y() / self.__zoomController.getZoom()
+        ex = bx + sceneSize.width()
+        ey = by + sceneSize.height()
+
+        if mouseRescale.x() > bx and mouseRescale.y() > by and mouseRescale.x() < ex and mouseRescale.y() < ey:
+            self.__dragView = True
+            self.__dragViewOrigin = mouseRescale

@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QFont, QPixmap
 from PyQt5.QtWidgets import QHBoxLayout, QWidget, QMenuBar, QAction, QLabel, \
     QWidgetAction, QLineEdit, QVBoxLayout, QToolBar
 
-from discoverySimulator.config import config, colors
+from discoverySimulator.config import *
 
 
 class Footer(QToolBar):
@@ -44,22 +44,19 @@ class Footer(QToolBar):
         zoomLayout=QHBoxLayout(zoomWidget)
         zoomLayout.setAlignment(Qt.AlignCenter)
 
-        fnt = QFont("Verdana", 12)
-        fnt.setBold(True)
-
         self._zoom_text = QLabel("100%")
         self._zoom_text.setAlignment(Qt.AlignRight)
-        self._zoom_text.setFont(fnt)
+        self._zoom_text.setFont(fonts["normal_bold"])
         self._zoom_text.setFixedWidth(56)
 
         zoomMenuBar=QMenuBar()
         zoomMenuBar.setContentsMargins(0,0,0,0)
-        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:"+colors['widgetBorder']+";}")
+        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:"+colors['borderColor']+"; color:#fff;}")
 
         self._zoomMenu=zoomMenuBar.addMenu("")
         self._zoomMenu.aboutToShow.connect(self.menuOpened)
 
-        self._zoomMenu.setIcon(QIcon(f"{config['ressourcesPath']}/footer/arrowUp.svg"))
+        self._zoomMenu.setIcon(QIcon(os.path.join(config["ressourcesPath"],'footer','arrowUp.svg')))
 
         # ACTIONS
         zoom_in = QAction("Zoom in", self)
@@ -98,12 +95,11 @@ class Footer(QToolBar):
         scaleLayout = QVBoxLayout(scaleWidget)
         scaleLayout.setSpacing(0)
         self._scale_text = QLabel("100")
-        fnt = QFont("Verdana", 10)
-        fnt.setBold(True)
-        self._scale_text.setFont(fnt)
+
+        self._scale_text.setFont(fonts["small_bold"])
         self._scale_text.setAlignment(Qt.AlignCenter)
         scaleIcon = QLabel()
-        scaleIcon.setPixmap(QPixmap(f"{config['ressourcesPath']}/footer/scale.svg"))
+        scaleIcon.setPixmap(QPixmap(os.path.join(config["ressourcesPath"],'footer','scale.svg')))
         scaleIcon.setFixedSize(100, 12)
 
         scaleLayout.addWidget(self._scale_text)
@@ -120,14 +116,12 @@ class Footer(QToolBar):
         poseWidget.setLayout(poseLayout)
         poseWidget.setLayoutDirection(Qt.LayoutDirection(0))
 
-        fnt = QFont("Verdana", 12)
-        fnt.setBold(True)
         self._pose_text = QLabel("(0, 0)")
         self._pose_text.setStyleSheet("margin-left:8px;")
-        self._pose_text.setFont(fnt)
+        self._pose_text.setFont(fonts["normal_bold"])
 
         poseIcon = QLabel()
-        poseIcon.setPixmap(QPixmap(f"{config['ressourcesPath']}/footer/mousePose.svg"))
+        poseIcon.setPixmap(QPixmap(os.path.join(config["ressourcesPath"],'footer','mousePose.svg')))
 
         poseLayout.addWidget(poseIcon)
         poseLayout.addWidget(self._pose_text)

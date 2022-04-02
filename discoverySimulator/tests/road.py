@@ -53,6 +53,4 @@ def road():
         else:
             rob1.setLeftWheelSpeed(0)
             rob1.setRightWheelSpeed(0)
-        print(rob1.getOdometryPose().getX(),rob1.getOdometryPose().getY(),rob1.getOdometryPose().getOrientation())
-
-        time.sleep(.01) # TODO : handle in sim
+        sim.sync()

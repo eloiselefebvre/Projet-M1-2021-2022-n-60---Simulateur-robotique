@@ -16,8 +16,6 @@ class PathFinding:
 
     """The PathFinding class provides a path finding for a robot."""
 
-    # TODO : Pause sur pathfinding ??
-
     __MOVES = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
     __COLORS = {
         "closed_node": "#40C9E0",

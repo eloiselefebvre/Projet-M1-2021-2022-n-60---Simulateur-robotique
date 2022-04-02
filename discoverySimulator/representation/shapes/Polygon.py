@@ -9,7 +9,7 @@ class Polygon(Shape):
 
     """ The Polygon class provides a polygon."""
 
-    # TODO : Revoir pose as mid of points
+    # TODO : Revoir la position des polygones comme le milieu de ses points
 
     def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):
         """ Constructs a Polygon.

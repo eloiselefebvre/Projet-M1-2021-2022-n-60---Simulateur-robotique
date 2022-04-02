@@ -1,6 +1,6 @@
-from PyQt5.QtGui import QIcon, QFont
-from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout
-from discoverySimulator.config import config, colors
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QComboBox, QWidget, QHBoxLayout, QListView
+from discoverySimulator.config import *
 from discoverySimulator.Observable import Observable
 from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.actuators import Actuator
@@ -48,12 +48,15 @@ class ExplorerToolsbar(QWidget, Observable):
 
     # Widgets
     def __createFilterWidget(self) -> QComboBox:
-        fnt=QFont("Verdana", 12)
         filterWidget = QComboBox()
-        filterWidget.setFont(fnt)
-        filterWidget.setFixedSize(215,30)
-        filterWidget.setStyleSheet("background-color:"+colors['font']+"; border:none")
-        filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/allObjects.svg"),"All objects")
+        filterWidget.setView(QListView())
+        filterWidget.setFont(fonts["normal"])
+        filterWidget.setFixedSize(216,32)
+        filterWidget.setStyleSheet("*{background-color:"+colors['font']+"; border:none;}"
+                                   "QListView{font-family:Verdana; font-size:15px;}"
+                                   "QListView::item{height:32px;}"
+                                   "QListView::item:selected{background:#25CCF7; padding-left:12px;}")
+        filterWidget.addItem(QIcon(os.path.join(config["ressourcesPath"],'objects','allObjects.svg')),"All objects")
         for item in self.__ITEMS:
             classname=item.__name__
             filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"),classname+"s")

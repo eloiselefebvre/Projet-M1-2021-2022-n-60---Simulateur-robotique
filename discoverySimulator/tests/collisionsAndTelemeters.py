@@ -33,7 +33,7 @@ def collisionAndTelemeter():
     rob2 = CircularTwoWheelsRobot()
     rob2.addComponent(led3, 0, 0)
     rob2.setRightWheelSpeed(100)
-    rob2.setLeftWheelSpeed(-100)
+    rob2.setLeftWheelSpeed(200)
 
     rob2.enableOdometry()
     # rob2.setID("2W")
@@ -63,30 +63,28 @@ def collisionAndTelemeter():
     polygon=Object(Representation(Polygon([(300,200),(400,200),(500,300),(400,350),(350,300)],"#f0f")))
 
     env = Environment(1500,900,'real')
-    # env.addObject(rob1, 1000, 100, 30)
+    env.addObject(rob1, 1000, 100, 30)
     env.addObject(rob2, 1050, 300, -45)
-    # env.addObject(rob3, 500, 500, 45)
-    # env.addObject(rob4, 700, 500, 90)
-    # env.addObject(rob5, 700, 180, 90)
-    # env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
+    env.addObject(rob3, 500, 500, 45)
+    env.addObject(rob4, 700, 500, 90)
+    env.addObject(rob5, 700, 180, 90)
+    env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
     # env.addObject(Telemeter(accuracy=0.9),500,4)
     # env.addObject(polygon,100,100)
-    # env.addVirtualObject(CircularObstacle(50,'#ff8f8f'),600,600)
+    env.addVirtualObject(CircularObstacle(50,'#ff8f8f'),600,600)
 
     sim = Simulation(env)
     ledState = 0
-    start = sim.time()
     sim.run()
     sim.showInterface()
+    sim.setAcceleration(2)
 
     while True:
-        current = sim.time()
-        if current-start>1:
-            start=current
-            ledState=not ledState
-            led.setState(ledState)
-            led2.setState(not ledState)
-            led3.setState(ledState)
-            led4.setState(ledState)
+        ledState=not ledState
+        led.setState(ledState)
+        led2.setState(not ledState)
+        led3.setState(ledState)
+        led4.setState(ledState)
+        sim.sleep(1)
 
-        time.sleep(.01)
+        sim.sync()
