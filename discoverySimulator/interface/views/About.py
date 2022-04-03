@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel
+from PyQt5.QtGui import QIcon
+from PyQt5.QtSvg import QSvgWidget
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLayout
 from discoverySimulator.config import *
 
 class About(QDialog):
@@ -14,13 +15,11 @@ class About(QDialog):
 
         layout=QVBoxLayout()
         layout.addWidget(self.__createPanelWidget())
+        layout.setSizeConstraint(QLayout.SetFixedSize)
         self.setLayout(layout)
 
         self.exec()
 
     def __createPanelWidget(self) -> QLabel:
-        widget = QLabel()
-        logo = QPixmap(os.path.join(config["ressourcesPath"],'infos','popUp.svg'))
-        widget.setPixmap(logo)
-        return widget
+        return QSvgWidget(os.path.join(config["ressourcesPath"],'infos','creditPanel.svg'))
 

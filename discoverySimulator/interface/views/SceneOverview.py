@@ -78,7 +78,6 @@ class SceneOverviewContent(QWidget):
             self.__zoomController.setOffset(self.__zoomController.getOffset() - (current - self.__dragViewOrigin) * self.__zoomController.getZoom())
             self.__dragViewOrigin = current
 
-
     def __viewGrabbed(self, mouse):
         mouseRescale = (mouse - self.__zoomController.getOverviewOffset()) / self.__zoomController.getZoomOverview()
         offset = self.__zoomController.getOffset()

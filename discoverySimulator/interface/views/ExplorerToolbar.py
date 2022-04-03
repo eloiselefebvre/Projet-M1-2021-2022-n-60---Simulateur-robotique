@@ -53,7 +53,7 @@ class ExplorerToolsbar(QWidget, Observable):
         filterWidget.setFont(fonts["normal"])
         filterWidget.setFixedSize(216,32)
         filterWidget.setStyleSheet("*{background-color:"+colors['font']+"; border:none;}"
-                                   "QListView{font-family:Verdana; font-size:15px;}"
+                                   "QListView{font-family:Verdana; font-size:15px; outline:none;}"
                                    "QListView::item{height:32px;}"
                                    "QListView::item:selected{background:#26BEE5; padding-left:12px;}")
         filterWidget.addItem(QIcon(os.path.join(config["ressourcesPath"],'objects','allObjects.svg')),"All objects")
