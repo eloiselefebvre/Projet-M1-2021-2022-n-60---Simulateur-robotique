@@ -74,17 +74,18 @@ class SceneOverviewContent(QWidget):
 
     def mouseMoveEvent(self,event):
         if self.__dragView:
-            current=event.pos()/self.__zoomController.getZoomOverview()
+            current=(event.pos() - self.__zoomController.getOverviewOffset())/self.__zoomController.getZoomOverview()
             self.__zoomController.setOffset(self.__zoomController.getOffset() - (current - self.__dragViewOrigin) * self.__zoomController.getZoom())
             self.__dragViewOrigin = current
 
 
     def __viewGrabbed(self, mouse):
-        mouseRescale = mouse / self.__zoomController.getZoomOverview()
+        mouseRescale = (mouse - self.__zoomController.getOverviewOffset()) / self.__zoomController.getZoomOverview()
         offset = self.__zoomController.getOffset()
         sceneSize = self.__zoomController.getSceneSize()
-        bx = -offset.x() / self.__zoomController.getZoom()
-        by = -offset.y() / self.__zoomController.getZoom()
+        bx = -offset.x()/ self.__zoomController.getZoom()
+        by = -offset.y()/ self.__zoomController.getZoom()
+
         ex = bx + sceneSize.width()
         ey = by + sceneSize.height()
 

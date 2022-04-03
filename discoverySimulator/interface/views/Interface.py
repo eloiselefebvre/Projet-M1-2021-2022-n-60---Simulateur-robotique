@@ -57,6 +57,15 @@ class Interface(QMainWindow):
         self.__explorerWidget.getExplorerToolsbar().addObserverCallback(self.__sceneWidget.updateLockedScene, "lockChanged")
         self.__explorerWidget.getExplorerToolsbar().addObserverCallback(self.__explorerWidget.getExplorerTree().rebuildTree, 'filterChanged')
 
+        for obj in self.__environment.getObjects():
+            obj.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeSelection, "selectionChanged")
+            obj.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility, "visibilityChanged")
+            if hasattr(obj, "getComponents"):
+                for comp in obj.getComponents():
+                    comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility,
+                                             "visibilityChanged")
+                obj.addObserverCallback(self.__toolbarWidget.robotSelected, 'selectionChanged')
+
         self.setCentralWidget(general_widget)
         self.showMaximized()
         self.__sceneWidget.maximized()
