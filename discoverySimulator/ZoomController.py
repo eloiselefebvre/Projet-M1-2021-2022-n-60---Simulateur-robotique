@@ -35,7 +35,8 @@ class ZoomController(Observable):
         self.__sceneSize = size
         if self.__offset.isNull():
             off = (self.__sceneSize-self.__environnementSize)/2
-            self.__offset=QPoint(off.width(),off.height())
+            if off.width()>0 and off.height()>0:
+                self.__offset=QPoint(off.width(),off.height())
 
     def setSceneOverviewSize(self, size:QSize):
         self.__sceneOverviewSize = size
