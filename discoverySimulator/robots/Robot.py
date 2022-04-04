@@ -104,6 +104,7 @@ class Robot(ABC,Object):
         @param x  x coordinate of the component on the robot [px]
         @param y  y coordinate of the component on the robot [px]
         @param orientation  Orientation of the component on the robot [degrees]"""
+
         if isinstance(component, Component):
             pose=Pose(-x,y,orientation)
             component.setPose(pose)
