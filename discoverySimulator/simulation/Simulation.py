@@ -21,12 +21,13 @@ class Simulation(Observable):
         super().__init__()
         self.__environment=environment
         self.__app = None
-        self.__interface=None
         self.__appShown = False
         self.__acceleration = 1.0
         self.__timeElapsed = 0.0
         self.__playState=True
         self.__hasBeenRefreshed=False
+
+        self.__runThread=None
 
     # SETTERS
     def setAcceleration(self, acceleration:float):
@@ -56,6 +57,8 @@ class Simulation(Observable):
 
     def setAppShown(self,shown:bool):
         self.__appShown=shown
+        if not self.__appShown:
+            self.clearObserverCallbacks()
 
     # GETTERS
     def getAcceleration(self) -> float:
@@ -71,22 +74,28 @@ class Simulation(Observable):
 
     def run(self):
         """ Runs the simulation."""
-        th = threading.Thread(target=self.__run)
-        th.start()
+        self.stop()
+        self.__runThread = threading.Thread(target=self.__run)
+        self.__runThread.start()
+
+    def stop(self):
+        if self.__runThread is not None:
+            self.__runThread.do_run=False
+            self.__runThread.join()
 
     def showInterface(self):
         """ Shows the interface where the simulation takes place."""
         if self.__environment is not None and not self.__appShown:
-            th=threading.Thread(target=self.__startApplication)
-            th.start()
+            self.__appThread=threading.Thread(target=self.__startApplication)
+            self.__appThread.start()
             self.__appShown = True
 
     def closeInterface(self):
         """ Closes the interface."""
         if self.__appShown:
-            self.__appShown = False
-            self.__interface.close()
-        # TODO : Fermer également l'application ?
+            self.__app.exit(0)
+            self.__appThread.join()
+            self.setAppShown(False)
 
     def sleep(self,delay):
         start = time.time()
@@ -100,7 +109,7 @@ class Simulation(Observable):
 
     def __run(self):
         start = time.time()
-        while True:
+        while getattr(self.__runThread, "do_run", True):
             # ROBOT UPDATE
             current = time.time()
             if self.__playState:
@@ -123,8 +132,8 @@ class Simulation(Observable):
 
     def __startApplication(self):
         self.__app = QApplication(sys.argv)
-        self.__interface=Interface(self, self.__environment)
-        sys.exit(self.__app.exec())
+        interface=Interface(self, self.__environment)
+        self.__app.exec_()
 
     def __accelerationChanged(self):
         self.__acceleration = round(self.__acceleration, 1)

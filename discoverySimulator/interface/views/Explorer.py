@@ -49,5 +49,3 @@ class Explorer(QWidget):
             obj.deleteObserverCallback(self.__explorerInfo.refreshData, "stateChanged")
             self.__explorerInfo=None
             self.__layout.update()
-
-

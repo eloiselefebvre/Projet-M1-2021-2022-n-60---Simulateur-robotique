@@ -20,4 +20,3 @@ def blinkWithoutSleep():
             led.toggleState()
 
         simulation.sync()
-

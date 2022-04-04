@@ -26,6 +26,7 @@ class ExplorerTree(QTreeWidget):
         self.__selectedSubItem=None
         self.__itemsShown=[Robot, Actuator, Sensor, Obstacle]
         self.__setTreeWidgetConfiguration()
+        self.setStyleSheet("QTreeView::item:hover,QTreeView::item:selected{color:#DFE0E5; background-color:#26BEE5;}")
         self.buildTree()
 
     def __setTreeWidgetConfiguration(self):

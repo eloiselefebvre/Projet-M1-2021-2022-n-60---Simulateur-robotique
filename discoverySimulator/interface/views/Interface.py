@@ -1,3 +1,5 @@
+import time
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
@@ -60,13 +62,19 @@ class Interface(QMainWindow):
             obj.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility, "visibilityChanged")
             if hasattr(obj, "getComponents"):
                 for comp in obj.getComponents():
-                    comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility, "visibilityChanged")
+                    comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility,
+                                             "visibilityChanged")
                 obj.addObserverCallback(self.__toolbarWidget.robotSelected, 'selectionChanged')
-
 
         self.setCentralWidget(general_widget)
         self.showMaximized()
         self.__sceneWidget.maximized()
 
     def closeEvent(self, event):
+        for obj in self.__environment.getObjects():
+            obj.clearObserverCallbacks()
+            if hasattr(obj, "getComponents"):
+                for comp in obj.getComponents():
+                    comp.clearObserverCallbacks()
+
         self.__simulation.setAppShown(False)

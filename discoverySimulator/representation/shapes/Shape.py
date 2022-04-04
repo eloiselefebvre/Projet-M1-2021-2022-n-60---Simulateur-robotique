@@ -21,7 +21,6 @@ class Shape(ABC):
         self._pose=None
         self._orientationMark=False
 
-
     # SETTERS
     def setPose(self,pose:Pose):
         """ Sets the position of a shape.
@@ -44,12 +43,16 @@ class Shape(ABC):
         return self._pose
 
     def paint(self,painter:QPainter):
+        painter.setRenderHint(QPainter.HighQualityAntialiasing)
+
         painter.translate(self._pose.getX() + self._pose.getRotationCenterX(), self._pose.getY() + self._pose.getRotationCenterY())
         painter.rotate(self._pose.getOrientation())
         painter.translate(-self._pose.getRotationCenterX(), -self._pose.getRotationCenterY())
         self._color.setAlpha(self._opacity)
         if self._border is not None:
-            painter.setPen(QPen(self._border.getColor(),self._border.getWidth(), Qt.SolidLine))
+            pen=QPen(self._border.getColor(), self._border.getWidth(), Qt.SolidLine)
+            pen.setJoinStyle(Qt.RoundJoin)
+            painter.setPen(pen)
         else:
             painter.setPen(Qt.NoPen)
 

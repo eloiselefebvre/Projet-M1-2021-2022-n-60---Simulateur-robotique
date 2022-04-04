@@ -16,6 +16,9 @@ class Observable:
         if topic in self.__observersCallbacks and observerCallback in self.__observersCallbacks[topic]:
             self.__observersCallbacks[topic].remove(observerCallback)
 
+    def clearObserverCallbacks(self):
+        self.__observersCallbacks.clear()
+
     def notifyObservers(self,topic:str='defaultTopic'):
         if topic in self.__observersCallbacks:
             for observerCallback in self.__observersCallbacks[topic]:
