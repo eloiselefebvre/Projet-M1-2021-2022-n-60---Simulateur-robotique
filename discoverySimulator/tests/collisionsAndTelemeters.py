@@ -35,7 +35,7 @@ def collisionAndTelemeter():
     rob2.setRightWheelSpeed(100)
     rob2.setLeftWheelSpeed(200)
 
-    rob2.enableOdometry()
+    rob2.enableOdometry(0.8)
     # rob2.setID("2W")
 
     colorSensor = ColorSensor("#999999")
