@@ -4,11 +4,11 @@ class Pose:
 
     def __init__(self, x:float, y:float,orientation:float=0,rx:float=0,ry:float=0):
         """ Constructs a pose for an object.
-        @param x  x coordinate in the environment
-        @param y  y coordinate in the environment
-        @param orientation  Orientation in the environment
-        @param rx  The rotation center x coordinate in the environment
-        @param ry  The rotation center y coordinate in the environment"""
+        @param x  x coordinate
+        @param y  y coordinate
+        @param orientation  Orientation
+        @param rx  x rotation center
+        @param ry  y rotation center"""
         self.__pose = [x, y]
         self.setRotationCenter(rx, ry)
         self.__orientation = orientation

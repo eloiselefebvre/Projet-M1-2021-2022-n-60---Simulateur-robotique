@@ -43,8 +43,6 @@ class Shape(ABC):
         return self._pose
 
     def paint(self,painter:QPainter):
-        painter.setRenderHint(QPainter.HighQualityAntialiasing)
-
         painter.translate(self._pose.getX() + self._pose.getRotationCenterX(), self._pose.getY() + self._pose.getRotationCenterY())
         painter.rotate(self._pose.getOrientation())
         painter.translate(-self._pose.getRotationCenterX(), -self._pose.getRotationCenterY())

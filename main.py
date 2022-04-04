@@ -4,7 +4,7 @@
 from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \
     reinforcementLearningTest, rlTwoWheelsRobot, rlAvoiding, rlFourWheelsRobot,road
 #
-# aStar()
+aStar()
 # collisionAndTelemeter()
 # usingLIDAR.LIDARTest()
 # # reinforcementLearningTest()
@@ -12,5 +12,5 @@ from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, r
 # # rlAvoiding.reinforcementLearningTest()
 # road.road()
 
-from discoverySimulator.examples import blinkWithoutSleep
-blinkWithoutSleep()
+# from discoverySimulator.examples import blinkWithoutSleep
+# blinkWithoutSleep()

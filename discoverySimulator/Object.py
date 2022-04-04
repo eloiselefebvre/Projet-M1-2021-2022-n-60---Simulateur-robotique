@@ -50,8 +50,8 @@ class Object(Observable):
             Object.__number_of_instances[name]=1
 
     def setPose(self,pose:Pose):
-        """Sets the position and the orientation of the object.
-        :param pose  New Position of the object"""
+        """ Sets the position and the orientation of the object.
+        @param  pose  Position of the object"""
         self._pose=pose
         self._representation.setPose(self._pose)
 
@@ -65,7 +65,7 @@ class Object(Observable):
 
     def setID(self,id:str):
         """ Sets the ID of an object.
-        @param id  New id of the object"""
+        @param id  Id of the object"""
         Object.__number_of_instances[self._id.split("_")[0]] -= 1
         self._id=id
         self.setNumberOfInstances(self._id)
@@ -140,7 +140,7 @@ class Object(Observable):
         self._id+="_"+str(Object.__number_of_instances[self._id])
 
     def isSelected(self) -> bool:
-        """ Returns true if the object is selected; otherwise returns False."""
+        """ Returns True if the object is selected; otherwise returns False."""
         return self._isSelected
 
     def computeCollisions(self):

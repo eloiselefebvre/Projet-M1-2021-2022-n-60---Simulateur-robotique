@@ -38,6 +38,8 @@ class Scene(QWidget,Observable):
 
     def paintEvent(self,event):
         painter = QPainter(self)
+        painter.setRenderHint(QPainter.HighQualityAntialiasing)
+
         offset=self.__zoomController.getOffset()
         painter.translate(offset.x(), offset.y())
         painter.scale(self.__zoomController.getZoom(), self.__zoomController.getZoom())

@@ -10,7 +10,7 @@ class Line(Shape):
 
     """ The Line class provides a line."""
 
-    def __init__(self,length:float,width:float,color:str=None,opacity:int=255):
+    def __init__(self,length:float,width:float=1,color:str=None,opacity:int=255):
         """ Constructs a Line."""
         super().__init__(color,opacity)
         self.__length=length

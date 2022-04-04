@@ -71,7 +71,7 @@ class Environment:
         @param object  Object of the class Object or which inherits from Object
         @param x  x coordinate of the object in the environment [px]
         @param y  y coordinate of the object in the environment [px]
-        @param orientation  orientation of the object in the environment [degrees]"""
+        @param orientation  Orientation of the object in the environment [degrees]"""
         if isinstance(object, Object):
             pose=Pose(x,y,orientation)
             object.setPose(pose)
@@ -93,7 +93,7 @@ class Environment:
         @param virtualObject  object of the class Object or which inherits from Object
         @param x  x coordinate of the object in the environment [px]
         @param y  y coordinate of the object in the environment [px]
-        @param orientation  orientation of the object in the environment [degrees]"""
+        @param orientation  Orientation of the object in the environment [degrees]"""
         if isinstance(virtualObject, Object):
             virtualObject.setPose(Pose(x, y, orientation))
             virtualObject.setEnvironnement(self)
@@ -101,13 +101,13 @@ class Environment:
 
     def removeObject(self, object:Object):
         """ Removes an object of the environment.
-        @param object  object to remove"""
+        @param object  Object to remove"""
         if object in self.__objects:
             self.__objects.remove(object)
 
     def removeVirtualObject(self, virtualObject:Object):
         """ Removes a virtual object of the environment.
-        @param object  object to remove"""
+        @param object  Virtual object to remove"""
         if virtualObject in self.__virtualObjects:
             self.__virtualObjects.remove(virtualObject)
 
