@@ -22,9 +22,9 @@ class Interface(QMainWindow):
 
         general_widget=QWidget()
 
-        general_layout=QGridLayout(general_widget)
-        general_layout.setContentsMargins(0, 0, 0, 0)
-        general_layout.setSpacing(0)
+        self.__general_layout=QGridLayout(general_widget)
+        self.__general_layout.setContentsMargins(0, 0, 0, 0)
+        self.__general_layout.setSpacing(0)
 
         zoomController = ZoomController(self.__environment)
 
@@ -37,11 +37,11 @@ class Interface(QMainWindow):
         zoomController.setSceneOverviewSize(sceneOverviewWidget.size())
         zoomController.zoomOverviewToFit()
 
-        general_layout.addWidget(self.__toolbarWidget, 0, 0, 1, 2)
-        general_layout.addWidget(self.__sceneWidget, 1, 0)
-        general_layout.addWidget(sceneOverviewWidget, 1, 0, Qt.AlignRight | Qt.AlignBottom)
-        general_layout.addWidget(self.__explorerWidget, 1, 1)
-        general_layout.addWidget(self.__footerWidget, 2, 0, 1, 2)
+        self.__general_layout.addWidget(self.__toolbarWidget, 0, 0, 1, 2)
+        self.__general_layout.addWidget(self.__sceneWidget, 1, 0)
+        self.__general_layout.addWidget(sceneOverviewWidget, 1, 0, Qt.AlignRight | Qt.AlignBottom)
+        self.__general_layout.addWidget(self.__explorerWidget, 1, 1)
+        self.__general_layout.addWidget(self.__footerWidget, 2, 0, 1, 2)
 
         # NOTIFICATION CONNECTIONS
         zoomController.addObserverCallback(self.__footerWidget.updateZoom, "zoomChanged")
@@ -57,14 +57,16 @@ class Interface(QMainWindow):
         self.__explorerWidget.getExplorerToolsbar().addObserverCallback(self.__sceneWidget.updateLockedScene, "lockChanged")
         self.__explorerWidget.getExplorerToolsbar().addObserverCallback(self.__explorerWidget.getExplorerTree().rebuildTree, 'filterChanged')
 
+        # self.__environment.addObserverCallback(self.__explorerWidget.getExplorerTree().rebuildTree,'objectCountChanged')
+
         for obj in self.__environment.getObjects():
             obj.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeSelection, "selectionChanged")
             obj.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility, "visibilityChanged")
             if hasattr(obj, "getComponents"):
                 for comp in obj.getComponents():
-                    comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility,
-                                             "visibilityChanged")
+                    comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
                 obj.addObserverCallback(self.__toolbarWidget.robotSelected, 'selectionChanged')
+                # obj.addObserverCallback(self.__explorerWidget.rebuildExplorerTree, 'objectCountChanged')
 
         self.setCentralWidget(general_widget)
         self.showMaximized()

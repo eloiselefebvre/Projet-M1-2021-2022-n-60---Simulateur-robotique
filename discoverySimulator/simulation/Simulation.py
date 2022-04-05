@@ -97,9 +97,9 @@ class Simulation(Observable):
             self.__appThread.join()
             self.setAppShown(False)
 
-    def sleep(self,delay):
+    def sleep(self, duration:float):
         start = time.time()
-        while time.time()-start<delay/self.__acceleration:
+        while time.time()-start<duration/self.__acceleration:
             time.sleep(0.001)
 
     def sync(self):

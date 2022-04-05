@@ -43,7 +43,7 @@ class ExplorerToolsbar(QWidget, Observable):
                         objects.append(comp)
         return objects
 
-    def getShownObjectClass(self):
+    def getShownObjectClasses(self):
         return self.__itemsShown
 
     # Widgets
@@ -79,7 +79,7 @@ class ExplorerToolsbar(QWidget, Observable):
     def __filterChanged(self):
         idx = self.__filterWidget.currentIndex()
         if idx!=0:
-            self.__itemsShown =[]
+            self.__itemsShown = []
             self.__itemsShown.append(self.__ITEMS[idx - 1])
         else:
             self.__itemsShown = self.__ITEMS

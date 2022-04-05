@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QSize
 from discoverySimulator.Object import Object
+from discoverySimulator.Observable import Observable
 from discoverySimulator.Pose import Pose
 from discoverySimulator.Frame import Frame
 from discoverySimulator.config import colors
@@ -10,7 +11,7 @@ from discoverySimulator.sensors import Sensor
 
 from typing import List
 
-class Environment:
+class Environment(Observable):
 
     """ The Environment class provides an environment to simulate."""
 
@@ -21,6 +22,7 @@ class Environment:
         """ Constructs an environment
         @param width  Width of the environment [px]
         @param height  Height of the environment [px]"""
+        super().__init__()
         self.__objects=[]
         self.__virtualObjects=[]
         self.__sensors=[]
@@ -72,7 +74,7 @@ class Environment:
         @param x  x coordinate of the object in the environment [px]
         @param y  y coordinate of the object in the environment [px]
         @param orientation  Orientation of the object in the environment [degrees]"""
-        if isinstance(object, Object):
+        if isinstance(object, Object) and not object in self.__objects:
             pose=Pose(x,y,orientation)
             object.setPose(pose)
             object.setEnvironnement(self)
@@ -87,6 +89,7 @@ class Environment:
                 object.setOdometryPose(pose.copy())
             if isinstance(object, Sensor):
                 self.addSensor(object)
+            self.notifyObservers("objectCountChanged")
 
     def addVirtualObject(self, virtualObject:Object, x:float=0, y:float=0, orientation:float=0):
         """ Adds a virtual object in the environment.
@@ -94,22 +97,27 @@ class Environment:
         @param x  x coordinate of the object in the environment [px]
         @param y  y coordinate of the object in the environment [px]
         @param orientation  Orientation of the object in the environment [degrees]"""
-        if isinstance(virtualObject, Object):
+        if isinstance(virtualObject, Object) and not object in self.__virtualObjects:
             virtualObject.setPose(Pose(x, y, orientation))
             virtualObject.setEnvironnement(self)
             self.__virtualObjects.append(virtualObject)
+            self.notifyObservers("objectCountChanged")
 
     def removeObject(self, object:Object):
         """ Removes an object of the environment.
         @param object  Object to remove"""
         if object in self.__objects:
             self.__objects.remove(object)
+            if isinstance(object, Sensor):
+                self.__sensors.remove(object)
+            self.notifyObservers("objectCountChanged")
 
     def removeVirtualObject(self, virtualObject:Object):
         """ Removes a virtual object of the environment.
         @param object  Virtual object to remove"""
         if virtualObject in self.__virtualObjects:
             self.__virtualObjects.remove(virtualObject)
+            self.notifyObservers("objectCountChanged")
 
     def addSensor(self,sensor:Sensor):
         if isinstance(sensor,Sensor) and not sensor in self.__sensors:

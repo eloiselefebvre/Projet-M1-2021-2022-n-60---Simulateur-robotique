@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QFont, QIcon
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
+from PyQt5.QtGui import QColor, QIcon
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton
+
 from discoverySimulator.config import *
 from discoverySimulator.interface.components.Button import VisibilityButton
 from discoverySimulator.Object import Object
@@ -11,8 +12,12 @@ from discoverySimulator.actuators.Actuator import Actuator
 
 class ExplorerTree(QTreeWidget):
 
+    __ALL_ITEMS = [Robot, Actuator, Sensor, Obstacle]
+
     def __init__(self,environment,parent):
         super().__init__()
+        self.setStyleSheet("QTreeView::item:hover,QTreeView::item:selected{color:#DFE0E5; background-color:#26BEE5;}")
+
         self.__environment = environment
         self.__mainItems=[]
         self.__subItems=[]
@@ -24,10 +29,10 @@ class ExplorerTree(QTreeWidget):
         self.__parent=parent
         self.__selectedItem=None
         self.__selectedSubItem=None
-        self.__itemsShown=[Robot, Actuator, Sensor, Obstacle]
+        self.__itemsShown=ExplorerTree.__ALL_ITEMS
+
         self.__setTreeWidgetConfiguration()
-        self.setStyleSheet("QTreeView::item:hover,QTreeView::item:selected{color:#DFE0E5; background-color:#26BEE5;}")
-        self.buildTree()
+        self.__buildTree()
 
     def __setTreeWidgetConfiguration(self):
         self.setHeaderHidden(True)
@@ -38,16 +43,17 @@ class ExplorerTree(QTreeWidget):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
     def rebuildTree(self,sender):
-        self.__itemsShown=sender.getShownObjectClass()
-        self.clearTree()
-        self.buildTree()
+        if hasattr(sender,"getShownObjectClasses"):
+            self.__itemsShown=sender.getShownObjectClasses()
+        self.__clearTree()
+        self.__buildTree()
         self.expandAll()
 
-    def clearTree(self):
+    def __clearTree(self):
         if self.__selectedItem is not None:
             self.__mainObjects[self.__mainItems.index(self.__selectedItem)].setSelected(False)
-        self.removeSelectedItem()
-        self.itemClicked.disconnect(self.clickedItem)
+        self.__removeSelectedItem()
+        self.itemClicked.disconnect(self.__clickedItem)
 
         root = self.invisibleRootItem()
         parents = []
@@ -69,13 +75,13 @@ class ExplorerTree(QTreeWidget):
         self.__mainItemsAssociatedChildren.clear()
         self.__visibilityButtons.clear()
 
-    def buildTree(self):
+    def __buildTree(self):
         for obj in self.__environment.getObjects():
              if type(obj) != Object:
                 if issubclass(type(obj), tuple(self.__itemsShown)) or (isinstance(obj, Robot) and (Actuator in self.__itemsShown or Sensor in self.__itemsShown)):
                     parent=None
                     if not issubclass(type(obj), tuple(self.__itemsShown)) and isinstance(obj, Robot) and (Actuator in self.__itemsShown or Sensor in self.__itemsShown):
-                        sensors = [comp  for comp in obj.getComponents() if isinstance(comp,Sensor)]
+                        sensors = [comp for comp in obj.getComponents() if isinstance(comp,Sensor)]
                         if (Sensor in self.__itemsShown and sensors) or (Actuator in self.__itemsShown and len(obj.getComponents()) - len(sensors) != 0):
                             parent = Item(self, obj.getID())
                             parent.setIcon(0,QIcon(os.path.join(config["ressourcesPath"],'objects','robotDisabled.svg')))
@@ -95,11 +101,11 @@ class ExplorerTree(QTreeWidget):
                         self.__allObjects.append(obj)
                         self.__mainItemsAssociatedChildren.append([])
                         self.__childrenButtons.append([])
+
                         if hasattr(obj,"getComponents"):
                             for comp in obj.getComponents():
                                 if issubclass(type(comp), tuple(self.__itemsShown)):
                                     child = Item(parent,comp.getID())
-
                                     self.__visibilityButtons.append(VisibilityButton(comp.isVisible()))
                                     if comp.getVisibilityLocked():
                                         self.__visibilityButtons[-1].lock()
@@ -111,12 +117,13 @@ class ExplorerTree(QTreeWidget):
                                     parent.addChild(child)
                                     classname = [item for item in self.__itemsShown if isinstance(comp, item)][0].__name__
                                     child.setIcon(0,QIcon(os.path.join(config["ressourcesPath"],'objects',f'{classname.lower()}.svg')))
+
         for button in self.__visibilityButtons:
             if button is not None:
-                button.clicked.connect(self.toggleObjectVisibily)
-        self.itemClicked.connect(self.clickedItem)
+                button.clicked.connect(self.__toggleObjectVisibily)
+        self.itemClicked.connect(self.__clickedItem)
 
-    def clickedItem(self):
+    def __clickedItem(self):
         crawler = self.currentItem()
         if self.__selectedItem is not None:
             self.__mainObjects[self.__mainItems.index(self.__selectedItem)].setSelected(False)
@@ -128,7 +135,7 @@ class ExplorerTree(QTreeWidget):
             self.__selectedSubItem=crawler
         selectedObject.setSelected(True)
 
-    def setSelectedItem(self,item):
+    def __setSelectedItem(self, item):
         item.setColor(colors['crawlerColor'])
         item.setExpanded(True)
         self.setCurrentItem(item)
@@ -138,7 +145,7 @@ class ExplorerTree(QTreeWidget):
         else:
             self.__parent.showExplorerInfo(self.__mainObjects[self.__mainItems.index(self.__selectedItem)])
 
-    def removeSelectedItem(self):
+    def __removeSelectedItem(self):
         if self.__selectedItem is not None:
             self.clearSelection()
             self.__selectedItem.setColor(colors['explorerTreeItem'])
@@ -157,9 +164,9 @@ class ExplorerTree(QTreeWidget):
         if sender in self.__mainObjects:
             crawler = self.__mainItems[self.__mainObjects.index(sender)]
             if sender.isSelected():
-                self.setSelectedItem(crawler)
+                self.__setSelectedItem(crawler)
             else:
-                self.removeSelectedItem()
+                self.__removeSelectedItem()
 
     def changeTreeVisibility(self,sender):
         if sender in self.__allObjects:
@@ -175,7 +182,7 @@ class ExplorerTree(QTreeWidget):
                     for children_button in children_buttons:
                         children_button.lock()
 
-    def toggleObjectVisibily(self):
+    def __toggleObjectVisibily(self):
         button = self.sender()
         obj = self.__allObjects[self.__visibilityButtons.index(button)]
         obj.toggleVisible()

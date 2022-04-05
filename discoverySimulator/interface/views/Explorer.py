@@ -1,3 +1,5 @@
+import time
+
 from PyQt5.QtWidgets import QGridLayout, QWidget
 from PyQt5.QtCore import Qt
 
@@ -16,19 +18,18 @@ class Explorer(QWidget):
         self.setAttribute(Qt.WA_StyledBackground)
         self.setStyleSheet("*{background-color: " + colors['explorerBackground']+ "; border:none}")
 
+        self.__environment=environment
+
         self.__layout=QGridLayout(self)
         self.__layout.setContentsMargins(0, 0, 0, 0)
         self.__layout.setSpacing(0)
 
-        self.__environment=environment
-
-        self.__explorerToolsbar = ExplorerToolsbar(self.__environment)
+        self.__explorerToolsbar =ExplorerToolsbar(self.__environment)
         self.__explorerTree=ExplorerTree(self.__environment, self)
         self.__explorerInfo=None
 
         self.__layout.addWidget(self.__explorerToolsbar, 0, 0)
         self.__layout.addWidget(self.__explorerTree, 1, 0)
-
 
     # GETTERS
     def getExplorerTree(self):
@@ -48,4 +49,4 @@ class Explorer(QWidget):
             self.__layout.removeWidget(self.__explorerInfo)
             obj.deleteObserverCallback(self.__explorerInfo.refreshData, "stateChanged")
             self.__explorerInfo=None
-            self.__layout.update()
+            # self.__layout.update()

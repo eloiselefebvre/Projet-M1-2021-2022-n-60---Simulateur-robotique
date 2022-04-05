@@ -9,12 +9,12 @@ from discoverySimulator.representation.shapes import Circle
 
 class CirclePath:
 
-    """The CirclePath class provides a circle path"""
+    """ The CirclePath class provides a circle path."""
 
     DEFAULT_WIDTH=20
 
     def  __init__(self, environment, color=colors['widgetBorder']):
-        """ Constructs a circle path
+        """ Constructs a circle path.
         @param environment  The environment where the circle path will take place
         @param color  Color of the circle path
         """
@@ -25,7 +25,7 @@ class CirclePath:
 
     # GETTERS
     def getElements(self) -> List[Circle]:
-        """ Returns all the elements of the path
+        """ Returns all the elements of the path.
         @return  All the elements
         """
         return self._pathElements

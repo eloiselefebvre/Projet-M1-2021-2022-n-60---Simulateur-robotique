@@ -16,4 +16,3 @@ def blink():
         simulation.sleep(1)
 
         simulation.sync()
-

@@ -104,8 +104,7 @@ class Robot(ABC,Object):
         @param x  x coordinate of the component on the robot [px]
         @param y  y coordinate of the component on the robot [px]
         @param orientation  Orientation of the component on the robot [degrees]"""
-
-        if isinstance(component, Component):
+        if isinstance(component, Component) and not self.hasComponent(component):
             pose=Pose(-x,y,orientation)
             component.setPose(pose)
             component.setParent(self)
@@ -114,12 +113,16 @@ class Robot(ABC,Object):
             if self._environment is not None:
                 component.setEnvironnement(self._environment)
                 if isinstance(component,Sensor):
+                    component.refresh()
                     self._environment.addSensor(component)
-
             self._components.append(component)
             if isinstance(component,Wheel):
                 self._wheels.append(component)
             self._representation.addSubRepresentation(component.getRepresentation())
+            self.notifyObservers('objectCountChanged')
+
+    def hasComponent(self,component:Component):
+        return component in self._components
 
     def move(self):
         self.__updateTrajectory()
