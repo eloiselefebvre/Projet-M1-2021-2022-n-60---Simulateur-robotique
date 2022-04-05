@@ -1,18 +1,21 @@
 import time
 
 from discoverySimulator import Object, Obstacle
+from discoverySimulator.obstacles import CircularObstacle, RectangularObstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Rectangle, Circle, Polygon
 from discoverySimulator.ressources.ReinforcementLearning import ReinforcementLearning
-from discoverySimulator.sensors import Telemeter
+from discoverySimulator.sensors import Telemeter, LIDAR
 from discoverySimulator.simulation import Environment, Simulation
 from discoverySimulator.robots import RectangularTwoWheelsRobot, CircularTwoWheelsRobot
 from discoverySimulator.actuators import LED
 
 def scenario():
     scenario1()
-    scenario2()
+    # scenario2()
     scenario3()
+    scenario4()
+    scenario5()
 
 def scenario1():
     timeSleep = 6
@@ -105,7 +108,32 @@ def scenario1():
     mySimulation.stop()
     mySimulation.closeInterface()
 
-def scenario2():
+def scenario3():
+    lidar = LIDAR()
+    rob = CircularTwoWheelsRobot()
+    rob.addComponent(lidar)
+    rob.setRightWheelSpeed(400)
+    rob.setLeftWheelSpeed(200)
+
+    env = Environment(1500, 900)
+    env.addObject(rob, 900, 500)
+    env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
+    env.addObject(RectangularObstacle(40, 200, "#ff8fff"), 650, 200)
+    env.addObject(RectangularObstacle(400, 100, "#ff8fff"), 250, 750, 25)
+    pol = Polygon([(500, 500), (600, 400), (800, 400), (600, 500), (800, 700)], "#ff8fff")
+    env.addObject(Obstacle(Representation(pol)))
+
+    sim = Simulation(env)
+    sim.run()
+    sim.showInterface()
+
+    while sim.time()<40:
+        sim.sync()
+
+    sim.stop()
+    sim.closeInterface()
+
+def scenario4():
     myRobot = CircularTwoWheelsRobot()
 
     environment = Environment(800,800)
@@ -116,7 +144,7 @@ def scenario2():
     environment.addObject(Obstacle(Representation(Circle(50,"#F8FF00"))),100,280)
     environment.addObject(Obstacle(Representation(Circle(100,"#FF8700"))),220,620)
     environment.addObject(Obstacle(Representation(Rectangle(400,30,"#FF33F7"))),202,200)
-    environment.addObject(Obstacle(Representation(Polygon([(800,200),(600,300),(500,200)],"#BDB9E6"))),-86,234)
+    environment.addObject(Obstacle(Representation(Polygon([(500,200),(800,200),(600,300)],"#BDB9E6"))),-86,234)
 
     mySimulation.run()
     mySimulation.showInterface()
@@ -127,7 +155,7 @@ def scenario2():
     mySimulation.stop()
     mySimulation.closeInterface()
 
-def scenario3():
+def scenario5():
     env = Environment(1500, 1500)
     robot = RectangularTwoWheelsRobot()
     env.addObject(robot, 500, 400, -90)

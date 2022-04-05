@@ -66,6 +66,8 @@ class Polygon(Shape):
         truncated_points_offset=[]
         points_number=len(self.__points)
         truncLines=[]
+
+        value *= (1 if self.__clockwise else -1)
         for curr in range(points_number):
             prev = (curr + points_number - 1) % points_number
             next = (curr + 1) % points_number
@@ -85,13 +87,13 @@ class Polygon(Shape):
             length_bis = (bis.x()**2+bis.y()**2)**0.5
             bis/=length_bis
 
-            l=(1 if self.__clockwise else -1)*value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
+            l=value/(1+na.x()*nb.x()+na.y()*nb.y())**0.5
 
             p_prime = self.__points[curr] + 2**0.5 * l * bis
             points_offset.append((p_prime.x(),p_prime.y()))
 
             if truncated:
-                if l>value:
+                if abs(l)>abs(value):
                     t=self.__points[curr] + value * bis
                     truncLines.append(QLineF(t.x(),t.y(),self.__points[curr].x(),self.__points[curr].y()).normalVector())
                 else:

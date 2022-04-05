@@ -8,7 +8,7 @@ from PyQt5.QtCore import QPoint, QLineF
 from discoverySimulator.Pose import Pose
 from discoverySimulator.Object import Object
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Rectangle, Line
+from discoverySimulator.representation.shapes import Rectangle, Line, Polygon
 from discoverySimulator.robots import Robot
 
 
