@@ -97,7 +97,7 @@ def road():
     env.addVirtualObject(Object(Representation(polygon)))
     polygonOffset = polygon.offset(-30)
     polygonOffset.setColor("#f0f0f0")
-    env.addVirtualObject(Object(Representation(polygonOffset)))
+    env.addVirtualObject(Object(Representation(polygonOffset)),polygonOffset.getPose().getX(),polygonOffset.getPose().getY())
 
     env.addObject(rob1, 250, 250)
 

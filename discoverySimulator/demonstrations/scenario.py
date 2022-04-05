@@ -10,7 +10,7 @@ from discoverySimulator.simulation import Environment, Simulation
 from discoverySimulator.robots import RectangularTwoWheelsRobot, CircularTwoWheelsRobot
 from discoverySimulator.actuators import LED
 
-SCENARIO1_TIME = 120
+SCENARIO1_TIME = 110
 SCENARIO2_TIME = 40
 SCENARIO3_TIME = 40
 SCENARIO4_TIME = 80
@@ -24,8 +24,6 @@ def scenario():
 
 def scenario1():
     s = time.time()
-
-    timeSleep = 6
 
     myEnvironment = Environment(600, 600)
 
@@ -72,13 +70,13 @@ def scenario1():
     mySimulation.showInterface()
     mySimulation.run()
 
-    mySimulation.sleep(timeSleep)
+    mySimulation.sleep(13)
     myLed.setVisible(True)
 
-    mySimulation.sleep(timeSleep)
+    mySimulation.sleep(5)
     myTelemeter.setVisible(True)
 
-    mySimulation.sleep(timeSleep)
+    mySimulation.sleep(12)
     background.setVisible(True)
     parkingLeftLine.setVisible(True)
     parkingRightLine.setVisible(True)
@@ -86,7 +84,7 @@ def scenario1():
     unavailableLED.setVisible(True)
     envTelemeter.setVisible(True)
 
-    mySimulation.sleep(timeSleep)
+    mySimulation.sleep(28)
 
     startTime = mySimulation.time()
 
@@ -96,7 +94,7 @@ def scenario1():
             startTime = currentTime
             myLed.toggleState()
 
-        if myTelemeter.getValue() < 20:
+        if myTelemeter.getValue() <= 20:
             myRobot.setLeftWheelSpeed(0)
             myRobot.setRightWheelSpeed(0)
             myLed.setState(LED.HIGH)
@@ -104,7 +102,7 @@ def scenario1():
             myRobot.setLeftWheelSpeed(400)
             myRobot.setRightWheelSpeed(400)
 
-        if envTelemeter.getValue() < 40 :
+        if envTelemeter.getValue() <= 40 :
             availableLED.setState(False)
             unavailableLED.setState(True)
         else:
@@ -139,7 +137,7 @@ def scenario2():
     env.addVirtualObject(Object(Representation(polygon)))
     polygonOffset = polygon.offset(-30)
     polygonOffset.setColor("#f0f0f0")
-    env.addVirtualObject(Object(Representation(polygonOffset)))
+    env.addVirtualObject(Object(Representation(polygonOffset)),polygonOffset.getPose().getX(),polygonOffset.getPose().getY())
 
     env.addObject(rob1, 250, 250)
 
