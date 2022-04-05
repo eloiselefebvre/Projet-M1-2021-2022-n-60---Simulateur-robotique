@@ -5,7 +5,7 @@ def blink():
     led = LED()
 
     environment = Environment(500,500)
-    environment.addObject(led,250,250)
+    environment.addObject(led,environment.getWidth()/2,environment.getHeight()/2)
 
     simulation = Simulation(environment)
     simulation.showInterface()

@@ -4,8 +4,8 @@ from discoverySimulator.actuators import LED
 def blinkWithoutSleep():
     led = LED()
 
-    environment = Environment(500,500)
-    environment.addObject(led,250,250)
+    environment = Environment(200,200)
+    environment.addObject(led,environment.getWidth()/2,environment.getHeight()/2)
 
     simulation = Simulation(environment)
     simulation.showInterface()

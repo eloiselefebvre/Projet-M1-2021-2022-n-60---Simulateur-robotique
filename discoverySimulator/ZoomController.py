@@ -17,6 +17,7 @@ class ZoomController(Observable):
         self.__sceneOverviewFitted=False
 
         self.__zoom=1.0
+        self.__zoomToFit = 1.0
         self.__overviewZoom=1.0
 
         self.__offset=QPoint(0, 0)
@@ -35,6 +36,8 @@ class ZoomController(Observable):
 
     def setSceneSize(self, size:QSize):
         self.__sceneSize = size
+        self.__zoomToFit = min(self.__sceneSize.width() / self.__environnementSize.width(), self.__sceneSize.height() / self.__environnementSize.height())
+        ZoomController.__ZOOM_MAX=max(self.__zoomToFit,ZoomController.__ZOOM_MAX)
         if self.__offset.isNull():
             off = (self.__sceneSize-self.__environnementSize)/2
             if off.width()>0 and off.height()>0:
@@ -72,7 +75,7 @@ class ZoomController(Observable):
         self.zoomChanged()
 
     def zoomToFit(self):
-        self.__zoom=min(self.__sceneSize.width() / self.__environnementSize.width(), self.__sceneSize.height() / self.__environnementSize.height())
+        self.__zoom=self.__zoomToFit
         off = (self.__sceneSize - self.__environnementSize*self.__zoom) / 2
         self.__offset = QPoint(off.width(), off.height())
         self.zoomChanged()
