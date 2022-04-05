@@ -104,17 +104,9 @@ class Simulation(Observable):
             self.setAppShown(False)
 
     def sleep(self, duration:float):
-        start = time.time()
-        while time.time()-start<duration/self.__acceleration:
+        start = self.__timeElapsed
+        while self.__timeElapsed - start < duration:
             time.sleep(0.001)
-
-        # start = time.time()
-        # while duration > 0:
-        #     currentTime = time.time()
-        #     if self.__playState:
-        #         duration -= (currentTime - start)*self.__acceleration
-        #     start = currentTime
-        #     time.sleep(0.001)
 
     def sync(self):
         while not self.__hasBeenRefreshed:
@@ -142,7 +134,7 @@ class Simulation(Observable):
                 if hasattr(sensor, "refresh"):
                     sensor.refresh()
 
-            self.sleep(self.__MINIMUM_TIME_STEP)
+            time.sleep(self.__MINIMUM_TIME_STEP/self.__acceleration)
 
     def __startApplication(self):
         self.__app = QApplication(sys.argv)

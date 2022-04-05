@@ -112,6 +112,7 @@ def scenario1():
             unavailableLED.setState(False)
 
         mySimulation.sync()
+
     mySimulation.stop()
     mySimulation.closeInterface()
 
