@@ -97,7 +97,7 @@ class Environment(Observable):
         @param x  x coordinate of the object in the environment [px]
         @param y  y coordinate of the object in the environment [px]
         @param orientation  Orientation of the object in the environment [degrees]"""
-        if isinstance(virtualObject, Object) and not object in self.__virtualObjects:
+        if isinstance(virtualObject, Object) and not virtualObject in self.__virtualObjects:
             virtualObject.setPose(Pose(x, y, orientation))
             virtualObject.setEnvironnement(self)
             self.__virtualObjects.append(virtualObject)

@@ -73,10 +73,4 @@ class Interface(QMainWindow):
         self.__sceneWidget.maximized()
 
     def closeEvent(self, event):
-        for obj in self.__environment.getObjects():
-            obj.clearObserverCallbacks()
-            if hasattr(obj, "getComponents"):
-                for comp in obj.getComponents():
-                    comp.clearObserverCallbacks()
-
         self.__simulation.setAppShown(False)

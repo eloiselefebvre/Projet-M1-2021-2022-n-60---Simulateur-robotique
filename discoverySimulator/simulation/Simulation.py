@@ -60,6 +60,12 @@ class Simulation(Observable):
         if not self.__appShown:
             self.clearObserverCallbacks()
 
+            for obj in self.__environment.getObjects():
+                obj.clearObserverCallbacks()
+                if hasattr(obj, "getComponents"):
+                    for comp in obj.getComponents():
+                        comp.clearObserverCallbacks()
+
     # GETTERS
     def getAcceleration(self) -> float:
         """ Returns the acceleration of the simulation."""
@@ -101,6 +107,14 @@ class Simulation(Observable):
         start = time.time()
         while time.time()-start<duration/self.__acceleration:
             time.sleep(0.001)
+
+        # start = time.time()
+        # while duration > 0:
+        #     currentTime = time.time()
+        #     if self.__playState:
+        #         duration -= (currentTime - start)*self.__acceleration
+        #     start = currentTime
+        #     time.sleep(0.001)
 
     def sync(self):
         while not self.__hasBeenRefreshed:

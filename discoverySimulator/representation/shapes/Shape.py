@@ -85,6 +85,7 @@ class Shape(ABC):
                 intersections=shape.getIntersectionWithLine(line)
                 if intersections:
                     total_intersections.extend(intersections)
+
         # intersection circle/line
         elif not shape1_lines and shape2_lines:
             for line in shape2_lines:
@@ -97,6 +98,7 @@ class Shape(ABC):
                     intersection = QPointF()
                     if r1_line.intersect(r2_line,intersection)==QLineF.BoundedIntersection:
                         total_intersections.append(intersection)
+
         return total_intersections
 
     @abstractmethod

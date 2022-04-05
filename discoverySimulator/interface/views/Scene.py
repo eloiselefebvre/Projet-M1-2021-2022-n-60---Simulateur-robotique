@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt, QPoint, QLineF
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import colors
 from discoverySimulator.ressources.PathFinding import PathFinding

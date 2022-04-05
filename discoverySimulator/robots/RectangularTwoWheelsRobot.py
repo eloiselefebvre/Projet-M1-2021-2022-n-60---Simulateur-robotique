@@ -9,7 +9,7 @@ class RectangularTwoWheelsRobot(TwoWheelsRobot):
 
     __DEFAULT_BORDER_RADIUS = 3
 
-    def __init__(self, color:str=None, robotWidth:float=50, robotHeight:float=60, distanceBetweenWheels:float=50, wheelsRadius:float=10, wheelYPosition:float=0):
+    def __init__(self, color:str=None, robotWidth:float=50, robotHeight:float=60, distanceBetweenWheels:float=48, wheelsRadius:float=10, wheelYPosition:float=0):
         """ Constructs a rectangular two wheels robot.
         @param color  Color of the robot
         @param robotWidth  Width of the robot [px]

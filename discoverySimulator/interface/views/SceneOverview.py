@@ -36,7 +36,6 @@ class SceneOverviewContent(QWidget):
 
         self.setFixedSize(SceneOverviewContent.__SCENE_OVERVIEW_WIDTH,round(SceneOverviewContent.__SCENE_OVERVIEW_WIDTH/SceneOverviewContent.__SCENE_OVERVIEW_RATIO))
 
-
         self.__dragView = False
         self.__dragViewOrigin = QPoint(0, 0)
 
