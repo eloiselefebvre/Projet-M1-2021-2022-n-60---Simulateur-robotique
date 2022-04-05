@@ -12,7 +12,7 @@ class Maze:
     """The Maze class provides a maze"""
 
     DEFAULT_BORDER_SCREEN_WIDTH = 2
-    INTERVAL_SIZE = 150
+    INTERVAL_SIZE = 300
 
     def __init__(self,environment):
         """ Constructs a maze
