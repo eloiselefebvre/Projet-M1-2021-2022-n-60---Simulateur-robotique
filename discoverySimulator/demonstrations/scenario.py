@@ -10,6 +10,11 @@ from discoverySimulator.simulation import Environment, Simulation
 from discoverySimulator.robots import RectangularTwoWheelsRobot, CircularTwoWheelsRobot
 from discoverySimulator.actuators import LED
 
+SCENARIO1_TIME = 120
+SCENARIO2_TIME = 40
+SCENARIO3_TIME = 40
+SCENARIO4_TIME = 80
+
 def scenario():
     scenario1()
     scenario2()
@@ -18,6 +23,8 @@ def scenario():
     scenario5()
 
 def scenario1():
+    s = time.time()
+
     timeSleep = 6
 
     myEnvironment = Environment(600, 600)
@@ -83,7 +90,7 @@ def scenario1():
 
     startTime = mySimulation.time()
 
-    while mySimulation.time()<120:
+    while time.time() - s<SCENARIO1_TIME:
         currentTime = mySimulation.time()
         if currentTime - startTime > 0.5:
             startTime = currentTime
@@ -97,7 +104,7 @@ def scenario1():
             myRobot.setLeftWheelSpeed(400)
             myRobot.setRightWheelSpeed(400)
 
-        if envTelemeter.getValue() < 20 :
+        if envTelemeter.getValue() < 40 :
             availableLED.setState(False)
             unavailableLED.setState(True)
         else:
@@ -109,6 +116,8 @@ def scenario1():
     mySimulation.closeInterface()
 
 def scenario2():
+    s = time.time()
+
     rob1 = RectangularTwoWheelsRobot()
     rob1.enableOdometry()
     FORWARD_SPEED = 300
@@ -137,7 +146,7 @@ def scenario2():
     sim.run()
     sim.showInterface()
 
-    while sim.time()<40:
+    while time.time() - s < SCENARIO2_TIME:
         if colorSensorRight.getValue() == "#444444" and colorSensorLeft.getValue() == "#444444":
             rob1.setLeftWheelSpeed(FORWARD_SPEED)
             rob1.setRightWheelSpeed(FORWARD_SPEED)
@@ -156,6 +165,8 @@ def scenario2():
     sim.closeInterface()
 
 def scenario3():
+    s = time.time()
+
     lidar = LIDAR()
     rob = CircularTwoWheelsRobot()
     rob.addComponent(lidar)
@@ -174,13 +185,15 @@ def scenario3():
     sim.run()
     sim.showInterface()
 
-    while sim.time()<40:
+    while time.time() - s < SCENARIO3_TIME:
         sim.sync()
 
     sim.stop()
     sim.closeInterface()
 
 def scenario4():
+    s = time.time()
+
     myRobot = CircularTwoWheelsRobot()
 
     environment = Environment(800,800)
@@ -196,7 +209,7 @@ def scenario4():
     mySimulation.run()
     mySimulation.showInterface()
 
-    while mySimulation.time()<60:
+    while time.time() - s < SCENARIO4_TIME:
         mySimulation.sync()
 
     mySimulation.stop()
