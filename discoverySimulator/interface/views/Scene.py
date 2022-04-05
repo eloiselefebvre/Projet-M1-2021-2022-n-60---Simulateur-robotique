@@ -135,6 +135,7 @@ class Scene(QWidget,Observable):
         if self.__maximized:
             self.__size=self.size()
             self.__zoomController.setSceneSize(self.__size)
+            self.__zoomController.zoomOverviewToFit()
 
     def followPathSelected(self,sender):
         if self.__pathFollowing is None:

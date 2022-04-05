@@ -35,7 +35,6 @@ class Interface(QMainWindow):
         self.__footerWidget = Footer(zoomController)
 
         zoomController.setSceneOverviewSize(sceneOverviewWidget.size())
-        zoomController.zoomOverviewToFit()
 
         self.__general_layout.addWidget(self.__toolbarWidget, 0, 0, 1, 2)
         self.__general_layout.addWidget(self.__sceneWidget, 1, 0)
