@@ -3,13 +3,13 @@ from typing import List, Tuple
 
 from PyQt5.QtCore import Qt, QLineF, QPoint, QPointF
 from PyQt5.QtGui import QPolygon, QBrush, QPainter, QPen, QColor
+
+from discoverySimulator.Pose import Pose
 from discoverySimulator.representation.shapes import Shape, Rectangle
 
 class Polygon(Shape):
 
     """ The Polygon class provides a polygon."""
-
-    # TODO : Revoir la position des polygones comme le milieu de ses points
 
     def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):
         """ Constructs a Polygon.
@@ -38,6 +38,23 @@ class Polygon(Shape):
             if point.y()>max_y:
                 max_y=point.y()
         return Rectangle(max_x-min_x,max_y-min_y)
+
+    def setPose(self,pose:Pose):
+        sx=0
+        sy=0
+        for point in self.__points:
+            sx+=point.x()+pose.getX()
+            sy+=point.y()+pose.getY()
+        sx=round(sx/len(self.__points))
+        sy=round(sy/len(self.__points))
+
+        for point in self.__points:
+            point.setX(point.x()+pose.getX()-sx)
+            point.setY(point.y()+pose.getY()-sy)
+
+        pose.setX(sx)
+        pose.setY(sy)
+        self._pose=pose
 
     def contains(self, point) -> bool:
         # https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
@@ -114,9 +131,8 @@ class Polygon(Shape):
                             truncated_points_offset.append((intersection.x(),intersection.y()))
                 else:
                     truncated_points_offset.append(points_offset[curr])
-            pol=Polygon(truncated_points_offset)
-        else:
-            pol=Polygon(points_offset)
+            points_offset=truncated_points_offset
+        pol=Polygon(points_offset)
         pol.setPose(self._pose.copy())
         return pol
 
