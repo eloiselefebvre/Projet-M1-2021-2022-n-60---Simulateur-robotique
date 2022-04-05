@@ -1,15 +1,12 @@
-import time
-from math import sqrt, cos, radians
-from discoverySimulator import Pose
 from discoverySimulator.ressources.ReinforcementLearning import ReinforcementLearning
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 
 def reinforcementLearningTest():
 
-    env=Environment(1500,1500)
+    env=Environment(800,800)
     robot=RectangularTwoWheelsRobot()
-    env.addObject(robot,500,400,-90)
+    env.addObject(robot,50,400,-90)
 
     sim = Simulation(env)
     sim.run()
@@ -17,7 +14,10 @@ def reinforcementLearningTest():
 
     initialPose=robot.getPose().copy()
     currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
-    reinforcementLearning = ReinforcementLearning(currentState)
+    reinforcementLearning = ReinforcementLearning(currentState,[
+        {"min":0,"max":600,"intervals":2}, # left wheel
+        {"min": 0, "max": 600, "intervals": 2} # right wheel
+    ])
 
     timeLearning = 6
     start=sim.time()
@@ -35,12 +35,12 @@ def reinforcementLearningTest():
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
 
-            time.sleep(0.1)
+            sim.sleep(0.1)
 
             endPosition=(robot.getPose().getX(),robot.getPose().getY())
             endOrientation=robot.getPose().getOrientation()
 
-            distance = sqrt((endPosition[0]-startPosition[0])**2+(endPosition[1]-startPosition[1])**2)
+            distance = ((endPosition[0]-startPosition[0])**2+(endPosition[1]-startPosition[1])**2)**.5
 
             reward = distance/(1+(endOrientation-startOrientation)**2) # encourages to go straight
             # reward = (endOrientation-startOrientation)/(distance+1) # encourages to turn
@@ -54,6 +54,6 @@ def reinforcementLearningTest():
             robot.setCollidedState(False)
             reinforcementLearning.reset()
 
-        time.sleep(.01)
+        sim.sync()
 
 

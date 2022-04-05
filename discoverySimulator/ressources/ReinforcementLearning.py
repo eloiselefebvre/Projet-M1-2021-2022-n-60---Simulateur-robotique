@@ -10,13 +10,21 @@ class ReinforcementLearning:
     DEFAULT_DISCOUNT_FACTOR = 0.5
     DEFAULT_EXPLORATION_RATE_DECREASE_FACTOR = 0.995
 
+    __ACTION_BLUIDER_REQUIRED_KEYS = ['intervals', 'max', 'min']
+
     # Available algorithm : QLearning, ValueIteration
-    def __init__(self, state:tuple, factors:dict=None, algorithm:str= "ValueIteration"):
+    def __init__(self, state:tuple, actionSpaceBuilders:List[dict]=None, factors:dict=None, algorithm:str= "ValueIteration"):
         """ Constructs a reinforcement learning.
         @param state  State of the robot who will learn
         """
 
         self._learn = self.__getattribute__(f"_learn{algorithm}") # raises an error if not found
+
+        self.__actionSpaceBuilders=actionSpaceBuilders if actionSpaceBuilders is not None else {}
+        self.__actions = None
+        if self.areActionBuildersValid():
+            self.__actions=self.getActionsSpace()
+        print(self.__actions)
 
         if factors is None:
             factors = {}
@@ -29,15 +37,8 @@ class ReinforcementLearning:
 
         self._explorationRate = 1
 
-
-        self._minimalSpeed = 0
-        self._maximalSpeed = 600
-        self._numberOfInterval = 2
-        self._step = int((self._maximalSpeed - self._minimalSpeed) / self._numberOfInterval) # or Round ???
-
         self._state = state
         self._initialState = state
-        self._actions = [(self._step,0),(-self._step,0),(0,self._step),(0,-self._step),(0,0)]
 
         self._QTable={}
         self._RTable={}
@@ -45,6 +46,43 @@ class ReinforcementLearning:
         self.fillTable("_QTable")
         self.fillTable("_RTable")
         self.fillTable("_actionCountTable")
+
+    def areActionBuildersValid(self):
+        if not self.__actionSpaceBuilders:
+            raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(ReinforcementLearning.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
+        for actionBuilder in self.__actionSpaceBuilders:
+            print(actionBuilder)
+            if not all(key in actionBuilder for key in ReinforcementLearning.__ACTION_BLUIDER_REQUIRED_KEYS):
+                raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(ReinforcementLearning.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
+            actionBuilder["step"] = round((actionBuilder["max"] - actionBuilder["min"]) / actionBuilder["intervals"])
+        return True
+
+    def getActionsSpace(self):
+        actionSpace=[]
+        for actionBuilder in self.__actionSpaceBuilders:
+            actionSpace=self.__computeCombinations(actionSpace,[v for v in range(-actionBuilder["step"],2*actionBuilder["step"],actionBuilder["step"])])
+        actionSpace = [tuple(action) for action in actionSpace]
+        return actionSpace
+
+    def getStatesSpace(self):
+        stateSpace = []
+        for stateBuilder in self.__actionSpaceBuilders:
+            stateSpace = self.__computeCombinations(stateSpace, [v for v in range(stateBuilder["min"],stateBuilder["max"] + stateBuilder["step"], stateBuilder["step"])])
+        stateSpace = [tuple(state) for state in stateSpace]
+        return stateSpace
+
+    def __computeCombinations(self,space,value):
+        updatedSpace=[]
+        if space:
+            for a in space:
+                for b in value:
+                    na=a.copy()
+                    na.append(b)
+                    updatedSpace.append(na)
+        else:
+            for b in value:
+                updatedSpace.append([b])
+        return updatedSpace
 
     # GETTERS
     def getReachableStates(self, state:tuple) -> List[tuple]:
@@ -55,27 +93,25 @@ class ReinforcementLearning:
         return reachableStates
 
     def getNextState(self, state:tuple, actionIndex:int) -> tuple:
-        return (self._actions[actionIndex][0]+state[0],self._actions[actionIndex][1]+state[1])
+        return tuple([self.__actions[actionIndex][i]+state[i] for i in range(len(state))])
 
-    def getPossibleActions(self, state:tuple = None) -> List[int]:
-        """ Returns the possible actions of the robot.
-        @param state  State of the robot"""
-        state = state if state is not None else self._state
-        actions = []
-        if state[0]+self._step<=self._maximalSpeed:
-            actions.append(0)
-        if state[0]-self._step>=self._minimalSpeed:
-            actions.append(1)
-        if state[1]+self._step<=self._maximalSpeed:
-            actions.append(2)
-        if state[1]-self._step>=self._minimalSpeed:
-            actions.append(3)
-        actions.append(4)
-        return actions
+    def getPossibleActions(self,state) -> List[int]:
+        """ This method allows to get the possible actions of the robot
+        @param state  State of the robot
+        @return  Possible actions
+        """
+        possibleActionIndexes = [i for i in range(len(self.__actions))]
+        for i, action in enumerate(self.__actions):
+            for j, actionBuilder in enumerate(self.__actionSpaceBuilders):
+                current = state[j]
+                if current + action[j] < actionBuilder["min"] or current + action[j] > actionBuilder["max"]:
+                    possibleActionIndexes.remove(i)
+                    break
+        return possibleActionIndexes
 
     def getActionToExecute(self) -> tuple:
         """ Returns the best action to execute."""
-        possibleActionsIndexes=self.getPossibleActions()
+        possibleActionsIndexes=self.getPossibleActions(self._state)
         if random.random() < self._explorationRate:
             actionWeights = self.computeActionWeights(self._state,possibleActionsIndexes)
             self._actionToExecuteIndex=random.choices(population=possibleActionsIndexes,weights=actionWeights,k=1)[0]
@@ -88,7 +124,7 @@ class ReinforcementLearning:
                     maxIndex=index
             self._actionToExecuteIndex = maxIndex
 
-        return self._actions[self._actionToExecuteIndex]
+        return self.__actions[self._actionToExecuteIndex]
 
     def computeActionWeights(self,state:tuple,possibleActionIndexes:List[int]) -> List[float]:
         penalisationFactor = 10
@@ -96,11 +132,10 @@ class ReinforcementLearning:
         total = sum(possibleActionCounts)
         return [(total-actionCount) / total for actionCount in possibleActionCounts]
 
-    def fillTable(self,tableName:str,initValue=0):
+    def fillTable(self, tableName: str, initValue: float = 0):
         table = self.__getattribute__(tableName)
-        for i in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
-            for j in range(self._minimalSpeed, self._maximalSpeed + self._step, self._step):
-                table[(i, j)] = [initValue] * len(self._actions)
+        for state in self.getStatesSpace():
+            table[state] = [initValue] * len(self.__actions)
 
     def printTable(self,tableName:str):
         table=self.__getattribute__(tableName)
@@ -111,6 +146,7 @@ class ReinforcementLearning:
 
     def learn(self,reward:float):
         self._explorationRate *= self._factors["explorationRateDecrease"]
+        print(self._explorationRate)
         self._learn(reward)
         self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
 

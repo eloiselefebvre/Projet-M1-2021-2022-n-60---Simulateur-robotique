@@ -217,9 +217,9 @@ def scenario4():
     mySimulation.closeInterface()
 
 def scenario5():
-    env = Environment(1500, 1500)
+    env = Environment(800, 800)
     robot = RectangularTwoWheelsRobot()
-    env.addObject(robot, 500, 400, -90)
+    env.addObject(robot, 50, 400, -90)
 
     sim = Simulation(env)
     sim.run()
@@ -227,12 +227,16 @@ def scenario5():
 
     initialPose = robot.getPose().copy()
     currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
-    reinforcementLearning = ReinforcementLearning(currentState)
+    reinforcementLearning = ReinforcementLearning(currentState, [
+        {"min": 0, "max": 600, "intervals": 2},  # left wheel
+        {"min": 0, "max": 600, "intervals": 2}  # right wheel
+    ], algorithm="QLearning")
 
-    timeLearning = 10
+    timeLearning = 6
     start = sim.time()
 
     while True:
+
         current = sim.time()
         if current - start < timeLearning:
             startPosition = (robot.getPose().getX(), robot.getPose().getY())
@@ -244,15 +248,14 @@ def scenario5():
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed() + action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed() + action[1])
 
-            sim.sleep(0.2)
+            sim.sleep(0.1)
 
             endPosition = (robot.getPose().getX(), robot.getPose().getY())
             endOrientation = robot.getPose().getOrientation()
 
-            distance = ((endPosition[0] - startPosition[0]) ** 2 + (endPosition[1] - startPosition[1]) ** 2)**0.5
+            distance = ((endPosition[0] - startPosition[0]) ** 2 + (endPosition[1] - startPosition[1]) ** 2)**.5
 
             reward = distance / (1 + (endOrientation - startOrientation) ** 2)  # encourages to go straight
-            # reward = (endOrientation-startOrientation)/(distance+1) # encourages to turn
             reinforcementLearning.learn(reward)
 
         else:

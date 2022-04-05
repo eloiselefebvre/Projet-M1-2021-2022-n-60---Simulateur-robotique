@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import List, Tuple
 
 from PyQt5.QtCore import Qt, QLineF, QPoint, QPointF
-from PyQt5.QtGui import QPolygon, QBrush, QPainter, QPen, QColor
+from PyQt5.QtGui import QPolygon, QBrush, QPainter
 
 from discoverySimulator.Pose import Pose
 from discoverySimulator.representation.shapes import Shape, Rectangle
