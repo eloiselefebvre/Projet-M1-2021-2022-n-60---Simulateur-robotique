@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt, QPoint, QMargins
-from PyQt5.QtGui import QPainter, QPen, QColor
+from PyQt5.QtGui import QPainter, QPen, QColor, QBrush
 from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from discoverySimulator.config import colors
 
@@ -54,7 +54,8 @@ class SceneOverviewContent(QWidget):
             obj.paint(painter)
             painter.restore()
 
-        painter.setPen(QPen(QColor(colors['painter']),8, Qt.SolidLine))
+        color = QColor(colors['painter'])
+        painter.setPen(QPen(color,8, Qt.SolidLine))
 
         offset = -self.__zoomController.getOffset() / self.__zoomController.getZoom()
         ox=int(offset.x())
@@ -64,6 +65,10 @@ class SceneOverviewContent(QWidget):
         w=int(sceneSize.width() / self.__zoomController.getZoom())
         h=int(sceneSize.height() / self.__zoomController.getZoom())
 
+        painter.drawRect(ox,oy,w,h)
+
+        color.setAlpha(48)
+        painter.setBrush(QBrush(color, Qt.SolidPattern))
         painter.drawRect(ox,oy,w,h)
 
     def mousePressEvent(self,event):

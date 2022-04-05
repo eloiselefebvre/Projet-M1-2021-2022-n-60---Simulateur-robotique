@@ -29,7 +29,7 @@ class Shape(ABC):
 
     def setOpacity(self,opacity:int):
         """ Sets the opacity of a shape.
-        @param opacity  the new opacity"""
+        @param opacity  the new opacity 0-255"""
         self._opacity=opacity
 
     def setColor(self,color:str):
