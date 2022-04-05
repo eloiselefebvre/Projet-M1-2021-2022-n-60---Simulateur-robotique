@@ -66,7 +66,7 @@ class Interface(QMainWindow):
                 for comp in obj.getComponents():
                     comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
                 obj.addObserverCallback(self.__toolbarWidget.robotSelected, 'selectionChanged')
-                # obj.addObserverCallback(self.__explorerWidget.rebuildExplorerTree, 'objectCountChanged')
+                # obj.addObserverCallback(self.__explorerWidget.getExplorerToolsbar().filterChanged, 'objectCountChanged')
 
         self.setCentralWidget(general_widget)
         self.showMaximized()

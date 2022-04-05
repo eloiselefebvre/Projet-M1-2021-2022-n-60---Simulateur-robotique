@@ -6,7 +6,7 @@ from discoverySimulator.actuators import LED
 
 def scenario():
     myLed = LED(LED.YELLOW)
-    myLed.setVisible(False)
+    # myLed.setVisible(False)
 
     myTelemeter = Telemeter()
     myTelemeter.setVisible(False)

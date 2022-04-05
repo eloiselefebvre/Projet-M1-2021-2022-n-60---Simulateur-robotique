@@ -6,32 +6,36 @@ from discoverySimulator.config import colors
 
 class SceneOverview(QWidget):
 
-    __SCENE_OVERVIEW_WIDTH  = 320
-    __SCENE_OVERVIEW_RATIO  = 16/9
-    __SCENE_OVERVIEW_CONTENT_MARGIN = 12
-
     def __init__(self,environment,zoomController):
         super().__init__()
-        self.setFixedSize(SceneOverview.__SCENE_OVERVIEW_WIDTH,round(SceneOverview.__SCENE_OVERVIEW_WIDTH/SceneOverview.__SCENE_OVERVIEW_RATIO))
+        self.setContentsMargins(12,12,12,12)
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
         self.setAttribute(Qt.WA_StyledBackground)
-        self.setContentsMargins(SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN)
-        self.setStyleSheet(f"background-color: {colors['font']} ; border: 2px solid "+colors['sceneOverviewBorder']+"; border-radius: 8px; margin:12px;")
-
+        self.setStyleSheet(f"background-color: {colors['font']} ; border: 2px solid "+colors['sceneOverviewBorder']+"; border-radius: 8px; margin:12px")
         layout=QHBoxLayout(self)
-        layout.addWidget(SceneOverviewContent(environment,zoomController))
+        layout.setSpacing(0)
+
+        self.__sceneOverviewContent = SceneOverviewContent(environment,zoomController)
+        layout.addWidget(self.__sceneOverviewContent)
 
     def size(self):
-        return super().size().grownBy(-QMargins(SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN, SceneOverview.__SCENE_OVERVIEW_CONTENT_MARGIN))
+        return self.__sceneOverviewContent.size()
 
 
 class SceneOverviewContent(QWidget):
+    __SCENE_OVERVIEW_WIDTH  = 280
+    __SCENE_OVERVIEW_RATIO  = 16/9
 
     def __init__(self,environment,zoomController):
         super().__init__()
         self.__environment = environment
         self.__zoomController=zoomController
+        self.setAttribute(Qt.WA_StyledBackground)
+        self.setStyleSheet("border:none; border-radius:0; margin:0;")
+
+        self.setFixedSize(SceneOverviewContent.__SCENE_OVERVIEW_WIDTH,round(SceneOverviewContent.__SCENE_OVERVIEW_WIDTH/SceneOverviewContent.__SCENE_OVERVIEW_RATIO))
+
 
         self.__dragView = False
         self.__dragViewOrigin = QPoint(0, 0)

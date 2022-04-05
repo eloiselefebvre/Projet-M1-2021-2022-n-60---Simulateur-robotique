@@ -60,7 +60,7 @@ class ExplorerToolsbar(QWidget, Observable):
         for item in self.__ITEMS:
             classname=item.__name__
             filterWidget.addItem(QIcon(f"{config['ressourcesPath']}/objects/{classname.lower()}.svg"),classname+"s")
-        filterWidget.currentIndexChanged.connect(self.__filterChanged)
+        filterWidget.currentIndexChanged.connect(self.filterChanged)
         return filterWidget
 
     def __createLockButtonWidget(self) -> LockButton:
@@ -76,11 +76,10 @@ class ExplorerToolsbar(QWidget, Observable):
         return visibleButtonWidget
 
     # Filter methods
-    def __filterChanged(self):
+    def filterChanged(self):
         idx = self.__filterWidget.currentIndex()
         if idx!=0:
-            self.__itemsShown = []
-            self.__itemsShown.append(self.__ITEMS[idx - 1])
+            self.__itemsShown=[self.__ITEMS[idx - 1]]
         else:
             self.__itemsShown = self.__ITEMS
         self.setObjectVisible(True)
