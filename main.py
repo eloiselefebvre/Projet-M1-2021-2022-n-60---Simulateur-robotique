@@ -2,7 +2,7 @@ from discoverySimulator.demonstrations import scenario
 scenario()
 #
 from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \
-    reinforcementLearningTest, rlTwoWheelsRobot, rlAvoiding, rlFourWheelsRobot,road
+    reinforcementLearningTest, rlTwoWheelsRobot, rlAvoiding, rlFourWheelsRobot,road, measureSpeedWithTelemeters
 
 # reinforcementLearning.reinforcementLearningTest()
 # aStar()
@@ -12,6 +12,6 @@ from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, r
 # # rlTwoWheelsRobot.reinforcementLearningTest()
 # # rlAvoiding.reinforcementLearningTest()
 # road.road()
-
+# measureSpeedWithTelemeters.measureSpeedWithTelemeters()
 # from discoverySimulator.examples import blinkWithoutSleep
 # blinkWithoutSleep()

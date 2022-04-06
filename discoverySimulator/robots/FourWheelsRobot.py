@@ -6,16 +6,16 @@ class FourWheelsRobot(RectangularTwoWheelsRobot):
 
     """The FourWheelsRobot class provides a four wheels robot."""
 
-    def __init__(self, color:str=None, robotWidth:int=50, robotHeight:int=60, distanceBetweenWheels:int=50, wheelsRadius:int=10, frontWheelYPosition:int=15, backWheelYPosition:int=-15):
+    def __init__(self, color:str=None, width:int=50, height:int=60, distanceBetweenWheels:int=48, wheelsRadius:int=10, frontWheelYPosition:int=15, backWheelYPosition:int=-15):
         """ Constructs a four wheels robot.
         @param color  Color of the robot
-        @param robotWidth  Width of the robot [px]
-        @param robotHeight  Height of the robot [px]
+        @param width  Width of the robot [px]
+        @param height  Height of the robot [px]
         @param distanceBetweenWheels  Distances between wheels [px]
         @param wheelsRadius  Radius of wheels [px]
         @param frontWheelYPosition  Position of the two front wheels [px]
         @param backWheelYPosition  Position of the two back wheels [px]"""
-        super().__init__(color, robotWidth, robotHeight, distanceBetweenWheels, wheelsRadius, frontWheelYPosition)
+        super().__init__(color, width, height, distanceBetweenWheels, wheelsRadius, frontWheelYPosition)
         self._backLeftWheel = Wheel(wheelsRadius, RectangularTwoWheelsRobot._DEFAULT_WHEEL_WIDTH)
         self._backRightWheel = Wheel(wheelsRadius, RectangularTwoWheelsRobot._DEFAULT_WHEEL_WIDTH)
         self.addComponent(self._backLeftWheel, (-distanceBetweenWheels + RectangularTwoWheelsRobot._DEFAULT_WHEEL_WIDTH) / 2, backWheelYPosition)

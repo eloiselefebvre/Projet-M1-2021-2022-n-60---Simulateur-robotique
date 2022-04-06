@@ -7,13 +7,13 @@ from discoverySimulator.representation.shapes import Rectangle, Circle, Polygon
 from discoverySimulator.ressources.ReinforcementLearning import ReinforcementLearning
 from discoverySimulator.sensors import Telemeter, LIDAR, ColorSensor
 from discoverySimulator.simulation import Environment, Simulation
-from discoverySimulator.robots import RectangularTwoWheelsRobot, CircularTwoWheelsRobot
+from discoverySimulator.robots import RectangularTwoWheelsRobot, CircularTwoWheelsRobot, FourWheelsRobot
 from discoverySimulator.actuators import LED
 
-SCENARIO1_TIME = 110
+SCENARIO1_TIME = 100
 SCENARIO2_TIME = 40
 SCENARIO3_TIME = 40
-SCENARIO4_TIME = 80
+SCENARIO4_TIME = 60
 
 def scenario():
     scenario1()
@@ -76,7 +76,7 @@ def scenario1():
     mySimulation.sleep(5)
     myTelemeter.setVisible(True)
 
-    mySimulation.sleep(12)
+    mySimulation.sleep(11)
     background.setVisible(True)
     parkingLeftLine.setVisible(True)
     parkingRightLine.setVisible(True)
@@ -84,7 +84,7 @@ def scenario1():
     unavailableLED.setVisible(True)
     envTelemeter.setVisible(True)
 
-    mySimulation.sleep(28)
+    mySimulation.sleep(24)
 
     startTime = mySimulation.time()
 
@@ -172,8 +172,15 @@ def scenario3():
     rob.setRightWheelSpeed(400)
     rob.setLeftWheelSpeed(200)
 
+    lidar2 = LIDAR("#00f")
+    rob2 = FourWheelsRobot()
+    rob2.addComponent(lidar2)
+    rob2.setRightWheelSpeed(200)
+    rob2.setLeftWheelSpeed(200)
+
     env = Environment(1500, 900)
     env.addObject(rob, 900, 500)
+    env.addObject(rob2,400,50)
     env.addObject(CircularObstacle(40, "#ff8fff"), 150, 180)
     env.addObject(RectangularObstacle(40, 200, "#ff8fff"), 650, 200)
     env.addObject(RectangularObstacle(400, 100, "#ff8fff"), 250, 750, 25)
@@ -215,8 +222,9 @@ def scenario4():
     mySimulation.closeInterface()
 
 def scenario5():
-    env = Environment(800, 800)
+    env = Environment(1000, 800)
     robot = RectangularTwoWheelsRobot()
+    robot.enableOdometry()
     env.addObject(robot, 50, 400, -90)
 
     sim = Simulation(env)
@@ -226,8 +234,8 @@ def scenario5():
     initialPose = robot.getPose().copy()
     currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
     reinforcementLearning = ReinforcementLearning(currentState, [
-        {"min": 0, "max": 600, "intervals": 2},  # left wheel
-        {"min": 0, "max": 600, "intervals": 2}  # right wheel
+        {"min": 0, "max": 800, "intervals": 2},  # left wheel
+        {"min": 0, "max": 800, "intervals": 2}  # right wheel
     ], algorithm="QLearning")
 
     timeLearning = 6
@@ -246,7 +254,7 @@ def scenario5():
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed() + action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed() + action[1])
 
-            sim.sleep(0.1)
+            sim.sync()
 
             endPosition = (robot.getPose().getX(), robot.getPose().getY())
             endOrientation = robot.getPose().getOrientation()
