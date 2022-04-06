@@ -2,8 +2,7 @@ from discoverySimulator.ressources.ReinforcementLearning import ReinforcementLea
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 
-def reinforcementLearningTest():
-
+def reinforcementLearningTraining():
     env=Environment(800,800)
     robot=RectangularTwoWheelsRobot()
     env.addObject(robot,50,400,-90)
@@ -22,7 +21,7 @@ def reinforcementLearningTest():
     timeLearning = 6
     start=sim.time()
 
-    while True:
+    while sim.time()<10*60:
 
         current=sim.time()
         if current-start<timeLearning:
@@ -35,7 +34,7 @@ def reinforcementLearningTest():
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
 
-            sim.sleep(0.1)
+            sim.sync()
 
             endPosition=(robot.getPose().getX(),robot.getPose().getY())
             endOrientation=robot.getPose().getOrientation()
@@ -56,4 +55,27 @@ def reinforcementLearningTest():
 
         sim.sync()
 
+    reinforcementLearning.saveModel()
+
+def reinforcementLearningFromModel():
+
+    env=Environment(800,800)
+    robot=RectangularTwoWheelsRobot()
+    env.addObject(robot,50,400,-90)
+
+    sim = Simulation(env)
+    sim.run()
+    sim.showInterface()
+
+    currentState = (robot.getLeftWheel().getSpeed(), robot.getRightWheel().getSpeed())
+    reinforcementLearning = ReinforcementLearning(currentState)
+
+    reinforcementLearning.loadModel("discoverySimulator/ressources/goForwardTwoWheelsRobotModel.json")
+
+    while True:
+        action = reinforcementLearning.getActionToExecute()
+        robot.setRightWheelSpeed(robot.getRightWheel().getSpeed()+action[0])
+        robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed()+action[1])
+        reinforcementLearning.updateState()
+        sim.sync()
 

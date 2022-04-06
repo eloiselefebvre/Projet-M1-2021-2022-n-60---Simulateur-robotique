@@ -1,5 +1,8 @@
 import random
+import sys
 from typing import List
+import json
+import os
 
 
 class ReinforcementLearning:
@@ -20,11 +23,19 @@ class ReinforcementLearning:
 
         self._learn = self.__getattribute__(f"_learn{algorithm}") # raises an error if not found
 
-        self.__actionSpaceBuilders=actionSpaceBuilders if actionSpaceBuilders is not None else {}
+        self.__actionSpaceBuilders=actionSpaceBuilders
         self.__actions = None
-        if self.areActionBuildersValid():
+
+        self._QTable={}
+        self._RTable={}
+        self._actionCountTable = {}
+        self._explorationRate = 0
+        if self.__actionSpaceBuilders is not None and self.areActionBuildersValid():
             self.__actions=self.getActionsSpace()
-        print(self.__actions)
+            self.fillTable("_QTable")
+            self.fillTable("_RTable")
+            self.fillTable("_actionCountTable")
+            self._explorationRate = 1
 
         if factors is None:
             factors = {}
@@ -35,23 +46,14 @@ class ReinforcementLearning:
         }
         self._factors.update(factors)
 
-        self._explorationRate = 1
-
         self._state = state
         self._initialState = state
 
-        self._QTable={}
-        self._RTable={}
-        self._actionCountTable = {}
-        self.fillTable("_QTable")
-        self.fillTable("_RTable")
-        self.fillTable("_actionCountTable")
 
     def areActionBuildersValid(self):
         if not self.__actionSpaceBuilders:
             raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(ReinforcementLearning.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
         for actionBuilder in self.__actionSpaceBuilders:
-            print(actionBuilder)
             if not all(key in actionBuilder for key in ReinforcementLearning.__ACTION_BLUIDER_REQUIRED_KEYS):
                 raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(ReinforcementLearning.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
             actionBuilder["step"] = round((actionBuilder["max"] - actionBuilder["min"]) / actionBuilder["intervals"])
@@ -111,6 +113,8 @@ class ReinforcementLearning:
 
     def getActionToExecute(self) -> tuple:
         """ Returns the best action to execute."""
+        if self.__actions is None:
+            raise ValueError("actionSpaceBuilders have not been given")
         possibleActionsIndexes=self.getPossibleActions(self._state)
         if random.random() < self._explorationRate:
             actionWeights = self.computeActionWeights(self._state,possibleActionsIndexes)
@@ -180,3 +184,39 @@ class ReinforcementLearning:
 
     def reset(self):
         self._state=self._initialState
+
+    def loadModel(self,filepath:str):
+        try:
+            if filepath.split(".")[-1]!="json":
+                raise ValueError("Format of the model invalid (JSON only)")
+
+            with open(os.path.join(os.getcwd(),filepath)) as json_file:
+                json_string = json.load(json_file)
+                data = json.loads(json_string)
+                self.__actionSpaceBuilders=data["actionSpaceBuilders"]
+                if self.areActionBuildersValid():
+                    self.__actions=self.getActionsSpace()
+                self._QTable = {}
+                for key in data["QTable"]:
+                    self._QTable[tuple([float(v) for v in key.split(" ")])]=data["QTable"][key]
+                if not all(key in self._QTable for key in self.getStatesSpace()):
+                    raise ValueError(f"Invalid QTable in model '{filepath}'")
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Model '{filepath}' not found")
+
+    def saveModel(self, filepath:str= "goForwardTwoWheelsRobotModel.json"):
+        QTable={}
+        for key in self._QTable:
+            QTable[" ".join([str(v) for v in key])]=self._QTable[key]
+
+        data = {
+            'actionSpaceBuilders': self.__actionSpaceBuilders,
+            'QTable':QTable
+        }
+
+        json_string = json.dumps(data)
+        with open(os.path.join(os.getcwd(), filepath), 'w') as outfile:
+            json.dump(json_string, outfile)
+
+    def updateState(self):
+        self._state=self.getNextState(self._state,self._actionToExecuteIndex)
