@@ -146,7 +146,7 @@ class Object(Observable):
     def computeCollisions(self):
         if not self._isCollided:
             for obj in self._environment.getObjects():
-                if self!=obj and self.isCollidedWith(obj):
+                if self!=obj and self._zIndex==obj.getZIndex() and self.isCollidedWith(obj):
                     self._isCollided=True
                     obj.setCollidedState(True)
 

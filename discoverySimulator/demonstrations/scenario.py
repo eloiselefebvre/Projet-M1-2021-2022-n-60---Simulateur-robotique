@@ -43,11 +43,18 @@ def scenario1():
     # 4
     availableLED = LED(LED.GREEN)
     availableLED.setState(True)
+    availableLED.setZIndex(0)
+
     unavailableLED = LED(LED.RED)
+    unavailableLED.setZIndex(0)
+
     envTelemeter = Telemeter("#ff0",80)
     background = Object(Representation(Rectangle(myEnvironment.getWidth(),myEnvironment.getHeight(),"#21212F")))
+    background.setZIndex(0)
     parkingLeftLine = Object(Representation(Rectangle(100,8,"#fff")))
+    parkingLeftLine.setZIndex(0)
     parkingRightLine = Object(Representation(Rectangle(100,8,"#fff")))
+    parkingRightLine.setZIndex(0)
 
     myRobot.addComponent(myLed, 0, 0)
     myRobot.addComponent(myTelemeter, 0, 26)
@@ -55,8 +62,8 @@ def scenario1():
     myEnvironment.addVirtualObject(background,myEnvironment.getWidth()/2,myEnvironment.getHeight()/2)
     myEnvironment.addVirtualObject(parkingLeftLine,550,260)
     myEnvironment.addVirtualObject(parkingRightLine,550,340)
-    myEnvironment.addVirtualObject(availableLED,565,240)
-    myEnvironment.addVirtualObject(unavailableLED,585,240)
+    myEnvironment.addObject(availableLED,565,240)
+    myEnvironment.addObject(unavailableLED,585,240)
     myEnvironment.addObject(envTelemeter,575,260)
 
     background.setVisible(False)
@@ -76,7 +83,7 @@ def scenario1():
     mySimulation.sleep(5)
     myTelemeter.setVisible(True)
 
-    mySimulation.sleep(11)
+    mySimulation.sleep(10)
     background.setVisible(True)
     parkingLeftLine.setVisible(True)
     parkingRightLine.setVisible(True)
@@ -84,7 +91,7 @@ def scenario1():
     unavailableLED.setVisible(True)
     envTelemeter.setVisible(True)
 
-    mySimulation.sleep(24)
+    mySimulation.sleep(21)
 
     startTime = mySimulation.time()
 
@@ -254,7 +261,7 @@ def scenario5():
             robot.setRightWheelSpeed(robot.getRightWheel().getSpeed() + action[0])
             robot.setLeftWheelSpeed(robot.getLeftWheel().getSpeed() + action[1])
 
-            sim.sync()
+            sim.sleep(0.1)
 
             endPosition = (robot.getPose().getX(), robot.getPose().getY())
             endOrientation = robot.getPose().getOrientation()
