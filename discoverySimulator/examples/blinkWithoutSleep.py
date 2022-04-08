@@ -8,7 +8,7 @@ def blinkWithoutSleep():
 
     environment = Environment(500,500)
     environment.addObject(led,environment.getWidth()/2,environment.getHeight()/2)
-    environment.addObject(rob,100,100,-45)
+    environment.addObject(rob,100,250,-90)
     rob.setLeftWheelSpeed(200)
     rob.setRightWheelSpeed(200)
 

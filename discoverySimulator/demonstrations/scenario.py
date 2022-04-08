@@ -16,11 +16,11 @@ SCENARIO3_TIME = 40
 SCENARIO4_TIME = 60
 
 def scenario():
-    scenario1()
-    scenario2()
-    scenario3()
+    # scenario1()
+    # scenario2()
+    # scenario3()
     scenario4()
-    scenario5()
+    # scenario5()
 
 def scenario1():
     s = time.time()

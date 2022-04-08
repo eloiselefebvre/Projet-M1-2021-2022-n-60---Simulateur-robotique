@@ -29,7 +29,7 @@ class Point(Shape):
     @staticmethod
     def computeTransformation(xo: float, yo: float, dx: float, dy: float, o: float) -> Tuple[float, float]:
         a = -radians(o)
-        return dx * cos(a) + dy * sin(a) + xo, -dx * sin(a) + dy * cos(a) + yo
+        return round(dx * cos(a) + dy * sin(a) + xo,3),round(-dx * sin(a) + dy * cos(a) + yo,3)
 
     def paint(self, painter: QPainter):
         super().paint(painter)

@@ -55,11 +55,12 @@ class Circle(Shape):
                 y1=a_line*x1+b_line
                 y2 = a_line * x2 + b_line
 
-                if x1>=min_x and x1<=max_x:
+                if min_x<=x1<=max_x:
                     intersections.append(QPointF(x1,y1))
-                if x2>=min_x and x2<=max_x: # appartient au segment
+                if min_x<=x2<=max_x: # appartient au segment
                     intersections.append(QPointF(x2, y2))
         else: # vertical line
+            # if self._pose.getX()-self.__radius<=line.x1()<=self._pose.getX()+self.__radius:
             A=1
             B=-2*self.getPose().getY()
             C= self.getPose().getY() ** 2 + (line.x1()-self.getPose().getX()) ** 2 - self.__radius ** 2
