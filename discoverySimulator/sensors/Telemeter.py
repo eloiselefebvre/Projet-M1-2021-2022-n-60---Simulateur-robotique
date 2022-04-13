@@ -13,7 +13,7 @@ class Telemeter(Sensor):
 
     __DEFAULT_MAXIMUM_MEASURABLE_DISTANCE = 20000
 
-    def __init__(self,color:str=colors['sensor'],maximumMeasurableDistance:int=None,accuracy:float=1):
+    def __init__(self,color:str=colors["red"],maximumMeasurableDistance:int=None,accuracy:float=1):
         """ Constructs a new telemeter.
         @param color  Color of the telemeter"""
         self._color = color

@@ -1,4 +1,5 @@
 from . import Actuator
+from discoverySimulator.config import colors
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Circle
 
@@ -7,10 +8,10 @@ class LED(Actuator):
 
     """ The LED class provides a LED and his representation."""
 
-    RED = "#f00"
-    GREEN = "#0f0"
-    BLUE = "#00f"
-    YELLOW = "#ff0"
+    RED = colors["red"]
+    GREEN = colors["green"]
+    BLUE = colors["blue"]
+    YELLOW = colors["yellow"]
 
     LOW=False
     HIGH=True

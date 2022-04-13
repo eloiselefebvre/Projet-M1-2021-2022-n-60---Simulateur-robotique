@@ -12,7 +12,7 @@ class SceneOverview(QWidget):
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
         self.setAttribute(Qt.WA_StyledBackground)
-        self.setStyleSheet(f"background-color: {colors['font']} ; border: 2px solid "+colors['sceneOverviewBorder']+"; border-radius: 8px; margin:12px")
+        self.setStyleSheet(f"background-color: {colors['alabaster']} ; border: 2px solid "+colors['salmon']+"; border-radius: 8px; margin:12px")
         layout=QHBoxLayout(self)
         layout.setSpacing(0)
 
@@ -54,7 +54,7 @@ class SceneOverviewContent(QWidget):
             obj.paint(painter)
             painter.restore()
 
-        color = QColor(colors['painter'])
+        color = QColor(colors['blue-violet'])
         painter.setPen(QPen(color,8, Qt.SolidLine))
 
         offset = -self.__zoomController.getOffset() / self.__zoomController.getZoom()

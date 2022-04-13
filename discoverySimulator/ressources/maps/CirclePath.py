@@ -13,7 +13,7 @@ class CirclePath:
 
     DEFAULT_WIDTH=20
 
-    def  __init__(self, environment, color=colors['widgetBorder']):
+    def  __init__(self, environment, color=colors['tundora']):
         """ Constructs a circle path.
         @param environment  The environment where the circle path will take place
         @param color  Color of the circle path
@@ -35,7 +35,7 @@ class CirclePath:
         if numberOfCircle==1:
             radius=random.randint(int(self._environment.getWidth()/8),int(self._environment.getWidth()/2))
             circle1 = Object(Representation(Circle(radius,self._color)))
-            circle2 = Object(Representation(Circle(radius-20,colors['sceneBackground'])))
+            circle2 = Object(Representation(Circle(radius-20,colors['gallery'])))
             self._environment.addVirtualObject(circle1,int(self._environment.getWidth()/2),int(self._environment.getHeight()/2))
             self._environment.addVirtualObject(circle2, int(self._environment.getWidth() / 2),int(self._environment.getHeight() / 2))
             self._pathElements.append(circle1)
@@ -45,9 +45,9 @@ class CirclePath:
             radius1=random.randint(int(self._environment.getWidth()/8),int(self._environment.getWidth()/4))
             radius2=random.randint(int(self._environment.getWidth()/8),int(self._environment.getWidth()/4))
             circle1 = Object(Representation(Circle(radius1, self._color)))
-            circle2 = Object(Representation(Circle(radius1 - 20, colors['sceneBackground'])))
+            circle2 = Object(Representation(Circle(radius1 - 20, colors['gallery'])))
             circle3 = Object(Representation(Circle(radius2,self._color)))
-            circle4 = Object(Representation(Circle(radius2-20,colors['sceneBackground'])))
+            circle4 = Object(Representation(Circle(radius2-20,colors['gallery'])))
             self._environment.addVirtualObject(circle1, int(self._environment.getWidth()/2)-radius1,int(self._environment.getHeight() / 2))
             self._environment.addVirtualObject(circle2, int(self._environment.getWidth()/2)-radius1,int(self._environment.getHeight() / 2))
             self._environment.addVirtualObject(circle3, int(self._environment.getWidth()/2)-20+radius2,int(self._environment.getHeight() / 2))

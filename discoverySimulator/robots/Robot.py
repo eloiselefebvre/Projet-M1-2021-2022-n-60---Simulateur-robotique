@@ -119,7 +119,6 @@ class Robot(ABC,Object):
             if isinstance(component,Wheel):
                 self._wheels.append(component)
             self._representation.addSubRepresentation(component.getRepresentation())
-            self.notifyObservers('objectCountChanged')
 
     def hasComponent(self,component:Component):
         return component in self._components
@@ -147,7 +146,7 @@ class Robot(ABC,Object):
     # TRAJECTORY METHODS
     def __updateTrajectory(self):
         if self.__trajectoryCounter==0:
-            point = Object(Representation(Point(colors['trajectory'])))
+            point = Object(Representation(Point(self._representation.getShape().getColor())))
             self.__trajectory.append(point)
             if len(self.__trajectory)>=Robot.__MAX_POINTS_NUMBER_IN_ARRAY:
                 elt = self.__trajectory.pop(0)
@@ -240,7 +239,7 @@ class Robot(ABC,Object):
                 self.__odometryPose.move(nx, ny)
 
             if self.__odometryCounter == 0:
-                point = Object(Representation(Point(colors['odometry'])))
+                point = Object(Representation(Point(colors["silver"])))
                 self.__odometry.append(point)
                 if len(self.__odometry) >= Robot.__MAX_POINTS_NUMBER_IN_ARRAY:
                     elt = self.__odometry.pop(0)

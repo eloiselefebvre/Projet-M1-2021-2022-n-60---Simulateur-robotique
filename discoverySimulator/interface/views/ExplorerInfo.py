@@ -14,7 +14,7 @@ class ExplorerInfo(QWidget):
         super().__init__()
         self.__evironnement=environment
         self.__selectedObject = selectedObject
-        self.setStyleSheet("background-color:"+colors['explorerInfoBackground']+";color:"+colors['font']+";")
+        self.setStyleSheet("background-color:"+colors['steel-gray']+";color:"+colors['alabaster']+";")
 
         self.__layout=QVBoxLayout(self)
         self.__layout.setContentsMargins(0, 0, 0, 0)
@@ -51,7 +51,7 @@ class ExplorerInfo(QWidget):
 
         trajectoryLabel = QLabel("Trajectory")
         trajectoryLabel.setFont(fonts["normal"])
-        trajectoryLabel.setStyleSheet("color:"+colors['font']+";")
+        trajectoryLabel.setStyleSheet("color:"+colors['alabaster']+";")
         layoutTrajectory.addWidget(trajectoryLabel,90)
 
         self.__trajectoryButton=VisibilityButton(self.__selectedObject.getTrajectoryDrawn())
@@ -121,7 +121,7 @@ class ExplorerInfo(QWidget):
         positionInformationsLayout.addWidget(orientationWidgetContainer,40)
 
         if not isinstance(self.__selectedObject, Obstacle):
-            positionInformationsWidget.setStyleSheet(f"border-bottom:2px solid {colors['widgetBorder']}; margin-bottom:8px; padding-bottom:12px;")
+            positionInformationsWidget.setStyleSheet(f"border-bottom:2px solid {colors['tundora']}; margin-bottom:8px; padding-bottom:12px;")
 
         return positionInformationsWidget
 
@@ -160,7 +160,7 @@ class ExplorerInfo(QWidget):
 
             odometryLabel = QLabel("Odometry")
             odometryLabel.setFont(fonts["normal"])
-            odometryLabel.setStyleSheet("color:"+colors['font']+";")
+            odometryLabel.setStyleSheet("color:"+colors['alabaster']+";")
             layoutOdometry.addWidget(odometryLabel, 90)
 
             self.__odometryButton = VisibilityButton(self.__selectedObject.getOdometryDrawn())

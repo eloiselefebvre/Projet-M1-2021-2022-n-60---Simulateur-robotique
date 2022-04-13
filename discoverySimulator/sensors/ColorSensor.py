@@ -35,7 +35,7 @@ class ColorSensor(Sensor):
                 if obj.getRepresentation().contains(colorSensorPoint):
                     self._colorDetected = obj.getRepresentation().getShape().getColor()
         if self._colorDetected is None:
-            self._colorDetected = colors['sceneBackground']
+            self._colorDetected = colors['gallery']
         if self._colorDetected!=previousColor:
             self.notifyObservers("stateChanged")
 

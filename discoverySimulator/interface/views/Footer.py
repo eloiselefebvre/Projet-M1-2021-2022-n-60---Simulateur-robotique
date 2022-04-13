@@ -15,8 +15,8 @@ class Footer(QToolBar):
         self.__zoomController=zoomController
         self.setContentsMargins(0,0,0,0)
         self.setFixedHeight(self.__FOOTER_FIXED_HEIGHT)
-        self.setStyleSheet("*{background-color:"+colors['font']+";color:"+colors['widgetBorder']+";border:none;}"
-                           "#widget{border-right:1px solid "+colors['widgetBorderFooter']+"; margin-top:8px; margin-bottom:8px;}")
+        self.setStyleSheet("*{background-color:"+colors['alabaster']+";color:"+colors['tundora']+";border:none;}"
+                           "#widget{border-right:1px solid "+colors['silver']+"; margin-top:8px; margin-bottom:8px;}")
         self.addWidget(self.__createZoomMenuWidget())
         self.addWidget(self.__createScaleWidget())
         self.addWidget(self.__createMousePoseWidget())
@@ -51,7 +51,7 @@ class Footer(QToolBar):
 
         zoomMenuBar=QMenuBar()
         zoomMenuBar.setContentsMargins(0,0,0,0)
-        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:#26BEE5; color:#fff;}")
+        zoomMenuBar.setStyleSheet("QMenu::item:selected{background-color:"+colors["picton-blue"]+"; color:"+colors["white"]+";}")
 
         self._zoomMenu=zoomMenuBar.addMenu("")
         self._zoomMenu.aboutToShow.connect(self.menuOpened)

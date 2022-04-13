@@ -16,7 +16,7 @@ class ExplorerTree(QTreeWidget):
 
     def __init__(self,environment,parent):
         super().__init__()
-        self.setStyleSheet("QTreeView::item:hover,QTreeView::item:selected{color:#DFE0E5; background-color:#26BEE5;}")
+        self.setStyleSheet("QTreeView::item:hover,QTreeView::item:selected{color:"+colors["mischka"]+"; background-color:#"+colors["picton-blue"]+";}")
 
         self.__environment = environment
         self.__mainItems=[]
@@ -131,12 +131,12 @@ class ExplorerTree(QTreeWidget):
             selectedObject = self.__mainObjects[self.__mainItems.index(crawler)]
         else:
             selectedObject = self.__mainObjects[[i for i in range(len(self.__mainItems)) if crawler in self.__mainItemsAssociatedChildren[i]][0]]
-            crawler.setColor(colors['crawlerColor'])
+            crawler.setColor(colors['mischka'])
             self.__selectedSubItem=crawler
         selectedObject.setSelected(True)
 
     def __setSelectedItem(self, item):
-        item.setColor(colors['crawlerColor'])
+        item.setColor(colors['mischka'])
         item.setExpanded(True)
         self.setCurrentItem(item)
         self.__selectedItem=item
@@ -148,10 +148,10 @@ class ExplorerTree(QTreeWidget):
     def __removeSelectedItem(self):
         if self.__selectedItem is not None:
             self.clearSelection()
-            self.__selectedItem.setColor(colors['explorerTreeItem'])
+            self.__selectedItem.setColor(colors['mid-gray'])
 
             for subItem in self.__subItems:
-                subItem.setColor(colors['explorerTreeItem'])
+                subItem.setColor(colors['mid-gray'])
 
             if self.__selectedSubItem is not None:
                 self.__parent.hideExplorerInfo(self.__allObjects[1 + self.__mainItems.index(self.__selectedItem) + self.__subItems.index(self.__selectedSubItem)])
@@ -190,7 +190,7 @@ class ExplorerTree(QTreeWidget):
 
 class Item(QTreeWidgetItem):
 
-    def __init__(self,parent, txt='', color=colors['explorerTreeItem']):
+    def __init__(self,parent, txt='', color=colors['mid-gray']):
         super().__init__(parent)
         self.setColor(color)
         self.setText(0,txt)

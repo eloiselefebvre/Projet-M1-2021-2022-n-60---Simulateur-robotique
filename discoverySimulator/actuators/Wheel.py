@@ -1,4 +1,5 @@
 from . import Actuator
+from discoverySimulator.config import colors
 from discoverySimulator.representation.shapes import Rectangle, Border
 from discoverySimulator.representation import Representation
 
@@ -13,8 +14,8 @@ class Wheel(Actuator):
         """ Constructs a new wheel.
         @param radius  The radius of the wheel [px]
         @param width  The width of the wheel [px]"""
-        shape = Rectangle(width,2*radius,"#1C1E32",Wheel.DEFAULT_BORDER_RADIUS)
-        shape.addBorder(Border(Wheel.DEFAULT_BORDER_WIDTH,'#f0f0f0'))
+        shape = Rectangle(width,2*radius,colors["mirage"],Wheel.DEFAULT_BORDER_RADIUS)
+        shape.addBorder(Border(Wheel.DEFAULT_BORDER_WIDTH,colors["gallery"]))
         super().__init__(Representation(shape))
         self._speed=0
         self._radius = int(radius)

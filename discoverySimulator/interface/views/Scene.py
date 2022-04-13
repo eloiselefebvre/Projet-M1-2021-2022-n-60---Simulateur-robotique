@@ -30,7 +30,7 @@ class Scene(QWidget,Observable):
         self.__objectMoved=True
         self.__selectedObjCollidedState=False
         self.__pathFollowing=None
-        self.setStyleSheet("background-color:"+colors['sceneBackground']+";")
+        self.setStyleSheet("background-color:"+colors['gallery']+";")
         self._convertedMousePose=QPoint(0, 0)
 
     def updateLockedScene(self,sender):

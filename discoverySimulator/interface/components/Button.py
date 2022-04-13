@@ -17,8 +17,8 @@ class Button(QPushButton):
          self.setFixedSize(QSize(Button.__BUTTON_SIZE,Button.__BUTTON_SIZE))
          self.setIconSize(QSize(Button.__ICON_SIZE,Button.__ICON_SIZE))
          self.setStyleSheet("QPushButton{border-radius:2px;}"
-                            "QPushButton:hover{background-color:#323247;}"
-                            "QPushButton:pressed{background-color:#4C4C68;}")
+                            "QPushButton:hover{background-color:"+colors["tuna"]+";}"
+                            "QPushButton:pressed{background-color:"+colors["mulled-wine"]+";}")
 
 class ToggleButton(Button):
     def __init__(self,state=True):

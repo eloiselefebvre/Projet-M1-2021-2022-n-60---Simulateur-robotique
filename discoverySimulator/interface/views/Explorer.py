@@ -16,7 +16,7 @@ class Explorer(QWidget):
         super().__init__()
         self.setFixedWidth(Explorer.__EXPLORER_WIDTH)
         self.setAttribute(Qt.WA_StyledBackground)
-        self.setStyleSheet("*{background-color: " + colors['explorerBackground']+ "; border:none}")
+        self.setStyleSheet("*{background-color: " + colors['mirage']+ "; border:none}")
 
         self.__environment=environment
 
@@ -49,4 +49,3 @@ class Explorer(QWidget):
             self.__layout.removeWidget(self.__explorerInfo)
             obj.deleteObserverCallback(self.__explorerInfo.refreshData, "stateChanged")
             self.__explorerInfo=None
-            # self.__layout.update()

@@ -101,7 +101,6 @@ class Environment(Observable):
             virtualObject.setPose(Pose(x, y, orientation))
             virtualObject.setEnvironnement(self)
             self.__virtualObjects.append(virtualObject)
-            self.notifyObservers("objectCountChanged")
 
     def removeObject(self, object:Object):
         """ Removes an object of the environment.
@@ -110,14 +109,12 @@ class Environment(Observable):
             self.__objects.remove(object)
             if isinstance(object, Sensor):
                 self.__sensors.remove(object)
-            self.notifyObservers("objectCountChanged")
 
     def removeVirtualObject(self, virtualObject:Object):
         """ Removes a virtual object of the environment.
         @param object  Virtual object to remove"""
         if virtualObject in self.__virtualObjects:
             self.__virtualObjects.remove(virtualObject)
-            self.notifyObservers("objectCountChanged")
 
     def addSensor(self,sensor:Sensor):
         if isinstance(sensor,Sensor) and not sensor in self.__sensors:
@@ -125,8 +122,8 @@ class Environment(Observable):
 
     def __drawWalls(self):
         if not self.__hasWalls:
-            self.addObject(Object(Representation(Line(self.__size.height(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0)
-            self.addObject(Object(Representation(Line(self.__size.height(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), self.__size.width(), 0)
-            self.addObject(Object(Representation(Line(self.__size.width(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, 0, -90)
-            self.addObject(Object(Representation(Line(self.__size.width(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['borderScreen']))), 0, self.__size.height(), -90)
+            self.addObject(Object(Representation(Line(self.__size.height(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['tundora']))), 0, 0)
+            self.addObject(Object(Representation(Line(self.__size.height(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['tundora']))), self.__size.width(), 0)
+            self.addObject(Object(Representation(Line(self.__size.width(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['tundora']))), 0, 0, -90)
+            self.addObject(Object(Representation(Line(self.__size.width(), Environment.__DEFAULT_BORDER_SCREEN_WIDTH, colors['tundora']))), 0, self.__size.height(), -90)
             self.__hasWalls=True

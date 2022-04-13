@@ -15,7 +15,7 @@ class Toolbar(QToolBar,Observable):
     def __init__(self,simulation):
         super().__init__()
         self.setFixedHeight(self.__TOOLSBAR_FIXED_HEIGHT)
-        self.setStyleSheet("*{background-color: #21212f;color:#f0f0f0;border:none;}"
+        self.setStyleSheet("*{background-color: "+colors["steel-gray"]+";color:"+colors["gallery"]+";border:none;}"
                            "#widget{border-right:1px solid #4D4D6D; margin-top:8px; margin-bottom:8px;}")
 
         self.__simulation=simulation
@@ -61,7 +61,7 @@ class Toolbar(QToolBar,Observable):
         labelWidget = QWidgetAction(self)
         label=QLabel(name+":")
         label.setFont(fonts["normal"])
-        label.setStyleSheet("color:"+colors['white']+"; border-left:1px solid"+colors['titleBorder']+";")
+        label.setStyleSheet("color:"+colors['white']+"; border-left:1px solid"+colors['mulled-wine']+";")
         label.setContentsMargins(8,0,0,0)
         labelWidget.setDefaultWidget(label)
         return labelWidget

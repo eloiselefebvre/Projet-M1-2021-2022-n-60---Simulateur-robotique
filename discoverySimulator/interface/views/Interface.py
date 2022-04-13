@@ -1,5 +1,3 @@
-import time
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QGridLayout
@@ -56,8 +54,6 @@ class Interface(QMainWindow):
         self.__explorerWidget.getExplorerToolsbar().addObserverCallback(self.__sceneWidget.updateLockedScene, "lockChanged")
         self.__explorerWidget.getExplorerToolsbar().addObserverCallback(self.__explorerWidget.getExplorerTree().rebuildTree, 'filterChanged')
 
-        # self.__environment.addObserverCallback(self.__explorerWidget.getExplorerTree().rebuildTree,'objectCountChanged')
-
         for obj in self.__environment.getObjects():
             obj.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeSelection, "selectionChanged")
             obj.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility, "visibilityChanged")
@@ -65,7 +61,6 @@ class Interface(QMainWindow):
                 for comp in obj.getComponents():
                     comp.addObserverCallback(self.__explorerWidget.getExplorerTree().changeTreeVisibility,"visibilityChanged")
                 obj.addObserverCallback(self.__toolbarWidget.robotSelected, 'selectionChanged')
-                # obj.addObserverCallback(self.__explorerWidget.getExplorerToolsbar().filterChanged, 'objectCountChanged')
 
         self.setCentralWidget(general_widget)
         self.showMaximized()
