@@ -7,7 +7,7 @@ class Representation:
     """ The Representation class provides the representation of an object."""
 
     def __init__(self,shape=None):
-        """Adds a representation of an object.
+        """ Adds a representation of an object.
         @param shape  shape of the object"""
         self.__shape=shape
         self.setShape(self.__shape)
@@ -29,11 +29,11 @@ class Representation:
 
     # GETTERS
     def getShape(self) -> Shape:
-        """Returns the shape of a representation."""
+        """ Returns the shape of a representation."""
         return self.__shape
 
     def addSubRepresentation(self, representation):
-        """Adds a sub representation of a representation.
+        """ Adds a sub representation of a representation.
         @param representation  the sub representation to add"""
         if isinstance(representation, Representation):
             self.__subRepresentations.append(representation)
@@ -48,9 +48,9 @@ class Representation:
         if self.__visible:
             self.__shape.paint(painter)
             for rep in self.__subRepresentations:
-                painter.save() # save the state of the painter
+                painter.save() # Save the state of the painter
                 rep.paint(painter)
-                painter.restore() # restore the state of the painter
+                painter.restore() # Restore the state of the painter
 
     def contains(self,point) -> bool:
         return self.__shape.contains(point)

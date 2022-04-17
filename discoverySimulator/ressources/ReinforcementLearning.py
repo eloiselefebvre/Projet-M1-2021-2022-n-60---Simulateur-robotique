@@ -1,5 +1,4 @@
 import random
-import sys
 from typing import List
 import json
 import os
@@ -167,12 +166,12 @@ class ReinforcementLearning:
         """ Executes the action chosen and to learn (ValueIteration)
         @param reward  The reward of the action
         """
-        # reward update
+        # Reward update
         actionCount = self._actionCountTable[self._state][self._actionToExecuteIndex]
         oldReward = self._RTable[self._state][self._actionToExecuteIndex]
         self._RTable[self._state][self._actionToExecuteIndex] = (reward+actionCount*oldReward)/(actionCount+1)
 
-        # value iteration
+        # Value iteration
         for state in self._QTable.keys():
             for actionIndex in self.getPossibleActions(state):
                 newState = self.getNextState(state,actionIndex)

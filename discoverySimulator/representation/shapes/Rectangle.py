@@ -40,7 +40,7 @@ class Rectangle(Shape):
         lines=[]
         w = self.__width / 2
         h = self.__height / 2
-        sign = [(-1, -1), (-1, 1), (1, 1), (1, -1)] # counterclockwise
+        sign = [(-1, -1), (-1, 1), (1, 1), (1, -1)] # Counterclockwise
         pts = []
         xo = self._pose.getX() + self._pose.getRotationCenterX()
         yo = self._pose.getY() + self._pose.getRotationCenterY()
@@ -60,7 +60,7 @@ class Rectangle(Shape):
     def contains(self, point) -> bool:
         for line in self.getLineDecomposition():
             d = (line.x2()-line.x1())*(point.y()-line.y1())-(line.y2()-line.y1())*(point.x()-line.x1())
-            if not d<0: # point to the right of the line (not good because trigonometric direction)
+            if not d<0: # Point to the right of the line (not good because trigonometric direction)
                 return False
         return True
 
@@ -72,7 +72,7 @@ class Rectangle(Shape):
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawRoundedRect(self._rect, self.__borderRadius, self.__borderRadius) # draw from the center
+        painter.drawRoundedRect(self._rect, self.__borderRadius, self.__borderRadius) # Draw from the center
         if self._orientationMark:
             self.paintOrientationMark(painter)
 

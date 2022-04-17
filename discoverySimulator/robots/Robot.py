@@ -218,22 +218,22 @@ class Robot(ABC,Object):
             x=self.__odometryPose.getX()
             y=self.__odometryPose.getY()
 
-            if vd != vg and vd!=-vg: # le robot n'avance pas tout droit et ne tourne pas sur place
+            if vd != vg and vd!=-vg: # The robot does not go straight ahead and does not turn on the spot
                 R = e * (vd + vg) / (vd - vg)
-                # calcul des coordonnées du centre du cercle trajectoire
+                # Calculation of the coordinates of the center of the trajectory circle
                 x0 = x + R * cos(radians(self.__odometryPose.getOrientation()))
                 y0 = y + R * sin(radians(self.__odometryPose.getOrientation()))
 
-                # calcul position du robot
+                # Calculation of the robot position
                 dTheta =-d/R
                 self.__odometryPose.rotate(degrees(dTheta))
                 self.__odometryPose.move(x0 - R * cos(radians(self.__odometryPose.getOrientation())),
                                          y0 - R * sin(radians(self.__odometryPose.getOrientation())))
-            elif vd==-vg: # robot tourne sur place
+            elif vd==-vg: # Robot that turns on the spot
                 dd=vd * config["real_update_time_step"]/60
                 dTheta=-atan(dd/e)
                 self.__odometryPose.rotate(degrees(dTheta))
-            else: # robot en ligne droite
+            else: # Robot that moves in a straight line
                 nx=x-d * sin(radians(self.__odometryPose.getOrientation()))
                 ny=y+d * cos(radians(self.__odometryPose.getOrientation()))
                 self.__odometryPose.move(nx, ny)

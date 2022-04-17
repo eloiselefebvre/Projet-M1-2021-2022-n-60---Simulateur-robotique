@@ -14,7 +14,7 @@ class Shape(ABC):
     _ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
     def __init__(self,color:str,opacity:int):
-        """Constructs a Shape."""
+        """ Constructs a Shape."""
         self._color = QColor(color)
         self._opacity=opacity
         self._border=None
@@ -76,17 +76,17 @@ class Shape(ABC):
         total_intersections=[]
         shape1_lines = self.getLineDecomposition()
         shape2_lines = shape.getLineDecomposition()
-        # intersection circle/circle
+        # Intersection circle/circle
         if not shape1_lines and not shape2_lines:
             total_intersections.extend(self.getIntersectionWithCircle(shape))
-        # intersection line/circle
+        # Intersection line/circle
         elif shape1_lines and not shape2_lines:
             for line in shape1_lines:
                 intersections=shape.getIntersectionWithLine(line)
                 if intersections:
                     total_intersections.extend(intersections)
 
-        # intersection circle/line
+        # Intersection circle/line
         elif not shape1_lines and shape2_lines:
             for line in shape2_lines:
                 intersections = self.getIntersectionWithLine(line)

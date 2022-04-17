@@ -7,7 +7,7 @@ class Sensor(Component):
     """ The Sensor class provides a sensor."""
 
     def __init__(self,representation):
-       """Constructs a sensor."""
+       """ Constructs a sensor."""
        super().__init__(representation)
 
     @abstractmethod

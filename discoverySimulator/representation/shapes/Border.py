@@ -10,9 +10,9 @@ class Border:
 
     # GETTERS
     def getWidth(self) -> int:
-        """Returns the width of a border."""
+        """ Returns the width of a border."""
         return self.__width
 
     def getColor(self) -> str:
-        """Returns the color of a border."""
+        """ Returns the color of a border."""
         return self.__color

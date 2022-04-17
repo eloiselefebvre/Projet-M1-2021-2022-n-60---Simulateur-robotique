@@ -12,14 +12,14 @@ config = {
 # https://chir.ag/projects/name-that-color/
 colors = {
     "white":"#fff",  # == zoom menu bar item selected fot color
-    "alabaster":"#f9f9f9", # == explorer info/toolbar font color, footer background, scene overview background
+    "alabaster":"#f9f9f9",  # == explorer info/toolbar font color, footer background, scene overview background
     "gallery":"#f0f0f0",  # == scene background, toolbar font color
     "silver":"#c4c4c4",  # == footer border color
     "tuna": "#323247",  # == button hover
     "mulled-wine":"#4c4c68",  # == button pressed, toolbar border color
     "mischka":"#dfe0e5",  # == explorer tree item selected font color
     "tundora":"#444",  # == explorer info border color, footer font color, environment border color
-    "mid-gray":"#63656d", # == explorer tree item font color
+    "mid-gray":"#63656d",  # == explorer tree item font color
     "steel-gray":"#21212f",  # == toolbar background, explorer info background
     "mirage":"#151825",  # == wheel color, explorer background
     "picton-blue":"#26bee5",  # == explorer filter item hover color, explorer tree item selected background, footer zoom menu hover item background

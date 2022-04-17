@@ -75,15 +75,15 @@ class TwoWheelsRobot(Robot):
 
     def move(self):
         if not self._isCollided:
-            # average speed of the robot
+            # Average speed of the robot
             averageSpeedRobot = (self.getRightElementaryLinearSpeed() + self.getLeftElementaryLinearSpeed()) / 2
 
-            # speed along the x and y axes
+            # Speed along the x and y axes
             Phi = radians(self._pose.getOrientation() + 90)
             dx = averageSpeedRobot * cos(Phi)
             dy = averageSpeedRobot * sin(Phi)
 
-            # angular speed
+            # Angular speed
             dPhi = -degrees((self.getRightElementaryLinearSpeed() - self.getLeftElementaryLinearSpeed()) / (2 * self._distanceBetweenWheels)) # indirect benchmark so minus sign
 
             self._pose.move(self._pose.getX() + dx, self._pose.getY() + dy)

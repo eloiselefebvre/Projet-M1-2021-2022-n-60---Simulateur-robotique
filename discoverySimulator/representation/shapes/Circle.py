@@ -22,7 +22,7 @@ class Circle(Shape):
 
     # GETTERS
     def getRadius(self) -> float :
-        """Returns the radius of the circle [px]."""
+        """ Returns the radius of the circle [px]."""
         return self.__radius
 
     def getBoundingBox(self) -> Rectangle:
@@ -37,7 +37,7 @@ class Circle(Shape):
 
     def getIntersectionWithLine(self,line:QLineF) -> List[QPointF]:
         intersections = []
-        if line.x2()!=line.x1(): # not a vertical line
+        if line.x2()!=line.x1(): # Not a vertical line
             a_line,b_line=Line.getLineCoefficient(line)
 
             A = 1+a_line**2
@@ -51,16 +51,15 @@ class Circle(Shape):
 
                 x1=(-B-delta**0.5)/(2*A)
                 x2=(-B+delta**0.5)/(2*A)
-                # x1 = x2 si droite tangente au cercle
+                # x1 = x2 if the line is tangent to the circle
                 y1=a_line*x1+b_line
                 y2 = a_line * x2 + b_line
 
                 if min_x<=x1<=max_x:
                     intersections.append(QPointF(x1,y1))
-                if min_x<=x2<=max_x: # appartient au segment
+                if min_x<=x2<=max_x: # The point belongs to the segment
                     intersections.append(QPointF(x2, y2))
-        else: # vertical line
-            # if self._pose.getX()-self.__radius<=line.x1()<=self._pose.getX()+self.__radius:
+        else: # Vertical line
             A=1
             B=-2*self.getPose().getY()
             C= self.getPose().getY() ** 2 + (line.x1()-self.getPose().getX()) ** 2 - self.__radius ** 2
@@ -74,7 +73,7 @@ class Circle(Shape):
                 y2 = (-B+delta**0.5)/(2*A)
                 if y1 >= min_y and y1 <= max_y:
                     intersections.append(QPointF(line.x1(),y1))
-                if y2 >= min_y and y2 <= max_y:  # appartient au segment
+                if y2 >= min_y and y2 <= max_y:  # The point belongs to the segment
                     intersections.append(QPointF(line.x1(),y2))
         return intersections
 
@@ -108,7 +107,7 @@ class Circle(Shape):
     def paint(self,painter:QPainter):
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
-        painter.drawEllipse(-self.__radius, -self.__radius, self.__radius * 2, self.__radius * 2) # draw from the center
+        painter.drawEllipse(-self.__radius, -self.__radius, self.__radius * 2, self.__radius * 2) # Draw from the center
         if self._orientationMark:
             self.paintOrientationMark(painter)
 

@@ -9,7 +9,7 @@ from discoverySimulator.representation.shapes import Line
 
 class Maze:
 
-    """The Maze class provides a maze"""
+    """ The Maze class provides a maze"""
 
     DEFAULT_BORDER_SCREEN_WIDTH = 2
     INTERVAL_SIZE = 300

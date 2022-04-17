@@ -1,5 +1,3 @@
-import time
-
 from PyQt5.QtWidgets import QGridLayout, QWidget
 from PyQt5.QtCore import Qt
 

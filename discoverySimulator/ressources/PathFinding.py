@@ -14,7 +14,7 @@ from discoverySimulator.robots import Robot
 
 class PathFinding:
 
-    """The PathFinding class provides a path finding for a robot."""
+    """ The PathFinding class provides a path finding for a robot."""
 
     __MOVES = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
     __COLORS = {
