@@ -6,7 +6,8 @@ from discoverySimulator.representation.shapes import Circle
 
 class LED(Actuator):
 
-    """ The LED class provides a LED and his representation."""
+    """ The LED class provides the representation and behavior of an LED.
+    The LED can have the desired color and its state can be chosen at will (on or off)."""
 
     RED = colors["red"]
     GREEN = colors["green"]
@@ -20,7 +21,7 @@ class LED(Actuator):
     __HIGH_OPACITY=255
 
     def __init__(self,color:str=None):
-        """ Constructs a new LED.
+        """ Constructs a LED.
         @param color  Color of the LED"""
         self._representation = Representation(Circle(5,LED.RED if color is None else color,20))
         super().__init__(self._representation)
@@ -28,8 +29,8 @@ class LED(Actuator):
 
     # SETTERS
     def setState(self,state:bool):
-        """" Sets the state of a LED.
-        @param state  New state of the LED"""
+        """" Sets the state of the LED with a boolean.
+        @param state  State of the LED: True to turn ON the LED, False to turn OFF"""
         if state!=self.__state:
             self.__state=state
             if self.__state==LED.HIGH:
@@ -39,11 +40,12 @@ class LED(Actuator):
         self.notifyObservers("stateChanged")
 
     def toggleState(self):
+        """ Toggles the state of the LED."""
         self.setState(not self.__state)
 
     # GETTERS
     def getState(self) -> bool:
-        """ Returns the state of a LED."""
+        """ Returns the state of the LED."""
         return self.__state
 
     def getSpecifications(self) -> str:

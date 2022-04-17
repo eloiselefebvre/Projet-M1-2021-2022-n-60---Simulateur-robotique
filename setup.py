@@ -10,13 +10,13 @@ setup(
     description="Description",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    keywords="robotic python students simulator",
+    keywords="robot robotic python students simulator education teaching",
 
     packages=find_packages(),
     install_requires=["PyQt5"],
 
-    author="...",
-    author_email="...",
+    author="Leo Planquette & Eloise Lefebvre",
+    author_email="discoverysimulator@gmail.com",
     url="...",
     package_data={
         '': ['*.svg']

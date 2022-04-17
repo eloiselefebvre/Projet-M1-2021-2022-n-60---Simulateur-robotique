@@ -5,13 +5,14 @@ from discoverySimulator.representation import Representation
 
 class Wheel(Actuator):
 
-    """ The Wheel class provides a wheel and his representation."""
+    """ The Wheel class provides the representation and behavior of a wheel.
+    The speed of the wheel can be changed to control the movement of the robot on which it is mounted."""
 
     DEFAULT_BORDER_RADIUS = 3
     DEFAULT_BORDER_WIDTH = 2
 
     def __init__(self,radius:float,width:float):
-        """ Constructs a new wheel.
+        """ Constructs a wheel with its radius and thickness.
         @param radius  The radius of the wheel [px]
         @param width  The width of the wheel [px]"""
         shape = Rectangle(width,2*radius,colors["mirage"],Wheel.DEFAULT_BORDER_RADIUS)
@@ -22,22 +23,21 @@ class Wheel(Actuator):
 
     # SETTERS
     def setSpeed(self,speed:int):
-        """ Sets the speed of a wheel.
+        """ Sets the speed of the wheel.
         @param speed  New speed of a wheel [rpm]"""
         self._speed = int(speed)
         self.notifyObservers("stateChanged")
 
     # GETTERS
     def getSpeed(self) -> int:
-        """ Returns the speed of a wheel [rpm]."""
+        """ Returns the speed of the wheel [rpm]."""
         return self._speed
 
     def getRadius(self) -> int:
-        """ Returns the radius of a wheel [px]."""
+        """ Returns the radius of the wheel [px]."""
         return self._radius
 
     def getSpecifications(self) -> str:
-        """ Returns specifications about a wheel."""
         specifications=f"Current speed : {self._speed}rpm<br><pre>"
         specifications+=f"Radius : {self._radius}px</pre>"
         return specifications
