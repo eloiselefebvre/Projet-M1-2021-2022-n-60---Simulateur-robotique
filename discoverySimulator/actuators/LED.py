@@ -7,7 +7,7 @@ from discoverySimulator.representation.shapes import Circle
 class LED(Actuator):
 
     """ The LED class provides the representation and behavior of an LED.
-    The LED can have the desired color and its state can be chosen at will (on or off)."""
+    The LED can have the desired color and its state can be chosen at will (ON or OFF)."""
 
     RED = colors["red"]
     GREEN = colors["green"]

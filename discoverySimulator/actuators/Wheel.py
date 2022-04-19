@@ -13,8 +13,8 @@ class Wheel(Actuator):
 
     def __init__(self,radius:float,width:float):
         """ Constructs a wheel with its radius and thickness.
-        @param radius  The radius of the wheel [px]
-        @param width  The width of the wheel [px]"""
+        @param radius  Radius of the wheel [px]
+        @param width  Width of the wheel [px]"""
         shape = Rectangle(width,2*radius,colors["mirage"],Wheel.DEFAULT_BORDER_RADIUS)
         shape.addBorder(Border(Wheel.DEFAULT_BORDER_WIDTH,colors["gallery"]))
         super().__init__(Representation(shape))
@@ -24,7 +24,7 @@ class Wheel(Actuator):
     # SETTERS
     def setSpeed(self,speed:int):
         """ Sets the speed of the wheel.
-        @param speed  New speed of a wheel [rpm]"""
+        @param speed  Speed of the wheel [rpm]"""
         self._speed = int(speed)
         self.notifyObservers("stateChanged")
 
