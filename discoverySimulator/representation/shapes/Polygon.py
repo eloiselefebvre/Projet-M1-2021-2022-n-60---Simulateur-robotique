@@ -9,20 +9,21 @@ from discoverySimulator.representation.shapes import Shape, Rectangle
 
 class Polygon(Shape):
 
-    """ The Polygon class provides a polygon."""
+    """ The Polygon class provides a polygon shape."""
 
     def __init__(self,points:List[Tuple[int,int]],color:str=None,clockwise:bool=True,opacity:int=255):
-        """ Constructs a Polygon.
+        """ Constructs a polygon shape.
         @param points  Points that determine the shape of the polygon
-        @param color  Color of the shape
-        @param opacity  Opacity of the shape"""
+        @param color  Color of the polygon [hex]
+        @param clockwise Determine the drawing direction of the polygon points
+        @param opacity  Opacity of the polygon (between 0 and 255)"""
         super().__init__(color,opacity)
         self.__points=[QPoint(round(point[0]),round(point[1])) for point in points]
         self.__clockwise=clockwise
 
     # GETTERS
     def getBoundingBox(self) -> Rectangle:
-        """ Returns the bounding box of a polygon."""
+        """ Returns the bounding box of the polygon."""
         min_x=self.__points[0].x()
         min_y = self.__points[0].y()
         max_x=self.__points[0].x()
@@ -40,6 +41,8 @@ class Polygon(Shape):
         return Rectangle(max_x-min_x,max_y-min_y)
 
     def setPose(self,pose:Pose):
+        # Overloaded method
+        # Modifies the pose of the polygon so that the new pose is the average of all points.
         sx=0
         sy=0
         for point in self.__points:
@@ -57,6 +60,7 @@ class Polygon(Shape):
         self._pose=pose
 
     def contains(self, point) -> bool:
+        # Returns True if the QPointF is inside the polygon, otherwise returns False.
         # https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
         pose = QPoint(self._pose.getX(), self._pose.getY())
         c=False
@@ -70,6 +74,7 @@ class Polygon(Shape):
         return c
 
     def getLineDecomposition(self) -> List[QLineF]:
+        # Returns the QLineF decomposition of the polygon.
         lines=[]
         pose = QPoint(self._pose.getX(),self._pose.getY())
         points_number=len(self.__points)
@@ -78,6 +83,10 @@ class Polygon(Shape):
         return lines
 
     def offset(self,value:float,truncated:bool=False) -> Polygon:
+        """ Returns the enlarged polygon shape of the selected offset.
+        @param value  Offset size, if positive, the polygon is enlarged towards the outside, if negative, towards the inside
+        @param truncated  This value can be set to True if the polygon must be truncated
+        """
         # https://stackoverflow.com/questions/54033808/how-to-offset-polygon-edges
         points_offset=[]
         truncated_points_offset=[]
@@ -137,6 +146,7 @@ class Polygon(Shape):
         return pol
 
     def paint(self, painter:QPainter):
+        # Draws the polygon in the graphic window.
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawPolygon(QPolygon(self.__points))

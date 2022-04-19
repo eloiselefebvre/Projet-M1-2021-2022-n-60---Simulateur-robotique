@@ -71,8 +71,8 @@ class Environment(Observable):
     def addObject(self, object:Object, x:float=0, y:float=0, orientation:float=0):
         """ Adds an object in the environment.
         @param object  Object of the class Object or which inherits from Object
-        @param x  x coordinate of the object in the environment [px]
-        @param y  y coordinate of the object in the environment [px]
+        @param x  x-coordinate of the object in the environment [px]
+        @param y  y-coordinate of the object in the environment [px]
         @param orientation  Orientation of the object in the environment [degrees]"""
         if isinstance(object, Object) and not object in self.__objects:
             pose=Pose(x,y,orientation)
@@ -94,8 +94,8 @@ class Environment(Observable):
     def addVirtualObject(self, virtualObject:Object, x:float=0, y:float=0, orientation:float=0):
         """ Adds a virtual object in the environment.
         @param virtualObject  object of the class Object or which inherits from Object
-        @param x  x coordinate of the object in the environment [px]
-        @param y  y coordinate of the object in the environment [px]
+        @param x  x-coordinate of the object in the environment [px]
+        @param y  y-coordinate of the object in the environment [px]
         @param orientation  Orientation of the object in the environment [degrees]"""
         if isinstance(virtualObject, Object) and not virtualObject in self.__virtualObjects:
             virtualObject.setPose(Pose(x, y, orientation))

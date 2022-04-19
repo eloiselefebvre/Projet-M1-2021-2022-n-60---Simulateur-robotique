@@ -10,13 +10,13 @@ from .Line import Line
 
 class Circle(Shape):
 
-    """ The Circle class provides a circle."""
+    """ The Circle class provides a circle shape."""
 
     def __init__(self,radius:float,color:str,opacity:int=255):
         """ Constructs a circle shape.
         @param radius  Radius of the circle [px]
-        @param color  Color of the shape
-        @param opacity  Opacity of the shape"""
+        @param color  Color of the circle [hex]
+        @param opacity  Opacity of the circle (between 0 and 255)"""
         super().__init__(color,opacity)
         self.__radius=radius
 
@@ -26,16 +26,19 @@ class Circle(Shape):
         return self.__radius
 
     def getBoundingBox(self) -> Rectangle:
-        """ Returns the bounding box of a circle."""
+        """ Returns the bounding box of the circle."""
         return Rectangle(self.__radius * 2, self.__radius * 2)
 
     def contains(self, point:QPointF) -> bool:
+        # Returns True if the QPointF is inside the circle, otherwise returns False.
         return (point.x()-self._pose.getX()) ** 2 + (point.y()-self._pose.getY()) ** 2 <= self.__radius ** 2
 
     def getLineDecomposition(self) -> List[QLineF]:
+        # Returns the QLineF decomposition of the circle.
         return []
 
     def getIntersectionWithLine(self,line:QLineF) -> List[QPointF]:
+        # Returns all the intersections (QPointF) between the circle and a QLineF.
         intersections = []
         if line.x2()!=line.x1(): # Not a vertical line
             a_line,b_line=Line.getLineCoefficient(line)
@@ -77,7 +80,8 @@ class Circle(Shape):
                     intersections.append(QPointF(line.x1(),y2))
         return intersections
 
-    def getIntersectionWithCircle(self, circle):
+    def getIntersectionWithCircle(self, circle) -> List[QPointF]:
+        # Returns all the intersections (QPointF) between the circle and another circle.
         # https://fr.planetcalc.com/8098/
         intersections=[]
 
@@ -100,11 +104,15 @@ class Circle(Shape):
         return intersections
 
     def offset(self,value:float,truncated:bool=False) -> Circle:
+        """ Returns the enlarged circle shape of the selected offset.
+        @param value  Offset size, if positive, the circle is enlarged towards the outside, if negative, towards the inside
+        """
         circle = Circle(self.__radius + value, self._color)
         circle.setPose(self._pose)
         return circle
 
     def paint(self,painter:QPainter):
+        # Draws the circle in the graphic window.
         super().paint(painter)
         painter.setBrush(QBrush(self._color, Qt.SolidPattern))
         painter.drawEllipse(-self.__radius, -self.__radius, self.__radius * 2, self.__radius * 2) # Draw from the center
@@ -112,6 +120,7 @@ class Circle(Shape):
             self.paintOrientationMark(painter)
 
     def paintOrientationMark(self,painter:QPainter):
+        # Draws the orientation mark of the circle in the graphic window.
         painter.setPen(QPen(self._color.lighter(Shape._ORIENTATION_MARK_LIGHTER_FACTOR), Shape._ORIENTATION_MARK_WIDTH, Qt.SolidLine))
         widthToCompensate = Shape._ORIENTATION_MARK_WIDTH if self._border is None else max(Shape._ORIENTATION_MARK_WIDTH, self._border.getWidth())
         ypos = int(self.__radius * 8 / 10)

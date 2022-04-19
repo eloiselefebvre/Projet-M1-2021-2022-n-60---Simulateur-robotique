@@ -1,4 +1,6 @@
 from abc import ABC,abstractmethod
+from typing import List
+
 from PyQt5.QtCore import Qt, QPointF, QLineF
 from PyQt5.QtGui import QColor, QPen, QPainter
 
@@ -8,13 +10,16 @@ from ...Pose import Pose
 
 class Shape(ABC):
 
-    """ The Shape class provides a Shape."""
+    """ The Shape class provides a shape mold."""
 
     _ORIENTATION_MARK_WIDTH = 2
     _ORIENTATION_MARK_LIGHTER_FACTOR = 160
 
     def __init__(self,color:str,opacity:int):
-        """ Constructs a Shape."""
+        """ Constructs a shape.
+        @param color  Color of the shape [hex]
+        @param opacity  Opacity of the shape (between 0 and 255)
+        """
         self._color = QColor(color)
         self._opacity=opacity
         self._border=None
@@ -23,52 +28,43 @@ class Shape(ABC):
 
     # SETTERS
     def setPose(self,pose:Pose):
-        """ Sets the position of a shape.
-        @param pose  the new position"""
-        self._pose=pose
+        """ Sets the position of the shape.
+        @param pose  Position of the shape"""
+        if isinstance(pose, Pose):
+            self._pose=pose
 
     def setOpacity(self,opacity:int):
-        """ Sets the opacity of a shape.
-        @param opacity  the new opacity 0-255"""
+        """ Sets the opacity of the shape.
+        @param opacity  Opacity of the shape (between 0 and 255)"""
         self._opacity=opacity
 
     def setColor(self,color:str):
-        """ Sets the color of a shape.
-        @param color  the new color"""
+        """ Sets the color of the shape.
+        @param color  Color of the shape [hex]"""
         self._color=QColor(color)
 
     # GETTERS
     def getPose(self) -> Pose:
-        """ Returns the position of a shape."""
+        """ Returns the position of the shape."""
         return self._pose
 
-    def paint(self,painter:QPainter):
-        painter.translate(self._pose.getX() + self._pose.getRotationCenterX(), self._pose.getY() + self._pose.getRotationCenterY())
-        painter.rotate(self._pose.getOrientation())
-        painter.translate(-self._pose.getRotationCenterX(), -self._pose.getRotationCenterY())
-        self._color.setAlpha(self._opacity)
-        if self._border is not None:
-            pen=QPen(self._border.getColor(), self._border.getWidth(), Qt.SolidLine)
-            pen.setJoinStyle(Qt.RoundJoin)
-            painter.setPen(pen)
-        else:
-            painter.setPen(Qt.NoPen)
-
-    def getColor(self):
-        """ Returns the color of a shape."""
+    def getColor(self) -> str:
+        """ Returns the color of the shape."""
         return self._color.name()
 
     @abstractmethod
-    def getLineDecomposition(self):
+    def getLineDecomposition(self) -> List[QLineF]:
+        # Returns the QLineF decomposition of the shape.
         pass
 
-    def getIntersectionsWith(self, shape):
-        """
-        3 possible cases due to the breakdown into lines:
-        -> circle vs circle
-        -> line vs line
-        -> circle vs line
-        """
+    def getIntersectionsWith(self, shape) -> List[QPointF]:
+        # Returns all the intersections (QPointF) between the shape and another shape.
+
+        # 3 possible cases due to the breakdown into lines:
+        # -> circle vs circle
+        # -> line vs line
+        # -> circle vs line
+
         from .Point import Point
         if isinstance(self,Point) or isinstance(shape,Point):
             return []
@@ -103,31 +99,49 @@ class Shape(ABC):
 
     @abstractmethod
     def getBoundingBox(self):
-        """ Returns the bounding box of a shape."""
+        """ Returns the bounding box of the shape."""
         pass
 
     def addBorder(self, border:Border):
-        """ Adds a border on a shape.
-        @param border  The border to add"""
+        """ Adds a border to the shape.
+        @param border  Border to add"""
         if isinstance(border, Border):
             self._border=border
 
     def removeBorder(self):
-        """
-        Removes a border on a shape.
-        @param border  The border to remove"""
+        """ Removes the border of the shape."""
         self._border=None
 
     @abstractmethod
     def contains(self, point):
+        # Returns True if the QPointF is inside the shape, otherwise returns False.
         pass
 
     @abstractmethod
     def offset(self,value:float,truncated:bool=False):
+        """ Returns the enlarged shape of the selected offset.
+        @param value  Offset size, if positive, the shape is enlarged towards the outside, if negative, towards the inside
+        """
         pass
 
     def addOrientationMark(self):
+        """ Adds an orientation mark to the shape (works only for Rectangle and Circle).
+        """
         self._orientationMark = True
 
+    def paint(self,painter:QPainter):
+        # Draws the shape in the graphic window.
+        painter.translate(self._pose.getX() + self._pose.getRotationCenterX(), self._pose.getY() + self._pose.getRotationCenterY())
+        painter.rotate(self._pose.getOrientation())
+        painter.translate(-self._pose.getRotationCenterX(), -self._pose.getRotationCenterY())
+        self._color.setAlpha(self._opacity)
+        if self._border is not None:
+            pen=QPen(self._border.getColor(), self._border.getWidth(), Qt.SolidLine)
+            pen.setJoinStyle(Qt.RoundJoin)
+            painter.setPen(pen)
+        else:
+            painter.setPen(Qt.NoPen)
+
     def paintOrientationMark(self, painter):
+        # Draws the orientation mark of the shape in the graphic window.
         pass
