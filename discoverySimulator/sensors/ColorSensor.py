@@ -7,11 +7,11 @@ from discoverySimulator.sensors import Sensor
 
 class ColorSensor(Sensor):
 
-    """ The ColorSensor class provides a sensor."""
+    """ The ColorSensor class provides the representation and the behavior of a color sensor."""
 
     def __init__(self,color:str=None):
-        """ Constructs a new color sensor.
-        @param color  Color of the sensor"""
+        """ Constructs a color sensor.
+        @param color  Color of the sensor [hex]"""
         self._representation = Representation(Circle(1,color))
         super().__init__(self._representation)
         self._colorDetected = None

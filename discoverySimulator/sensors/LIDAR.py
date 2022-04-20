@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from . import Telemeter
 from ..Object import Object
 from ..Pose import Pose
@@ -8,11 +10,11 @@ from ..config import config, colors
 
 class LIDAR(Telemeter):
 
-    """ The LIDAR class provides a LIDAR."""
+    """ The LIDAR class provides the representation and the behavior of a LIDAR."""
 
     def __init__(self,color:str=colors["red"], scanRate:int=300, angularRange:int=360,angularResolution:int=6,maximumMeasurableDistance:int=None,accuracy:float=1):
         """ Constructs a LIDAR.
-        @param color  Color of the LIDAR
+        @param color  Color of the LIDAR [hex]
         @param scanRate  Scan rate of the LIDAR [rpm]
         @param angularRange  Angular range of the LIDAR [degrees]
         @param angularResolution  Angular resolution of the LIDAR [degrees]"""
@@ -39,7 +41,7 @@ class LIDAR(Telemeter):
         specifications += f"Angular Resolution : {self.__angularResolution}°<br>"
         specifications += f"Angular Range : {self.__angularRange}°<br>"
         specifications += f"Scan Rate : {self.__scanRate}rpm<br>"
-        specifications += f"Measurement Range : 0px-{self._maximumMesurableDistance}px"
+        specifications += f"Measurement Range : 0px-{self._maximumMeasurableDistance}px"
         if self._environment.isReal():
             specifications+=f"<br>Accuracy : ±{round(self._mesuringNoise*100,1)}%"
         specifications += "</pre>"
@@ -65,6 +67,5 @@ class LIDAR(Telemeter):
             self.getPose().rotate(self.__angularResolution)
 
     def getValue(self) -> list:
+        """ Returns the distances measured by the LIDAR."""
         return self.__distances
-
-

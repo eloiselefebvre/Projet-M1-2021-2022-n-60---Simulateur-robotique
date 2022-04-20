@@ -18,13 +18,13 @@ from ..sensors import Sensor
 
 class Robot(ABC,Object):
 
-    """ The Robot class provides a robot mold."""
+    """ The Robot class provides a mold to implement robots."""
 
     __NUMBER_CALLS_BEFORE_REFRESH = 30
     __MAX_POINTS_NUMBER_IN_ARRAY = 50
 
     def __init__(self,representation):
-        """ Constructs a robot.
+        """ Constructs a robot with the desired representation.
         @param representation  Representation of the robot
         """
         super().__init__(representation)

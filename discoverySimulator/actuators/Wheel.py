@@ -5,7 +5,7 @@ from discoverySimulator.representation import Representation
 
 class Wheel(Actuator):
 
-    """ The Wheel class provides the representation and behavior of a wheel.
+    """ The Wheel class provides the representation and the behavior of a wheel.
     The speed of the wheel can be changed to control the movement of the robot on which it is mounted."""
 
     DEFAULT_BORDER_RADIUS = 3

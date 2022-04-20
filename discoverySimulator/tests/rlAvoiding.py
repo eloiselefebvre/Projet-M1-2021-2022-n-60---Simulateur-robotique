@@ -57,28 +57,28 @@ def reinforcementLearningTest():
             "id":telemeter1.getID(),
             "getter": telemeter1.getValue,
             "min":0,
-            "max":telemeter1.getMaximumMesurableDistance(),
+            "max":telemeter1.getMaximumMeasurableDistance(),
             "intervals":1
         },
         {
             "id": telemeter2.getID(),
             "getter": telemeter2.getValue,
             "min": 0,
-            "max": telemeter2.getMaximumMesurableDistance(),
+            "max": telemeter2.getMaximumMeasurableDistance(),
             "intervals": 1
         },
         {
             "id": telemeter3.getID(),
             "getter": telemeter3.getValue,
             "min": 0,
-            "max": telemeter3.getMaximumMesurableDistance(),
+            "max": telemeter3.getMaximumMeasurableDistance(),
             "intervals": 1
         },
         {
             "id": telemeter4.getID(),
             "getter": telemeter4.getValue,
             "min": 0,
-            "max": telemeter4.getMaximumMesurableDistance(),
+            "max": telemeter4.getMaximumMeasurableDistance(),
             "intervals": 1
         }
     ]
@@ -129,8 +129,8 @@ def reinforcementLearningTest():
             # elif after_closest_obstacle <telemeter1.getMaximumMesurableDistance() and before_closest_obstacle<telemeter1.getMaximumMesurableDistance() and after_closest_obstacle >= before_closest_obstacle:
             #     reward=0
             # else:
-            v=min([telemeter1.getValue(),telemeter2.getValue(),telemeter3.getValue(),telemeter4.getValue()])<telemeter1.getMaximumMesurableDistance()
-            if v<telemeter1.getMaximumMesurableDistance():
+            v=min([telemeter1.getValue(),telemeter2.getValue(),telemeter3.getValue(),telemeter4.getValue()])<telemeter1.getMaximumMeasurableDistance()
+            if v<telemeter1.getMaximumMeasurableDistance():
                 rl.learn(v)
             else:
                 rl.learn(robot.getLeftLinearSpeed() + robot.getRightLinearSpeed())
