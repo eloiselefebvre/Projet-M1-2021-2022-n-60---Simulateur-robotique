@@ -8,7 +8,7 @@ from discoverySimulator.config import *
 
 class Simulation(Observable):
 
-    """ The Simulation class provides a simulation."""
+    """ The Simulation class provides a controller to simulate an environment and the objects in the environment."""
 
     __MINIMUM_TIME_STEP = 1/60
 
@@ -16,8 +16,8 @@ class Simulation(Observable):
     __ACCELERATION_MAX = 15.0
 
     def __init__(self,environment=None):
-        """ Constructs a new simulation.
-        @param environment  environment where the simulation will take place."""
+        """ Constructs a simulation.
+        @param environment  Environment to simulate."""
         super().__init__()
         self.__environment=environment
         self.__app = None
@@ -32,7 +32,7 @@ class Simulation(Observable):
     # SETTERS
     def setAcceleration(self, acceleration:float):
         """ Sets the acceleration of the simulation.
-        @param acceleration  New acceleration of the simulation"""
+        @param acceleration  Acceleration of the simulation (between 0.1 and 15)"""
         try:
             acceleration=float(acceleration)
             if self.__ACCELERATION_MIN <= acceleration <= self.__ACCELERATION_MAX:
@@ -45,10 +45,14 @@ class Simulation(Observable):
             self.__accelerationChanged()
 
     def setPlay(self,state:bool):
+        """ Sets the play state of the simulation.
+        @param state  Play state of the simulation
+        """
         self.__playState=state
         self.__playStateChanged()
 
     def togglePlayState(self):
+        """ Toggles the play state of the simulation."""
         self.__playState=not self.__playState
         self.__playStateChanged()
 
@@ -72,10 +76,11 @@ class Simulation(Observable):
         return self.__acceleration
 
     def getPlayState(self) -> bool:
+        """ Returns the play state of the simulation."""
         return self.__playState
 
     def time(self) -> float:
-        """ Returns the time elapsed since the beginning of the simulation. [s]"""
+        """ Returns the time elapsed since the beginning of the simulation [s]."""
         return self.__timeElapsed
 
     def run(self):
@@ -85,30 +90,33 @@ class Simulation(Observable):
         self.__runThread.start()
 
     def stop(self):
+        """ Stops the simulation."""
         if self.__runThread is not None:
             self.__runThread.do_run=False
             self.__runThread.join()
 
     def showInterface(self):
-        """ Shows the interface where the simulation takes place."""
+        """ Shows the simulation in a graphical interface."""
         if self.__environment is not None and not self.__appShown:
             self.__appThread=threading.Thread(target=self.__startApplication)
             self.__appThread.start()
             self.__appShown = True
 
     def closeInterface(self):
-        """ Closes the interface."""
+        """ Closes the graphical interface of the simulation."""
         if self.__appShown:
             self.__app.exit(0)
             self.__appThread.join()
             self.setAppShown(False)
 
     def sleep(self, duration:float):
+        """ Sleeps the simulation for a certain amount of time [s]."""
         start = self.__timeElapsed
         while self.__timeElapsed - start < duration:
             time.sleep(0.001)
 
     def sync(self):
+        """ Helps to synchronize the simulation with the user code."""
         while not self.__hasBeenRefreshed:
             time.sleep(0.001)
         self.__hasBeenRefreshed=False
@@ -146,11 +154,13 @@ class Simulation(Observable):
         self.notifyObservers("accelerationChanged")
 
     def decreaseAcceleration(self):
+        """ Decreases the acceleration of the simulation."""
         self.__acceleration -= 0.1 if self.__acceleration <= 1 else 1.0
         self.__acceleration = max(self.__acceleration, self.__ACCELERATION_MIN)
         self.__accelerationChanged()
 
     def increaseAcceleration(self):
+        """ Increases the acceleration of the simulation."""
         self.__acceleration += 0.1 if self.__acceleration < 1 else 1.0
         self.__acceleration = min(self.__acceleration, self.__ACCELERATION_MAX)
         self.__accelerationChanged()

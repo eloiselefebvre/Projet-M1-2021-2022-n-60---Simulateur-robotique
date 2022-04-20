@@ -19,7 +19,7 @@ class Environment(Observable):
 
     # Available models : perfect, real (with noise)
     def __init__(self,width:int,height:int,model:str='perfect'):
-        """ Constructs an environment
+        """ Constructs an environment which can be perfect or real.
         @param width  Width of the environment [px]
         @param height  Height of the environment [px]"""
         super().__init__()
@@ -37,40 +37,43 @@ class Environment(Observable):
 
     # GETTERS
     def getObjects(self) -> List[Object]:
-        """ Returns all the objects of the environment."""
+        """ Returns all the objects added in the environment."""
         return self.__objects
 
     def getVirtualObjects(self) -> List[Object]:
-        """ Returns all the virtuals objects of the environment."""
+        """ Returns all the virtuals objects added in the environment."""
         return self.__virtualObjects
 
     def getSensors(self) -> List[Sensor]:
-        """ Returns all the sensors of the environment."""
+        """ Returns all the sensors added in the environment and mounted on the robots present in the environment."""
         return self.__sensors
 
     def getFrame(self) -> Frame:
+        # Returns the frame associated with the environnement (base frame).
         return self.__frame
 
     def getSize(self) -> QSize:
+        """ Returns the size of the environment (QSize: .width() [px], .height() [px])."""
         return self.__size
 
     def getWidth(self) -> int:
-        """ Returns the width of the environment. [px]"""
+        """ Returns the width of the environment [px]."""
         return self.__size.width()
 
     def getHeight(self) -> int:
-        """ Returns the height of the environment. [px]"""
+        """ Returns the height of the environment [px]."""
         return self.__size.height()
 
     def hasWalls(self) -> bool:
         return self.__hasWalls
 
     def isReal(self):
+        """ Returns True if the environment is real, otherwise returns False."""
         return self.__model=="real"
 
     def addObject(self, object:Object, x:float=0, y:float=0, orientation:float=0):
         """ Adds an object in the environment.
-        @param object  Object of the class Object or which inherits from Object
+        @param object  Object of the class Object or which inherits from Object to add in the environment
         @param x  x-coordinate of the object in the environment [px]
         @param y  y-coordinate of the object in the environment [px]
         @param orientation  Orientation of the object in the environment [degrees]"""
@@ -93,7 +96,7 @@ class Environment(Observable):
 
     def addVirtualObject(self, virtualObject:Object, x:float=0, y:float=0, orientation:float=0):
         """ Adds a virtual object in the environment.
-        @param virtualObject  object of the class Object or which inherits from Object
+        @param virtualObject  Object of the class Object or which inherits from Object to add in the environment
         @param x  x-coordinate of the object in the environment [px]
         @param y  y-coordinate of the object in the environment [px]
         @param orientation  Orientation of the object in the environment [degrees]"""
