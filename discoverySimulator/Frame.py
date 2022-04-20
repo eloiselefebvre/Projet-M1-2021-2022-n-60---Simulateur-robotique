@@ -13,21 +13,26 @@ class Frame:
 
     # SETTERS
     def setCoordinates(self,coordinates):
+        """ Sets the position of the object in the current marker."""
         if isinstance(coordinates,Pose):
             self.__coordinates=coordinates
 
     def setBaseFrame(self,baseFrame):
+        """ Sets the reference frame for the object."""
         if isinstance(baseFrame,Frame):
             self.__baseFrame = baseFrame
 
     # GETTERS
     def getBaseFrame(self):
+        """ Returns the reference frame for the object."""
         return self.__baseFrame
 
     def getCoordinates(self):
+        """ Returns the position of the object in the current marker."""
         return self.__coordinates
 
     def getAbsoluteCoordinates(self):
+        """ Returns the position of the object in the base frame (environment marker)."""
         if self.__baseFrame is not None:
             absBf = self.__baseFrame.getAbsoluteCoordinates()
             bfX = absBf.getX()

@@ -30,7 +30,7 @@ class Circle(Shape):
         return Rectangle(self.__radius * 2, self.__radius * 2)
 
     def contains(self, point:QPointF) -> bool:
-        # Returns True if the QPointF is inside the circle, otherwise returns False.
+        # Returns True if the QPointF is inside the circle; otherwise returns False.
         return (point.x()-self._pose.getX()) ** 2 + (point.y()-self._pose.getY()) ** 2 <= self.__radius ** 2
 
     def getLineDecomposition(self) -> List[QLineF]:

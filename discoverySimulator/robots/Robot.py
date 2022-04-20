@@ -119,7 +119,7 @@ class Robot(ABC,Object):
             component.getFrame().setBaseFrame(self._frame)
             component.getFrame().setCoordinates(pose)
             if self._environment is not None:
-                component.setEnvironnement(self._environment)
+                component.setEnvironment(self._environment)
                 if isinstance(component,Sensor):
                     component.refresh()
                     self._environment.addSensor(component)
@@ -129,7 +129,7 @@ class Robot(ABC,Object):
             self._representation.addSubRepresentation(component.getRepresentation())
 
     def hasComponent(self,component:Component):
-        """ Returns True if the component is mounted on the robot, otherwise returns False."""
+        """ Returns True if the component is mounted on the robot; otherwise returns False."""
         return component in self._components
 
     def move(self):
@@ -193,7 +193,7 @@ class Robot(ABC,Object):
 
     # ODOMETRY METHODS
     def isOdometryEnabled(self):
-        """ Returns True if the odometry position estimate is enabled, otherwise returns False.."""
+        """ Returns True if the odometry position estimate is enabled; otherwise returns False.."""
         return self.__odometryEnabled
 
     def enableOdometry(self,accuracy=1):

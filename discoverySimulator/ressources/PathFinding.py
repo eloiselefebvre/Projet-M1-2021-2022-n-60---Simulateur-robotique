@@ -1,17 +1,17 @@
 import threading
 import time
-from math import sqrt, atan, degrees, cos, radians, sin, acos, ceil
+from math import sqrt, atan, degrees, ceil
 from typing import Tuple
 
-from PyQt5.QtCore import QPoint, QLineF
+from PyQt5.QtCore import QPoint
 
 from discoverySimulator.Pose import Pose
 from discoverySimulator.Object import Object
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Rectangle, Line, Polygon
+from discoverySimulator.representation.shapes import Rectangle, Line
 from discoverySimulator.robots import Robot
 
-
+# TODO : Revoir docstring
 class PathFinding:
 
     """ The PathFinding class provides a path finding for a robot."""
@@ -30,7 +30,7 @@ class PathFinding:
     __CELL_SIZE = 15
     __CELL_OFFSET = __CELL_SIZE / 2
 
-    def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=True ,displayDelay:float=0.01):
+    def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.01):
         """
         Constructs a pathfinding.
         @param environment  Environment where the pathfinding will take place
@@ -42,8 +42,6 @@ class PathFinding:
         self._displayDelay = displayDelay
 
         self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(securityMargin,True) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
-        # for obs in self._obstaclesShapeWithOffset:
-        #     self._environment.addVirtualObject(Object(Representation(obs)),obs.getPose().getX(),obs.getPose().getY(),obs.getPose().getOrientation())
 
         self.__ROWS_NUMBER = ceil(self._environment.getWidth() / PathFinding.__CELL_SIZE)
         self.__COLS_NUMBER = ceil(self._environment.getHeight() / PathFinding.__CELL_SIZE)

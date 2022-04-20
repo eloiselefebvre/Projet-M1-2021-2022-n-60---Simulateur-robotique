@@ -60,7 +60,7 @@ class Polygon(Shape):
         self._pose=pose
 
     def contains(self, point) -> bool:
-        # Returns True if the QPointF is inside the polygon, otherwise returns False.
+        # Returns True if the QPointF is inside the polygon; otherwise returns False.
         # https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
         pose = QPoint(self._pose.getX(), self._pose.getY())
         c=False

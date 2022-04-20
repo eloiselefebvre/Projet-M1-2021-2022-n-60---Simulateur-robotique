@@ -58,7 +58,7 @@ class Rectangle(Shape):
         return lines
 
     def contains(self, point:QPointF) -> bool:
-        # Returns True if the QPointF is inside the rectangle, otherwise returns False.
+        # Returns True if the QPointF is inside the rectangle; otherwise returns False.
         for line in self.getLineDecomposition():
             d = (line.x2()-line.x1())*(point.y()-line.y1())-(line.y2()-line.y1())*(point.x()-line.x1())
             if not d<0: # Point to the right of the line (not good because trigonometric direction)

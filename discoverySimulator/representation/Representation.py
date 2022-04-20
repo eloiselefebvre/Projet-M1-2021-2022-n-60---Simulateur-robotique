@@ -51,7 +51,7 @@ class Representation:
         self.__visible=not self.__visible
 
     def isVisible(self) -> bool:
-        """ Returns True is the representation is visible, otherwise returns False."""
+        """ Returns True is the representation is visible; otherwise returns False."""
         return self.__visible
 
     def paint(self,painter):
@@ -64,5 +64,5 @@ class Representation:
                 painter.restore() # Restore the state of the painter
 
     def contains(self,point:QPointF) -> bool:
-        # Returns True if the QPointF is inside the shape associated with the representation, otherwise returns False.
+        # Returns True if the QPointF is inside the shape associated with the representation; otherwise returns False.
         return self.__shape.contains(point)

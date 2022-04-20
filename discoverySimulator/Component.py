@@ -3,7 +3,7 @@ from discoverySimulator.Object import Object
 
 class Component(ABC,Object):
 
-    """ The Component class provides a component."""
+    """ The Component class provides a mold to implement components."""
 
     def __init__(self,representation):
         """ Constructs a component.

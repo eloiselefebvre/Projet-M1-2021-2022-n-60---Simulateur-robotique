@@ -68,7 +68,7 @@ class Environment(Observable):
         return self.__hasWalls
 
     def isReal(self):
-        """ Returns True if the environment is real, otherwise returns False."""
+        """ Returns True if the environment is real; otherwise returns False."""
         return self.__model=="real"
 
     def addObject(self, object:Object, x:float=0, y:float=0, orientation:float=0):
@@ -80,13 +80,13 @@ class Environment(Observable):
         if isinstance(object, Object) and not object in self.__objects:
             pose=Pose(x,y,orientation)
             object.setPose(pose)
-            object.setEnvironnement(self)
+            object.setEnvironment(self)
             object.getFrame().setBaseFrame(self.__frame)
             object.getFrame().setCoordinates(pose)
             self.__objects.append(object)
             if isinstance(object, Robot):
                 for comp in object.getComponents():
-                    comp.setEnvironnement(self)
+                    comp.setEnvironment(self)
                     if isinstance(comp, Sensor):
                         self.addSensor(comp)
                 object.setOdometryPose(pose.copy())
@@ -102,7 +102,7 @@ class Environment(Observable):
         @param orientation  Orientation of the object in the environment [degrees]"""
         if isinstance(virtualObject, Object) and not virtualObject in self.__virtualObjects:
             virtualObject.setPose(Pose(x, y, orientation))
-            virtualObject.setEnvironnement(self)
+            virtualObject.setEnvironment(self)
             self.__virtualObjects.append(virtualObject)
 
     def removeObject(self, object:Object):

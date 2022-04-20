@@ -2,7 +2,7 @@ from math import sqrt, sin, radians, cos, degrees, acos
 
 from discoverySimulator.robots import Robot
 
-
+# TODO : Revoir docstring + resolve problème plantage
 class PathFollowing():
 
     """ The PathFollowing class provides a path following for a robot."""

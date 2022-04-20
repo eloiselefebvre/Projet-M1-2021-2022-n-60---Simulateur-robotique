@@ -29,18 +29,21 @@ class Shape(ABC):
     # SETTERS
     def setPose(self,pose:Pose):
         """ Sets the position of the shape.
-        @param pose  Position of the shape"""
+        @param pose  Position of the shape
+        """
         if isinstance(pose, Pose):
             self._pose=pose
 
     def setOpacity(self,opacity:int):
         """ Sets the opacity of the shape.
-        @param opacity  Opacity of the shape (between 0 and 255)"""
+        @param opacity  Opacity of the shape (between 0 and 255)
+        """
         self._opacity=opacity
 
     def setColor(self,color:str):
         """ Sets the color of the shape.
-        @param color  Color of the shape [hex]"""
+        @param color  Color of the shape [hex]
+        """
         self._color=QColor(color)
 
     # GETTERS
@@ -104,7 +107,8 @@ class Shape(ABC):
 
     def addBorder(self, border:Border):
         """ Adds a border to the shape.
-        @param border  Border to add"""
+        @param border  Border to add
+        """
         if isinstance(border, Border):
             self._border=border
 
@@ -114,7 +118,7 @@ class Shape(ABC):
 
     @abstractmethod
     def contains(self, point):
-        # Returns True if the QPointF is inside the shape, otherwise returns False.
+        # Returns True if the QPointF is inside the shape; otherwise returns False.
         pass
 
     @abstractmethod
@@ -125,8 +129,7 @@ class Shape(ABC):
         pass
 
     def addOrientationMark(self):
-        """ Adds an orientation mark to the shape (works only for Rectangle and Circle).
-        """
+        """ Adds an orientation mark to the shape (works only for Rectangle and Circle)."""
         self._orientationMark = True
 
     def paint(self,painter:QPainter):
