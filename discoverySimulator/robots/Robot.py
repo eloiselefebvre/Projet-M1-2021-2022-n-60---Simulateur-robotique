@@ -11,19 +11,22 @@ from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
 from ..config import *
 from ..Pose import Pose
+from ..ressources.PathFollowing import PathFollowing
 from ..sensors import Sensor
+
 
 
 class Robot(ABC,Object):
 
-    """ The Robot class provides a robot."""
+    """ The Robot class provides a robot mold."""
 
     __NUMBER_CALLS_BEFORE_REFRESH = 30
     __MAX_POINTS_NUMBER_IN_ARRAY = 50
 
     def __init__(self,representation):
-        """ Constructs a new robot.
-        @param representation  Representation of the robot"""
+        """ Constructs a robot.
+        @param representation  Representation of the robot
+        """
         super().__init__(representation)
         self._components=[]
         self._sensors_counter=0
@@ -42,41 +45,45 @@ class Robot(ABC,Object):
         self._pathFollowing=None
         self._isSpeedLocked=False
 
-
     # SETTERS
     def setPose(self,pose:Pose):
+        # Sets the current position of the robot
         super().setPose(pose)
         self.setOdometryPose(pose.copy())
         self._frame.setCoordinates(self._pose)
         self.computeRotationCenter()
 
     def setOdometryPose(self, pose:Pose):
+        # Sets the current position of the robot for odometry calculations.
         self.__odometryPose = pose
 
-    def setPathFollowing(self, pathFollowing):
-        self._pathFollowing = pathFollowing
+    def setPathFollowing(self, pathFollowing:PathFollowing):
+        # Sets the path following controller for the robot.
+        if isinstance(pathFollowing,PathFollowing):
+            self._pathFollowing = pathFollowing
 
     def setSpeedLock(self, state: bool):
+        # Sets the wheels speed lock state (allows or not the change of the speed of the wheels).
         self._isSpeedLocked = state
 
     # GETTERS
     def getComponents(self) -> List[Component]:
-        """ Returns all components."""
+        """ Returns all the components mounted on the robot."""
         return self._components
 
     @abstractmethod
     def getLeftLinearSpeed(self) -> float:
-        """ Returns the left linear speed."""
+        """ Returns the left wheel linear speed [px/min]."""
         pass
 
     @abstractmethod
     def getRightLinearSpeed(self) -> float:
-        """ Returns the right linear speed."""
+        """ Returns the right wheel linear speed [px/min]."""
         pass
 
     @abstractmethod
     def getDistanceBetweenWheels(self) -> float:
-        """ Returns the distance between wheels."""
+        """ Returns the distance between the wheels of the robot [px]."""
         pass
 
     def getTrajectoryDrawn(self) -> bool:
@@ -86,6 +93,7 @@ class Robot(ABC,Object):
         return self.__odometryDrawn
 
     def getOdometryPose(self) -> Pose:
+        """ Returns the odometry estimated position of the robot."""
         return self.__odometryPose
 
     def getWheels(self) -> List[Wheel]:
@@ -121,9 +129,11 @@ class Robot(ABC,Object):
             self._representation.addSubRepresentation(component.getRepresentation())
 
     def hasComponent(self,component:Component):
+        """ Returns True if the component is mounted on the robot, otherwise returns False."""
         return component in self._components
 
     def move(self):
+        # Calculates the displacement of the robot according to the parameters of its wheels. Updates trajectory and odometry
         self.__updateTrajectory()
         self.__updateOdometry()
         self.notifyObservers("stateChanged")
@@ -183,9 +193,11 @@ class Robot(ABC,Object):
 
     # ODOMETRY METHODS
     def isOdometryEnabled(self):
+        """ Returns True if the odometry position estimate is enabled, otherwise returns False.."""
         return self.__odometryEnabled
 
     def enableOdometry(self,accuracy=1):
+        """ Enables the odometry position estimate."""
         if not self.__odometryEnabled:
             self.__odometryEnabled=True
             self.__odometry = []
@@ -196,6 +208,7 @@ class Robot(ABC,Object):
                 self.__odometryPose=self._pose.copy()
 
     def disableOdometry(self):
+        """ Disables the odometry position estimate."""
         if self.__odometryEnabled:
             self.__odometryEnabled=False
             self.__odometryDrawn = False
@@ -203,11 +216,12 @@ class Robot(ABC,Object):
             self.deleteOdometry()
 
     def __updateOdometry(self):
+        # Calculates the estimated displacement of the robot according to the parameters of its wheels.
         if self.__odometryEnabled:
             vd = self.getRightLinearSpeed()
             vg = self.getLeftLinearSpeed()
 
-            if self._environment.isReal():
+            if self._environment.isReal(): # Adding noise when the environment is real
                 vd+=random.uniform(-self.__odometryNoise*vd,self.__odometryNoise*vd)
                 vg+=random.uniform(-self.__odometryNoise*vg,self.__odometryNoise*vg)
 
@@ -276,4 +290,5 @@ class Robot(ABC,Object):
 
     @abstractmethod
     def computeRotationCenter(self):
+        # Computes the rotation center of the robot according to the position of its wheels.
         pass
