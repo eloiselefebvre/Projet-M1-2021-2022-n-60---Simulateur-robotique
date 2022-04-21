@@ -59,8 +59,7 @@ class Robot(ABC,Object):
 
     def setPathFollowing(self, pathFollowing:PathFollowing):
         # Sets the path following controller for the robot.
-        if isinstance(pathFollowing,PathFollowing):
-            self._pathFollowing = pathFollowing
+        self._pathFollowing = pathFollowing
 
     def setSpeedLock(self, state: bool):
         # Sets the wheels speed lock state (allows or not the change of the speed of the wheels).
