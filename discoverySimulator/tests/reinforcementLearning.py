@@ -1,4 +1,4 @@
-from discoverySimulator.ressources.ReinforcementLearning import ReinforcementLearning
+from discoverySimulator.tools.learning.ReinforcementLearning import ReinforcementLearning
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 

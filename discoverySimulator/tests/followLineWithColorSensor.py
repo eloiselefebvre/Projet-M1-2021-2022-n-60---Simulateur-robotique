@@ -1,6 +1,6 @@
 import time
 
-from discoverySimulator.ressources.maps.CirclePath import CirclePath
+from discoverySimulator.tools.maps import CirclePath
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.sensors.ColorSensor import ColorSensor
 from discoverySimulator.simulation import Environment, Simulation

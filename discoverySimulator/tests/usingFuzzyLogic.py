@@ -1,6 +1,6 @@
 import time
 
-from discoverySimulator.ressources.maps.Maze import Maze
+from discoverySimulator.tools.maps import Maze
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.sensors import Telemeter
 from discoverySimulator.simulation import Environment, Simulation

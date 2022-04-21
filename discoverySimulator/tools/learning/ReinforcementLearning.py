@@ -6,7 +6,7 @@ import os
 
 class ReinforcementLearning:
 
-    """The ReinforcementLearning class provides a reinforcement learning for a robot."""
+    """The ReinforcementLearning class provides a reinforcement learning tool."""
 
     DEFAULT_LEARNING_FACTOR = 0.1
     DEFAULT_DISCOUNT_FACTOR = 0.5
@@ -14,13 +14,13 @@ class ReinforcementLearning:
 
     __ACTION_BLUIDER_REQUIRED_KEYS = ['intervals', 'max', 'min']
 
-    # Available algorithm : QLearning, ValueIteration
+    # Available algorithms : QLearning, ValueIteration
     def __init__(self, state:tuple, actionSpaceBuilders:List[dict]=None, factors:dict=None, algorithm:str= "ValueIteration"):
-        """ Constructs a reinforcement learning.
-        @param state  State of the robot who will learn
+        """ Constructs a reinforcement learning tool.
+        @param state  State of the learning
         """
 
-        self._learn = self.__getattribute__(f"_learn{algorithm}") # raises an error if not found
+        self._learn = self.__getattribute__(f"_learn{algorithm}") # Raises an error if not found
 
         self.__actionSpaceBuilders=actionSpaceBuilders
         self.__actions = None
@@ -29,7 +29,7 @@ class ReinforcementLearning:
         self._RTable={}
         self._actionCountTable = {}
         self._explorationRate = 0
-        if self.__actionSpaceBuilders is not None and self.areActionBuildersValid():
+        if self.__actionSpaceBuilders is not None and self.__areActionBuildersValid():
             self.__actions=self.getActionsSpace()
             self.fillTable("_QTable")
             self.fillTable("_RTable")
@@ -49,7 +49,7 @@ class ReinforcementLearning:
         self._initialState = state
 
 
-    def areActionBuildersValid(self):
+    def __areActionBuildersValid(self):
         if not self.__actionSpaceBuilders:
             raise ValueError(f"Missing key in actionSpaceBuilder item. Required keys are: {', '.join(ReinforcementLearning.__ACTION_BLUIDER_REQUIRED_KEYS)}.")
         for actionBuilder in self.__actionSpaceBuilders:
@@ -58,21 +58,23 @@ class ReinforcementLearning:
             actionBuilder["step"] = round((actionBuilder["max"] - actionBuilder["min"]) / actionBuilder["intervals"])
         return True
 
-    def getActionsSpace(self):
+    def getActionsSpace(self) -> List[tuple]:
+        """ Returns the space of all actions."""
         actionSpace=[]
         for actionBuilder in self.__actionSpaceBuilders:
             actionSpace=self.__computeCombinations(actionSpace,[v for v in range(-actionBuilder["step"],2*actionBuilder["step"],actionBuilder["step"])])
         actionSpace = [tuple(action) for action in actionSpace]
         return actionSpace
 
-    def getStatesSpace(self):
+    def getStatesSpace(self) -> List[tuple]:
+        """ Returns the space of all states."""
         stateSpace = []
         for stateBuilder in self.__actionSpaceBuilders:
             stateSpace = self.__computeCombinations(stateSpace, [v for v in range(stateBuilder["min"],stateBuilder["max"] + stateBuilder["step"], stateBuilder["step"])])
         stateSpace = [tuple(state) for state in stateSpace]
         return stateSpace
 
-    def __computeCombinations(self,space,value):
+    def __computeCombinations(self,space,value) -> List[list]:
         updatedSpace=[]
         if space:
             for a in space:
@@ -87,6 +89,7 @@ class ReinforcementLearning:
 
     # GETTERS
     def getReachableStates(self, state:tuple) -> List[tuple]:
+        """ Returns all the reachable states for a given state."""
         actionIndices = self.getPossibleActions(state)
         reachableStates = []
         for actionIndex in actionIndices:
@@ -97,10 +100,7 @@ class ReinforcementLearning:
         return tuple([self.__actions[actionIndex][i]+state[i] for i in range(len(state))])
 
     def getPossibleActions(self,state) -> List[int]:
-        """ This method allows to get the possible actions of the robot
-        @param state  State of the robot
-        @return  Possible actions
-        """
+        """ Returns all possibles action for a given state."""
         possibleActionIndexes = [i for i in range(len(self.__actions))]
         for i, action in enumerate(self.__actions):
             for j, actionBuilder in enumerate(self.__actionSpaceBuilders):
@@ -116,7 +116,7 @@ class ReinforcementLearning:
             raise ValueError("actionSpaceBuilders have not been given")
         possibleActionsIndexes=self.getPossibleActions(self._state)
         if random.random() < self._explorationRate:
-            actionWeights = self.computeActionWeights(self._state,possibleActionsIndexes)
+            actionWeights = self.__computeActionWeights(self._state, possibleActionsIndexes)
             self._actionToExecuteIndex=random.choices(population=possibleActionsIndexes,weights=actionWeights,k=1)[0]
         else:
             maxIndex=possibleActionsIndexes[0]
@@ -129,18 +129,20 @@ class ReinforcementLearning:
 
         return self.__actions[self._actionToExecuteIndex]
 
-    def computeActionWeights(self,state:tuple,possibleActionIndexes:List[int]) -> List[float]:
+    def __computeActionWeights(self, state:tuple, possibleActionIndexes:List[int]) -> List[float]:
         penalisationFactor = 10
         possibleActionCounts = [(penalisationFactor*self._actionCountTable[state][i]+1) for i in possibleActionIndexes]
         total = sum(possibleActionCounts)
         return [(total-actionCount) / total for actionCount in possibleActionCounts]
 
     def fillTable(self, tableName: str, initValue: float = 0):
+        """ Fills the table passed in parameter with the chosen init value."""
         table = self.__getattribute__(tableName)
         for state in self.getStatesSpace():
             table[state] = [initValue] * len(self.__actions)
 
     def printTable(self,tableName:str):
+        """ Prints the table passed in parameter."""
         table=self.__getattribute__(tableName)
         print(f"----------{tableName}----------")
         for state in table:
@@ -148,14 +150,16 @@ class ReinforcementLearning:
         print("--------------------------------")
 
     def learn(self,reward:float):
+        """ Learns from the executed action.
+        @param reward  Reward of the action
+        """
         self._explorationRate *= self._factors["explorationRateDecrease"]
-        print(self._explorationRate)
         self._learn(reward)
         self._actionCountTable[self._state][self._actionToExecuteIndex]+=1
 
     def _learnQLearning(self,reward:float):
-        """ Executes the action chosen and to learn (QLearning)
-        @param reward  The reward of the action
+        """ Executes the chosen action and learn of it (QLearning)
+        @param reward  Reward of the action
         """
         nextState=self.getNextState(self._state,self._actionToExecuteIndex)
         maxValue = max(self._QTable[nextState])
@@ -163,8 +167,8 @@ class ReinforcementLearning:
         self._state = nextState
 
     def _learnValueIteration(self,reward:float):
-        """ Executes the action chosen and to learn (ValueIteration)
-        @param reward  The reward of the action
+        """ Executes the chosen action and learn of it (ValueIteration)
+        @param reward  Reward of the action
         """
         # Reward update
         actionCount = self._actionCountTable[self._state][self._actionToExecuteIndex]
@@ -185,6 +189,7 @@ class ReinforcementLearning:
         self._state=self._initialState
 
     def loadModel(self,filepath:str):
+        """ Loads a JSON pre-trained model."""
         try:
             if filepath.split(".")[-1]!="json":
                 raise ValueError("Format of the model invalid (JSON only)")
@@ -193,7 +198,7 @@ class ReinforcementLearning:
                 json_string = json.load(json_file)
                 data = json.loads(json_string)
                 self.__actionSpaceBuilders=data["actionSpaceBuilders"]
-                if self.areActionBuildersValid():
+                if self.__areActionBuildersValid():
                     self.__actions=self.getActionsSpace()
                 self._QTable = {}
                 for key in data["QTable"]:
@@ -204,6 +209,7 @@ class ReinforcementLearning:
             raise FileNotFoundError(f"Model '{filepath}' not found")
 
     def saveModel(self, filepath:str= "goForwardTwoWheelsRobotModel.json"):
+        """ Saves the current trained model in a JSON file."""
         QTable={}
         for key in self._QTable:
             QTable[" ".join([str(v) for v in key])]=self._QTable[key]
@@ -218,4 +224,5 @@ class ReinforcementLearning:
             json.dump(json_string, outfile)
 
     def updateState(self):
+        """ Updates the learning state according to the previous state and the executed action."""
         self._state=self.getNextState(self._state,self._actionToExecuteIndex)

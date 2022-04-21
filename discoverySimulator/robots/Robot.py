@@ -11,7 +11,7 @@ from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
 from ..config import *
 from ..Pose import Pose
-from ..ressources.PathFollowing import PathFollowing
+from discoverySimulator.tools.path.PathFollowing import PathFollowing
 from ..sensors import Sensor
 
 

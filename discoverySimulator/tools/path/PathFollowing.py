@@ -2,10 +2,10 @@ from math import sqrt, sin, radians, cos, degrees, acos
 
 from discoverySimulator.robots import Robot
 
-# TODO : Revoir docstring + resolve problème plantage
-class PathFollowing():
 
-    """ The PathFollowing class provides a path following for a robot."""
+class PathFollowing:
+
+    """ The PathFollowing class provides a path following tool for a robot."""
 
     MAX_FORWARD_SPEED = 500
     MIN_FORWARD_SPEED = 300
@@ -15,8 +15,8 @@ class PathFollowing():
     DISTANCE_FOR_END_POINT = 5
 
     def __init__(self,robot):
-        """ Constructs a following path.
-        @param robot  Robot who will follow the path
+        """ Constructs a following path tool.
+        @param robot  Robot which will follow the path
         """
         self._robot = robot
         for wheel in self._robot.getWheels():
@@ -28,10 +28,10 @@ class PathFollowing():
 
     # GETTERS
     def getRobot(self) -> Robot:
-        """ Returns the robot who follow the path."""
+        """ Returns the robot which is following the path."""
         return self._robot
 
-    def angularDistance(self,pathPoint) -> float:
+    def __angularDistance(self, pathPoint) -> float:
         # https://fr.wikihow.com/calculer-l%E2%80%99angle-entre-deux-vecteurs
 
         currentPosition=(self._robot.getPose().getX(),self._robot.getPose().getY())
@@ -53,14 +53,18 @@ class PathFollowing():
         return degrees(theta) * (-1 if degrees(theta)-degrees(theta_delta)>0 else 1)
 
     def startFollowing(self,path):
+        """ Starts to following the path.
+        @param path  Path to follow
+        """
         if path is not None:
             self._path=path
             self._robot.setPathFollowing(self)
 
     def followPath(self):
+        """ Follows the path."""
         if self._path is not None:
             distance = sqrt((self._path[self._nextPointIndex][0]-self._robot.getPose().getX())**2+(self._path[self._nextPointIndex][1]-self._robot.getPose().getY())**2)
-            angularDistance = self.angularDistance(self._path[self._nextPointIndex])
+            angularDistance = self.__angularDistance(self._path[self._nextPointIndex])
             if (0<angularDistance<2 or 0>angularDistance>-2) and self._modifyOrientation:
                 self._modifyOrientation=False
 

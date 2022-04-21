@@ -1,11 +1,9 @@
 # Robotic simulator for Python
 
 ## What's this
-***
 **discoverySimulator** is a Python package where an environment can be simulate with some robots and sensors. This simulator aims to introduce robotics while taking your first steps in python. 
 
 ## Installation
-***
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the package  **discoverySimulator**:
 
@@ -14,7 +12,6 @@ $ pip install discoverySimulator
 ```
 
 ## Usage example
-***
 
 ### Code
 ```python
@@ -42,11 +39,9 @@ mySimulation.showInterface()
 
 
 ## License
-***
 [MIT](https://choosealicense.com/licenses/mit/)
 
-## Ask for help / Report bugs
-***
+## Help and bug reports
 General questions and comments can be sent to the following email address: [discoverysimulator@gmail.com](mailto:discoverysimulator@gmail.com).
 
 You can also report bugs at this same email address.

@@ -6,7 +6,7 @@
 
 #
 from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \
-    rlTwoWheelsRobot, rlAvoiding, rlFourWheelsRobot,road, measureSpeedWithTelemeters
+    road, measureSpeedWithTelemeters
 
 # reinforcementLearning.reinforcementLearningFromModel()
 # aStar()

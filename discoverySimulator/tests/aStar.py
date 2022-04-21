@@ -1,9 +1,9 @@
 from discoverySimulator import Obstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes.Polygon import Polygon
-from discoverySimulator.ressources.PathFinding import PathFinding
-from discoverySimulator.ressources.PathFollowing import PathFollowing
-from discoverySimulator.robots import FourWheelsRobot, CircularTwoWheelsRobot
+from discoverySimulator.tools.path.PathFinding import PathFinding
+from discoverySimulator.tools.path.PathFollowing import PathFollowing
+from discoverySimulator.robots import CircularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 
 def aStar():

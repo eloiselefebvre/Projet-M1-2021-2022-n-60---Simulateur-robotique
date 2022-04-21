@@ -9,14 +9,14 @@ from discoverySimulator.representation.shapes import Line
 
 class Maze:
 
-    """ The Maze class provides a maze"""
+    """ The Maze class provides a maze."""
 
     DEFAULT_BORDER_SCREEN_WIDTH = 2
     INTERVAL_SIZE = 300
 
     def __init__(self,environment):
-        """ Constructs a maze
-        @param environment  Environment where the maze will take place
+        """ Constructs a maze in the given environment.
+        @param environment  Environment where the maze will be added
         """
         self._environment = environment
         self._width = self._environment.getSize().width()
@@ -24,16 +24,9 @@ class Maze:
         self._nbColumn = self._width//self.INTERVAL_SIZE
         self._nbLine = self._height//self.INTERVAL_SIZE
         self._mazeElements = []
-        self.drawGrid()
 
-    # GETTERS
-    def getWalls(self) -> List[Line]:
-        """ Returns all the elements of the maze
-        @return  All the elements
-        """
-        return self._mazeElements
-
-    def drawGrid(self):
+    def draw(self):
+        """ Draws the maze."""
         for i in range(self._nbLine+1):
             for j in range(self._nbColumn+1):
                 if random.randint(0,1):
@@ -47,7 +40,8 @@ class Maze:
                         self._mazeElements.append(Object(Representation(Line(dw, self.DEFAULT_BORDER_SCREEN_WIDTH,colors['borderScreen']))))
                         self._environment.addObject(self._mazeElements[-1],j*self.INTERVAL_SIZE,i*self.INTERVAL_SIZE,-90)
 
-    def deleteGrid(self):
+    def delete(self):
+        """ Deletes the maze."""
         for item in self._mazeElements:
             self._environment.removeObject(item)
         self._mazeElements.clear()

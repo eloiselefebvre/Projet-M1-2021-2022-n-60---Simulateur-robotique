@@ -1,10 +1,10 @@
 from PyQt5.QtGui import QPainter
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import Qt, QPoint, QLineF
+from PyQt5.QtCore import Qt, QPoint
 from discoverySimulator.Observable import Observable
 from discoverySimulator.config import colors
-from discoverySimulator.ressources.PathFinding import PathFinding
-from discoverySimulator.ressources.PathFollowing import PathFollowing
+from discoverySimulator.tools.path.PathFinding import PathFinding
+from discoverySimulator.tools.path.PathFollowing import PathFollowing
 from discoverySimulator.robots.Robot import Robot
 
 import time

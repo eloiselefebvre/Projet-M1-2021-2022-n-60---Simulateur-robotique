@@ -1,7 +1,7 @@
 import threading
 import time
 from math import sqrt, atan, degrees, ceil
-from typing import Tuple
+from typing import Tuple, Callable
 
 from PyQt5.QtCore import QPoint
 
@@ -11,10 +11,10 @@ from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Rectangle, Line
 from discoverySimulator.robots import Robot
 
-# TODO : Revoir docstring
+
 class PathFinding:
 
-    """ The PathFinding class provides a path finding for a robot."""
+    """ The PathFinding class provides a path finding tool."""
 
     __MOVES = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
     __COLORS = {
@@ -30,12 +30,11 @@ class PathFinding:
     __CELL_SIZE = 15
     __CELL_OFFSET = __CELL_SIZE / 2
 
-    def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.01):
-        """
-        Constructs a pathfinding.
-        @param environment  Environment where the pathfinding will take place
-        @param displayEnabled  The display of the pathfinding [bool]
-        @param displayDelay  The delay of the display [s]
+    def __init__(self, environment,securityMargin:float=0,displayEnabled:bool=False ,displayDelay:float=0.0):
+        """ Constructs a path finding tool.
+        @param environment  Environment where the path finding will take place
+        @param displayEnabled  Display state of the pathfinding [bool]
+        @param displayDelay  Delay between two steps of the display [s]
         """
         self._environment=environment
         self._displayEnabled = displayEnabled
@@ -51,7 +50,12 @@ class PathFinding:
 
         self._nextPointIndex = 0
 
-    def findPath(self,begin,end,callback=None):
+    def findPath(self,begin:Tuple[int,int],end:Tuple[int,int],callback:Callable=None):
+        """ Finds the shortest path between a start position and a destination position. Once found the function callback is executed.
+        @param begin  Start position of the path to find
+        @param end  End position of the path to find
+        @param callback  Function to execute when the path is found
+        """
         if self.__setBeginNode((int(begin[0]/PathFinding.__CELL_SIZE), int(begin[1] / PathFinding.__CELL_SIZE))) and self.__setEndNode((int(end[0] / PathFinding.__CELL_SIZE), int(end[1] / PathFinding.__CELL_SIZE))):
             th = threading.Thread(target=self.__astar,args=[callback])
             th.start()
@@ -176,8 +180,10 @@ class PathFinding:
         else:
             self._nodes[node].setPose(Pose(node[0] * self.__CELL_SIZE + self.__CELL_OFFSET, node[1] * self.__CELL_SIZE + self.__CELL_OFFSET))
 
-
     def simplifyPath(self, path):
+        """ Simplifies the given path by removing points from the path.
+        @param path  Path to simplify
+        """
         counter=1
         lastPoint = path[0]
         current=0

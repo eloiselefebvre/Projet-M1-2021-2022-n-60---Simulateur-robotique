@@ -4,7 +4,7 @@ from discoverySimulator import Object, Obstacle
 from discoverySimulator.obstacles import CircularObstacle, RectangularObstacle
 from discoverySimulator.representation import Representation
 from discoverySimulator.representation.shapes import Rectangle, Circle, Polygon
-from discoverySimulator.ressources.ReinforcementLearning import ReinforcementLearning
+from discoverySimulator.tools.learning.ReinforcementLearning import ReinforcementLearning
 from discoverySimulator.sensors import Telemeter, LIDAR, ColorSensor
 from discoverySimulator.simulation import Environment, Simulation
 from discoverySimulator.robots import RectangularTwoWheelsRobot, CircularTwoWheelsRobot, FourWheelsRobot
