@@ -10,6 +10,7 @@ class Simulation(Observable):
 
     """ The Simulation class provides a controller to simulate an environment and the objects in the environment."""
 
+    __UPDATE_DELAY = 0.01 # 10ms
     __MINIMUM_TIME_STEP = 1/60
 
     __ACCELERATION_MIN = 0.1
@@ -35,10 +36,10 @@ class Simulation(Observable):
         @param acceleration  Acceleration of the simulation (between 0.1 and 15)"""
         try:
             acceleration=float(acceleration)
-            if self.__ACCELERATION_MIN <= acceleration <= self.__ACCELERATION_MAX:
+            if Simulation.__ACCELERATION_MIN <= acceleration <= Simulation.__ACCELERATION_MAX:
                 self.__acceleration = acceleration
-            if acceleration > self.__ACCELERATION_MAX:
-                self.__acceleration = self.__ACCELERATION_MAX
+            if acceleration > Simulation.__ACCELERATION_MAX:
+                self.__acceleration = Simulation.__ACCELERATION_MAX
         except ValueError:
             return
         finally:
@@ -124,30 +125,31 @@ class Simulation(Observable):
     def __run(self):
         start = time.time()
         while getattr(self.__runThread, "do_run", True):
-            # ROBOT UPDATE
             current = time.time()
-            if self.__playState:
-                config["real_update_time_step"]=(current - start)*self.__acceleration
-                self.__timeElapsed += config["real_update_time_step"]
-                self.notifyObservers("timeChanged")
-            start=time.time()
-            if self.__playState:
-                for obj in self.__environment.getObjects():
-                    if hasattr(obj, "move"):
-                        obj.move()
-                self.__hasBeenRefreshed=True
+            if current - start > Simulation.__UPDATE_DELAY:
+                # ROBOT UPDATE
+                if self.__playState:
+                    config["real_update_time_step"] = (current - start) * self.__acceleration
+                    self.__timeElapsed += config["real_update_time_step"]
+                    self.notifyObservers("timeChanged")
+                    for obj in self.__environment.getObjects():
+                        if hasattr(obj, "move"):
+                            obj.move()
+                    self.__hasBeenRefreshed = True
 
-            # SENSOR UPDATE
-            for sensor in self.__environment.getSensors():
-                if hasattr(sensor, "refresh"):
-                    sensor.refresh()
+                # SENSOR UPDATE
+                for sensor in self.__environment.getSensors():
+                    if hasattr(sensor, "refresh"):
+                        sensor.refresh()
 
-            time.sleep(self.__MINIMUM_TIME_STEP/self.__acceleration)
+                start = time.time()
+
+            time.sleep(Simulation.__MINIMUM_TIME_STEP / self.__acceleration)
 
     def __startApplication(self):
-        self.__app = QApplication(sys.argv)
-        interface=Interface(self, self.__environment)
-        self.__app.exec_()
+            self.__app = QApplication(sys.argv)
+            interface=Interface(self, self.__environment)
+            self.__app.exec_()
 
     def __accelerationChanged(self):
         self.__acceleration = round(self.__acceleration, 1)
@@ -156,13 +158,13 @@ class Simulation(Observable):
     def decreaseAcceleration(self):
         """ Decreases the acceleration of the simulation."""
         self.__acceleration -= 0.1 if self.__acceleration <= 1 else 1.0
-        self.__acceleration = max(self.__acceleration, self.__ACCELERATION_MIN)
+        self.__acceleration = max(self.__acceleration, Simulation.__ACCELERATION_MIN)
         self.__accelerationChanged()
 
     def increaseAcceleration(self):
         """ Increases the acceleration of the simulation."""
         self.__acceleration += 0.1 if self.__acceleration < 1 else 1.0
-        self.__acceleration = min(self.__acceleration, self.__ACCELERATION_MAX)
+        self.__acceleration = min(self.__acceleration, Simulation.__ACCELERATION_MAX)
         self.__accelerationChanged()
 
     def setAccelerationFromString(self,acceleration):
