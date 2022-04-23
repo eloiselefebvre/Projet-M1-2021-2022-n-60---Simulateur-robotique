@@ -64,6 +64,8 @@ class Scene(QWidget,Observable):
             self.__objectGrabbed()
             self.__dragObject = True
             if self.__pathFollowing is not None:
+                self.__pathFollowing.getRobot().stop()
+
                 pathFinding = PathFinding(self.__environment,
                                           self.__pathFollowing.getRobot().getBoundingWidth())
                 pathFinding.findPath((self.__pathFollowing.getRobot().getPose().getX(),
@@ -122,9 +124,9 @@ class Scene(QWidget,Observable):
             self.__zoomController.zoomIn() if dir > 0 else self.__zoomController.zoomOut()
 
             s = ((self.__size - self.__size * self.__zoomController.getZoom()) / 2)
-            offset = QPoint(s.width(), s.height()) # pour centrer la fenêtre
+            offset = QPoint(s.width(), s.height()) # To put the scene in the middle of the screen
             pos2 = (event.pos() - offset) / self.__zoomController.getZoom()
-            # pos1 doit devenir pos1 transformée dans le nouveau zoom
+            # pos1 in the previous zoom state must become the same pos1 after the zoom transformation
             getEqualCoordinatesOffset = (pos1-pos2)*self.__zoomController.getZoom()
             self.__zoomController.setOffset(offset - getEqualCoordinatesOffset)
 
@@ -140,26 +142,29 @@ class Scene(QWidget,Observable):
     def followPathSelected(self,sender):
         if self.__pathFollowing is None:
             self.setCursor(Qt.CrossCursor)
+            if sender.getRobotSelected().getPathFollowing() is not None:
+                sender.getRobotSelected().getPathFollowing().stopFollowing()
             self.__pathFollowing=PathFollowing(sender.getRobotSelected())
         else:
             self.setCursor(Qt.OpenHandCursor)
             self.__pathFollowing=None
 
-
     def __objectGrabbed(self):
         self.__selectedObj = None
         for obj in self.__environment.getObjects():
             obj.setSelected(False)
-        if self.__pathFollowing is None:
+        if self.__pathFollowing is None: # Can't grab object when Go To mode is activated
             objects = sorted(self.__environment.getObjects(), key=lambda obj:obj.getZIndex())
             objects.reverse()
             for obj in objects:
                 if obj.getRepresentation().contains(self._convertedMousePose) and obj.isVisible():
                     obj.setSelected(True)
+
                     pose = obj.getPose()
                     dx = self._convertedMousePose.x() - pose.getX()
                     dy = self._convertedMousePose.y() - pose.getY()
                     self.__selectionOffset = (dx, dy)
+
                     if not self.__isSceneLocked:
                         self.__selectedObj = obj
                         self.__selectedObjCollidedState=self.__selectedObj.isCollided()

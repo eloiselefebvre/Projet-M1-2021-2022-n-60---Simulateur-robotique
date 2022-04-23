@@ -11,9 +11,7 @@ from ..representation.Representation import Representation
 from ..representation.shapes.Point import Point
 from ..config import *
 from ..Pose import Pose
-from discoverySimulator.tools.path.PathFollowing import PathFollowing
 from ..sensors import Sensor
-
 
 
 class Robot(ABC,Object):
@@ -57,7 +55,8 @@ class Robot(ABC,Object):
         # Sets the current position of the robot for odometry calculations.
         self.__odometryPose = pose
 
-    def setPathFollowing(self, pathFollowing:PathFollowing):
+
+    def setPathFollowing(self, pathFollowing):
         # Sets the path following controller for the robot.
         self._pathFollowing = pathFollowing
 
@@ -100,10 +99,15 @@ class Robot(ABC,Object):
         return self._wheels
 
     def getBoundingWidth(self) -> float:
+        """ Returns the bounding width of the robot."""
         return self.getRepresentation().getShape().getBoundingBox().getWidth()
 
     def getBoundingHeight(self) -> float:
+        """ Returns the bounding height of the robot."""
         return self.getRepresentation().getShape().getBoundingBox().getHeigt()
+
+    def getPathFollowing(self):
+        return self._pathFollowing
 
     def addComponent(self, component:Component, x:float=0, y:float=0, orientation:float=0):
         """ Adds a component to a robot.
@@ -151,6 +155,10 @@ class Robot(ABC,Object):
                 self.__trajectoryDrawn=False
                 self.__hideTrajectory()
         super().visibilityChanged()
+
+    def stop(self):
+        for wheel in self._wheels:
+            wheel.setSpeed(0)
 
     # TRAJECTORY METHODS
     def __updateTrajectory(self):

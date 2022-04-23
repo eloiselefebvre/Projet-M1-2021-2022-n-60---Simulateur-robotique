@@ -1,7 +1,6 @@
 from math import sqrt, sin, radians, cos, degrees, acos
-
-from discoverySimulator.robots import Robot
-
+from discoverySimulator.robots.Robot import Robot
+from discoverySimulator.robots.TwoWheelsRobot import TwoWheelsRobot
 
 class PathFollowing:
 
@@ -18,9 +17,10 @@ class PathFollowing:
         """ Constructs a following path tool.
         @param robot  Robot which will follow the path
         """
+        if not isinstance(robot,TwoWheelsRobot):
+            raise ValueError("To construct an instance of PathFollowing, an instance of TwoWheelsRobot has to be passed in parameter")
+
         self._robot = robot
-        for wheel in self._robot.getWheels():
-            wheel.setSpeed(0)
         self._robot.setSpeedLock(True)
         self._path = None
         self._nextPointIndex = 0
@@ -60,6 +60,9 @@ class PathFollowing:
             self._path=path
             self._robot.setPathFollowing(self)
 
+    def stopFollowing(self):
+        self._path=None
+
     def followPath(self):
         """ Follows the path."""
         if self._path is not None:
@@ -71,8 +74,8 @@ class PathFollowing:
             f = min(PathFollowing.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED,distance) / PathFollowing.MIN_DISTANCE_FOR_MAX_FORWARD_SPEED
             baseSpeed=max(PathFollowing.MAX_FORWARD_SPEED*f,PathFollowing.MIN_FORWARD_SPEED)/(abs(angularDistance)/(PathFollowing.TURN_SPEED_FACTOR if not self._modifyOrientation else 1)+1)
             self._robot.setSpeedLock(False)
-            self._robot.setRightWheelSpeed(baseSpeed + PathFollowing.TURN_SPEED_FACTOR * angularDistance)
-            self._robot.setLeftWheelSpeed(baseSpeed - PathFollowing.TURN_SPEED_FACTOR * angularDistance)
+            self._robot.setRightWheelSpeed(round(baseSpeed + PathFollowing.TURN_SPEED_FACTOR * angularDistance))
+            self._robot.setLeftWheelSpeed(round(baseSpeed - PathFollowing.TURN_SPEED_FACTOR * angularDistance))
             self._robot.setSpeedLock(True)
 
             if (distance<PathFollowing.DISTANCE_FOR_NEXT_POINT and self._nextPointIndex<len(self._path)-1) \

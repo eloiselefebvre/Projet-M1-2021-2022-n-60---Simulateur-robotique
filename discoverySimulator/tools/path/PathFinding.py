@@ -7,9 +7,9 @@ from PyQt5.QtCore import QPoint
 
 from discoverySimulator.Pose import Pose
 from discoverySimulator.Object import Object
-from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Rectangle, Line
-from discoverySimulator.robots import Robot
+from discoverySimulator.representation.Representation import Representation
+from discoverySimulator.representation.shapes.Rectangle import Rectangle
+from discoverySimulator.representation.shapes.Line import Line
 
 
 class PathFinding:
@@ -40,6 +40,7 @@ class PathFinding:
         self._displayEnabled = displayEnabled
         self._displayDelay = displayDelay
 
+        from discoverySimulator.robots.Robot import Robot
         self._obstaclesShapeWithOffset=[obj.getRepresentation().getShape().offset(securityMargin,True) for obj in self._environment.getObjects() if not isinstance(obj, Robot)]
 
         self.__ROWS_NUMBER = ceil(self._environment.getWidth() / PathFinding.__CELL_SIZE)

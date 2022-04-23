@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QPushButton
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
 
 from discoverySimulator.config import *
 from discoverySimulator.interface.components.Button import VisibilityButton
@@ -9,6 +9,7 @@ from discoverySimulator.robots.Robot import Robot
 from discoverySimulator.obstacles.Obstacle import Obstacle
 from discoverySimulator.sensors.Sensor import Sensor
 from discoverySimulator.actuators.Actuator import Actuator
+
 
 class ExplorerTree(QTreeWidget):
 
