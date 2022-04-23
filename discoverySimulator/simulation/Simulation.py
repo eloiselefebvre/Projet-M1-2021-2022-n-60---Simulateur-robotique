@@ -6,6 +6,7 @@ import threading
 import time
 from discoverySimulator.config import *
 
+
 class Simulation(Observable):
 
     """ The Simulation class provides a controller to simulate an environment and the objects in the environment."""
