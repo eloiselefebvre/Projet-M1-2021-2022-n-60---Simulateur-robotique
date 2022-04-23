@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from discoverySimulator import Component
+from discoverySimulator.Component import Component
 
 
 class Sensor(Component):

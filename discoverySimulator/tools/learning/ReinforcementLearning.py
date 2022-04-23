@@ -3,7 +3,6 @@ from typing import List
 import json
 import os
 
-
 class ReinforcementLearning:
 
     """The ReinforcementLearning class provides a reinforcement learning tool."""

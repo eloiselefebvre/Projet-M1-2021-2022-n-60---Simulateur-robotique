@@ -24,6 +24,6 @@ setup(
         '': ['*.svg']
     },
     include_package_data=True,
-    # license="", # search MIT, BSD ?
+    license="MIT",
     zip_safe=False
 )

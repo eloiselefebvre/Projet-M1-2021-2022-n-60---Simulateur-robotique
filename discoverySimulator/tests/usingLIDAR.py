@@ -4,7 +4,6 @@ from discoverySimulator import Obstacle
 from discoverySimulator.obstacles.CircularObstacle import CircularObstacle
 from discoverySimulator.obstacles.RectangularObstacle import RectangularObstacle
 from discoverySimulator.representation import Representation
-from discoverySimulator.representation.shapes import Circle, Rectangle
 from discoverySimulator.representation.shapes.Polygon import Polygon
 from discoverySimulator.robots.CircularTwoWheelsRobot import CircularTwoWheelsRobot
 from discoverySimulator.robots.RectangularTwoWheelsRobot import RectangularTwoWheelsRobot

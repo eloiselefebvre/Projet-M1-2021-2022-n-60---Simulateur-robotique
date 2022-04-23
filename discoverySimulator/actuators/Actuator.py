@@ -1,4 +1,4 @@
-from discoverySimulator import Component
+from discoverySimulator.Component import Component
 from discoverySimulator.representation.Representation import Representation
 
 
