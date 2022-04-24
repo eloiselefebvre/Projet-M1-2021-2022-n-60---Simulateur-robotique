@@ -1,7 +1,10 @@
 # Robotic simulator for Python
 
 ## What's this
-**discoverySimulator** is a Python package where an environment can be simulate with some robots and sensors. This simulator aims to introduce robotics while taking your first steps in python. 
+**discoverySimulator** is a Python package allowing to simulate environments in which mobile robots evolve. This simulator is accompanied by an interface allowing to visualize and control the simulation. This package is ideal for a playful learning of python and a discovery of mobile robotics.
+
+## Documentation
+The documentation associated with this python package can be found [here](https://discoverysimulator.github.io/).
 
 ## Installation
 
@@ -39,7 +42,9 @@ mySimulation.showInterface()
 
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+**discoverySimulator** is released under the GPL v3 license and under a commercial license that allows for the development of proprietary applications.
+
+Additional details about this license can be found [here](https://choosealicense.com/licenses/gpl-3.0/).
 
 ## Help and bug reports
 General questions and comments can be sent to the following email address: [discoverysimulator@gmail.com](mailto:discoverysimulator@gmail.com).

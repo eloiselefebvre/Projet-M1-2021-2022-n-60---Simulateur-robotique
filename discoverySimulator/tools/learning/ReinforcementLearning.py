@@ -6,7 +6,7 @@ import os
 
 class ReinforcementLearning:
 
-    """The ReinforcementLearning class provides a reinforcement learning tool."""
+    """ The ReinforcementLearning class provides a reinforcement learning tool. """
 
     DEFAULT_LEARNING_FACTOR = 0.1
     DEFAULT_DISCOUNT_FACTOR = 0.5
@@ -194,7 +194,7 @@ class ReinforcementLearning:
             if filepath.split(".")[-1]!="json":
                 raise ValueError("Format of the model invalid (JSON only)")
 
-            with open(os.path.join(os.getcwd(),filepath)) as json_file:
+            with open(filepath) as json_file:
                 json_string = json.load(json_file)
                 data = json.loads(json_string)
                 self.__actionSpaceBuilders=data["actionSpaceBuilders"]
@@ -220,7 +220,7 @@ class ReinforcementLearning:
         }
 
         json_string = json.dumps(data)
-        with open(os.path.join(os.getcwd(), filepath), 'w') as outfile:
+        with open(filepath, 'w') as outfile:
             json.dump(json_string, outfile)
 
     def updateState(self):
