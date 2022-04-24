@@ -2,7 +2,7 @@
 # scenario()
 
 from discoverySimulator.examples import blinkWithoutSleep, useOfLIDAR, roadFollowing, useOfPathFinding, useOfReinforcementLearningToLearn, \
-useOfReinforcementLearningFromModel, parkingScenario, fuzzyLogicObstacleAvoidance, simpleObstacleAvoidance
+useOfReinforcementLearningFromModel, parkingScenario, fuzzyLogicObstacleAvoidance, simpleObstacleAvoidance, robotMovement, useOfTelemetersToMesureSpeed
 # useOfLIDAR()
 # roadFollowing()
 # blinkWithoutSleep()
@@ -11,8 +11,10 @@ useOfReinforcementLearningFromModel, parkingScenario, fuzzyLogicObstacleAvoidanc
 # useOfReinforcementLearningFromModel()
 # parkingScenario()
 # fuzzyLogicObstacleAvoidance()
-simpleObstacleAvoidance()
+# simpleObstacleAvoidance()
+# robotMovement()
 
+useOfTelemetersToMesureSpeed()
 #
 # from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \
 #     road, measureSpeedWithTelemeters

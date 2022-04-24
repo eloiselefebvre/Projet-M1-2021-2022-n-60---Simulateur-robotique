@@ -28,7 +28,7 @@ def measureSpeedWithTelemeters():
     distance = positionTelemeter2-positionTelemeter1
     firstTime = 0
     clock = 0
-    counter = 0 # pour renter une seule fois dans chaque conditions
+    counter = 0 # State machine
 
 
     while True :

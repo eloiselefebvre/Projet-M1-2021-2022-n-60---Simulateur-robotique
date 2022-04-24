@@ -3,8 +3,10 @@ from .blinkWithoutSleep import blinkWithoutSleep
 from .fuzzyLogicObstacleAvoidance import fuzzyLogicObstacleAvoidance
 from .parkingScenario import parkingScenario
 from .roadFollowing import roadFollowing
+from .robotMovement import robotMovement
 from .simpleObstacleAvoidance import simpleObstacleAvoidance
 from .useOfLIDAR import useOfLIDAR
 from .useOfPathFinding import useOfPathFinding
 from .useOfReinforcementLearning import useOfReinforcementLearningToLearn
 from .useOfReinforcementLearning import useOfReinforcementLearningFromModel
+from .useOfTelemetersToMesureSpeed import useOfTelemetersToMesureSpeed
