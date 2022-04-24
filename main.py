@@ -2,14 +2,16 @@
 # scenario()
 
 from discoverySimulator.examples import blinkWithoutSleep, useOfLIDAR, roadFollowing, useOfPathFinding, useOfReinforcementLearningToLearn, \
-useOfReinforcementLearningFromModel, parkingScenario
+useOfReinforcementLearningFromModel, parkingScenario, fuzzyLogicObstacleAvoidance, simpleObstacleAvoidance
 # useOfLIDAR()
 # roadFollowing()
 # blinkWithoutSleep()
 # useOfPathFinding()
 # useOfReinforcementLearningToLearn()
 # useOfReinforcementLearningFromModel()
-parkingScenario()
+# parkingScenario()
+# fuzzyLogicObstacleAvoidance()
+simpleObstacleAvoidance()
 
 #
 # from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \

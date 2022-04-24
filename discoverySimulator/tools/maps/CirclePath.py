@@ -1,5 +1,4 @@
 import random
-from typing import List
 
 from discoverySimulator import Object
 from discoverySimulator.config import colors

@@ -21,7 +21,7 @@ $ pip install discoverySimulator
 from discoverySimulator.simulation import Simulation, Environment
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 
-# Create robot and assign wheels speed
+# Create robot and assign wheel speed
 myRobot = RectangularTwoWheelsRobot()
 myRobot.setRightWheelSpeed(500)
 myRobot.setLeftWheelSpeed(200)
