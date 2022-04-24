@@ -3,17 +3,17 @@ from discoverySimulator.actuators import LED
 
 
 def blink():
-    led = LED()
+    myLED = LED()
 
-    environment = Environment(500, 500)
-    environment.addObject(led, environment.getWidth() / 2, environment.getHeight() / 2)
+    myEnvironment = Environment(500, 500)
+    myEnvironment.addObject(myLED, myEnvironment.getWidth() / 2, myEnvironment.getHeight() / 2)
 
-    simulation = Simulation(environment)
-    simulation.showInterface()
-    simulation.run()
+    mySimulation = Simulation(myEnvironment)
+    mySimulation.showInterface()
+    mySimulation.run()
 
     while True:
-        led.toggleState()
-        simulation.sleep(1)
+        myLED.toggleState()
+        mySimulation.sleep(1)
 
-        simulation.sync()
+        mySimulation.sync()

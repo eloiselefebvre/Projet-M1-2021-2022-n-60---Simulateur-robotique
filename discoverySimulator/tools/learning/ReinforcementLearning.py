@@ -3,6 +3,7 @@ from typing import List
 import json
 import os
 
+
 class ReinforcementLearning:
 
     """The ReinforcementLearning class provides a reinforcement learning tool."""
@@ -207,8 +208,8 @@ class ReinforcementLearning:
         except FileNotFoundError:
             raise FileNotFoundError(f"Model '{filepath}' not found")
 
-    def saveModel(self, filepath:str= "goForwardTwoWheelsRobotModel.json"):
-        """ Saves the current trained model in a JSON file."""
+    def saveModel(self, filepath:str= "myModel.json"):
+        """ Saves the current trained model in a file. The file must be a JSON file."""
         QTable={}
         for key in self._QTable:
             QTable[" ".join([str(v) for v in key])]=self._QTable[key]

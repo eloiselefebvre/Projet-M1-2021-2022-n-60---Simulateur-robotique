@@ -3,21 +3,21 @@ from discoverySimulator.actuators import LED
 
 
 def blinkWithoutSleep():
-    led = LED()
+    myLED = LED()
 
-    environment = Environment(500, 500)
-    environment.addObject(led, environment.getWidth() / 2, environment.getHeight() / 2)
+    myEnvironment = Environment(500, 500)
+    myEnvironment.addObject(myLED, myEnvironment.getWidth() / 2, myEnvironment.getHeight() / 2)
 
-    simulation = Simulation(environment)
-    simulation.showInterface()
-    simulation.run()
+    mySimulation = Simulation(myEnvironment)
+    mySimulation.showInterface()
+    mySimulation.run()
 
-    startTime = simulation.time()
+    startTime = mySimulation.time()
 
     while True:
-        currentTime = simulation.time()
+        currentTime = mySimulation.time()
         if currentTime - startTime >= 1:
             startTime = currentTime
-            led.toggleState()
+            myLED.toggleState()
 
-        simulation.sync()
+        mySimulation.sync()

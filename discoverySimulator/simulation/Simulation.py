@@ -11,7 +11,7 @@ class Simulation(Observable):
 
     """ The Simulation class provides a controller to simulate an environment and the objects in the environment."""
 
-    __UPDATE_DELAY = 0.01 # 10ms
+    __UPDATE_DELAY = 0.005 # 5ms
     __MINIMUM_TIME_STEP = 1/60
 
     __ACCELERATION_MIN = 0.1

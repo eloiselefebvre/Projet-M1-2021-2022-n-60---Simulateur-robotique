@@ -1,11 +1,12 @@
 # from discoverySimulator.demonstrations import scenario
 # scenario()
 
-from discoverySimulator.examples import blinkWithoutSleep, useOfLIDAR, roadFollowing, useOfPathFinding
+from discoverySimulator.examples import blinkWithoutSleep, useOfLIDAR, roadFollowing, useOfPathFinding, useOfReinforcementLearning
 # useOfLIDAR()
 # roadFollowing()
 # blinkWithoutSleep()
-useOfPathFinding()
+# useOfPathFinding()
+useOfReinforcementLearning()
 
 #
 # from discoverySimulator.tests import aStar, collisionAndTelemeter, usingLIDAR, reinforcementLearning, \

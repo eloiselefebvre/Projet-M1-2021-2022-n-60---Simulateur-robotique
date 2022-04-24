@@ -40,13 +40,13 @@ def roadFollowing():
     mySimulation.showInterface()
 
     while True:
-        if colorSensorRight.getValue() == ROAD_COLOR and colorSensorLeft.getValue() == ROAD_COLOR:
+        if colorSensorRight.getValue() == ROAD_COLOR and colorSensorLeft.getValue() == ROAD_COLOR: # On the path
             myRobot.setLeftWheelSpeed(FORWARD_SPEED)
             myRobot.setRightWheelSpeed(FORWARD_SPEED)
-        elif colorSensorRight.getValue() != ROAD_COLOR and colorSensorLeft.getValue() == ROAD_COLOR:
+        elif colorSensorRight.getValue() != ROAD_COLOR and colorSensorLeft.getValue() == ROAD_COLOR: # On the right side of the path
             myRobot.setLeftWheelSpeed(-TURN_SPEED)
             myRobot.setRightWheelSpeed(TURN_SPEED)
-        elif colorSensorRight.getValue() == ROAD_COLOR and colorSensorLeft.getValue() != ROAD_COLOR:
+        elif colorSensorRight.getValue() == ROAD_COLOR and colorSensorLeft.getValue() != ROAD_COLOR: # On the left side of the path
             myRobot.setLeftWheelSpeed(TURN_SPEED)
             myRobot.setRightWheelSpeed(-TURN_SPEED)
         else:
