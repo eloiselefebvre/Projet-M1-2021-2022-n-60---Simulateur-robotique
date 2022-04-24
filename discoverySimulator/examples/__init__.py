@@ -1,5 +1,6 @@
 from .blink import blink
 from .blinkWithoutSleep import blinkWithoutSleep
+from .parkingScenario import parkingScenario
 from .roadFollowing import roadFollowing
 from .useOfLIDAR import useOfLIDAR
 from .useOfPathFinding import useOfPathFinding

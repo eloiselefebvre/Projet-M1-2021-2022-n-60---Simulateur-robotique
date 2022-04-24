@@ -2,6 +2,7 @@ from discoverySimulator.tools.learning.ReinforcementLearning import Reinforcemen
 from discoverySimulator.robots import RectangularTwoWheelsRobot
 from discoverySimulator.simulation import Environment, Simulation
 
+
 def reinforcementLearningTraining():
     env=Environment(800,800)
     robot=RectangularTwoWheelsRobot()
@@ -56,6 +57,7 @@ def reinforcementLearningTraining():
         sim.sync()
 
     reinforcementLearning.saveModel()
+
 
 def reinforcementLearningFromModel():
 
