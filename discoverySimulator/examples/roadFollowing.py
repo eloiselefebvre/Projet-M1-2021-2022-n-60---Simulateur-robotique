@@ -25,8 +25,7 @@ def roadFollowing():
     myEnvironment = Environment(1200, 800)
     polygon = Polygon(
         [(200, 500), (300, 450), (350, 300), (450, 250), (550, 330), (800, 150), (900, 160), (950, 220), (900, 400),
-         (860, 430), (780, 420), (720, 450),
-         (640, 560), (550, 610), (400, 560), (250, 620), (200, 580)], ROAD_COLOR)
+         (860, 430), (780, 420), (720, 450), (640, 560), (550, 610), (400, 560), (250, 620), (200, 580)], ROAD_COLOR)
 
     myEnvironment.addVirtualObject(Object(Representation(polygon)))
     polygonOffset = polygon.offset(-30)

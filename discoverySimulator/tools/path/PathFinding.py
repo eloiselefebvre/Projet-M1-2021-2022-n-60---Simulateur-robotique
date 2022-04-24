@@ -51,7 +51,7 @@ class PathFinding:
 
         self._nextPointIndex = 0
 
-    def findPath(self,begin:Tuple[int,int],end:Tuple[int,int],callback:Callable=None):
+    def findPath(self,begin:Tuple[float,float],end:Tuple[float,float],callback:Callable=None):
         """ Finds the shortest path between a start position and a destination position. Once found the function callback is executed.
         @param begin  Start position of the path to find
         @param end  End position of the path to find
