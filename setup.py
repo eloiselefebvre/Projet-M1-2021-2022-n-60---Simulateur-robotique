@@ -5,6 +5,10 @@ def readme():
     with open("README.md") as f:
         return f.read()
 
+def read_license():
+    with open("LICENSE.txt") as f:
+        return f.read()
+
 
 setup(
     name="discoverySimulator",
@@ -24,6 +28,6 @@ setup(
         '': ['*.svg']
     },
     include_package_data=True,
-    license="GPLv3",
+    license=read_license(),
     zip_safe=False
 )

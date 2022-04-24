@@ -38,7 +38,7 @@ mySimulation.run()
 mySimulation.showInterface()
 ```
 ### Code result 
-![screenshot](output.png)
+![screenshot](code_result.png)
 
 
 ## License
